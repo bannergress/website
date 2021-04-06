@@ -5,7 +5,7 @@ import './Map.css'
 export const Map: React.FC = () => {
   return (
     <Fragment>
-      <MapContainer center={[51.96, 7.62]} zoom={13}>
+      <MapContainer center={[55.753669, 37.619847]} zoom={9}>
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png"
