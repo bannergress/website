@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { useParams } from 'react-router-dom'
 
-export const Map: React.FC = () => {
+export const BannerDetails: React.FC = () => {
   const { id } = useParams<BannerParams>()
   return (
     <Fragment>

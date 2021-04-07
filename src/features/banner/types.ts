@@ -7,7 +7,7 @@ interface LoadBannerAction {
 
 interface LoadRecentBannersAction {
   type: typeof LOAD_RECENT_BANNERS
-  payload: Array<Banner>
+  payload: Array<Partial<Banner>>
 }
 
 export type BannerActionTypes = LoadBannerAction | LoadRecentBannersAction

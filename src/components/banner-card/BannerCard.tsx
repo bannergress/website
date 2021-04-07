@@ -22,9 +22,12 @@ const renderMissions = (
         color="#000"
         title={missions[i].title}
         key={missions[i].id}
-      >
-        {i + 1}
-      </div>
+        style={{
+          backgroundImage: `url('${missions[i].picture}')`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: '100%',
+        }}
+      />
     )
   }
   return renderedMissions

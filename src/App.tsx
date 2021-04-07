@@ -1,15 +1,16 @@
 import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-
 import { Layout } from 'antd'
 import { Header } from 'antd/es/layout/layout'
+
 import Navbar from './components/navbar'
 import { About } from './pages/About'
 import { Home } from './pages/Home'
 import { Map } from './pages/Map'
+import { BannerDetails } from './pages/BannerDetails'
+import BannerList from './components/banner-list'
 
 import './App.less'
-import BannerList from './components/banner-list'
 
 const App: React.FC = () => (
   <Layout>
@@ -26,7 +27,7 @@ const App: React.FC = () => (
             <Route path="/about" component={About} />
             <Route path="/map" component={Map} />
             <Route path="/favorites" component={BannerList} />
-            <Route path="/banner/:id" component={Map} />
+            <Route path="/banner/:id" component={BannerDetails} />
           </Switch>
         </div>
       </Layout>
