@@ -6,7 +6,6 @@ import { Scrollbars } from 'react-custom-scrollbars'
 
 import './Banner-info.less'
 
-// import { actionTypes, selectors } from '../../features/counter'
 type IBanner = {
   title: string
   countMission: number
@@ -20,7 +19,6 @@ type IMission = {
   name: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const BannerInfo: FC<IBanner> = ({
   title,
   countMission,

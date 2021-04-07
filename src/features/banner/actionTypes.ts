@@ -1,1 +1,2 @@
 export const LOAD_BANNER = 'LOAD_BANNER'
+export const LOAD_RECENT_BANNERS = 'LOAD_RECENT_BANNERS'

@@ -1,5 +1,4 @@
 import React, { Fragment, FC } from 'react'
-// import { useSelector, useDispatch } from 'react-redux'
 import { Card, Row } from 'antd'
 
 import { Scrollbars } from 'react-custom-scrollbars'
@@ -8,72 +7,54 @@ import './Banner-card.less'
 
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
+import { Banner, Dictionary, Mission } from '../../features/banner/types'
 
-// import { actionTypes, selectors } from '../../features/counter'
-type IBanner = {
-  title: string
-  countMission: number
-  id: number
-  distance: string
-  mapTitle: string
-}
-type IMission = {
-  id: number
-  color: string
-  name: string
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const BannerCard: FC<IBanner> = ({
-  title,
-  countMission,
-  id,
-  mapTitle,
-  distance,
-}) => {
-  let missionList: Array<IMission> = []
-  for (let i = 0; i < countMission; i += 1) {
-    missionList = [
-      ...missionList,
-      {
-        color: '#000',
-        id: i,
-        name: `test mission ${i}`,
-      },
-    ]
-  }
-
-  return (
-    <Fragment>
-      <div className="banner-card" key={id}>
-        <Card title={title} style={{ width: 448 }}>
-          <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
-            <Row align="top" justify="start" className="banner-pic">
-              {missionList.map((mission) => (
-                <div
-                  className="banner-circle"
-                  color={mission.color}
-                  title={mission.name}
-                  key={mission.id}
-                >
-                  {mission.id + 1}
-                </div>
-              ))}
-            </Row>
-          </Scrollbars>
-          <div className="mt-1" />
-          <Row align="middle">
-            <SVGExplorer fill="#1DA57A" className="icon" />
-            {countMission} Missions, {distance}
-          </Row>
-          <Row align="middle">
-            <SVGPointer fill="#1DA57A" className="icon" />
-            {mapTitle}
-          </Row>
-        </Card>
+const getDistance = (distance: number) => `${distance / 100}km`
+const renderMissions = (
+  missions: Dictionary<Mission>,
+  numberOfMissions: number
+) => {
+  const renderedMissions: Array<JSX.Element> = []
+  for (let i = 0; i < numberOfMissions; i += 1) {
+    renderedMissions.push(
+      <div
+        className="banner-circle"
+        color="#000"
+        title={missions[i].title}
+        key={missions[i].id}
+      >
+        {i + 1}
       </div>
-    </Fragment>
-  )
+    )
+  }
+  return renderedMissions
+}
+
+const BannerCard: FC<BannerCardProps> = ({ banner }) => (
+  <Fragment>
+    <div className="banner-card" key={banner.id}>
+      <Card title={banner.title} style={{ width: 448 }}>
+        <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
+          <Row align="top" justify="start" className="banner-pic">
+            {renderMissions(banner.missions, banner.numberOfMissions)}
+          </Row>
+        </Scrollbars>
+        <div className="mt-1" />
+        <Row align="middle">
+          <SVGExplorer fill="#1DA57A" className="icon" />
+          {banner.numberOfMissions} Missions, {getDistance(banner.lenghtMeters)}
+        </Row>
+        <Row align="middle">
+          <SVGPointer fill="#1DA57A" className="icon" />
+          New York, NY
+        </Row>
+      </Card>
+    </div>
+  </Fragment>
+)
+
+export interface BannerCardProps {
+  banner: Banner
 }
 
 export default BannerCard

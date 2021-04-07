@@ -6,15 +6,17 @@ describe('features > banner > bannerReducer', () => {
   it(`load banner, if ${LOAD_BANNER} action is provided`, () => {
     const initialState = {
       banners: [],
+      recentBanners: [],
     }
 
     const expectedState = {
-      banners: [{ id: '1' }],
+      banners: [{ id: 1 }],
+      recentBanners: [],
     }
 
     const action: BannerActionTypes = {
       type: LOAD_BANNER,
-      payload: { id: '1' },
+      payload: { id: 1 },
     }
 
     expect(bannerReducer(initialState, action)).toEqual(expectedState)
