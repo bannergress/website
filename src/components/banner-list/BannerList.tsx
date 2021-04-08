@@ -43,11 +43,11 @@ export interface BannerListProps {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  banners: getRecentBanners(state.banner),
+  banners: getRecentBanners(state.banner)
 })
 
 const mapDispatchToProps = {
-  fetchRecentBanners: loadRecentBanners,
+  fetchRecentBanners: loadRecentBanners
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BannerList)

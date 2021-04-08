@@ -25,7 +25,7 @@ const renderMissions = (
         style={{
           backgroundImage: `url('${missions[i].picture}')`,
           backgroundRepeat: 'no-repeat',
-          backgroundSize: '100%',
+          backgroundSize: '100%'
         }}
       />
     )
@@ -35,17 +35,20 @@ const renderMissions = (
 
 const BannerCard: FC<BannerCardProps> = ({ banner }) => (
   <Fragment>
-    <div className="banner-card" key={banner.id}>
-      <Card title={banner.title} style={{ width: 448 }}>
+    <div className="banner-card" key={banner?.id}>
+      <Card title={banner?.title} style={{ width: 448 }}>
         <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
           <Row align="top" justify="start" className="banner-pic">
-            {renderMissions(banner.missions, banner.numberOfMissions)}
+            {banner?.missions
+              ? renderMissions(banner?.missions, banner?.numberOfMissions)
+              : null}
           </Row>
         </Scrollbars>
         <div className="mt-1" />
         <Row align="middle">
           <SVGExplorer fill="#1DA57A" className="icon" />
-          {banner.numberOfMissions} Missions, {getDistance(banner.lenghtMeters)}
+          {banner?.numberOfMissions} Missions,{' '}
+          {banner ? getDistance(banner?.lenghtMeters) : null}
         </Row>
         <Row align="middle">
           <SVGPointer fill="#1DA57A" className="icon" />
@@ -57,7 +60,7 @@ const BannerCard: FC<BannerCardProps> = ({ banner }) => (
 )
 
 export interface BannerCardProps {
-  banner: Banner
+  banner: Banner | undefined
 }
 
 export default BannerCard

@@ -7,8 +7,9 @@ import Navbar from './components/navbar'
 import { About } from './pages/About'
 import { Home } from './pages/Home'
 import { Map } from './pages/Map'
-import { BannerDetails } from './pages/BannerDetails'
+// import { BannerDetails } from './pages/BannerDetails'
 import BannerList from './components/banner-list'
+import BannerInfo from './components/banner-info'
 
 import './App.less'
 
@@ -27,7 +28,7 @@ const App: React.FC = () => (
             <Route path="/about" component={About} />
             <Route path="/map" component={Map} />
             <Route path="/favorites" component={BannerList} />
-            <Route path="/banner/:id" component={BannerDetails} />
+            <Route path="/banner/:id" component={BannerInfo} />
           </Switch>
         </div>
       </Layout>

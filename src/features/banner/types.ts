@@ -35,7 +35,7 @@ export interface BannerState {
 }
 
 export interface Banner {
-  id: number
+  id: string
   title: string
   numberOfMissions: number
   missions: Dictionary<Mission>
