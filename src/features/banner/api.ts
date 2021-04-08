@@ -1,7 +1,7 @@
 import { api } from '../../api'
 import { Banner, Dictionary, Mission } from './types'
 
-const isMock = process.env.USE_MOCK || true
+const isMock = process.env.REACT_APP_USE_MOCK
 
 const getRandomInt = (max: number, multiplier: number, min: number) =>
   Math.floor(Math.random() * (max + 1)) * multiplier + min
@@ -14,7 +14,74 @@ const getMissions = (numberOfMissions: number) => {
       id: i.toString(),
       title: `test mission ${i}`,
       picture: imgUrl,
-      steps: [],
+      steps: [
+        {
+          poi: {
+            id: '1',
+            picture: '',
+            title: 'Mock POI 1',
+            type: 'portal',
+            latitude: 49.032618,
+            longitude: 10.971546,
+          },
+          objective: 'hack',
+        },
+        {
+          poi: {
+            id: '2',
+            picture: '',
+            title: 'Mock POI 2',
+            type: 'portal',
+            latitude: 49.032618,
+            longitude: 10.971546,
+          },
+          objective: 'hack',
+        },
+        {
+          poi: {
+            id: '3',
+            picture: '',
+            title: 'Mock POI 3',
+            type: 'fieldTrip',
+            latitude: 49.032618,
+            longitude: 10.971546,
+          },
+          objective: 'fieldTrip',
+        },
+        {
+          poi: {
+            id: '4',
+            picture: '',
+            title: 'Mock POI 4',
+            type: 'portal',
+            latitude: 49.032618,
+            longitude: 10.971546,
+          },
+          objective: 'hack',
+        },
+        {
+          poi: {
+            id: '5',
+            picture: '',
+            title: 'Mock POI 5',
+            type: 'portal',
+            latitude: 49.032618,
+            longitude: 10.971546,
+          },
+          objective: 'capture or upgrade',
+        },
+        {
+          poi: {
+            id: '6',
+            picture: '',
+            title: 'Mock POI 6',
+            type: 'portal',
+            latitude: 49.032618,
+            longitude: 10.971546,
+          },
+          objective: 'hack',
+        },
+      ],
     }
   }
   return missionList
