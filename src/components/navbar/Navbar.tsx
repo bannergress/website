@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { Menu, Row, Input, Divider } from 'antd'
+import LoginInNavbar from '../login/login-in-navbar'
 
 import Logo from '../../img/logo/logo192.png'
 import './Navbar.less'
@@ -42,7 +43,9 @@ export const Navbar: React.FC = () => (
         style={{ width: 200 }}
       />
     </Row>
-    <NavLink to="#">Login</NavLink>
+    <Row>
+        <LoginInNavbar/>
+      </Row>
   </Row>
 )
 
