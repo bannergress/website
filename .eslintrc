@@ -14,7 +14,7 @@
   },
   "rules": {
     // Make prettier code formatting suggestions more verbose.
-    "prettier/prettier": ["warn"],
+    "prettier/prettier": ["off"],
     // Disable <Fragment> => <> replacement. Feel free to change
     "react/jsx-fragments": "off",
     // Disable prefer default export
@@ -22,7 +22,8 @@
     "no-console": "off",
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": 0,
-    "semi": 0
+    "semi": "off",
+    "comma-style": "off"
   },
   "overrides": [
     {

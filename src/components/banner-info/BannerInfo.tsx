@@ -1,35 +1,56 @@
-import React, { Fragment } from 'react'
+import React, { Fragment } from "react"
 
-import './Banner-info.less'
-import { connect } from 'react-redux'
-import { match as Match } from 'react-router-dom'
+import { connect } from "react-redux"
+import { withRouter, RouteComponentProps } from "react-router-dom"
+import { Layout, Row, Col } from "antd"
+
+import { RootState } from "../../store"
+
 import {
   getBanner as getBannerSelector,
-  loadBanner,
-} from '../../features/banner'
-import { RootState } from '../../store'
+  loadBanner
+} from "../../features/banner"
 
-import BannerCard from '../banner-card'
+import BannerCard from "../banner-card"
+import MissionList from "../mission-list"
+import { Map } from "../../pages/Map"
 
-interface BannerProps {
+
+import "./Banner-info.less"
+
+interface BannerProps extends RouteComponentProps<any> {
   getBanner: Function
   fetchBanner: Function
-  match: Match<{ id: string }>
 }
 
 export class BannerInfo extends React.Component<BannerProps, {}> {
   componentDidMount() {
     const { fetchBanner, match } = this.props
-    fetchBanner(match.params.id)
+    fetchBanner(parseInt(match.params.id, 10))
   }
 
   render() {
     const { getBanner, match } = this.props
-    const banner = getBanner(match.params.id)
+    const banner = getBanner(parseInt(match.params.id, 10))
     if (banner) {
+      const { missions } = banner
       return (
         <Fragment>
-          <BannerCard banner={banner} />
+          <Row justify="center" className="banner-info">
+
+            <Layout>
+              <Row>
+                <Col span={8}>
+                  <BannerCard banner={banner}/>
+                  <div className="mt-1" />
+                  <MissionList missions={missions} />
+                </Col>
+                <Col span={16}>
+                  <Map />
+                </Col>
+              </Row>
+            </Layout>
+          </Row>
         </Fragment>
       )
     }
@@ -38,11 +59,14 @@ export class BannerInfo extends React.Component<BannerProps, {}> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  getBanner: (id: string) => getBannerSelector(state.banner, id),
+  getBanner: (id: number) => getBannerSelector(state.banner, id)
 })
 
 const mapDispatchToProps = {
-  fetchBanner: (id: string) => loadBanner(id),
+  fetchBanner: (id: number) => loadBanner(id)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BannerInfo)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(BannerInfo))

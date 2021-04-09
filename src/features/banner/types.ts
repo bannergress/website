@@ -35,10 +35,10 @@ export interface BannerState {
 }
 
 export interface Banner {
-  id: string
+  id: number
   title: string
   numberOfMissions: number
-  missions: Dictionary<Mission>
+  missions: Array<Mission>
   startLatitude: number
   startLongitude: number
   lenghtMeters: number

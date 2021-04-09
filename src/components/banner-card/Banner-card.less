@@ -3,9 +3,16 @@
   min-height: 204px;
   align-content: flex-start;
 }
-.banner-card {
-  margin-top: 1rem;
-  margin-right: 1rem;
+.banner-list {
+  & > .banner-card {
+    margin-top: 1rem;
+    margin-right: 1rem;
+  }
+}
+.banner-info {
+  & .banner-card {
+    padding: 1rem;
+  }
 }
 
 .banner-circle {
