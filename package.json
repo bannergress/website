@@ -17,6 +17,7 @@
     "@typescript-eslint/parser": "~4.20.0",
     "@wojtekmaj/enzyme-adapter-react-17": "~0.6.0",
     "antd": "^4.15.0",
+    "apisauce": "^2.0.1",
     "craco-antd": "~1.19.0",
     "craco-eslint-webpack-plugin": "^1.0.0",
     "craco-less": "~1.17.1",
