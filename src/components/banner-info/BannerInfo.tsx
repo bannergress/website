@@ -1,70 +1,72 @@
-import React, { Fragment, FC } from 'react'
-// import { useSelector, useDispatch } from 'react-redux'
-import { Card, Row } from 'antd'
+import React, { Fragment } from "react"
 
-import { Scrollbars } from 'react-custom-scrollbars'
+import { connect } from "react-redux"
+import { withRouter, RouteComponentProps } from "react-router-dom"
+import { Layout, Row, Col } from "antd"
 
-import './Banner-info.less'
+import { RootState } from "../../store"
 
-type IBanner = {
-  title: string
-  countMission: number
-  id: number
-  distance: string
-  mapTitle: string
+import {
+  getBanner as getBannerSelector,
+  loadBanner
+} from "../../features/banner"
+
+import BannerCard from "../banner-card"
+import MissionList from "../mission-list"
+import { Map } from "../../pages/Map"
+
+
+import "./Banner-info.less"
+
+interface BannerProps extends RouteComponentProps<any> {
+  getBanner: Function
+  fetchBanner: Function
 }
-type IMission = {
-  id: number
-  color: string
-  name: string
-}
 
-const BannerInfo: FC<IBanner> = ({
-  title,
-  countMission,
-  id,
-  mapTitle,
-  distance,
-}) => {
-  let missionList: Array<IMission> = []
-  for (let i = 0; i < countMission; i += 1) {
-    missionList = [
-      ...missionList,
-      {
-        color: '#000',
-        id: i,
-        name: `test mission ${i}`,
-      },
-    ]
+export class BannerInfo extends React.Component<BannerProps, {}> {
+  componentDidMount() {
+    const { fetchBanner, match } = this.props
+    fetchBanner(parseInt(match.params.id, 10))
   }
 
-  return (
-    <Fragment>
-      <div className="banner-card" key={id}>
-        <Card title={title} style={{ width: 448 }}>
-          <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
-            <Row align="top" justify="start" className="banner-pic">
-              {missionList.map((mission) => (
-                <div
-                  className="banner-circle"
-                  color={mission.color}
-                  title={mission.name}
-                  key={mission.id}
-                >
-                  {mission.id + 1}
-                </div>
-              ))}
-            </Row>
-          </Scrollbars>
-          <div className="mt-1" />
-          <Row>
-            {countMission} Missions, {distance}
+  render() {
+    const { getBanner, match } = this.props
+    const banner = getBanner(parseInt(match.params.id, 10))
+    if (banner) {
+      const { missions } = banner
+      return (
+        <Fragment>
+          <Row justify="center" className="banner-info">
+
+            <Layout>
+              <Row>
+                <Col span={8}>
+                  <BannerCard banner={banner}/>
+                  <div className="mt-1" />
+                  <MissionList missions={missions} />
+                </Col>
+                <Col span={16}>
+                  <Map />
+                </Col>
+              </Row>
+            </Layout>
           </Row>
-          <Row>{mapTitle}</Row>
-        </Card>
-      </div>
-    </Fragment>
-  )
+        </Fragment>
+      )
+    }
+    return <Fragment>loading</Fragment>
+  }
 }
 
-export default BannerInfo
+const mapStateToProps = (state: RootState) => ({
+  getBanner: (id: number) => getBannerSelector(state.banner, id)
+})
+
+const mapDispatchToProps = {
+  fetchBanner: (id: number) => loadBanner(id)
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(BannerInfo))

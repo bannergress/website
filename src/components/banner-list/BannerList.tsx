@@ -17,18 +17,16 @@ export class BannerList extends React.Component<BannerListProps, {}> {
     return (
       <Fragment>
         <Row justify="center">
-          <Layout>
-            <div className="pl-1">
+          <Layout className="px1">
               <Row justify="space-between" className="pr-1">
                 <h2>{titleList}</h2>
                 <Button>Submit a New Banner</Button>
               </Row>
-              <Row justify="center">
+              <Row justify="space-around" className="banner-list" gutter={[16, 16]}>
                 {banners?.map((bannerItem) => (
                   <BannerCard banner={bannerItem} key={bannerItem.id} />
                 ))}
               </Row>
-            </div>
           </Layout>
         </Row>
       </Fragment>
@@ -43,11 +41,11 @@ export interface BannerListProps {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  banners: getRecentBanners(state.banner),
+  banners: getRecentBanners(state.banner)
 })
 
 const mapDispatchToProps = {
-  fetchRecentBanners: loadRecentBanners,
+  fetchRecentBanners: loadRecentBanners
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BannerList)

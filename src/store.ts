@@ -6,7 +6,7 @@ import { BannerState } from './features/banner/types'
 
 /* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({
-  banner: BannerReducer,
+  banner: BannerReducer
 })
 
 const store = createStore(

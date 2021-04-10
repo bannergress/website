@@ -1,5 +1,5 @@
 import { api } from '../../api'
-import { Banner, Dictionary, Mission } from './types'
+import { Banner, Mission } from './types'
 
 const isMock = process.env.REACT_APP_USE_MOCK
 
@@ -7,82 +7,82 @@ const getRandomInt = (max: number, multiplier: number, min: number) =>
   Math.floor(Math.random() * (max + 1)) * multiplier + min
 
 const getMissions = (numberOfMissions: number) => {
-  const missionList: Dictionary<Mission> = {}
+  const missionList: Array<Mission> = []
   for (let i = numberOfMissions - 1; i >= 0; i -= 1) {
-    const imgUrl = `badges/mission-set-${(i % 18) + 1}.png`
-    missionList[i] = {
+    const imgUrl = `/badges/mission-set-${(i % 18) + 1}.png`
+    missionList.push({
       id: i.toString(),
       title: `test mission ${i}`,
       picture: imgUrl,
       steps: [
         {
           poi: {
-            id: '1',
-            picture: '',
-            title: 'Mock POI 1',
-            type: 'portal',
+            id: "1",
+            picture: "",
+            title: "Mock POI 1",
+            type: "portal",
             latitude: 49.032618,
-            longitude: 10.971546,
+            longitude: 10.971546
           },
-          objective: 'hack',
+          objective: "hack"
         },
         {
           poi: {
-            id: '2',
-            picture: '',
-            title: 'Mock POI 2',
-            type: 'portal',
+            id: "2",
+            picture: "",
+            title: "Mock POI 2",
+            type: "portal",
             latitude: 49.032618,
-            longitude: 10.971546,
+            longitude: 10.971546
           },
-          objective: 'hack',
+          objective: "hack"
         },
         {
           poi: {
-            id: '3',
-            picture: '',
-            title: 'Mock POI 3',
-            type: 'fieldTrip',
+            id: "3",
+            picture: "",
+            title: "Mock POI 3",
+            type: "fieldTrip",
             latitude: 49.032618,
-            longitude: 10.971546,
+            longitude: 10.971546
           },
-          objective: 'fieldTrip',
+          objective: "fieldTrip"
         },
         {
           poi: {
-            id: '4',
-            picture: '',
-            title: 'Mock POI 4',
-            type: 'portal',
+            id: "4",
+            picture: "",
+            title: "Mock POI 4",
+            type: "portal",
             latitude: 49.032618,
-            longitude: 10.971546,
+            longitude: 10.971546
           },
-          objective: 'hack',
+          objective: "hack"
         },
         {
           poi: {
-            id: '5',
-            picture: '',
-            title: 'Mock POI 5',
-            type: 'portal',
+            id: "5",
+            picture: "",
+            title: "Mock POI 5",
+            type: "portal",
             latitude: 49.032618,
-            longitude: 10.971546,
+            longitude: 10.971546
           },
-          objective: 'capture or upgrade',
+          objective: "capture or upgrade"
         },
         {
           poi: {
-            id: '6',
-            picture: '',
-            title: 'Mock POI 6',
-            type: 'portal',
+            id: "6",
+            picture: "",
+            title: "Mock POI 6",
+            type: "portal",
             latitude: 49.032618,
-            longitude: 10.971546,
+            longitude: 10.971546
           },
-          objective: 'hack',
-        },
-      ],
-    }
+          objective: "hack"
+        }
+      ]
+    })
   }
   return missionList
 }
