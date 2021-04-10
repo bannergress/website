@@ -5,13 +5,11 @@ import { Row, Layout, Button } from 'antd'
 import { Mission } from '../../features/banner/types'
 import MissionCard from '../mission-card'
 
-// import StepCard from '../mission-card'
-
 export class MissionList extends React.Component<MissionListProps, {}> {
   componentDidMount() {}
 
   render() {
-    const { missions } = this.props
+    const { missions, expanded, onExpand } = this.props
     if (missions && missions.length > 0) {
       return (
         <Fragment>
@@ -20,12 +18,18 @@ export class MissionList extends React.Component<MissionListProps, {}> {
               <div className="p-1">
                 <Row justify="space-between" className="pr-1">
                   <h2>Missions in this banner</h2>
-                  <Button>Expand all</Button>
+                  <Button onClick={onExpand}>
+                    {expanded ? 'Collapse all' : 'Expand all'}
+                  </Button>
                 </Row>
 
                 <Row justify="center">
                   {missions.map((missionItem: Mission) => (
-                    <MissionCard mission={missionItem} key={missionItem.id} />
+                    <MissionCard
+                      key={missionItem.id}
+                      mission={missionItem}
+                      expanded={expanded}
+                    />
                   ))}
                 </Row>
               </div>
@@ -48,6 +52,8 @@ export class MissionList extends React.Component<MissionListProps, {}> {
 
 export interface MissionListProps {
   missions: Array<Mission>
+  expanded: boolean
+  onExpand: () => void
 }
 
 export default MissionList

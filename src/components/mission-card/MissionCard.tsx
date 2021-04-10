@@ -1,4 +1,4 @@
-import React, { Fragment, FC, useState } from 'react'
+import React, { Fragment } from 'react'
 import { Card, Row } from 'antd'
 
 // import { Scrollbars } from 'react-custom-scrollbars'
@@ -10,58 +10,86 @@ import './mission-card.less'
 
 import { Mission } from '../../features/banner/types'
 
-const MissionCard: FC<MissionCardProps> = ({ mission }) => {
-  const [isShow, setShow] = useState(false)
-
-  const toggleShow = () => {
-    setShow(!isShow)
+class MissionCard extends React.Component<MissionCardProps, MissionCardState> {
+  constructor(props: MissionCardProps) {
+    super(props)
+    this.state = {
+      expanded: props.expanded,
+      expandedFromProps: props.expanded,
+    }
   }
 
-  return (
-    <Fragment>
-      <div className="mission-card" key={mission?.id}>
-        <Card style={{ width: 448, backgroundColor: '#404040' }}>
-          {/* <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}> */}
-          <Row
-            align="middle"
-            justify="space-between"
-            className="mission-content"
-            onClick={toggleShow}
-          >
-            <div>
-              <Row align="middle">
-                <div
-                  className="mission-circle"
-                  color="#000"
-                  title={mission?.title}
-                  key={mission?.id}
-                  style={{
-                    backgroundImage: `url('${mission?.picture}')`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: '100%',
-                  }}
+  static getDerivedStateFromProps(
+    nextProps: MissionCardProps,
+    state: MissionCardState
+  ): MissionCardState {
+    return {
+      expanded:
+        nextProps.expanded === state.expandedFromProps
+          ? state.expanded
+          : nextProps.expanded,
+      expandedFromProps: nextProps.expanded,
+    }
+  }
+
+  onExpand = () => {
+    const { expanded } = this.state
+    this.setState({ expanded: !expanded })
+  }
+
+  render() {
+    const { mission } = this.props
+    const { expanded } = this.state
+    return (
+      <Fragment>
+        <div className="mission-card" key={mission?.id}>
+          <Card style={{ width: 448, backgroundColor: '#404040' }}>
+            <Row
+              align="middle"
+              justify="space-between"
+              className="mission-content"
+              onClick={this.onExpand}
+            >
+              <div>
+                <Row align="middle">
+                  <div
+                    className="mission-circle"
+                    color="#000"
+                    title={mission?.title}
+                    key={mission?.id}
+                    style={{
+                      backgroundImage: `url('${mission?.picture}')`,
+                      backgroundRepeat: 'no-repeat',
+                      backgroundSize: '100%',
+                    }}
+                  />
+                  <div className="pl-1">{mission?.title}</div>
+                </Row>
+              </div>
+              <div className="p-1">
+                <SVGChevron
+                  fill="#FFF"
+                  className={`icon ${expanded ? 'open' : ''}`}
+                  key="showpanel"
                 />
-                <div className="pl-1">{mission?.title}</div>
-              </Row>
-            </div>
-            <div className="p-1">
-              <SVGChevron
-                fill="#FFF"
-                className={`icon ${isShow ? 'open' : ''}`}
-                key="showpanel"
-              />
-            </div>
-          </Row>
-          {/* </Scrollbars> */}
-          {isShow ? <StepList steps={mission?.steps} /> : null}
-        </Card>
-      </div>
-    </Fragment>
-  )
+              </div>
+            </Row>
+            {expanded ? <StepList steps={mission?.steps} /> : null}
+          </Card>
+        </div>
+      </Fragment>
+    )
+  }
 }
 
 export interface MissionCardProps {
   mission: Mission | undefined
+  expanded: boolean
+}
+
+interface MissionCardState {
+  expanded: boolean
+  expandedFromProps: boolean
 }
 
 export default MissionCard

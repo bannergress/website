@@ -11,25 +11,33 @@ import {
   loadBanner,
 } from '../../features/banner'
 
-import BannerCard from '../banner-card'
-import MissionList from '../mission-list'
-import { Map } from '../../pages/Map'
+import BannerCard from '../../components/banner-card'
+import MissionList from '../../components/mission-list'
+import { Map } from '../Map'
 
 import './Banner-info.less'
 
-interface BannerProps extends RouteComponentProps<any> {
-  getBanner: Function
-  fetchBanner: Function
-}
+class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
+  constructor(props: BannerInfoProps) {
+    super(props)
+    this.state = {
+      expanded: false,
+    }
+  }
 
-export class BannerInfo extends React.Component<BannerProps, {}> {
   componentDidMount() {
     const { fetchBanner, match } = this.props
     fetchBanner(parseInt(match.params.id, 10))
   }
 
+  onExpand = () => {
+    const { expanded } = this.state
+    this.setState({ expanded: !expanded })
+  }
+
   render() {
     const { getBanner, match } = this.props
+    const { expanded } = this.state
     const banner = getBanner(parseInt(match.params.id, 10))
     if (banner) {
       const { missions } = banner
@@ -41,7 +49,11 @@ export class BannerInfo extends React.Component<BannerProps, {}> {
                 <Col span={8}>
                   <BannerCard banner={banner} />
                   <div className="mt-1" />
-                  <MissionList missions={missions} />
+                  <MissionList
+                    missions={missions}
+                    expanded={expanded}
+                    onExpand={this.onExpand}
+                  />
                 </Col>
                 <Col span={16}>
                   <Map />
@@ -54,6 +66,15 @@ export class BannerInfo extends React.Component<BannerProps, {}> {
     }
     return <Fragment>loading</Fragment>
   }
+}
+
+export interface BannerInfoProps extends RouteComponentProps<any> {
+  getBanner: Function
+  fetchBanner: Function
+}
+
+interface BannerInfoState {
+  expanded: boolean
 }
 
 const mapStateToProps = (state: RootState) => ({
