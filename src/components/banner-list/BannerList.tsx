@@ -1,15 +1,23 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Row, Layout, Button } from 'antd'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 import BannerCard from '../banner-card'
 import { getRecentBanners, loadRecentBanners } from '../../features/banner'
 import { Banner } from '../../features/banner/types'
 import { RootState } from '../../storeTypes'
 
+import './Banner-list.less'
+
 export class BannerList extends React.Component<BannerListProps, {}> {
   componentDidMount() {
     const { fetchRecentBanners } = this.props
     fetchRecentBanners()
+  }
+
+  goToBanner(bannerId: number) {
+    const { history } = this.props
+    history.push(`/banner/${bannerId}`)
   }
 
   render() {
@@ -28,9 +36,15 @@ export class BannerList extends React.Component<BannerListProps, {}> {
               gutter={[16, 16]}
             >
               {banners?.map((bannerItem) => (
-                <a href={`/banner/${bannerItem.id}`}>
+                <div
+                  className="banner-card"
+                  onClick={() => this.goToBanner(bannerItem.id)}
+                  onKeyPress={() => this.goToBanner(bannerItem.id)}
+                  role="link"
+                  tabIndex={0}
+                >
                   <BannerCard banner={bannerItem} key={bannerItem.id} />
-                </a>
+                </div>
               ))}
             </Row>
           </Layout>
@@ -40,7 +54,7 @@ export class BannerList extends React.Component<BannerListProps, {}> {
   }
 }
 
-export interface BannerListProps {
+export interface BannerListProps extends RouteComponentProps {
   titleList: string
   banners: Array<Banner>
   fetchRecentBanners: Function
@@ -54,4 +68,6 @@ const mapDispatchToProps = {
   fetchRecentBanners: loadRecentBanners,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BannerList)
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(BannerList)
+)
