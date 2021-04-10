@@ -28,7 +28,9 @@ export class BannerList extends React.Component<BannerListProps, {}> {
               gutter={[16, 16]}
             >
               {banners?.map((bannerItem) => (
-                <BannerCard banner={bannerItem} key={bannerItem.id} />
+                <a href={`/banner/${bannerItem.id}`}>
+                  <BannerCard banner={bannerItem} key={bannerItem.id} />
+                </a>
               ))}
             </Row>
           </Layout>

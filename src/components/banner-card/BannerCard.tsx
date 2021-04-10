@@ -5,7 +5,6 @@ import { Scrollbars } from 'react-custom-scrollbars'
 
 import './Banner-card.less'
 
-import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
 import { Banner, Dictionary, Mission } from '../../features/banner/types'
@@ -16,7 +15,7 @@ const renderMissions = (
   numberOfMissions: number
 ) => {
   const renderedMissions: Array<JSX.Element> = []
-  for (let i = 0; i < numberOfMissions; i += 1) {
+  for (let i = numberOfMissions - 1; i >= 0; i -= 1) {
     renderedMissions.push(
       <div
         className="banner-circle"
@@ -34,13 +33,10 @@ const renderMissions = (
   return renderedMissions
 }
 
-const BannerCard: FC<BannerCardProps> = ({ banner, history }) => {
-  const goBanner = (bannerId?: any) => {
-    history.push(`/banner/${bannerId}`)
-  }
+const BannerCard: FC<BannerCardProps> = ({ banner }) => {
   return (
     <Fragment>
-      <Row justify="center" onClick={() => goBanner(banner?.id)}>
+      <Row justify="center">
         <div className="banner-card" key={banner?.id}>
           <Card
             title={banner?.title}
@@ -70,8 +66,8 @@ const BannerCard: FC<BannerCardProps> = ({ banner, history }) => {
   )
 }
 
-export interface BannerCardProps extends RouteComponentProps<any> {
+export interface BannerCardProps {
   banner: Banner | undefined
 }
 
-export default withRouter(BannerCard)
+export default BannerCard

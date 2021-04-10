@@ -8,11 +8,11 @@ const getRandomInt = (max: number, multiplier: number, min: number) =>
 
 const getMissions = (numberOfMissions: number) => {
   const missionList: Array<Mission> = []
-  for (let i = numberOfMissions - 1; i >= 0; i -= 1) {
+  for (let i = 0; i < numberOfMissions; i += 1) {
     const imgUrl = `/badges/mission-set-${(i % 18) + 1}.png`
     missionList.push({
       id: i.toString(),
-      title: `test mission ${i}`,
+      title: `test mission ${i + 1}`,
       picture: imgUrl,
       steps: [
         {
