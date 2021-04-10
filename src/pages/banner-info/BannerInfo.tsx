@@ -78,7 +78,7 @@ interface BannerInfoState {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  getBanner: (id: number) => getBannerSelector(state.banner, id),
+  getBanner: (id: number) => getBannerSelector(state, id),
 })
 
 const mapDispatchToProps = {

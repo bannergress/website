@@ -1,6 +1,6 @@
-import { BannerState } from './types'
+import { RootState } from '../../storeTypes'
 
-export const getBanner = (state: BannerState, id: number) =>
-  state.banners.find((b) => b.id === id)
+export const getBanner = (state: RootState, id: number) =>
+  state.banner.banners.find((b) => b.id === id)
 
-export const getRecentBanners = (state: BannerState) => state.recentBanners
+export const getRecentBanners = (state: RootState) => state.banner.recentBanners

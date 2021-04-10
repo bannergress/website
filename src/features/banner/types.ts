@@ -1,23 +1,14 @@
-export interface BannerState {
-  banners: Array<Banner>
-  recentBanners: Array<Banner>
+export interface NumDictionary<T> {
+  [n: number]: T
 }
 
-export interface Banner {
-  id: number
-  title: string
-  numberOfMissions: number
-  missions: Dictionary<Mission>
-  startLatitude: number
-  startLongitude: number
-  lenghtMeters: number
-}
-
-export interface Mission {
+export interface POI {
   id: string
   title: string
+  latitude: number
+  longitude: number
   picture: string
-  steps: Array<Step>
+  type: 'portal' | 'fieldTrip'
 }
 
 export interface Step {
@@ -32,15 +23,24 @@ export interface Step {
     | 'fieldTrip'
 }
 
-export interface POI {
+export interface Mission {
   id: string
   title: string
-  latitude: number
-  longitude: number
   picture: string
-  type: 'portal' | 'fieldTrip'
+  steps: Array<Step>
 }
 
-export interface Dictionary<T> {
-  [n: number]: T
+export interface Banner {
+  id: number
+  title: string
+  numberOfMissions: number
+  missions: NumDictionary<Mission>
+  startLatitude: number
+  startLongitude: number
+  lenghtMeters: number
+}
+
+export interface BannerState {
+  banners: Array<Banner>
+  recentBanners: Array<Banner>
 }

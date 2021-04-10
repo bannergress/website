@@ -1,8 +1,10 @@
 import { RehydrateErrorType } from 'redux-persist'
 import { BannerState } from './features/banner/types'
+import { PlaceState } from './features/place/types'
 
 export interface RootState {
   banner: BannerState
+  place: PlaceState
 }
 
 export interface RehydrateAction {

@@ -61,7 +61,7 @@ export interface BannerListProps extends RouteComponentProps {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  banners: getRecentBanners(state.banner),
+  banners: getRecentBanners(state),
 })
 
 const mapDispatchToProps = {

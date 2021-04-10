@@ -4,6 +4,7 @@ import storageSession from 'redux-persist/lib/storage/session'
 import { devToolsEnhancer } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 import { BannerReducer } from './features/banner'
+import { PlaceReducer } from './features/place'
 
 const persistConfig = {
   key: 'root',
@@ -13,6 +14,7 @@ const persistConfig = {
 /* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({
   banner: BannerReducer,
+  place: PlaceReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
