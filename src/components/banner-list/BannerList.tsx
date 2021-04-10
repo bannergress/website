@@ -4,7 +4,7 @@ import { Row, Layout, Button } from 'antd'
 import BannerCard from '../banner-card'
 import { getRecentBanners, loadRecentBanners } from '../../features/banner'
 import { Banner } from '../../features/banner/types'
-import { RootState } from '../../store'
+import { RootState } from '../../storeTypes'
 
 export class BannerList extends React.Component<BannerListProps, {}> {
   componentDidMount() {

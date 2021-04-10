@@ -1,11 +1,11 @@
 import { Dispatch } from 'redux'
 import {
+  BannerActionTypes,
   LOAD_BANNER,
   LOAD_BANNER_ERROR,
   LOAD_RECENT_BANNERS,
   LOAD_RECENT_BANNERS_ERROR,
 } from './actionTypes'
-import { BannerActionTypes } from './types'
 import * as api from './api'
 
 export const loadBannerAction = (id: number) => async (

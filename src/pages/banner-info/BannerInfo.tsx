@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Layout, Row, Col } from 'antd'
 
-import { RootState } from '../../store'
+import { RootState } from '../../storeTypes'
 
 import {
   getBanner as getBannerSelector,

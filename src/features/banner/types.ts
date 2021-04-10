@@ -1,34 +1,3 @@
-import {
-  LOAD_BANNER,
-  LOAD_BANNER_ERROR,
-  LOAD_RECENT_BANNERS,
-  LOAD_RECENT_BANNERS_ERROR,
-} from './actionTypes'
-
-interface LoadBannerAction {
-  type: typeof LOAD_BANNER
-  payload: Partial<Banner>
-}
-
-interface LoadBannerErrorAction {
-  type: typeof LOAD_BANNER_ERROR
-}
-
-interface LoadRecentBannersAction {
-  type: typeof LOAD_RECENT_BANNERS
-  payload: Array<Partial<Banner>>
-}
-
-interface LoadRecentBannersErrorAction {
-  type: typeof LOAD_RECENT_BANNERS_ERROR
-}
-
-export type BannerActionTypes =
-  | LoadBannerAction
-  | LoadRecentBannersAction
-  | LoadBannerErrorAction
-  | LoadRecentBannersErrorAction
-
 export interface BannerState {
   banners: Array<Banner>
   recentBanners: Array<Banner>
