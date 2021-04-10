@@ -4,6 +4,7 @@ package-lock.json
 yarn-error.log
 yarn.lock
 docs
+.env
 
 # IDEs
 .vscode
