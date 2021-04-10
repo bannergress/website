@@ -8,7 +8,7 @@ import { BannerActionTypes } from './types'
 
 const initialState = {
   banners: [],
-  recentBanners: []
+  recentBanners: [],
 }
 
 export default (state = initialState, action: BannerActionTypes) => {

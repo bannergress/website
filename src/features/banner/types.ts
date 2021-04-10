@@ -38,7 +38,7 @@ export interface Banner {
   id: number
   title: string
   numberOfMissions: number
-  missions: Array<Mission>
+  missions: Dictionary<Mission>
   startLatitude: number
   startLongitude: number
   lenghtMeters: number

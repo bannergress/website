@@ -6,17 +6,17 @@ describe('features > banner > bannerReducer', () => {
   it(`load banner, if ${LOAD_BANNER} action is provided`, () => {
     const initialState = {
       banners: [],
-      recentBanners: []
+      recentBanners: [],
     }
 
     const expectedState = {
       banners: [{ id: 1 }],
-      recentBanners: []
+      recentBanners: [],
     }
 
     const action: BannerActionTypes = {
       type: LOAD_BANNER,
-      payload: { id: 1 }
+      payload: { id: 1 },
     }
 
     expect(bannerReducer(initialState, action)).toEqual(expectedState)
@@ -24,17 +24,17 @@ describe('features > banner > bannerReducer', () => {
   it(`load recent banners, if ${LOAD_RECENT_BANNERS} action is provided`, () => {
     const initialState = {
       banners: [],
-      recentBanners: []
+      recentBanners: [],
     }
 
     const expectedState = {
       banners: [],
-      recentBanners: [{ id: 1 }]
+      recentBanners: [{ id: 1 }],
     }
 
     const action: BannerActionTypes = {
       type: LOAD_RECENT_BANNERS,
-      payload: [{ id: 1 }]
+      payload: [{ id: 1 }],
     }
 
     expect(bannerReducer(initialState, action)).toEqual(expectedState)

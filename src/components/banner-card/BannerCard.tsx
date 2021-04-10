@@ -1,15 +1,14 @@
-import React, { Fragment, FC } from "react"
-import { Card, Row } from "antd"
+import React, { Fragment, FC } from 'react'
+import { Card, Row } from 'antd'
 
-import { Scrollbars } from "react-custom-scrollbars"
+import { Scrollbars } from 'react-custom-scrollbars'
 
-import "./Banner-card.less"
+import './Banner-card.less'
 
-import { RouteComponentProps, withRouter } from "react-router-dom"
-import { ReactComponent as SVGExplorer } from "../../img/icons/explorer.svg"
-import { ReactComponent as SVGPointer } from "../../img/icons/pointer.svg"
-import { Banner, Dictionary, Mission } from "../../features/banner/types"
-
+import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
+import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
+import { Banner, Dictionary, Mission } from '../../features/banner/types'
 
 const getDistance = (distance: number) => `${distance / 100}km`
 const renderMissions = (
@@ -27,7 +26,7 @@ const renderMissions = (
         style={{
           backgroundImage: `url('${missions[i].picture}')`,
           backgroundRepeat: 'no-repeat',
-          backgroundSize: '100%'
+          backgroundSize: '100%',
         }}
       />
     )
@@ -36,14 +35,17 @@ const renderMissions = (
 }
 
 const BannerCard: FC<BannerCardProps> = ({ banner, history }) => {
-  const goBanner = (bannerId?:any) => {
+  const goBanner = (bannerId?: any) => {
     history.push(`/banner/${bannerId}`)
   }
   return (
     <Fragment>
       <Row justify="center" onClick={() => goBanner(banner?.id)}>
         <div className="banner-card" key={banner?.id}>
-          <Card title={banner?.title} style={{ width: 448, backgroundColor: "#404040" }}>
+          <Card
+            title={banner?.title}
+            style={{ width: 448, backgroundColor: '#404040' }}
+          >
             <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
               <Row align="top" justify="start" className="banner-pic">
                 {banner?.missions
@@ -54,7 +56,7 @@ const BannerCard: FC<BannerCardProps> = ({ banner, history }) => {
             <div className="mt-1" />
             <Row align="middle">
               <SVGExplorer fill="#1DA57A" className="icon" />
-              {banner?.numberOfMissions} Missions,{" "}
+              {banner?.numberOfMissions} Missions,{' '}
               {banner ? getDistance(banner?.lenghtMeters) : null}
             </Row>
             <Row align="middle">

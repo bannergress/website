@@ -1,22 +1,21 @@
-import React, { Fragment } from "react"
+import React, { Fragment } from 'react'
 
-import { connect } from "react-redux"
-import { withRouter, RouteComponentProps } from "react-router-dom"
-import { Layout, Row, Col } from "antd"
+import { connect } from 'react-redux'
+import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { Layout, Row, Col } from 'antd'
 
-import { RootState } from "../../store"
+import { RootState } from '../../store'
 
 import {
   getBanner as getBannerSelector,
-  loadBanner
-} from "../../features/banner"
+  loadBanner,
+} from '../../features/banner'
 
-import BannerCard from "../banner-card"
-import MissionList from "../mission-list"
-import { Map } from "../../pages/Map"
+import BannerCard from '../banner-card'
+import MissionList from '../mission-list'
+import { Map } from '../../pages/Map'
 
-
-import "./Banner-info.less"
+import './Banner-info.less'
 
 interface BannerProps extends RouteComponentProps<any> {
   getBanner: Function
@@ -37,11 +36,10 @@ export class BannerInfo extends React.Component<BannerProps, {}> {
       return (
         <Fragment>
           <Row justify="center" className="banner-info">
-
             <Layout>
               <Row>
                 <Col span={8}>
-                  <BannerCard banner={banner}/>
+                  <BannerCard banner={banner} />
                   <div className="mt-1" />
                   <MissionList missions={missions} />
                 </Col>
@@ -59,11 +57,11 @@ export class BannerInfo extends React.Component<BannerProps, {}> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  getBanner: (id: number) => getBannerSelector(state.banner, id)
+  getBanner: (id: number) => getBannerSelector(state.banner, id),
 })
 
 const mapDispatchToProps = {
-  fetchBanner: (id: number) => loadBanner(id)
+  fetchBanner: (id: number) => loadBanner(id),
 }
 
 export default connect(

@@ -44,8 +44,8 @@ export const Navbar: React.FC = () => (
       />
     </Row>
     <Row>
-        <LoginInNavbar/>
-      </Row>
+      <LoginInNavbar />
+    </Row>
   </Row>
 )
 

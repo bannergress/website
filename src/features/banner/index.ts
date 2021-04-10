@@ -7,5 +7,5 @@ export { actionTypes }
 export { getBanner, getRecentBanners }
 export {
   loadBannerAction as loadBanner,
-  loadRecentBannersAction as loadRecentBanners
+  loadRecentBannersAction as loadRecentBanners,
 }
