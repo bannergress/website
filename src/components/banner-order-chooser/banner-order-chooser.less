@@ -1,0 +1,18 @@
+.order-button {
+  border: 1px solid white;
+  background-color: transparent;
+  border-radius: 5px;
+  &.selected {
+    border-color: green;
+
+    &.inverse {
+      .arrow {
+        transform:rotate(180deg);
+      }
+    }
+  }
+  .arrow {
+    height: 0.625em;
+    fill: white;
+  }
+}

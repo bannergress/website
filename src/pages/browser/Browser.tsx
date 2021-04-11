@@ -18,6 +18,7 @@ import {
 } from '../../features/place'
 import PlaceList from '../../components/place-list'
 import BannerList from '../../components/banner-list'
+import BannerOrderChooser from '../../components/banner-order-chooser'
 
 import './browser.less'
 
@@ -25,7 +26,8 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
   constructor(props: BrowserProps) {
     super(props)
     this.state = {
-      expanded: false,
+      selectedOrder: 'created',
+      selectedDirection: 'DESC',
     }
   }
 
@@ -34,14 +36,23 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     fetchCountries()
   }
 
-  onExpand = () => {
-    const { expanded } = this.state
-    this.setState({ expanded: !expanded })
+  onOrderSelected = (newOrder: BannerOrder) => {
+    const { selectedOrder, selectedDirection } = this.state
+    if (newOrder === selectedOrder) {
+      this.setState({
+        selectedDirection: selectedDirection === 'ASC' ? 'DESC' : 'ASC',
+      })
+    } else {
+      this.setState({
+        selectedOrder: newOrder,
+        selectedDirection: 'ASC',
+      })
+    }
   }
 
   render() {
     const { countries, banners } = this.props
-    // const { expanded } = this.state
+    const { selectedDirection, selectedOrder } = this.state
 
     return (
       <Fragment>
@@ -53,6 +64,16 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
               onSelectPlace={() => {}}
             />
           </Layout>
+        </Row>
+        <Row justify="start" className="banner-count">
+          <h1>534 Banners</h1>
+        </Row>
+        <Row justify="start" className="order-chooser">
+          <BannerOrderChooser
+            selectedOrder={selectedOrder}
+            selectedDirection={selectedDirection}
+            onOrderClicked={this.onOrderSelected}
+          />
         </Row>
         <Row justify="center" className="banner-list">
           <BannerList banners={banners} />
@@ -74,7 +95,8 @@ export interface BrowserProps extends RouteComponentProps {
 }
 
 interface BrowserState {
-  expanded: boolean
+  selectedOrder: BannerOrder
+  selectedDirection: BannerOrderDirection
 }
 
 const mapStateToProps = (state: RootState) => ({
