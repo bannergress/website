@@ -28,9 +28,12 @@ export const Navbar: React.FC = () => (
             <NavLink to="/">Home</NavLink>
           </Menu.Item>
           <Menu.Item key="2">
-            <NavLink to="/map">Map</NavLink>
+            <NavLink to="/browse">Browse</NavLink>
           </Menu.Item>
           <Menu.Item key="3">
+            <NavLink to="/map">Map</NavLink>
+          </Menu.Item>
+          <Menu.Item key="4">
             <NavLink to="/favorites">Favorites</NavLink>
           </Menu.Item>
         </Menu>

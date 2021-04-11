@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 
 import { Row, Layout, Button } from 'antd'
 
-import { Mission } from '../../features/banner/types'
+import { Mission } from '../../features/banner'
 import MissionCard from '../mission-card'
 
 export class MissionList extends React.Component<MissionListProps, {}> {

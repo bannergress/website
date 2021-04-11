@@ -13,7 +13,7 @@ import {
 
 import BannerCard from '../../components/banner-card'
 import MissionList from '../../components/mission-list'
-import { Map } from '../Map'
+import { Map } from '../map'
 
 import './Banner-info.less'
 
@@ -68,7 +68,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
   }
 }
 
-export interface BannerInfoProps extends RouteComponentProps<any> {
+export interface BannerInfoProps extends RouteComponentProps<{ id: string }> {
   getBanner: Function
   fetchBanner: Function
 }

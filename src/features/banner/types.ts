@@ -44,3 +44,6 @@ export interface BannerState {
   banners: Array<Banner>
   recentBanners: Array<Banner>
 }
+
+export type BannerOrder = 'created' | 'distance' | 'name' | 'totalmissions'
+export type BannerOrderDirection = 'ASC' | 'DESC'

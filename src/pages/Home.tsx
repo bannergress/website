@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Divider } from 'antd'
 import Announcement from '../components/announcement'
-import BannerList from '../components/banner-list'
+import RecentBanners from '../components/recent-banners'
 import FooterMain from '../components/footer-main'
 
 export const Home: React.FC = () => {
@@ -12,7 +12,7 @@ export const Home: React.FC = () => {
         <Announcement />
         <Divider type="horizontal" />
       </div>
-      <BannerList titleList={titleList} />
+      <RecentBanners titleList={titleList} />
       <div className="mt-1" />
       <FooterMain />
     </Fragment>

@@ -8,9 +8,10 @@ import keycloak from './keycloak'
 import Navbar from './components/navbar'
 import { About } from './pages/About'
 import { Home } from './pages/Home'
-import { Map } from './pages/Map'
+import { Map } from './pages/map'
 import { BannerInfo } from './pages/banner-info'
-import BannerList from './components/banner-list'
+import { Browser } from './pages/browser'
+import BannerList from './components/recent-banners'
 
 import './App.less'
 
@@ -29,6 +30,7 @@ const App: React.FC = () => (
               <Route path="/" component={Home} exact />
               <Route path="/about" component={About} />
               <Route path="/map" component={Map} />
+              <Route path="/browse" component={Browser} />
               <Route path="/favorites" component={BannerList} />
               <Route path="/banner/:id" component={BannerInfo} />
             </Switch>

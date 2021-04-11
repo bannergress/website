@@ -7,7 +7,7 @@ import './Banner-card.less'
 
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
-import { Banner, NumDictionary, Mission } from '../../features/banner/types'
+import { Banner, NumDictionary, Mission } from '../../features/banner'
 
 const getDistance = (distance: number) => `${distance / 100}km`
 const renderMissions = (

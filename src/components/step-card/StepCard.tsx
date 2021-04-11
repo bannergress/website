@@ -4,7 +4,7 @@ import { Row } from 'antd'
 import './step-card.less'
 
 import Layout from 'antd/es/layout/layout'
-import { Step } from '../../features/banner/types'
+import { Step } from '../../features/banner'
 
 const StepCard: FC<StepProps> = ({ step, indexPortal }) => {
   if (step) {

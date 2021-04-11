@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { MapContainer, TileLayer } from 'react-leaflet'
-import './Map.css'
+import './map.less'
 
 export const Map: React.FC = () => (
   <Fragment>

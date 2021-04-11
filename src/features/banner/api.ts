@@ -97,7 +97,7 @@ const createBanner = (id: number, numberOfMissions: number) => ({
   missions: getMissions(numberOfMissions),
 })
 
-const getBanners = () => {
+const createBanners = () => {
   const bannerList: Array<Banner> = []
   bannerList.push(createBanner(1, getRandomInt(20, 6, 0)))
   bannerList.push(createBanner(2, getRandomInt(20, 6, 0)))
@@ -118,9 +118,23 @@ export const getBanner = (id: number) =>
 
 export const getRecentBanners = (numberOfBanners: number) =>
   isMock
-    ? { data: getBanners(), ok: true, status: 200 }
+    ? { data: createBanners(), ok: true, status: 200 }
     : api.get<Array<Banner>>('banners', {
         orderBy: 'created',
         orderDirection: 'DESC',
         limit: numberOfBanners,
+      })
+
+export const getBanners = (
+  placeId: string,
+  order: string,
+  orderDirection: string
+) =>
+  isMock
+    ? { data: createBanners(), ok: true, status: 200 }
+    : api.get<Array<Banner>>('banners', {
+        orderBy: order,
+        orderDirection,
+        placeId,
+        limit: 10,
       })
