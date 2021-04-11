@@ -8,8 +8,9 @@ import BannerCard from '../banner-card'
 import './banner-list.less'
 
 const BannerList: FC<BannerListProps> = ({ banners }) => {
-  const goToBanner = (bannerId: number) =>
-    useHistory().push(`/banner/${bannerId}`)
+  const history = useHistory()
+
+  const goToBanner = (bannerId: number) => history.push(`/banner/${bannerId}`)
 
   if (banners && banners.length > 0) {
     return (
