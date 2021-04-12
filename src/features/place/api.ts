@@ -62,7 +62,7 @@ export const getCountries = () =>
     ? { data: createCountries(), ok: true, status: 200 }
     : api.get<Array<Place>>('places', {
         used: true,
-        type: 'cuntry',
+        type: 'country',
       })
 
 export const getAdministrativeAreas = (countryId: string) =>
