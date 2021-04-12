@@ -53,7 +53,7 @@ const BannerCard: FC<BannerCardProps> = ({ banner }) => {
             <Row align="middle">
               <SVGExplorer fill="#1DA57A" className="icon" />
               {banner?.numberOfMissions} Missions,{' '}
-              {banner ? getDistance(banner?.lenghtMeters) : null}
+              {banner ? getDistance(banner?.lengthMeters) : null}
             </Row>
             <Row align="middle">
               <SVGPointer fill="#1DA57A" className="icon" />

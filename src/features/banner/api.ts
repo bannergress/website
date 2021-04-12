@@ -91,7 +91,7 @@ const createBanner = (id: number, numberOfMissions: number) => ({
   title: `Banner #${id}`,
   numberOfMissions,
   id,
-  lenghtMeters: getRandomInt(5000, 1, 100),
+  lengthMeters: getRandomInt(5000, 1, 100),
   startLatitude: 49.032618,
   startLongitude: 10.971546,
   missions: getMissions(numberOfMissions),

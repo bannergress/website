@@ -37,7 +37,7 @@ export interface Banner {
   missions: NumDictionary<Mission>
   startLatitude: number
   startLongitude: number
-  lenghtMeters: number
+  lengthMeters: number
 }
 
 export interface BannerState {
