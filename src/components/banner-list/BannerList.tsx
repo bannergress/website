@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { Banner } from '../../features/banner'
 import BannerCard from '../banner-card'
 
-import './banner-list.less'
+import './Banner-list.less'
 
 const BannerList: FC<BannerListProps> = ({ banners }) => {
   const history = useHistory()
