@@ -41,6 +41,8 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
     const banner = getBanner(parseInt(match.params.id, 10))
     if (banner) {
       const { missions } = banner
+      console.log(banner)
+      console.log(banner?.startLatitude)
       return (
         <Fragment>
           <Row justify="center" className="banner-info">
@@ -56,7 +58,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
                   />
                 </Col>
                 <Col span={16}>
-                  <Map />
+                  <Map banner={banner} />
                 </Col>
               </Row>
             </Layout>
