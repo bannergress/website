@@ -21,7 +21,7 @@ const extend = (
   return _.uniq(
     _.flatten([source, target]),
     false,
-    (a: Partial<Banner>) => a.id
+    (a: Partial<Banner>) => a.uuid
   )
 }
 

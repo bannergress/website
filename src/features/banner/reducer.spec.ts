@@ -13,13 +13,13 @@ describe('features > banner > bannerReducer', () => {
     }
 
     const expectedState = {
-      banners: [{ id: 1 }],
+      banners: [{ uuid: '1' }],
       recentBanners: [],
     }
 
     const action: BannerActionTypes = {
       type: LOAD_BANNER,
-      payload: { id: 1 },
+      payload: { uuid: '1' },
     }
 
     expect(bannerReducer(initialState, action)).toEqual(expectedState)
@@ -32,12 +32,12 @@ describe('features > banner > bannerReducer', () => {
 
     const expectedState = {
       banners: [],
-      recentBanners: [{ id: 1 }],
+      recentBanners: [{ uuid: '1' }],
     }
 
     const action: BannerActionTypes = {
       type: LOAD_RECENT_BANNERS,
-      payload: [{ id: 1 }],
+      payload: [{ uuid: '1' }],
     }
 
     expect(bannerReducer(initialState, action)).toEqual(expectedState)

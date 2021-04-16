@@ -1,5 +1,5 @@
 import { api } from '../../api'
-import { Banner, Mission } from './types'
+import { Banner, Mission, NumDictionary } from './types'
 
 const isMock = process.env.REACT_APP_USE_MOCK
 
@@ -7,12 +7,12 @@ const getRandomInt = (max: number, multiplier: number, min: number) =>
   Math.floor(Math.random() * (max + 1)) * multiplier + min
 
 const getMissions = (numberOfMissions: number) => {
-  const missionList: Array<Mission> = []
-  for (let i = 0; i < numberOfMissions; i += 1) {
-    const imgUrl = `/badges/mission-set-${(i % 18) + 1}.png`
-    missionList.push({
+  const missionList: NumDictionary<Mission> = []
+  for (let i = 1; i <= numberOfMissions; i += 1) {
+    const imgUrl = `/badges/mission-set-${((i - 1) % 18) + 1}.png`
+    missionList[i] = {
       id: i.toString(),
-      title: `test mission ${i + 1}`,
+      title: `test mission ${i}`,
       picture: imgUrl,
       steps: [
         {
@@ -82,15 +82,15 @@ const getMissions = (numberOfMissions: number) => {
           objective: 'hack',
         },
       ],
-    })
+    }
   }
   return missionList
 }
 
-const createBanner = (id: number, numberOfMissions: number) => ({
+const createBanner = (id: string, numberOfMissions: number): Banner => ({
   title: `Banner #${id}`,
   numberOfMissions,
-  id,
+  uuid: id,
   lengthMeters: getRandomInt(5000, 1, 100),
   startLatitude: 49.032618,
   startLongitude: 10.971546,
@@ -99,19 +99,19 @@ const createBanner = (id: number, numberOfMissions: number) => ({
 
 const createBanners = () => {
   const bannerList: Array<Banner> = []
-  bannerList.push(createBanner(1, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(2, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(3, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(4, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(5, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(6, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(7, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(8, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(9, getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner('1', getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner('2', getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner('3', getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner('4', getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner('5', getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner('6', getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner('7', getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner('8', getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner('9', getRandomInt(20, 6, 0)))
   return bannerList
 }
 
-export const getBanner = (id: number) =>
+export const getBanner = (id: string) =>
   isMock
     ? { data: createBanner(id, getRandomInt(20, 6, 0)), ok: true, status: 200 }
     : api.get<Banner>(`banners/${id}`)

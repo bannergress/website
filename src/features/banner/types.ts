@@ -31,7 +31,7 @@ export interface Mission {
 }
 
 export interface Banner {
-  id: number
+  uuid: string
   title: string
   numberOfMissions: number
   missions: NumDictionary<Mission>
