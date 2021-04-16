@@ -1,25 +1,66 @@
 import React, { Fragment } from 'react'
-import { MapContainer, Marker, TileLayer } from 'react-leaflet'
+import { MapContainer, Marker, Polyline, TileLayer } from 'react-leaflet'
 import { Banner, Mission, NumDictionary } from '../../features/banner'
 import './map.less'
 
-const showMissionsOnMap = (
+const showMissionStartPointsOnMap = (
   missions: NumDictionary<Mission>,
   numberOfMissions: number
 ) => {
-  console.log(missions[0].steps[0].poi.latitude)
+  // eslint-disable-next-line no-debugger
+  // debugger
+  console.log(numberOfMissions)
   const missionStartPoints: Array<JSX.Element> = []
-  for (let i = 0; i < numberOfMissions; i += 1) {
+  for (let i = 0; i < 1; i += 1) {
     missionStartPoints.push(
       <Marker
         position={[
-          missions[0].steps[0].poi.latitude,
-          missions[0].steps[0].poi.longitude,
+          missions[i].steps[0].poi.latitude,
+          missions[i].steps[0].poi.longitude,
         ]}
       />
     )
+    // eslint-disable-next-line no-debugger
+    // debugger
   }
+  // eslint-disable-next-line no-debugger
+  // debugger
   return missionStartPoints
+}
+
+const showMissionRoutesOnMap = (
+  missions: NumDictionary<Mission>,
+  numberOfMissions: number
+) => {
+  // eslint-disable-next-line no-debugger
+  // debugger
+  console.log(numberOfMissions)
+  const missionPolylinesTemp: Number[][] = []
+  const missionPolylines: Array<JSX.Element> = []
+
+  for (let i = 0; i < 1; i += 1) {
+    for (let j = 0; j < missions[i].steps.length; j += 1) {
+      missionPolylinesTemp.push([
+        missions[i].steps[j].poi.latitude,
+        missions[i].steps[j].poi.longitude,
+      ])
+    }
+    missionPolylines.push(
+      <Polyline
+        pathOptions={{ color: 'black' }}
+        positions={[
+          [5, 6],
+          [4, 7],
+        ]}
+      />
+    )
+    console.log(missionPolylinesTemp)
+    // eslint-disable-next-line no-debugger
+    // debugger
+  }
+  // eslint-disable-next-line no-debugger
+  // debugger
+  return missionPolylines
 }
 
 export const Map: React.FC<MapProps> = ({ banner }) => (
@@ -33,7 +74,14 @@ export const Map: React.FC<MapProps> = ({ banner }) => (
         url="https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png"
       />
       {banner?.missions
-        ? showMissionsOnMap(banner?.missions, banner?.numberOfMissions)
+        ? showMissionStartPointsOnMap(
+            banner?.missions,
+            banner?.numberOfMissions
+          )
+        : null}
+
+      {banner?.missions
+        ? showMissionRoutesOnMap(banner?.missions, banner?.numberOfMissions)
         : null}
     </MapContainer>
   </Fragment>
