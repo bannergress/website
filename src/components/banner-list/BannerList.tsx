@@ -5,12 +5,12 @@ import { useHistory } from 'react-router-dom'
 import { Banner } from '../../features/banner'
 import BannerCard from '../banner-card'
 
-import './Banner-list.less'
+import './banner-list.less'
 
 const BannerList: FC<BannerListProps> = ({ banners }) => {
   const history = useHistory()
 
-  const goToBanner = (bannerId: number) => history.push(`/banner/${bannerId}`)
+  const goToBanner = (bannerId: string) => history.push(`/banner/${bannerId}`)
 
   if (banners && banners.length > 0) {
     return (
@@ -19,12 +19,12 @@ const BannerList: FC<BannerListProps> = ({ banners }) => {
           {banners?.map((bannerItem) => (
             <div
               className="banner-card"
-              onClick={() => goToBanner(bannerItem.id)}
-              onKeyPress={() => goToBanner(bannerItem.id)}
+              onClick={() => goToBanner(bannerItem.uuid)}
+              onKeyPress={() => goToBanner(bannerItem.uuid)}
               role="link"
               tabIndex={0}
             >
-              <BannerCard banner={bannerItem} key={bannerItem.id} />
+              <BannerCard banner={bannerItem} key={bannerItem.uuid} />
             </div>
           ))}
         </Row>

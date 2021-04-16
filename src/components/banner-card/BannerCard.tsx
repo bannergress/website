@@ -3,7 +3,7 @@ import { Card, Row } from 'antd'
 
 import { Scrollbars } from 'react-custom-scrollbars'
 
-import './Banner-card.less'
+import './banner-card.less'
 
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
@@ -15,7 +15,7 @@ const renderMissions = (
   numberOfMissions: number
 ) => {
   const renderedMissions: Array<JSX.Element> = []
-  for (let i = numberOfMissions - 1; i >= 0; i -= 1) {
+  for (let i = numberOfMissions; i > 0; i -= 1) {
     renderedMissions.push(
       <div
         className="banner-circle"
@@ -37,7 +37,7 @@ const BannerCard: FC<BannerCardProps> = ({ banner }) => {
   return (
     <Fragment>
       <Row justify="center">
-        <div className="banner-card" key={banner?.id}>
+        <div className="banner-card" key={banner?.uuid}>
           <Card
             title={banner?.title}
             style={{ width: 448, backgroundColor: '#404040' }}

@@ -10,7 +10,7 @@ import {
 import * as api from './api'
 import { BannerOrder, BannerOrderDirection } from './types'
 
-export const loadBannerAction = (id: number) => async (
+export const loadBannerAction = (id: string) => async (
   dispatch: Dispatch<BannerActionTypes>
 ) => {
   const response = await api.getBanner(id)

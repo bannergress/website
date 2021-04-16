@@ -7,6 +7,7 @@ import { Layout, Row, Col } from 'antd'
 import { RootState } from '../../storeTypes'
 
 import {
+  Banner,
   getBanner as getBannerSelector,
   loadBanner,
 } from '../../features/banner'
@@ -27,7 +28,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
 
   componentDidMount() {
     const { fetchBanner, match } = this.props
-    fetchBanner(parseInt(match.params.id, 10))
+    fetchBanner(match.params.id)
   }
 
   onExpand = () => {
@@ -38,9 +39,9 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
   render() {
     const { getBanner, match } = this.props
     const { expanded } = this.state
-    const banner = getBanner(parseInt(match.params.id, 10))
+    const banner = getBanner(match.params.id)
     if (banner) {
-      const { missions } = banner
+      const { missions, numberOfMissions } = banner
       return (
         <Fragment>
           <Row justify="center" className="banner-info">
@@ -51,6 +52,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
                   <div className="mt-1" />
                   <MissionList
                     missions={missions}
+                    numberOfMissions={numberOfMissions}
                     expanded={expanded}
                     onExpand={this.onExpand}
                   />
@@ -69,8 +71,8 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
 }
 
 export interface BannerInfoProps extends RouteComponentProps<{ id: string }> {
-  getBanner: Function
-  fetchBanner: Function
+  getBanner: (id: string) => Banner | undefined
+  fetchBanner: (id: string) => Promise<void>
 }
 
 interface BannerInfoState {
@@ -78,11 +80,11 @@ interface BannerInfoState {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  getBanner: (id: number) => getBannerSelector(state, id),
+  getBanner: (id: string) => getBannerSelector(state, id),
 })
 
 const mapDispatchToProps = {
-  fetchBanner: (id: number) => loadBanner(id),
+  fetchBanner: (id: string) => loadBanner(id),
 }
 
 export default connect(
