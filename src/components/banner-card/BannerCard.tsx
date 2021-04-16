@@ -3,7 +3,7 @@ import { Card, Row } from 'antd'
 
 import { Scrollbars } from 'react-custom-scrollbars'
 
-import './Banner-card.less'
+import './banner-card.less'
 
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
