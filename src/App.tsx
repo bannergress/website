@@ -16,7 +16,7 @@ import BannerList from './components/recent-banners'
 import './App.less'
 
 const App: React.FC = () => (
-  <ReactKeycloakProvider authClient={keycloak}>
+  <ReactKeycloakProvider authClient={keycloak} initOptions={{onLoad: 'check-sso', silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html` }}>
     <Layout>
       <BrowserRouter>
         <Layout>
