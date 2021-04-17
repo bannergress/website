@@ -1,3 +1,4 @@
+import { LatLng } from 'leaflet'
 import React, { Fragment } from 'react'
 import { MapContainer, Marker, Polyline, TileLayer } from 'react-leaflet'
 import { Banner, Mission, NumDictionary } from '../../features/banner'
@@ -5,26 +6,22 @@ import './map.less'
 
 const showMissionStartPointsOnMap = (
   missions: NumDictionary<Mission>,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   numberOfMissions: number
 ) => {
-  // eslint-disable-next-line no-debugger
-  // debugger
-  console.log(numberOfMissions)
   const missionStartPoints: Array<JSX.Element> = []
   for (let i = 0; i < 1; i += 1) {
-    missionStartPoints.push(
-      <Marker
-        position={[
-          missions[i].steps[0].poi.latitude,
-          missions[i].steps[0].poi.longitude,
-        ]}
-      />
-    )
-    // eslint-disable-next-line no-debugger
-    // debugger
+    if (missions[i].steps) {
+      missionStartPoints.push(
+        <Marker
+          position={[
+            missions[i].steps[0].poi.latitude,
+            missions[i].steps[0].poi.longitude,
+          ]}
+        />
+      )
+    }
   }
-  // eslint-disable-next-line no-debugger
-  // debugger
   return missionStartPoints
 }
 
@@ -34,27 +31,26 @@ const showMissionRoutesOnMap = (
 ) => {
   // eslint-disable-next-line no-debugger
   // debugger
-  console.log(numberOfMissions)
-  const missionPolylinesTemp: Number[][] = []
+  console.log('showMissionRoutesOnMap', numberOfMissions)
+  const missionPolylinesTemp: L.LatLng[] = []
   const missionPolylines: Array<JSX.Element> = []
 
   for (let i = 0; i < 1; i += 1) {
     for (let j = 0; j < missions[i].steps.length; j += 1) {
-      missionPolylinesTemp.push([
-        missions[i].steps[j].poi.latitude,
-        missions[i].steps[j].poi.longitude,
-      ])
+      missionPolylinesTemp.push(
+        new LatLng(
+          missions[i].steps[j].poi.latitude,
+          missions[i].steps[j].poi.longitude
+        )
+      )
     }
     missionPolylines.push(
       <Polyline
         pathOptions={{ color: 'black' }}
-        positions={[
-          [5, 6],
-          [4, 7],
-        ]}
+        positions={missionPolylinesTemp}
       />
     )
-    console.log(missionPolylinesTemp)
+    console.log('missionPolylinesTemp', missionPolylinesTemp.toString)
     // eslint-disable-next-line no-debugger
     // debugger
   }
