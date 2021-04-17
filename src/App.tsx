@@ -12,11 +12,19 @@ import { Map } from './pages/map'
 import { BannerInfo } from './pages/banner-info'
 import { Browser } from './pages/browser'
 import BannerList from './components/recent-banners'
+import { authenticateApi } from './api'
 
 import './App.less'
 
 const App: React.FC = () => (
-  <ReactKeycloakProvider authClient={keycloak} initOptions={{onLoad: 'check-sso', silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html` }}>
+  <ReactKeycloakProvider
+    authClient={keycloak}
+    initOptions={{
+      onLoad: 'check-sso',
+      silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
+    }}
+    onTokens={(tokens) => authenticateApi(tokens)}
+  >
     <Layout>
       <BrowserRouter>
         <Layout>
