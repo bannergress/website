@@ -18,6 +18,7 @@ const BannerList: FC<BannerListProps> = ({ banners }) => {
         <Row justify="space-around" className="banner-list" gutter={[16, 16]}>
           {banners?.map((bannerItem) => (
             <div
+              key={bannerItem.uuid}
               className="banner-card"
               onClick={() => goToBanner(bannerItem.uuid)}
               onKeyPress={() => goToBanner(bannerItem.uuid)}

@@ -34,10 +34,12 @@ export interface Banner {
   uuid: string
   title: string
   numberOfMissions: number
-  missions: NumDictionary<Mission>
   startLatitude: number
   startLongitude: number
   lengthMeters: number
+  formattedAddress: string
+  picture: string
+  missions?: NumDictionary<Mission>
 }
 
 export interface BannerState {

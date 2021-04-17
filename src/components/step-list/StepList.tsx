@@ -25,6 +25,13 @@ const StepList: FC<StepListProps> = ({ steps }) => {
       </Fragment>
     )
   }
+  if (steps && steps.length === 0) {
+    return (
+      <Fragment>
+        <Row>No steps</Row>
+      </Fragment>
+    )
+  }
   return (
     <Fragment>
       <Row>Loading</Row>
