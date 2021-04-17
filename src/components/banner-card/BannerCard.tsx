@@ -7,31 +7,11 @@ import './banner-card.less'
 
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
-import { Banner, NumDictionary, Mission } from '../../features/banner'
+import { Banner } from '../../features/banner'
 
-const getDistance = (distance: number) => `${distance / 100}km`
-const renderMissions = (
-  missions: NumDictionary<Mission>,
-  numberOfMissions: number
-) => {
-  const renderedMissions: Array<JSX.Element> = []
-  for (let i = numberOfMissions; i > 0; i -= 1) {
-    renderedMissions.push(
-      <div
-        className="banner-circle"
-        color="#000"
-        title={missions[i].title}
-        key={missions[i].id}
-        style={{
-          backgroundImage: `url('${missions[i].picture}')`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: '100%',
-        }}
-      />
-    )
-  }
-  return renderedMissions
-}
+const baseUrl = process.env.REACT_APP_API_BASE_URL
+
+const getDistance = (distance: number) => `${(distance / 100).toFixed(2)}km`
 
 const BannerCard: FC<BannerCardProps> = ({ banner }) => {
   return (
@@ -44,9 +24,12 @@ const BannerCard: FC<BannerCardProps> = ({ banner }) => {
           >
             <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
               <Row align="top" justify="start" className="banner-pic">
-                {banner?.missions
-                  ? renderMissions(banner?.missions, banner?.numberOfMissions)
-                  : null}
+                {banner && (
+                  <img
+                    alt={banner.title}
+                    src={new URL(banner.picture, baseUrl).href}
+                  />
+                )}
               </Row>
             </Scrollbars>
             <div className="mt-1" />
@@ -57,7 +40,7 @@ const BannerCard: FC<BannerCardProps> = ({ banner }) => {
             </Row>
             <Row align="middle">
               <SVGPointer fill="#1DA57A" className="icon" />
-              New York, NY
+              {banner?.formattedAddress}
             </Row>
           </Card>
         </div>

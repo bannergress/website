@@ -15,6 +15,7 @@ import {
   BannerOrder,
   BannerOrderDirection,
 } from './types'
+import { mapMissions, mapMissionsInverse } from './helpers'
 
 export { default as BannerReducer } from './reducer'
 export { actionTypes }
@@ -34,3 +35,4 @@ export type {
   BannerOrder,
   BannerOrderDirection,
 }
+export { mapMissions, mapMissionsInverse }

@@ -2,29 +2,24 @@ import React, { Fragment } from 'react'
 
 import { Row, Layout, Button } from 'antd'
 
-import { Mission, NumDictionary } from '../../features/banner'
+import { mapMissions, Mission, NumDictionary } from '../../features/banner'
 import MissionCard from '../mission-card'
 
 export class MissionList extends React.Component<MissionListProps, {}> {
   componentDidMount() {}
 
-  renderMissions = () => {
-    const { missions, numberOfMissions, expanded } = this.props
-    const result: Array<JSX.Element> = []
-    for (let i = 1; i <= numberOfMissions; i += 1) {
-      result.push(
-        <MissionCard
-          key={missions[i].id}
-          mission={missions[i]}
-          expanded={expanded}
-        />
+  renderMission = (mission: Mission) => {
+    const { expanded } = this.props
+    if (mission) {
+      return (
+        <MissionCard key={mission.id} mission={mission} expanded={expanded} />
       )
     }
-    return result
+    return undefined
   }
 
   render() {
-    const { missions, expanded, onExpand } = this.props
+    const { missions, numberOfMissions, expanded, onExpand } = this.props
     if (missions) {
       return (
         <Fragment>
@@ -38,7 +33,9 @@ export class MissionList extends React.Component<MissionListProps, {}> {
                   </Button>
                 </Row>
 
-                <Row justify="center">{this.renderMissions()}</Row>
+                <Row justify="center">
+                  {mapMissions(missions, numberOfMissions, this.renderMission)}
+                </Row>
               </div>
             </Layout>
           </Row>

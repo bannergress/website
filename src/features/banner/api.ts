@@ -1,18 +1,18 @@
 import { api } from '../../api'
 import { Banner, Mission, NumDictionary } from './types'
 
-const isMock = process.env.REACT_APP_USE_MOCK
+const isMock = process.env.REACT_APP_USE_MOCK === 'true'
 
 const getRandomInt = (max: number, multiplier: number, min: number) =>
   Math.floor(Math.random() * (max + 1)) * multiplier + min
 
 const getMissions = (numberOfMissions: number) => {
   const missionList: NumDictionary<Mission> = []
-  for (let i = 1; i <= numberOfMissions; i += 1) {
-    const imgUrl = `/badges/mission-set-${((i - 1) % 18) + 1}.png`
+  for (let i = 0; i < numberOfMissions; i += 1) {
+    const imgUrl = `/badges/mission-set-${(i % 18) + 1}.png`
     missionList[i] = {
-      id: i.toString(),
-      title: `test mission ${i}`,
+      id: (i + 1).toString(),
+      title: `test mission ${i + 1}`,
       picture: imgUrl,
       steps: [
         {
@@ -95,6 +95,9 @@ const createBanner = (id: string, numberOfMissions: number): Banner => ({
   startLatitude: 49.032618,
   startLongitude: 10.971546,
   missions: getMissions(numberOfMissions),
+  formattedAddress: 'New York, NY',
+  picture:
+    'https://test.api.bannergress.com/banners/pictures/6e146b8681689b1a62b5e088a9865189',
 })
 
 const createBanners = () => {

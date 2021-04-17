@@ -16,7 +16,7 @@ import BannerCard from '../../components/banner-card'
 import MissionList from '../../components/mission-list'
 import { Map } from '../map'
 
-import './Banner-info.less'
+import './banner-info.less'
 
 class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
   constructor(props: BannerInfoProps) {
@@ -50,12 +50,14 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
                 <Col span={8}>
                   <BannerCard banner={banner} />
                   <div className="mt-1" />
-                  <MissionList
-                    missions={missions}
-                    numberOfMissions={numberOfMissions}
-                    expanded={expanded}
-                    onExpand={this.onExpand}
-                  />
+                  {missions && (
+                    <MissionList
+                      missions={missions}
+                      numberOfMissions={numberOfMissions}
+                      expanded={expanded}
+                      onExpand={this.onExpand}
+                    />
+                  )}
                 </Col>
                 <Col span={16}>
                   <Map />
