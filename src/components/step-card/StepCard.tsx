@@ -13,9 +13,9 @@ const StepCard: FC<StepProps> = ({ step, indexPortal }) => {
         <Row className="step-card">
           <Layout>
             <div className="px1">
-              <h3>
-                Portal - {indexPortal} - {step.objective}
-              </h3>
+              <span>
+                Portal {indexPortal + 1} - {step.objective}
+              </span>
             </div>
           </Layout>
         </Row>

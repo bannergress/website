@@ -63,10 +63,10 @@ class MissionCard extends React.Component<MissionCardProps, MissionCardState> {
                       backgroundSize: '100%',
                     }}
                   />
-                  <div className="pl-1">{mission?.title}</div>
+                  <div className="mission-title">{mission?.title}</div>
                 </Row>
               </div>
-              <div className="p-1">
+              <div>
                 <SVGChevron
                   fill="#FFF"
                   className={`icon ${expanded ? 'open' : ''}`}

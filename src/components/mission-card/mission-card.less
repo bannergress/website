@@ -5,8 +5,9 @@
   background-color: @color-panel-bg;
 
   .mission-content {
-    max-height: 204px;
+    max-height: 70px;
     align-content: flex-start;
+    cursor: pointer;
   }
 
 
@@ -14,10 +15,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background-color: grey;
+  }
+
+  .mission-title {
+    font-size: 18px;
+    padding-left: 1rem;
+  }
+  .mission-title:first-letter {
+    text-transform: uppercase;
   }
 
   .icon {
@@ -31,7 +40,8 @@
   }
 
   .ant-card-body {
-    padding: 1.2rem 1rem;
+    padding: 1rem;
     transition: height ease 0.3s;
   }
+
 }

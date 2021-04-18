@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { Menu, Row, Input, Divider } from 'antd'
 import LoginInNavbar from '../login/login-in-navbar'
 
-import Logo from '../../img/logo/logo160.png'
+import Logo from '../../img/logo/logo64.png'
 import './Navbar.less'
 
 const { Search } = Input

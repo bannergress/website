@@ -59,7 +59,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
                     />
                   )}
                 </Col>
-                <Col span={16}>
+                <Col span={16} className="mt-1 pl-1 pr-1">
                   <Map banner={banner} />
                 </Col>
               </Row>
