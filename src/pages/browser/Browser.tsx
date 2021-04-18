@@ -57,17 +57,26 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
   }
 
   onOrderSelected = (newOrder: BannerOrder) => {
-    const { selectedOrder, selectedDirection } = this.state
+    const { fetchBanners } = this.props
+    const { selectedOrder, selectedDirection, selectedPlaces } = this.state
+    let newDirection: BannerOrderDirection = 'ASC'
     if (newOrder === selectedOrder) {
+      newDirection = selectedDirection === 'ASC' ? 'DESC' : 'ASC'
       this.setState({
-        selectedDirection: selectedDirection === 'ASC' ? 'DESC' : 'ASC',
+        selectedDirection: newDirection,
       })
     } else {
       this.setState({
         selectedOrder: newOrder,
-        selectedDirection: 'ASC',
+        selectedDirection: newDirection,
       })
     }
+    fetchBanners(
+      selectedPlaces[selectedPlaces.length - 1],
+      newOrder,
+      newDirection,
+      0
+    )
   }
 
   onPlaceSelected = (place: Place) => {
