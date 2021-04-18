@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { Menu, Row, Input, Divider } from 'antd'
 import LoginInNavbar from '../login/login-in-navbar'
 
-import Logo from '../../img/logo/logo192.png'
+import Logo from '../../img/logo/logo160.png'
 import './Navbar.less'
 
 const { Search } = Input
@@ -17,7 +17,6 @@ export const Navbar: React.FC = () => (
         <div className="brand-logo" style={{ backgroundImage: `url(${Logo})` }}>
           &nbsp;
         </div>
-        <div className="pl-1">Bannergress</div>
       </Row>
     </NavLink>
     <Divider type="vertical" />
