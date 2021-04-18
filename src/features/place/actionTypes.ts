@@ -18,7 +18,7 @@ interface LoadCountriesErrorAction {
 interface LoadAdministrativeAreasAction {
   type: typeof LOAD_ADMINISTRATIVE_AREAS
   payload: {
-    countryId: string
+    placeId: string
     administrativeAreas: Array<Partial<Place>>
   }
 }

@@ -45,6 +45,8 @@ export interface Banner {
 export interface BannerState {
   banners: Array<Banner>
   recentBanners: Array<Banner>
+  browsedBanners: Array<Banner>
+  canBrowseMore: Boolean
 }
 
 export type BannerOrder = 'created' | 'distance' | 'name' | 'totalmissions'

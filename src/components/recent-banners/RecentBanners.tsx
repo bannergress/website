@@ -33,7 +33,7 @@ export class RecentBanners extends React.Component<RecentBannersProps, {}> {
               <h2>{titleList}</h2>
               <Button>Submit a New Banner</Button>
             </Row>
-            <BannerList banners={banners} />
+            <BannerList banners={banners} hasMoreBanners={false} />
           </Layout>
         </Row>
       </Fragment>

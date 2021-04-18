@@ -6,10 +6,17 @@ import { Banner } from '../../features/banner'
 import BannerCard from '../banner-card'
 
 import './banner-list.less'
+import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
 
-const BannerList: FC<BannerListProps> = ({ banners }) => {
+const BannerList: FC<BannerListProps> = ({
+  banners,
+  hasMoreBanners,
+  loadMoreBanners,
+}) => {
   const history = useHistory()
-
+  const [ref] = useInfiniteScroll({
+    callback: loadMoreBanners,
+  })
   const goToBanner = (bannerId: string) => history.push(`/banner/${bannerId}`)
 
   if (banners && banners.length > 0) {
@@ -28,6 +35,7 @@ const BannerList: FC<BannerListProps> = ({ banners }) => {
               <BannerCard banner={bannerItem} key={bannerItem.uuid} />
             </div>
           ))}
+          {hasMoreBanners && <div ref={ref}>Loading more items...</div>}
         </Row>
       </Fragment>
     )
@@ -41,6 +49,8 @@ const BannerList: FC<BannerListProps> = ({ banners }) => {
 
 export interface BannerListProps {
   banners: Array<Banner> | undefined
+  hasMoreBanners: Boolean
+  loadMoreBanners?: () => Promise<void>
 }
 
 export default BannerList

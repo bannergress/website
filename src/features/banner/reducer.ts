@@ -2,16 +2,20 @@ import { REHYDRATE } from 'redux-persist/es/constants'
 import _ from 'underscore'
 import {
   BannerActionTypes,
+  BROWSE_BANNERS,
   LOAD_BANNER,
   LOAD_BANNER_ERROR,
   LOAD_RECENT_BANNERS,
   LOAD_RECENT_BANNERS_ERROR,
+  RESET_BROWSED_BANNERS,
 } from './actionTypes'
-import { Banner } from './types'
+import { Banner, BannerState } from './types'
 
-const initialState = {
+const initialState: BannerState = {
   banners: [],
   recentBanners: [],
+  browsedBanners: [],
+  canBrowseMore: true,
 }
 
 const extend = (
@@ -39,6 +43,15 @@ export default (state = initialState, action: BannerActionTypes) => {
         ...state,
         banners: extend(state.banners, action.payload),
         recentBanners: action.payload,
+      }
+    case RESET_BROWSED_BANNERS:
+      return { ...state, browsedBanners: [] }
+    case BROWSE_BANNERS:
+      return {
+        ...state,
+        banners: extend(state.banners, action.payload.banners),
+        browsedBanners: extend(state.browsedBanners, action.payload.banners),
+        canBrowseMore: action.payload.hasMore,
       }
     case LOAD_BANNER_ERROR:
       return state

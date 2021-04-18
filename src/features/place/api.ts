@@ -1,59 +1,67 @@
 import { api } from '../../api'
 import { Place } from './types'
 
-const isMock = process.env.REACT_APP_USE_MOCK
+const isMock = process.env.REACT_APP_USE_MOCK === 'true'
 
-const createCountries = () => [
+const createCountries = (): Array<Place> => [
   {
     id: 'ChIJa76xwh5ymkcRW-WRjmtd6HU',
     formattedAddress: 'Germany',
     longName: 'Germany',
     shortName: 'DE',
+    numberOfBanners: 12,
   },
   {
     id: 'ChIJa76xwh5ymkcRW-WRjmtd6HZ',
     formattedAddress: 'France',
     longName: 'France',
     shortName: 'FR',
+    numberOfBanners: 6,
   },
   {
     id: 'ChIJa76xwh5ymkcRW-WRjmtd6HX',
     formattedAddress: 'USA',
     longName: 'United States',
     shortName: 'US',
+    numberOfBanners: 8,
   },
   {
     id: 'ChIJa76xwh5ymkcRW-WRjmtd6HP',
     formattedAddress: 'Spain',
     longName: 'Spain',
     shortName: 'ES',
+    numberOfBanners: 9,
   },
   {
     id: 'ChIJa76xwh5ymkcRW-WRjmtd6HK',
     formattedAddress: 'Finland',
     longName: 'Finland',
     shortName: 'Fi',
+    numberOfBanners: 10,
   },
 ]
 
-const createAdministrativeAreas = () => [
+const createAdministrativeAreas = (): Array<Place> => [
   {
     id: 'EhIJa76xwh5ymkcRW-WRjmtd6HU',
     formattedAddress: 'Bavaria, Germany',
     longName: 'Bavaria',
     shortName: 'BY',
+    numberOfBanners: 5,
   },
   {
     id: 'EhIJa76xwh5ymkcRW-WRjmtd6HZ',
     formattedAddress: 'Catalonia, Spain',
     longName: 'Catalonia',
     shortName: 'CT',
+    numberOfBanners: 2,
   },
   {
     id: 'EhIJa76xwh5ymkcRW-WRjmtd6HX',
     formattedAddress: 'Florida',
     longName: 'Florida, United States',
     shortName: 'FL',
+    numberOfBanners: 1,
   },
 ]
 
@@ -65,11 +73,15 @@ export const getCountries = () =>
         type: 'country',
       })
 
-export const getAdministrativeAreas = (countryId: string) =>
+export const getAdministrativeAreas = (countryId: string, level: number) =>
   isMock
-    ? { data: createAdministrativeAreas(), ok: true, status: 200 }
+    ? {
+        data: level === 1 ? createAdministrativeAreas() : [],
+        ok: true,
+        status: 200,
+      }
     : api.get<Array<Place>>('places', {
         used: 'true',
-        type: 'administrative_area_level_1',
+        type: `administrative_area_level_${level}`,
         parentPlaceId: countryId,
       })

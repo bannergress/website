@@ -7,7 +7,8 @@ export interface Place {
   formattedAddress: string
   longName: string
   shortName: string
-  type: 'country' | 'administrative_area_level_1'
+  numberOfBanners: number
+  type?: 'country' | 'administrative_area_level_1'
 }
 
 export interface PlaceState {

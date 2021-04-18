@@ -25,14 +25,15 @@ export const loadCountriesAction = () => async (
   }
 }
 
-export const loadAdministrativeAreasAction = (country: Place) => async (
-  dispatch: Dispatch<PlaceActionTypes>
-) => {
-  const response = await api.getAdministrativeAreas(country.id)
+export const loadAdministrativeAreasAction = (
+  place: Place,
+  level: number
+) => async (dispatch: Dispatch<PlaceActionTypes>) => {
+  const response = await api.getAdministrativeAreas(place.id, level)
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: LOAD_ADMINISTRATIVE_AREAS,
-      payload: { countryId: country.id, administrativeAreas: response.data },
+      payload: { placeId: place.id, administrativeAreas: response.data },
     })
   } else {
     dispatch({

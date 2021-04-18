@@ -7,7 +7,7 @@ import './place-list.less'
 
 const PlaceList: FC<PlaceListProps> = ({
   title,
-  subtitle,
+  selectedPlaces,
   places,
   onSelectPlace,
 }) => {
@@ -17,24 +17,35 @@ const PlaceList: FC<PlaceListProps> = ({
     }
   }
 
-  if (places && places.length > 0) {
+  if (
+    (places && places.length > 0) ||
+    (selectedPlaces && selectedPlaces.length > 0)
+  ) {
     return (
       <Fragment>
-        <h1>{title}</h1>
-        {subtitle && <h3>{subtitle}</h3>}
-        <Row justify="space-around" className="place-list" gutter={[16, 16]}>
-          {places.map((place) => (
-            <div
-              key={place.id}
-              onClick={() => onSelectPlace(place)}
-              onKeyPress={(e) => onKeyPress(e, place)}
-              role="button"
-              tabIndex={0}
-            >
-              {place.formattedAddress}
-            </div>
-          ))}
-        </Row>
+        {title && <h1>{title}</h1>}
+        {selectedPlaces?.map((place) => (
+          <div
+            key={place.id}
+            onClick={() => onSelectPlace(place)}
+            onKeyPress={(e) => onKeyPress(e, place)}
+            role="button"
+            tabIndex={0}
+          >
+            &lt; {place.formattedAddress}
+          </div>
+        ))}
+        {places?.map((place) => (
+          <div
+            key={place.id}
+            onClick={() => onSelectPlace(place)}
+            onKeyPress={(e) => onKeyPress(e, place)}
+            role="button"
+            tabIndex={0}
+          >
+            {place.formattedAddress}
+          </div>
+        ))}
       </Fragment>
     )
   }
@@ -46,8 +57,8 @@ const PlaceList: FC<PlaceListProps> = ({
 }
 
 export interface PlaceListProps {
-  title: string
-  subtitle?: string
+  title?: string
+  selectedPlaces?: Array<Place>
   places: Array<Place> | undefined
   onSelectPlace: (place: Place) => void
 }

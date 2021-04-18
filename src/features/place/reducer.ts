@@ -26,7 +26,7 @@ export default (state = initialState, action: PlaceActionTypes) => {
         ...state,
         administrativeAreas: {
           ...state.administrativeAreas,
-          [action.payload.countryId]: action.payload.administrativeAreas,
+          [action.payload.placeId]: action.payload.administrativeAreas,
         },
       }
     case LOAD_COUNTRIES_ERROR:

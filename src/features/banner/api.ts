@@ -2,6 +2,7 @@ import { api } from '../../api'
 import { Banner, Mission, NumDictionary } from './types'
 
 const isMock = process.env.REACT_APP_USE_MOCK === 'true'
+export const PAGE_SIZE = 9
 
 const getRandomInt = (max: number, multiplier: number, min: number) =>
   Math.floor(Math.random() * (max + 1)) * multiplier + min
@@ -100,17 +101,17 @@ const createBanner = (id: string, numberOfMissions: number): Banner => ({
     'https://test.api.bannergress.com/banners/pictures/6e146b8681689b1a62b5e088a9865189',
 })
 
-const createBanners = () => {
+const createBanners = (startIndex: number = 0) => {
   const bannerList: Array<Banner> = []
-  bannerList.push(createBanner('1', getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner('2', getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner('3', getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner('4', getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner('5', getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner('6', getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner('7', getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner('8', getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner('9', getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner(`${startIndex}1`, getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner(`${startIndex}2`, getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner(`${startIndex}3`, getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner(`${startIndex}4`, getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner(`${startIndex}5`, getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner(`${startIndex}6`, getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner(`${startIndex}7`, getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner(`${startIndex}8`, getRandomInt(20, 6, 0)))
+  bannerList.push(createBanner(`${startIndex}9`, getRandomInt(20, 6, 0)))
   return bannerList
 }
 
@@ -129,15 +130,17 @@ export const getRecentBanners = (numberOfBanners: number) =>
       })
 
 export const getBanners = (
-  placeId: string,
+  placeId: string | undefined,
   order: string,
-  orderDirection: string
+  orderDirection: string,
+  page: number
 ) =>
   isMock
-    ? { data: createBanners(), ok: true, status: 200 }
+    ? { data: createBanners(page), ok: true, status: 200 }
     : api.get<Array<Banner>>('banners', {
         orderBy: order,
         orderDirection,
         placeId,
-        limit: 10,
+        limit: PAGE_SIZE,
+        offset: page * PAGE_SIZE,
       })

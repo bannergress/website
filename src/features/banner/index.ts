@@ -1,5 +1,10 @@
 import * as actionTypes from './actionTypes'
-import { getBanner, getRecentBanners, getBrowsedBanners } from './selectors'
+import {
+  getBanner,
+  getRecentBanners,
+  getBrowsedBanners,
+  getHasMoreBrowsedBanners,
+} from './selectors'
 import {
   loadBannerAction,
   loadRecentBannersAction,
@@ -19,7 +24,12 @@ import { mapMissions, mapMissionsInverse } from './helpers'
 
 export { default as BannerReducer } from './reducer'
 export { actionTypes }
-export { getBanner, getRecentBanners, getBrowsedBanners }
+export {
+  getBanner,
+  getRecentBanners,
+  getBrowsedBanners,
+  getHasMoreBrowsedBanners,
+}
 export {
   loadBannerAction as loadBanner,
   loadRecentBannersAction as loadRecentBanners,

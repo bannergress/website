@@ -2,10 +2,12 @@ import { Dispatch } from 'redux'
 import { Place } from '../place'
 import {
   BannerActionTypes,
+  BROWSE_BANNERS,
   LOAD_BANNER,
   LOAD_BANNER_ERROR,
   LOAD_RECENT_BANNERS,
   LOAD_RECENT_BANNERS_ERROR,
+  RESET_BROWSED_BANNERS,
 } from './actionTypes'
 import * as api from './api'
 import { BannerOrder, BannerOrderDirection } from './types'
@@ -43,19 +45,28 @@ export const loadRecentBannersAction = () => async (
 }
 
 export const loadBrowsedBannersAction = (
-  place: Place,
+  place: Place | null,
   order: BannerOrder,
-  orderDirection: BannerOrderDirection
+  orderDirection: BannerOrderDirection,
+  page: number
 ) => async (dispatch: Dispatch<BannerActionTypes>) => {
-  const response = await api.getBanners(place.id, order, orderDirection)
+  if (page === 0) {
+    dispatch({
+      type: RESET_BROWSED_BANNERS,
+    })
+  }
+  const response = await api.getBanners(place?.id, order, orderDirection, page)
   if (response.ok && response.data !== undefined) {
     dispatch({
-      type: LOAD_RECENT_BANNERS,
-      payload: response.data,
+      type: BROWSE_BANNERS,
+      payload: {
+        banners: response.data,
+        hasMore: response.data && response.data.length === api.PAGE_SIZE,
+      },
     })
   } else {
-    dispatch({
-      type: LOAD_RECENT_BANNERS_ERROR,
-    })
+    // dispatch({
+    //   type: BROWSE_BANNERS_ERROR,
+    // })
   }
 }
