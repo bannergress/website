@@ -7,6 +7,13 @@ export const PAGE_SIZE = 9
 const getRandomInt = (max: number, multiplier: number, min: number) =>
   Math.floor(Math.random() * (max + 1)) * multiplier + min
 
+const selectMissionType = (): Mission['type'] => {
+  const missionTypeInt = getRandomInt(3, 1, 0)
+  if (missionTypeInt === 1) return 'hidden'
+  if (missionTypeInt === 2) return 'anyOrder'
+  return 'sequential'
+}
+
 const getMissions = (numberOfMissions: number) => {
   const missionList: NumDictionary<Mission> = []
   for (let i = 0; i < numberOfMissions; i += 1) {
@@ -83,6 +90,9 @@ const getMissions = (numberOfMissions: number) => {
           objective: 'hack',
         },
       ],
+      description: 'Hack Runde durch Weißenburg',
+      type: selectMissionType(),
+      online: true,
     }
   }
   return missionList

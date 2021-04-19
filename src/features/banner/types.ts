@@ -28,6 +28,9 @@ export interface Mission {
   title: string
   picture: string
   steps: Array<Step>
+  description: string
+  type: 'hidden' | 'anyOrder' | 'sequential'
+  online: Boolean
 }
 
 export interface Banner {
