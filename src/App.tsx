@@ -42,7 +42,7 @@ const App: React.FC = () => (
               <Route path="/browse" component={Browser} />
               <Route path="/favorites" component={BannerList} />
               <Route path="/banner/:id" component={BannerInfo} />
-              <Route path="/search/:term"  component={Search} />
+              <Route path="/search/:term" component={Search} />
               <Route component={Home} />
             </Switch>
           </div>
