@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Layout, Row, Col } from 'antd'
+import { Helmet } from 'react-helmet'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -201,8 +202,17 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
       administrativeAreas = getAdministrativeAreas(selectedPlace)
     }
 
+    let pageTitle = 'Countries'
+    if (selectedPlace) {
+      pageTitle = selectedPlace.formattedAddress
+    }
+
     return (
       <Fragment>
+        <Helmet>
+          <title>{pageTitle}</title>
+        </Helmet>
+
         <Row gutter={[16, 0]}>
           <Col span={4} className="places-list">
             <Layout>

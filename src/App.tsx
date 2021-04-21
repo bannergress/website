@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Layout } from 'antd'
 import { Header } from 'antd/es/layout/layout'
+import { Helmet } from 'react-helmet'
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import keycloak from './keycloak'
 
@@ -26,6 +27,7 @@ const App: React.FC = () => (
     }}
     onTokens={(tokens) => authenticateApi(tokens)}
   >
+    <Helmet defaultTitle="Bannergress" titleTemplate="Bannergress - %s" />
     <Layout>
       <BrowserRouter>
         <Layout>

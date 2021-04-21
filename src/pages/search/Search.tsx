@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Divider } from 'antd'
+import { Row, Col, Layout, Space, Divider } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 import FooterMain from '../../components/footer-main'
 
 class Search extends React.Component<SearchProps> {
@@ -12,7 +13,7 @@ class Search extends React.Component<SearchProps> {
 
   getPageTitle() {
     const { match } = this.props
-    const title = `Search Result for ${decodeURIComponent(match.params.term)}`
+    const title = `Search for ${decodeURIComponent(match.params.term)}`
     return title
   }
 
@@ -21,19 +22,37 @@ class Search extends React.Component<SearchProps> {
     document.title = title
     return (
       <Fragment>
-        <div className="mt-1">
-          <h2>{title}</h2>
-        </div>
-        <div className="mt-1">
-          {/* TODO Show search results for location if found */}
-        </div>
-        <div className="mt-1">
-          <Divider type="horizontal" />
-        </div>
-        <div className="mt-1">
-          {/* TODO Show search results for banners if found */}
-        </div>
-        <div className="mt-1" />
+        <Helmet>
+          <title>{this.getPageTitle()}</title>
+        </Helmet>
+        <Layout>
+          <Space className="px1">
+            <Row>
+              <Col span="24">
+                <h2>{title}</h2>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span="24">
+                {/* TODO Show search results for location if found */}
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span="24">
+                <Divider type="horizontal" />
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span="24">
+                {/* TODO Show search results for banners if found */}
+              </Col>
+            </Row>
+          </Space>
+        </Layout>
+
         <FooterMain />
       </Fragment>
     )
