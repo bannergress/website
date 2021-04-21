@@ -1,5 +1,6 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { useHistory, NavLink  } from 'react-router-dom'
+import { generatePath } from "react-router"
 import { Menu, Row, Input, Divider } from 'antd'
 import LoginInNavbar from '../login/login-in-navbar'
 
@@ -8,9 +9,22 @@ import './Navbar.less'
 
 const { Search } = Input
 
-const onSearch = (value: string) => console.log('seach: ', value)
+export const Navbar: React.FC = () => {
+  const history = useHistory();
+  const callSearch = (value:string) => {
+    
+    const trimmedValue = value.trim();
 
-export const Navbar: React.FC = () => (
+    if(trimmedValue !== '')
+    {
+      const path = generatePath('/search/:term', {term: trimmedValue});
+      history.push(path);
+    }
+  };
+
+  return (
+  
+
   <Row justify="space-between" align="middle">
     <NavLink to="/">
       <Row justify="start" align="middle">
@@ -41,7 +55,7 @@ export const Navbar: React.FC = () => (
     <Row align="middle">
       <Search
         placeholder="Search Banners or Places"
-        onSearch={onSearch}
+        onSearch={callSearch}
         style={{ width: 200 }}
       />
     </Row>
@@ -49,6 +63,6 @@ export const Navbar: React.FC = () => (
       <LoginInNavbar />
     </Row>
   </Row>
-)
+)}
 
 export default Navbar

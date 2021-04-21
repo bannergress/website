@@ -10,6 +10,7 @@ import { About } from './pages/About'
 import { Home } from './pages/Home'
 import { Map } from './pages/map'
 import { BannerInfo } from './pages/banner-info'
+import { Search } from './pages/search'
 import { Browser } from './pages/browser'
 import BannerList from './components/recent-banners'
 import { authenticateApi } from './api'
@@ -41,6 +42,8 @@ const App: React.FC = () => (
               <Route path="/browse" component={Browser} />
               <Route path="/favorites" component={BannerList} />
               <Route path="/banner/:id" component={BannerInfo} />
+              <Route path="/search/:term"  component={Search} />
+              <Route component={Home} />
             </Switch>
           </div>
         </Layout>
