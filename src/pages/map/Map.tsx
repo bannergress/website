@@ -11,7 +11,7 @@ const showMissionStartPointsOnMap = (
 ) => {
   const missionStartPoints: Array<JSX.Element> = []
   for (let i = 0; i < 1; i += 1) {
-    if (missions[i].steps) {
+    if (missions[i] && missions[i].steps) {
       missionStartPoints.push(
         <Marker
           position={[
@@ -36,23 +36,25 @@ const showMissionRoutesOnMap = (
   const missionPolylines: Array<JSX.Element> = []
 
   for (let i = 0; i < 1; i += 1) {
-    for (let j = 0; j < missions[i].steps.length; j += 1) {
-      missionPolylinesTemp.push(
-        new LatLng(
-          missions[i].steps[j].poi.latitude,
-          missions[i].steps[j].poi.longitude
+    if (missions[i]) {
+      for (let j = 0; j < missions[i].steps.length; j += 1) {
+        missionPolylinesTemp.push(
+          new LatLng(
+            missions[i].steps[j].poi.latitude,
+            missions[i].steps[j].poi.longitude
+          )
         )
+      }
+      missionPolylines.push(
+        <Polyline
+          pathOptions={{ color: 'black' }}
+          positions={missionPolylinesTemp}
+        />
       )
+      console.log('missionPolylinesTemp', missionPolylinesTemp.toString)
+      // eslint-disable-next-line no-debugger
+      // debugger
     }
-    missionPolylines.push(
-      <Polyline
-        pathOptions={{ color: 'black' }}
-        positions={missionPolylinesTemp}
-      />
-    )
-    console.log('missionPolylinesTemp', missionPolylinesTemp.toString)
-    // eslint-disable-next-line no-debugger
-    // debugger
   }
   // eslint-disable-next-line no-debugger
   // debugger
