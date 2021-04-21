@@ -45,7 +45,7 @@ export const loadRecentBannersAction = () => async (
 }
 
 export const loadBrowsedBannersAction = (
-  place: Place | null,
+  place: Partial<Place> | null,
   order: BannerOrder,
   orderDirection: BannerOrderDirection,
   page: number
