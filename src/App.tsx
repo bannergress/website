@@ -39,7 +39,7 @@ const App: React.FC = () => (
               <Route path="/" component={Home} exact />
               <Route path="/about" component={About} />
               <Route path="/map" component={Map} />
-              <Route path="/browse" component={Browser} />
+              <Route path="/browse/:places*" component={Browser} />
               <Route path="/favorites" component={BannerList} />
               <Route path="/banner/:id" component={BannerInfo} />
               <Route path="/search/:term" component={Search} />

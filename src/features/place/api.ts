@@ -5,35 +5,35 @@ const isMock = process.env.REACT_APP_USE_MOCK === 'true'
 
 const createCountries = (): Array<Place> => [
   {
-    id: 'ChIJa76xwh5ymkcRW-WRjmtd6HU',
+    id: 'DE',
     formattedAddress: 'Germany',
     longName: 'Germany',
     shortName: 'DE',
     numberOfBanners: 12,
   },
   {
-    id: 'ChIJa76xwh5ymkcRW-WRjmtd6HZ',
+    id: 'FR',
     formattedAddress: 'France',
     longName: 'France',
     shortName: 'FR',
     numberOfBanners: 6,
   },
   {
-    id: 'ChIJa76xwh5ymkcRW-WRjmtd6HX',
+    id: 'US',
     formattedAddress: 'USA',
     longName: 'United States',
     shortName: 'US',
     numberOfBanners: 8,
   },
   {
-    id: 'ChIJa76xwh5ymkcRW-WRjmtd6HP',
+    id: 'ES',
     formattedAddress: 'Spain',
     longName: 'Spain',
     shortName: 'ES',
     numberOfBanners: 9,
   },
   {
-    id: 'ChIJa76xwh5ymkcRW-WRjmtd6HK',
+    id: 'FI',
     formattedAddress: 'Finland',
     longName: 'Finland',
     shortName: 'Fi',
@@ -43,21 +43,21 @@ const createCountries = (): Array<Place> => [
 
 const createAdministrativeAreas = (): Array<Place> => [
   {
-    id: 'EhIJa76xwh5ymkcRW-WRjmtd6HU',
+    id: 'BY',
     formattedAddress: 'Bavaria, Germany',
     longName: 'Bavaria',
     shortName: 'BY',
     numberOfBanners: 5,
   },
   {
-    id: 'EhIJa76xwh5ymkcRW-WRjmtd6HZ',
+    id: 'CT',
     formattedAddress: 'Catalonia, Spain',
     longName: 'Catalonia',
     shortName: 'CT',
     numberOfBanners: 2,
   },
   {
-    id: 'EhIJa76xwh5ymkcRW-WRjmtd6HX',
+    id: 'FL',
     formattedAddress: 'Florida',
     longName: 'Florida, United States',
     shortName: 'FL',
