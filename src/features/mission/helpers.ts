@@ -1,4 +1,5 @@
-import { Mission, NumDictionary } from './types'
+import { NumDictionary } from '../banner/types'
+import { Mission } from './types'
 
 export const mapMissions = <T>(
   missions: NumDictionary<Mission>,

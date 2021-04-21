@@ -8,7 +8,7 @@ import StepList from '../step-list'
 
 import './mission-card.less'
 
-import { Mission } from '../../features/banner'
+import { Mission } from '../../features/mission'
 
 class MissionCard extends React.Component<MissionCardProps, MissionCardState> {
   constructor(props: MissionCardProps) {

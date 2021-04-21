@@ -1,7 +1,8 @@
 import { LatLng } from 'leaflet'
 import React, { Fragment } from 'react'
 import { MapContainer, Marker, Polyline, TileLayer } from 'react-leaflet'
-import { Banner, Mission, NumDictionary } from '../../features/banner'
+import { Banner, NumDictionary } from '../../features/banner'
+import { Mission } from '../../features/mission'
 import './map.less'
 
 const showMissionStartPointsOnMap = (
@@ -11,14 +12,10 @@ const showMissionStartPointsOnMap = (
 ) => {
   const missionStartPoints: Array<JSX.Element> = []
   for (let i = 0; i < 1; i += 1) {
-    if (missions[i].steps) {
+    const { steps } = missions[i]
+    if (steps) {
       missionStartPoints.push(
-        <Marker
-          position={[
-            missions[i].steps[0].poi.latitude,
-            missions[i].steps[0].poi.longitude,
-          ]}
-        />
+        <Marker position={[steps[0].poi.latitude, steps[0].poi.longitude]} />
       )
     }
   }
@@ -36,13 +33,13 @@ const showMissionRoutesOnMap = (
   const missionPolylines: Array<JSX.Element> = []
 
   for (let i = 0; i < 1; i += 1) {
-    for (let j = 0; j < missions[i].steps.length; j += 1) {
-      missionPolylinesTemp.push(
-        new LatLng(
-          missions[i].steps[j].poi.latitude,
-          missions[i].steps[j].poi.longitude
+    const { steps } = missions[i]
+    if (steps) {
+      for (let j = 0; j < steps.length; j += 1) {
+        missionPolylinesTemp.push(
+          new LatLng(steps[j].poi.latitude, steps[j].poi.longitude)
         )
-      )
+      }
     }
     missionPolylines.push(
       <Polyline

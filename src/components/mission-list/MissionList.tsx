@@ -2,10 +2,10 @@ import React, { Fragment } from 'react'
 
 import { Row, Layout, Button, Card } from 'antd'
 
-import { mapMissions, Mission, NumDictionary } from '../../features/banner'
+import { NumDictionary } from '../../features/banner'
 import './mission-list.less'
 import MissionCard from '../mission-card'
-
+import { mapMissions, Mission } from '../../features/mission'
 
 export class MissionList extends React.Component<MissionListProps, {}> {
   componentDidMount() {}
@@ -29,7 +29,13 @@ export class MissionList extends React.Component<MissionListProps, {}> {
             <Layout>
               <div className="p-1">
                 <Row justify="center">
-                  <Card style={{ width: 448, border: 'none', background: '#0b0c0d'}}>
+                  <Card
+                    style={{
+                      width: 448,
+                      border: 'none',
+                      background: '#0b0c0d',
+                    }}
+                  >
                     <Row justify="space-between">
                       <h2>Missions in this banner</h2>
                       <Button onClick={onExpand}>
