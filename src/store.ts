@@ -9,6 +9,7 @@ import { PlaceReducer } from './features/place'
 const persistConfig = {
   key: 'root',
   storage: storageSession,
+  blacklist: ['banner'],
 }
 
 /* Create root reducer, containing all features of the application */

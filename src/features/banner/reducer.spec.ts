@@ -19,13 +19,13 @@ describe('features > banner > bannerReducer', () => {
       banners: [
         {
           uuid: '1',
-          lengthMeters: 0,
-          startLatitude: 0,
-          startLongitude: 0,
-          picture: '',
           title: 'Banner 1',
           numberOfMissions: 0,
+          startLatitude: 0,
+          startLongitude: 0,
+          lengthMeters: 0,
           formattedAddress: '',
+          picture: '',
         },
       ],
       recentBanners: [],
@@ -37,13 +37,13 @@ describe('features > banner > bannerReducer', () => {
       type: LOAD_BANNER,
       payload: {
         uuid: '1',
-        lengthMeters: 0,
-        startLatitude: 0,
-        startLongitude: 0,
-        picture: '',
         title: 'Banner 1',
         numberOfMissions: 0,
+        startLatitude: 0,
+        startLongitude: 0,
+        lengthMeters: 0,
         formattedAddress: '',
+        picture: '',
       },
     }
 
@@ -62,13 +62,13 @@ describe('features > banner > bannerReducer', () => {
       recentBanners: [
         {
           uuid: '1',
-          lengthMeters: 0,
-          startLatitude: 0,
-          startLongitude: 0,
-          picture: '',
           title: 'Banner 1',
           numberOfMissions: 0,
+          startLatitude: 0,
+          startLongitude: 0,
+          lengthMeters: 0,
           formattedAddress: '',
+          picture: '',
         },
       ],
       browsedBanners: [],
@@ -80,13 +80,13 @@ describe('features > banner > bannerReducer', () => {
       payload: [
         {
           uuid: '1',
-          lengthMeters: 0,
-          startLatitude: 0,
-          startLongitude: 0,
-          picture: '',
           title: 'Banner 1',
           numberOfMissions: 0,
+          startLatitude: 0,
+          startLongitude: 0,
+          lengthMeters: 0,
           formattedAddress: '',
+          picture: '',
         },
       ],
     }

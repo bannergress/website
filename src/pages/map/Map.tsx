@@ -40,16 +40,16 @@ const showMissionRoutesOnMap = (
           new LatLng(steps[j].poi.latitude, steps[j].poi.longitude)
         )
       }
+      missionPolylines.push(
+        <Polyline
+          pathOptions={{ color: 'black' }}
+          positions={missionPolylinesTemp}
+        />
+      )
+      console.log('missionPolylinesTemp', missionPolylinesTemp.toString)
+      // eslint-disable-next-line no-debugger
+      // debugger
     }
-    missionPolylines.push(
-      <Polyline
-        pathOptions={{ color: 'black' }}
-        positions={missionPolylinesTemp}
-      />
-    )
-    console.log('missionPolylinesTemp', missionPolylinesTemp.toString)
-    // eslint-disable-next-line no-debugger
-    // debugger
   }
   // eslint-disable-next-line no-debugger
   // debugger

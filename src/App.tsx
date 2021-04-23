@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Layout } from 'antd'
 import { Header } from 'antd/es/layout/layout'
+import { Helmet } from 'react-helmet'
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import keycloak from './keycloak'
 
@@ -10,6 +11,7 @@ import { About } from './pages/About'
 import { Home } from './pages/Home'
 import { Map } from './pages/map'
 import { BannerInfo } from './pages/banner-info'
+import { Search } from './pages/search'
 import { Browser } from './pages/browser'
 import BannerList from './components/recent-banners'
 import { authenticateApi } from './api'
@@ -25,6 +27,7 @@ const App: React.FC = () => (
     }}
     onTokens={(tokens) => authenticateApi(tokens)}
   >
+    <Helmet defaultTitle="Bannergress" titleTemplate="Bannergress - %s" />
     <Layout>
       <BrowserRouter>
         <Layout>
@@ -38,9 +41,11 @@ const App: React.FC = () => (
               <Route path="/" component={Home} exact />
               <Route path="/about" component={About} />
               <Route path="/map" component={Map} />
-              <Route path="/browse" component={Browser} />
+              <Route path="/browse/:places*" component={Browser} />
               <Route path="/favorites" component={BannerList} />
               <Route path="/banner/:id" component={BannerInfo} />
+              <Route path="/search/:term" component={Search} />
+              <Route component={Home} />
             </Switch>
           </div>
         </Layout>

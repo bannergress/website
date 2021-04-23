@@ -3,6 +3,7 @@ import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Layout, Row, Col } from 'antd'
+import { Helmet } from 'react-helmet'
 
 import { RootState } from '../../storeTypes'
 
@@ -44,6 +45,9 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
       const { missions, numberOfMissions } = banner
       return (
         <Fragment>
+          <Helmet>
+            <title>{banner.title}</title>
+          </Helmet>
           <Row justify="center" className="banner-info">
             <Layout>
               <Row>

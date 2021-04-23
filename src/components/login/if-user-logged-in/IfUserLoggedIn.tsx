@@ -1,17 +1,11 @@
 import React, { Fragment } from 'react'
-import { useKeycloak } from '@react-keycloak/web'
+import { useUserLoggedIn } from '../../../hooks/UserLoggedIn'
 
 const IfUserLoggedIn: React.FC = (props) => {
-  const { keycloak, initialized: keycloakInitialized } = useKeycloak()
+  const userIsLoggedIn = useUserLoggedIn()
   const { children } = props
 
-  return (
-    <Fragment>
-      {keycloakInitialized && keycloak && keycloak.authenticated && (
-        <>{children}</>
-      )}
-    </Fragment>
-  )
+  return <Fragment>{userIsLoggedIn && <>{children}</>}</Fragment>
 }
 
 export default IfUserLoggedIn
