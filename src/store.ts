@@ -5,17 +5,19 @@ import { devToolsEnhancer } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 import { BannerReducer } from './features/banner'
 import { PlaceReducer } from './features/place'
+import { MissionReducer } from './features/mission'
 
 const persistConfig = {
   key: 'root',
   storage: storageSession,
-  blacklist: ['banner'],
+  blacklist: ['banner', 'mission'],
 }
 
 /* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({
   banner: BannerReducer,
   place: PlaceReducer,
+  mission: MissionReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

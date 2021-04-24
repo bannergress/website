@@ -1,42 +1,35 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
-// import { Layout, Row, Col } from 'antd'
+import { Row, Col, Input, Button } from 'antd'
+import _ from 'underscore'
 
 import { RootState } from '../../storeTypes'
-import {
-  Banner,
-  BannerOrder,
-  BannerOrderDirection,
-  getBrowsedBanners,
-  loadBrowsedBanners as loadBrowsedBannersAction,
-  getHasMoreBrowsedBanners,
-} from '../../features/banner'
-import {
-  getCountries,
-  getAdministrativeAreas as getAdministrativeAreasSelector,
-  loadAdministrativeAreas as loadAdministrativeAreasAction,
-  loadCountries as loadCountriesAction,
-  Place,
-} from '../../features/place'
-// import PlaceList from '../../components/place-list'
-// import BannerList from '../../components/banner-list'
-// import BannerOrderChooser from '../../components/banner-order-chooser'
-
 import './create-banner.less'
-import { Mission } from '../../features/mission'
+import {
+  getHasMoreSearchedMissions,
+  getMissions,
+  Mission,
+  searchMissions as searchMissionsAction,
+} from '../../features/mission'
+import SearchMissionList from '../../components/search-mission-list'
+import BannerImage from '../../components/banner-image'
 
 class CreateBanner extends React.Component<
   CreateBannerProps,
   CreateBannerState
 > {
+  private timer: NodeJS.Timeout | null = null
+
   constructor(props: CreateBannerProps) {
     super(props)
     this.state = {
-      // eslint-disable-next-line react/no-unused-state
       addedMissions: [],
-      // eslint-disable-next-line react/no-unused-state
       page: 0,
+      searchText: null,
+      location: null,
+      bannerTitle: null,
+      bannerDescription: null,
     }
   }
 
@@ -47,18 +40,15 @@ class CreateBanner extends React.Component<
   //   fetchBanners(null, selectedOrder, selectedDirection, 0)
   // }
 
-  // componentDidUpdate(prevProps: CreateBannerProps, prevState: CreateBannerState) {
-  //   const { fetchBanners } = this.props
-  //   const { selectedPlaces, selectedOrder, selectedDirection } = this.state
-  //   if (selectedPlaces !== prevState.selectedPlaces) {
-  //     fetchBanners(
-  //       selectedPlaces[selectedPlaces.length - 1],
-  //       selectedOrder,
-  //       selectedDirection,
-  //       0
-  //     )
-  //   }
-  // }
+  componentDidUpdate(
+    _prevProps: CreateBannerProps,
+    prevState: CreateBannerState
+  ) {
+    const { searchText } = this.state
+    if (searchText !== prevState.searchText) {
+      this.handleSearch()
+    }
+  }
 
   // onOrderSelected = (newOrder: BannerOrder) => {
   //   const { fetchBanners } = this.props
@@ -118,64 +108,160 @@ class CreateBanner extends React.Component<
   //   )
   // }
 
+  handleSearch = () => {
+    // Clears running timer and starts a new one each time the user types
+    if (this.timer) {
+      clearTimeout(this.timer)
+    }
+    this.timer = setTimeout(() => {
+      this.searchMissions()
+    }, 1000)
+  }
+
+  searchMissions = () => {
+    const { fetchMissions } = this.props
+    const { searchText, location } = this.state
+    if (searchText) {
+      this.setState({ page: 0 })
+      fetchMissions(location, searchText, 0)
+    }
+  }
+
+  onInputChange = (
+    val: string,
+    inputName: 'searchText' | 'location' | 'bannerTitle' | 'bannerDescription'
+  ) => {
+    const newState: Pick<CreateBannerState, any> = { [inputName]: val }
+    this.setState(newState)
+  }
+
+  onLoadMoreMissions = (): Promise<void> => {
+    const { fetchMissions } = this.props
+    const { location, searchText, page } = this.state
+    if (!searchText) {
+      throw new Error('no missions to search')
+    }
+    this.setState({ page: page + 1 })
+    return fetchMissions(location, searchText, page)
+  }
+
+  onAddMission = (mission: Mission) => {
+    this.setState((old) => ({
+      addedMissions: old.addedMissions.concat([mission]),
+    }))
+  }
+
+  onManageMission = (mission: Mission) => {
+    const { addedMissions } = this.state
+    this.setState({ addedMissions: _(addedMissions).without(mission) })
+  }
+
   render() {
-    // const { countries, banners, getAdministrativeAreas, hasMore } = this.props
-    // let administrativeAreas: Array<Place> | null = null
-    // let selectedPlace: Place | null = null
-    //   if (selectedPlaces && selectedPlaces.length) {
-    //     selectedPlace = selectedPlaces[selectedPlaces.length - 1]
-    //     administrativeAreas = getAdministrativeAreas(selectedPlace)
-    //   }
-    //   return (
-    //     <Fragment>
-    //       <Row gutter={[16, 0]}>
-    //         <Col span={4} className="places-list">
-    //           <Layout>
-    //             <PlaceList
-    //               title={selectedPlace ? undefined : 'Countries'}
-    //               places={administrativeAreas || countries}
-    //               selectedPlaces={selectedPlaces}
-    //               onSelectPlace={this.onPlaceSelected}
-    //             />
-    //           </Layout>
-    //         </Col>
-    //         <Col span={20}>
-    //           <Row justify="start" className="banner-count">
-    //             <h1>{selectedPlace?.numberOfBanners} Banners</h1>
-    //           </Row>
-    //           <Row justify="start" className="order-chooser">
-    //             <BannerOrderChooser
-    //               selectedOrder={selectedOrder}
-    //               selectedDirection={selectedDirection}
-    //               onOrderClicked={this.onOrderSelected}
-    //             />
-    //           </Row>
-    //           <Row justify="start" className="banner-list">
-    //             <BannerList
-    //               banners={banners}
-    //               hasMoreBanners={hasMore}
-    //               loadMoreBanners={this.onLoadMoreBanners}
-    //             />
-    //           </Row>
-    //         </Col>
-    //       </Row>
-    //     </Fragment>
-    //   )
-    return <Fragment>Banner</Fragment>
+    const { missions, hasMore } = this.props
+    const { addedMissions, bannerTitle, bannerDescription } = this.state
+
+    const unusedMissions = _.filter(
+      missions,
+      (m) => !_.some(addedMissions, (a) => a.id === m.id)
+    )
+
+    return (
+      <Fragment>
+        <h1>New Banner</h1>
+        <Row gutter={[16, 0]}>
+          <Col span={8} className="add-missions-col">
+            <Row justify="start">
+              <span className="number">1</span> Add Missions
+            </Row>
+            <Row>
+              Location (Optional)
+              <Input
+                placeholder="Start typing..."
+                onChange={(e) => this.onInputChange(e.target.value, 'location')}
+              />
+            </Row>
+            <Row>
+              Search for missions
+              <span>You can search by mission name or author</span>
+              <Input
+                placeholder="New Banner"
+                onChange={(e) =>
+                  this.onInputChange(e.target.value, 'searchText')
+                }
+              />
+            </Row>
+            <Row style={{ maxHeight: 500, overflowY: 'scroll' }}>
+              <SearchMissionList
+                missions={unusedMissions}
+                hasMoreMissions={hasMore}
+                loadMoreMissions={this.onLoadMoreMissions}
+                inverse={false}
+                onSelectMission={this.onAddMission}
+              />
+            </Row>
+          </Col>
+          <Col span={8}>
+            <Row justify="start">
+              <span className="number">2</span> Arrange
+            </Row>
+            <Row style={{ maxHeight: 800, overflowY: 'scroll' }}>
+              <SearchMissionList
+                missions={addedMissions}
+                hasMoreMissions={false}
+                inverse
+                onSelectMission={this.onManageMission}
+              />
+            </Row>
+          </Col>
+          <Col span={8}>
+            <Row justify="start">
+              <span className="number">3</span> Information
+            </Row>
+            <Row>
+              Banner Title
+              <Input
+                placeholder="Start typing..."
+                onChange={(e) =>
+                  this.onInputChange(e.target.value, 'bannerTitle')
+                }
+              />
+            </Row>
+            <Row>
+              Description
+              <Input.TextArea
+                placeholder="Start typing..."
+                onChange={(e) =>
+                  this.onInputChange(e.target.value, 'bannerDescription')
+                }
+              />
+            </Row>
+            <Row>Advanced Options</Row>
+            <Row>
+              Preview
+              <BannerImage missions={addedMissions} />
+            </Row>
+            <Row>
+              <Button
+                disabled={
+                  !addedMissions.length || !bannerTitle || !bannerDescription
+                }
+              >
+                Review
+              </Button>
+            </Row>
+          </Col>
+        </Row>
+      </Fragment>
+    )
   }
 }
 
 export interface CreateBannerProps extends RouteComponentProps {
-  banners: Array<Banner>
-  countries: Array<Place>
+  missions: Array<Mission>
   hasMore: Boolean
-  getAdministrativeAreas: (place: Place) => Array<Place>
-  fetchCountries: () => Promise<void>
-  fetchAdministrativeAreas: (place: Place, level: number) => Promise<void>
-  fetchBanners: (
-    country: Place | null,
-    order: BannerOrder,
-    orderDirection: BannerOrderDirection,
+  fetchMissions: (
+    location: string | null,
+    query: string,
     page: number
   ) => Promise<void>
 }
@@ -183,20 +269,19 @@ export interface CreateBannerProps extends RouteComponentProps {
 interface CreateBannerState {
   addedMissions: Array<Mission>
   page: number
+  searchText: string | null
+  location: string | null
+  bannerTitle: string | null
+  bannerDescription: string | null
 }
 
 const mapStateToProps = (state: RootState) => ({
-  countries: getCountries(state),
-  banners: getBrowsedBanners(state),
-  getAdministrativeAreas: (place: Place) =>
-    getAdministrativeAreasSelector(state, place),
-  hasMore: getHasMoreBrowsedBanners(state),
+  missions: getMissions(state),
+  hasMore: getHasMoreSearchedMissions(state),
 })
 
 const mapDispatchToProps = {
-  fetchCountries: loadCountriesAction,
-  fetchBanners: loadBrowsedBannersAction,
-  fetchAdministrativeAreas: loadAdministrativeAreasAction,
+  fetchMissions: searchMissionsAction,
 }
 
 export default connect(

@@ -20,7 +20,7 @@ const getMissions = (startIndex: number, numberOfMissions: number) => {
 }
 
 export const searchMissions = (
-  location: string | undefined,
+  location: string | null,
   search: string,
   page: number
 ) =>

@@ -6,7 +6,7 @@ import { PlaceState } from './features/place/types'
 export interface RootState {
   banner: BannerState
   place: PlaceState
-  missions: MissionState
+  mission: MissionState
 }
 
 export interface RehydrateAction {

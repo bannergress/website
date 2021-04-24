@@ -17,6 +17,7 @@ import BannerList from './components/recent-banners'
 import { authenticateApi } from './api'
 
 import './App.less'
+import { CreateBanner } from './pages/create-banner'
 
 const App: React.FC = () => (
   <ReactKeycloakProvider
@@ -45,6 +46,7 @@ const App: React.FC = () => (
               <Route path="/favorites" component={BannerList} />
               <Route path="/banner/:id" component={BannerInfo} />
               <Route path="/search/:term" component={Search} />
+              <Route path="/new-banner" component={CreateBanner} />
               <Route component={Home} />
             </Switch>
           </div>
