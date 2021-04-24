@@ -9,7 +9,7 @@ import keycloak from './keycloak'
 import Navbar from './components/navbar'
 import { About } from './pages/About'
 import { Home } from './pages/Home'
-import { Map } from './pages/map'
+import { MapOverview } from './pages/map-overview'
 import { BannerInfo } from './pages/banner-info'
 import { Search } from './pages/search'
 import { Browser } from './pages/browser'
@@ -40,7 +40,8 @@ const App: React.FC = () => (
             <Switch>
               <Route path="/" component={Home} exact />
               <Route path="/about" component={About} />
-              <Route path="/map" component={Map} />
+              <Route path="/map/:lat/:lng" component={MapOverview} />
+              <Route path="/map/" component={MapOverview} />
               <Route path="/browse/:places*" component={Browser} />
               <Route path="/favorites" component={BannerList} />
               <Route path="/banner/:id" component={BannerInfo} />

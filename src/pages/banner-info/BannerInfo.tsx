@@ -15,9 +15,9 @@ import {
 
 import BannerCard from '../../components/banner-card'
 import MissionList from '../../components/mission-list'
-import { Map } from '../map'
 
 import './banner-info.less'
+import { MapDetail } from '../map-detail'
 
 class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
   constructor(props: BannerInfoProps) {
@@ -64,7 +64,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
                   )}
                 </Col>
                 <Col span={16} className="mt-1 pl-1 pr-1">
-                  <Map banner={banner} />
+                  <MapDetail banner={banner} />
                 </Col>
               </Row>
             </Layout>
