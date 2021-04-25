@@ -129,12 +129,12 @@ const createBanners = (startIndex: number = 0) => {
 export const getBanner = (id: string) =>
   isMock
     ? { data: createBanner(id, getRandomInt(20, 6, 0)), ok: true, status: 200 }
-    : api.get<Banner>(`banners/${id}`)
+    : api.get<Banner>(`bnrs/${id}`)
 
 export const getRecentBanners = (numberOfBanners: number) =>
   isMock
     ? { data: createBanners(), ok: true, status: 200 }
-    : api.get<Array<Banner>>('banners', {
+    : api.get<Array<Banner>>('bnrs', {
         orderBy: 'created',
         orderDirection: 'DESC',
         limit: numberOfBanners,
@@ -148,7 +148,7 @@ export const getBanners = (
 ) =>
   isMock
     ? { data: createBanners(page), ok: true, status: 200 }
-    : api.get<Array<Banner>>('banners', {
+    : api.get<Array<Banner>>('bnrs', {
         orderBy: order,
         orderDirection,
         placeId,
