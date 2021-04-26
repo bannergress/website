@@ -3,7 +3,7 @@ import { Place } from './types'
 
 const isMock = process.env.REACT_APP_USE_MOCK === 'true'
 
-const createCountries = (): Array<Place> => [
+const createPlaces = (): Array<Place> => [
   {
     id: 'DE',
     formattedAddress: 'Germany',
@@ -39,9 +39,6 @@ const createCountries = (): Array<Place> => [
     shortName: 'Fi',
     numberOfBanners: 10,
   },
-]
-
-const createAdministrativeAreas = (): Array<Place> => [
   {
     id: 'BY',
     formattedAddress: 'Bavaria, Germany',
@@ -65,23 +62,24 @@ const createAdministrativeAreas = (): Array<Place> => [
   },
 ]
 
+const createHierarchy = (): { [key: string]: string; } => ({
+  'FL': 'US',
+  'CT': 'ES',
+  'BY': 'DE'
+});
+
 export const getCountries = () =>
   isMock
-    ? { data: createCountries(), ok: true, status: 200 }
+    ? { data: createPlaces().filter(place => !createHierarchy()[place.id]), ok: true, status: 200 }
     : api.get<Array<Place>>('places', {
         used: true,
         type: 'country',
       })
 
-export const getAdministrativeAreas = (countryId: string, level: number) =>
+export const getAdministrativeAreas = (parentPlaceId: string) =>
   isMock
-    ? {
-        data: level === 1 ? createAdministrativeAreas() : [],
-        ok: true,
-        status: 200,
-      }
-    : api.get<Array<Place>>('places', {
+  ? { data: createPlaces().filter(place => createHierarchy()[place.id] === parentPlaceId), ok: true, status: 200 }
+  : api.get<Array<Place>>('places', {
         used: 'true',
-        type: `administrative_area_level_${level}`,
-        parentPlaceId: countryId,
+        parentPlaceId,
       })

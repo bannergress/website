@@ -50,11 +50,11 @@ const getMissions = (numberOfMissions: number) => {
             id: '3',
             picture: '',
             title: 'Mock POI 3',
-            type: 'fieldTrip',
+            type: 'fieldTripWaypoint',
             latitude: 49.032618 + getRandomInt(200, 0.0001, 0),
             longitude: 10.971546 + getRandomInt(200, 0.0001, 0),
           },
-          objective: 'fieldTrip',
+          objective: 'viewWaypoint',
         },
         {
           poi: {
@@ -76,7 +76,7 @@ const getMissions = (numberOfMissions: number) => {
             latitude: 49.032618 + getRandomInt(200, 0.0001, 0),
             longitude: 10.971546 + getRandomInt(200, 0.0001, 0),
           },
-          objective: 'capture or upgrade',
+          objective: 'captureOrUpgrade',
         },
         {
           poi: {

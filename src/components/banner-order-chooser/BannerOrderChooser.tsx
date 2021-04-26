@@ -39,9 +39,9 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
       </Row>
       <Row className="order-chooser">
         {getButton('Date Created', 'created')}
-        {getButton('A-Z', 'name')}
-        {getButton('Distance', 'distance')}
-        {getButton('Total Missions', 'totalmissions')}
+        {getButton('A-Z', 'title')}
+        {getButton('Distance', 'lengthMeters')}
+        {getButton('Total Missions', 'numberOfMissions')}
       </Row>
     </Fragment>
   )
