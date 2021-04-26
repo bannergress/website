@@ -26,11 +26,10 @@ export const loadCountriesAction = () => async (
 }
 
 export const loadAdministrativeAreasAction = (
-  place: Partial<Place>,
-  level: number
+  place: Partial<Place>
 ) => async (dispatch: Dispatch<PlaceActionTypes>) => {
   if (place.id) {
-    const response = await api.getAdministrativeAreas(place.id, level)
+    const response = await api.getAdministrativeAreas(place.id)
     if (response.ok && response.data !== undefined) {
       dispatch({
         type: LOAD_ADMINISTRATIVE_AREAS,
