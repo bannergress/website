@@ -31,7 +31,9 @@ export class RecentBanners extends React.Component<RecentBannersProps, {}> {
           <Layout className="px1">
             <Row justify="space-between" className="pr-1">
               <h2>{titleList}</h2>
-              <Button>Submit a New Banner</Button>
+              <Button className="bg-button bg-button-default">
+                Submit a New Banner
+              </Button>
             </Row>
             <BannerList banners={banners} hasMoreBanners={false} />
           </Layout>

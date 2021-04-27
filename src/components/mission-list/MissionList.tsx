@@ -37,7 +37,10 @@ export class MissionList extends React.Component<MissionListProps, {}> {
                   >
                     <Row justify="space-between">
                       <h2>Missions in this banner</h2>
-                      <Button onClick={onExpand}>
+                      <Button
+                        className="bg-button bg-button-default"
+                        onClick={onExpand}
+                      >
                         {expanded ? 'Collapse all' : 'Expand all'}
                       </Button>
                     </Row>
