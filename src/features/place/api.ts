@@ -62,15 +62,19 @@ const createPlaces = (): Array<Place> => [
   },
 ]
 
-const createHierarchy = (): { [key: string]: string; } => ({
-  'FL': 'US',
-  'CT': 'ES',
-  'BY': 'DE'
-});
+const createHierarchy = (): { [key: string]: string } => ({
+  FL: 'US',
+  CT: 'ES',
+  BY: 'DE',
+})
 
 export const getCountries = () =>
   isMock
-    ? { data: createPlaces().filter(place => !createHierarchy()[place.id]), ok: true, status: 200 }
+    ? {
+        data: createPlaces().filter((place) => !createHierarchy()[place.id]),
+        ok: true,
+        status: 200,
+      }
     : api.get<Array<Place>>('places', {
         used: true,
         type: 'country',
@@ -78,8 +82,14 @@ export const getCountries = () =>
 
 export const getAdministrativeAreas = (parentPlaceId: string) =>
   isMock
-  ? { data: createPlaces().filter(place => createHierarchy()[place.id] === parentPlaceId), ok: true, status: 200 }
-  : api.get<Array<Place>>('places', {
+    ? {
+        data: createPlaces().filter(
+          (place) => createHierarchy()[place.id] === parentPlaceId
+        ),
+        ok: true,
+        status: 200,
+      }
+    : api.get<Array<Place>>('places', {
         used: 'true',
         parentPlaceId,
       })
