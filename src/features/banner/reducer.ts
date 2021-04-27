@@ -7,6 +7,8 @@ import {
   LOAD_RECENT_BANNERS,
   LOAD_RECENT_BANNERS_ERROR,
   RESET_BROWSED_BANNERS,
+  SEARCH_BANNERS,
+  RESET_SEARCH_BANNERS,
 } from './actionTypes'
 import { Banner, BannerState } from './types'
 
@@ -14,7 +16,9 @@ const initialState: BannerState = {
   banners: [],
   recentBanners: [],
   browsedBanners: [],
+  searchBanners: [],
   canBrowseMore: true,
+  canSearchMore: true,
 }
 
 const extend = (
@@ -47,8 +51,17 @@ export default (state = initialState, action: BannerActionTypes) => {
         browsedBanners: extend(state.browsedBanners, action.payload.banners),
         canBrowseMore: action.payload.hasMore,
       }
+    case SEARCH_BANNERS:
+      return {
+        ...state,
+        banners: extend(state.banners, action.payload.banners),
+        searchBanners: extend(state.searchBanners, action.payload.banners),
+        canSearchMore: action.payload.hasMore,
+      }
+    case RESET_SEARCH_BANNERS:
+      return { ...state, searchBanners: [] }
     case LOAD_BANNER_ERROR:
-      return state
+      return {}
     case LOAD_RECENT_BANNERS_ERROR:
       return state
     default:

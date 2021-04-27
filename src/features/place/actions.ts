@@ -25,9 +25,9 @@ export const loadCountriesAction = () => async (
   }
 }
 
-export const loadAdministrativeAreasAction = (
-  place: Partial<Place>
-) => async (dispatch: Dispatch<PlaceActionTypes>) => {
+export const loadAdministrativeAreasAction = (place: Partial<Place>) => async (
+  dispatch: Dispatch<PlaceActionTypes>
+) => {
   if (place.id) {
     const response = await api.getAdministrativeAreas(place.id)
     if (response.ok && response.data !== undefined) {

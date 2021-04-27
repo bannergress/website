@@ -4,11 +4,14 @@ import {
   getRecentBanners,
   getBrowsedBanners,
   getHasMoreBrowsedBanners,
+  getSearchBanners,
+  getHasMoreSearchBanners,
 } from './selectors'
 import {
   loadBannerAction,
   loadRecentBannersAction,
   loadBrowsedBannersAction,
+  loadSearchBannersAction,
 } from './actions'
 import {
   Banner,
@@ -29,11 +32,14 @@ export {
   getRecentBanners,
   getBrowsedBanners,
   getHasMoreBrowsedBanners,
+  getSearchBanners,
+  getHasMoreSearchBanners,
 }
 export {
   loadBannerAction as loadBanner,
   loadRecentBannersAction as loadRecentBanners,
   loadBrowsedBannersAction as loadBrowsedBanners,
+  loadSearchBannersAction as loadSearchBanners,
 }
 export type {
   Banner,

@@ -154,3 +154,19 @@ export const getBanners = (
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
       })
+
+export const searchBanners = (
+  searchTerm: string,
+  order: string,
+  orderDirection: string,
+  page: number
+) =>
+  isMock
+    ? { data: createBanners(page), ok: true, status: 200 }
+    : api.get<Array<Banner>>('bnrs', {
+        orderBy: order,
+        orderDirection,
+        query: searchTerm,
+        limit: PAGE_SIZE,
+        offset: page * PAGE_SIZE,
+      })

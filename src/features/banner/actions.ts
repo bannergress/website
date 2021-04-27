@@ -8,6 +8,8 @@ import {
   LOAD_RECENT_BANNERS,
   LOAD_RECENT_BANNERS_ERROR,
   RESET_BROWSED_BANNERS,
+  SEARCH_BANNERS,
+  RESET_SEARCH_BANNERS,
 } from './actionTypes'
 import * as api from './api'
 import { BannerOrder, BannerOrderDirection } from './types'
@@ -67,6 +69,38 @@ export const loadBrowsedBannersAction = (
   } else {
     // dispatch({
     //   type: BROWSE_BANNERS_ERROR,
+    // })
+  }
+}
+
+export const loadSearchBannersAction = (
+  searchTerm: string,
+  order: BannerOrder,
+  orderDirection: BannerOrderDirection,
+  page: number
+) => async (dispatch: Dispatch<BannerActionTypes>) => {
+  if (page === 0) {
+    dispatch({
+      type: RESET_SEARCH_BANNERS,
+    })
+  }
+  const response = await api.searchBanners(
+    searchTerm,
+    order,
+    orderDirection,
+    page
+  )
+  if (response.ok && response.data !== undefined) {
+    dispatch({
+      type: SEARCH_BANNERS,
+      payload: {
+        banners: response.data,
+        hasMore: response.data && response.data.length === api.PAGE_SIZE,
+      },
+    })
+  } else {
+    // dispatch({
+    //   type: BROWSE_SEARCH_ERROR,
     // })
   }
 }

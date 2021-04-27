@@ -7,6 +7,8 @@ export const LOAD_RECENT_BANNERS = 'LOAD_RECENT_BANNERS'
 export const LOAD_RECENT_BANNERS_ERROR = 'LOAD_RECENT_BANNERS_ERROR'
 export const RESET_BROWSED_BANNERS = 'RESET_BROWSED_BANNERS'
 export const BROWSE_BANNERS = 'BROWSE_BANNERS'
+export const RESET_SEARCH_BANNERS = 'RESET_SEARCH_BANNERS'
+export const SEARCH_BANNERS = 'SEARCH_BANNERS'
 
 interface LoadBannerAction {
   type: typeof LOAD_BANNER
@@ -38,6 +40,18 @@ interface ResetBrowsedBannersAction {
   type: typeof RESET_BROWSED_BANNERS
 }
 
+interface SearchBannersAction {
+  type: typeof SEARCH_BANNERS
+  payload: {
+    banners: Array<Partial<Banner>>
+    hasMore: Boolean
+  }
+}
+
+interface ResetSearchBannersAction {
+  type: typeof RESET_SEARCH_BANNERS
+}
+
 export type BannerActionTypes =
   | LoadBannerAction
   | LoadRecentBannersAction
@@ -46,3 +60,5 @@ export type BannerActionTypes =
   | BrowseBannersAction
   | ResetBrowsedBannersAction
   | RehydrateAction
+  | SearchBannersAction
+  | ResetSearchBannersAction
