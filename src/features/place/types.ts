@@ -8,6 +8,10 @@ export interface Place {
   longName: string
   shortName: string
   numberOfBanners: number
+  boundaryMinLatitude: number
+  boundaryMinLongitude: number
+  boundaryMaxLatitude: number
+  boundaryMaxLongitude: number
   type?:
     | 'country'
     | 'administrative_area_level_1'

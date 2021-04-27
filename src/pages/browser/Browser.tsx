@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom'
 import { Layout, Row, Col } from 'antd'
 import { Helmet } from 'react-helmet'
 
@@ -19,7 +19,11 @@ import {
   loadAdministrativeAreas as loadAdministrativeAreasAction,
   loadCountries as loadCountriesAction,
   Place,
+  createMapUri,
 } from '../../features/place'
+
+import { ReactComponent as SVGMap } from '../../img/icons/map.svg'
+
 import PlaceList from '../../components/place-list'
 import BannerList from '../../components/banner-list'
 import BannerOrderChooser from '../../components/banner-order-chooser'
@@ -226,7 +230,17 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
           </Col>
           <Col span={20}>
             <Row justify="start" className="banner-count">
-              <h1>{selectedPlace?.numberOfBanners} Banners</h1>
+              <h1>
+                {selectedPlace?.numberOfBanners} Banners
+                {selectedPlace && (
+                  <>
+                    &nbsp;in {selectedPlace.longName}
+                    <Link to={createMapUri(selectedPlace)}>
+                      <SVGMap className="browser-icon" title="Map" />
+                    </Link>
+                  </>
+                )}
+              </h1>
             </Row>
             <Row justify="start" className="order-chooser">
               <BannerOrderChooser

@@ -10,6 +10,10 @@ const createPlaces = (): Array<Place> => [
     longName: 'Germany',
     shortName: 'DE',
     numberOfBanners: 12,
+    boundaryMinLatitude: 0,
+    boundaryMinLongitude: 0,
+    boundaryMaxLatitude: 0,
+    boundaryMaxLongitude: 0,
   },
   {
     id: 'FR',
@@ -17,6 +21,10 @@ const createPlaces = (): Array<Place> => [
     longName: 'France',
     shortName: 'FR',
     numberOfBanners: 6,
+    boundaryMinLatitude: 0,
+    boundaryMinLongitude: 0,
+    boundaryMaxLatitude: 0,
+    boundaryMaxLongitude: 0,
   },
   {
     id: 'US',
@@ -24,6 +32,10 @@ const createPlaces = (): Array<Place> => [
     longName: 'United States',
     shortName: 'US',
     numberOfBanners: 8,
+    boundaryMinLatitude: 0,
+    boundaryMinLongitude: 0,
+    boundaryMaxLatitude: 0,
+    boundaryMaxLongitude: 0,
   },
   {
     id: 'ES',
@@ -31,6 +43,10 @@ const createPlaces = (): Array<Place> => [
     longName: 'Spain',
     shortName: 'ES',
     numberOfBanners: 9,
+    boundaryMinLatitude: 0,
+    boundaryMinLongitude: 0,
+    boundaryMaxLatitude: 0,
+    boundaryMaxLongitude: 0,
   },
   {
     id: 'FI',
@@ -38,6 +54,10 @@ const createPlaces = (): Array<Place> => [
     longName: 'Finland',
     shortName: 'Fi',
     numberOfBanners: 10,
+    boundaryMinLatitude: 0,
+    boundaryMinLongitude: 0,
+    boundaryMaxLatitude: 0,
+    boundaryMaxLongitude: 0,
   },
   {
     id: 'BY',
@@ -45,6 +65,10 @@ const createPlaces = (): Array<Place> => [
     longName: 'Bavaria',
     shortName: 'BY',
     numberOfBanners: 5,
+    boundaryMinLatitude: 0,
+    boundaryMinLongitude: 0,
+    boundaryMaxLatitude: 0,
+    boundaryMaxLongitude: 0,
   },
   {
     id: 'CT',
@@ -52,6 +76,10 @@ const createPlaces = (): Array<Place> => [
     longName: 'Catalonia',
     shortName: 'CT',
     numberOfBanners: 2,
+    boundaryMinLatitude: 0,
+    boundaryMinLongitude: 0,
+    boundaryMaxLatitude: 0,
+    boundaryMaxLongitude: 0,
   },
   {
     id: 'FL',
@@ -59,6 +87,10 @@ const createPlaces = (): Array<Place> => [
     longName: 'Florida, United States',
     shortName: 'FL',
     numberOfBanners: 1,
+    boundaryMinLatitude: 0,
+    boundaryMinLongitude: 0,
+    boundaryMaxLatitude: 0,
+    boundaryMaxLongitude: 0,
   },
 ]
 
