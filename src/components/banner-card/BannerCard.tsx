@@ -11,7 +11,7 @@ import { Banner } from '../../features/banner'
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL
 
-const getDistance = (distance: number) => `${(distance / 100).toFixed(2)}km`
+const getDistance = (distance: number) => `${(distance / 1000).toFixed(1)}km`
 
 const BannerCard: FC<BannerCardProps> = ({ banner }) => {
   return (
