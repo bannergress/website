@@ -1,8 +1,6 @@
 import React, { Fragment, FC } from 'react'
 import { Card, Row } from 'antd'
 
-import { Scrollbars } from 'react-custom-scrollbars'
-
 import './banner-card.less'
 
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
@@ -22,16 +20,16 @@ const BannerCard: FC<BannerCardProps> = ({ banner }) => {
             title={banner?.title}
             style={{ width: 448, backgroundColor: '#404040' }}
           >
-            <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
-              <Row align="top" justify="start" className="banner-pic">
+            <div className="banner-image-frame">
+              <div className="banner-image-animation" style={{ backgroundImage: banner && `url(${new URL(banner.picture, baseUrl).href})`}}>
                 {banner && (
                   <img
                     alt={banner.title}
                     src={new URL(banner.picture, baseUrl).href}
                   />
                 )}
-              </Row>
-            </Scrollbars>
+              </div>
+            </div>
             <div className="mt-1" />
             <Row align="middle">
               <SVGExplorer fill="#1DA57A" className="icon" />
