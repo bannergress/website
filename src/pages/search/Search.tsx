@@ -107,8 +107,6 @@ class Search extends React.Component<SearchProps, SearchState> {
 
   render() {
     const title: string = this.getPageTitle()
-    document.title = title
-
     const { status, selectedDirection, selectedOrder } = this.state
     const { banners, hasMore } = this.props
 
