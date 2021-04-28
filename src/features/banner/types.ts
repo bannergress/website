@@ -15,6 +15,8 @@ export interface Banner {
   formattedAddress?: string
   picture?: string
   missions?: NumDictionary<Mission>
+  type?: 'sequential' | 'anyOrder'
+  width?: number
 }
 
 export interface BannerState {
