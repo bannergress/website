@@ -124,7 +124,7 @@ export const submitBanner = () => async (
 ) => {
   const banner: Partial<Banner> = getCreatedBanner(getState())!
   banner.uuid = undefined
-  banner.width = banner.numberOfMissions
+  banner.width = 6
   banner.type = 'sequential'
   const response = await api.postBanner(banner!)
   if (response.ok) {

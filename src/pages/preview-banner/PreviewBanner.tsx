@@ -53,7 +53,8 @@ class PreviewBanner extends React.Component<
         {loading && <Fragment>Saving banner...</Fragment>}
         <Prompt
           message={(location) =>
-            location.pathname.includes('new-banner')
+            location.pathname.includes('new-banner') ||
+            location.pathname.includes('banner-info')
               ? true
               : 'Are you sure you want to leave and discard this banner?'
           }
