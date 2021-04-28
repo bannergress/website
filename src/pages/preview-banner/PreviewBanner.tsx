@@ -37,7 +37,7 @@ class PreviewBanner extends React.Component<
       .then((bannerId) => {
         history.push(`/banner-info/${bannerId}`)
       })
-      .finally(() => this.setState({ loading: false }))
+      .catch(() => this.setState({ loading: false }))
   }
 
   render() {
