@@ -1,9 +1,11 @@
 import React, { Fragment, FC } from 'react'
 import { Col } from 'antd'
-import './search-mission-list.less'
+import { Scrollbars } from 'react-custom-scrollbars'
 import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
 import { Mission } from '../../features/mission'
 import SearchMissionCard from '../search-mission-card'
+
+import './search-mission-list.less'
 
 const SearchMissionList: FC<SearchMissionListProps> = ({
   missions,
@@ -11,6 +13,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
   loadMoreMissions,
   onSelectMission,
   inverse,
+  initial,
 }) => {
   const [ref] = useInfiniteScroll({
     callback: loadMoreMissions,
@@ -19,7 +22,12 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
   if (missions && missions.length > 0) {
     return (
       <Fragment>
-        <Col className="search-mission-list">
+        <Scrollbars
+          autoHeight
+          autoHeightMin={100}
+          autoHeightMax={800}
+          className="search-mission-list"
+        >
           {missions?.map((mission) => (
             <SearchMissionCard
               key={mission.id}
@@ -29,17 +37,20 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
             />
           ))}
           {hasMoreMissions && <div ref={ref}>Loading more items...</div>}
-        </Col>
+        </Scrollbars>
       </Fragment>
     )
   }
-  return <Fragment>{hasMoreMissions && <Col>Loading...</Col>}</Fragment>
+  return (
+    <Fragment>{hasMoreMissions && !initial && <Col>Loading...</Col>}</Fragment>
+  )
 }
 
 export interface SearchMissionListProps {
   missions: Array<Mission> | undefined
   hasMoreMissions: Boolean
   inverse: boolean
+  initial?: boolean
   loadMoreMissions?: () => Promise<void>
   onSelectMission: (mission: Mission) => void
 }

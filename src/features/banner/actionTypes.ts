@@ -9,6 +9,8 @@ export const RESET_BROWSED_BANNERS = 'RESET_BROWSED_BANNERS'
 export const BROWSE_BANNERS = 'BROWSE_BANNERS'
 export const RESET_SEARCH_BANNERS = 'RESET_SEARCH_BANNERS'
 export const SEARCH_BANNERS = 'SEARCH_BANNERS'
+export const CREATE_BANNER = 'CREATE_BANNER'
+export const REMOVE_CREATED_BANNER = 'REMOVE_CREATED_BANNER'
 
 interface LoadBannerAction {
   type: typeof LOAD_BANNER
@@ -52,6 +54,15 @@ interface ResetSearchBannersAction {
   type: typeof RESET_SEARCH_BANNERS
 }
 
+interface CreateBannerAction {
+  type: typeof CREATE_BANNER
+  payload: Banner
+}
+
+interface RemoveCreatedBannerAction {
+  type: typeof REMOVE_CREATED_BANNER
+}
+
 export type BannerActionTypes =
   | LoadBannerAction
   | LoadRecentBannersAction
@@ -62,3 +73,5 @@ export type BannerActionTypes =
   | RehydrateAction
   | SearchBannersAction
   | ResetSearchBannersAction
+  | CreateBannerAction
+  | RemoveCreatedBannerAction

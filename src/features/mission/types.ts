@@ -25,9 +25,11 @@ export interface Mission {
   title: string
   picture: string
   steps?: Array<Step>
-  description: string
+  description?: string
+  startLatitude?: number
+  startLongitude?: number
   type?: 'hidden' | 'anyOrder' | 'sequential'
-  online: Boolean
+  online?: Boolean
 }
 
 export interface MissionState {

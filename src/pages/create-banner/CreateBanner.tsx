@@ -3,17 +3,27 @@ import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Row, Col, Input, Button } from 'antd'
 import _ from 'underscore'
+import Scrollbars from 'react-custom-scrollbars'
 
 import { RootState } from '../../storeTypes'
 import './create-banner.less'
 import {
   getHasMoreSearchedMissions,
   getMissions,
+  mapMissions,
   Mission,
   searchMissions as searchMissionsAction,
+  resetSearchMissions as resetSearchMissionsAction,
 } from '../../features/mission'
+import {
+  Banner,
+  createBanner as createBannerAction,
+  getCreatedBanner,
+  NumDictionary,
+} from '../../features/banner'
 import SearchMissionList from '../../components/search-mission-list'
 import BannerImage from '../../components/banner-image'
+import { extract } from '../../features/banner/naming'
 
 class CreateBanner extends React.Component<
   CreateBannerProps,
@@ -28,17 +38,25 @@ class CreateBanner extends React.Component<
       page: 0,
       searchText: null,
       location: null,
-      bannerTitle: null,
-      bannerDescription: null,
+      bannerTitle: undefined,
+      bannerDescription: undefined,
+      bannerTitleChanged: false,
+      bannerDescriptionChanged: false,
     }
   }
 
-  // componentDidMount() {
-  //   const { fetchCountries, fetchBanners } = this.props
-  //   const { selectedDirection, selectedOrder } = this.state
-  //   fetchCountries()
-  //   fetchBanners(null, selectedOrder, selectedDirection, 0)
-  // }
+  componentDidMount() {
+    const { previousBanner } = this.props
+    if (previousBanner) {
+      const { title, description, missions } = previousBanner
+      const addedMissions = mapMissions(missions, (m) => m)
+      this.setState({
+        bannerTitle: title,
+        bannerDescription: description,
+        addedMissions,
+      })
+    }
+  }
 
   componentDidUpdate(
     _prevProps: CreateBannerProps,
@@ -50,63 +68,10 @@ class CreateBanner extends React.Component<
     }
   }
 
-  // onOrderSelected = (newOrder: BannerOrder) => {
-  //   const { fetchBanners } = this.props
-  //   const { selectedOrder, selectedDirection, selectedPlaces } = this.state
-  //   let newDirection: BannerOrderDirection = 'ASC'
-  //   if (newOrder === selectedOrder) {
-  //     newDirection = selectedDirection === 'ASC' ? 'DESC' : 'ASC'
-  //     this.setState({
-  //       selectedDirection: newDirection,
-  //     })
-  //   } else {
-  //     this.setState({
-  //       selectedOrder: newOrder,
-  //       selectedDirection: newDirection,
-  //     })
-  //   }
-  //   fetchBanners(
-  //     selectedPlaces[selectedPlaces.length - 1],
-  //     newOrder,
-  //     newDirection,
-  //     0
-  //   )
-  // }
-
-  // onPlaceSelected = (place: Place) => {
-  //   const { fetchAdministrativeAreas } = this.props
-  //   const { selectedPlaces } = this.state
-
-  //   if (selectedPlaces.indexOf(place) < 0) {
-  //     fetchAdministrativeAreas(place, selectedPlaces.length + 1).then(() =>
-  //       this.setState({ selectedPlaces: [...selectedPlaces, place], page: 1 })
-  //     )
-  //   } else {
-  //     this.setState({
-  //       selectedPlaces: [
-  //         ...selectedPlaces.slice(0, selectedPlaces.indexOf(place)),
-  //       ],
-  //       page: 0,
-  //     })
-  //   }
-  // }
-
-  // onLoadMoreBanners = () => {
-  //   const { fetchBanners } = this.props
-  //   const {
-  //     selectedPlaces,
-  //     selectedOrder,
-  //     selectedDirection,
-  //     page,
-  //   } = this.state
-  //   this.setState({ page: page + 1 })
-  //   return fetchBanners(
-  //     selectedPlaces[selectedPlaces.length - 1],
-  //     selectedOrder,
-  //     selectedDirection,
-  //     page + 1
-  //   )
-  // }
+  componentWillUnmount() {
+    const { resetSearchMissions } = this.props
+    resetSearchMissions()
+  }
 
   handleSearch = () => {
     // Clears running timer and starts a new one each time the user types
@@ -121,9 +86,9 @@ class CreateBanner extends React.Component<
   searchMissions = () => {
     const { fetchMissions } = this.props
     const { searchText, location } = this.state
-    if (searchText) {
+    if (searchText && searchText.length > 2) {
       this.setState({ page: 0 })
-      fetchMissions(location, searchText, 0)
+      fetchMissions(location, searchText, 0).catch()
     }
   }
 
@@ -132,6 +97,20 @@ class CreateBanner extends React.Component<
     inputName: 'searchText' | 'location' | 'bannerTitle' | 'bannerDescription'
   ) => {
     const newState: Pick<CreateBannerState, any> = { [inputName]: val }
+    if (inputName === 'bannerTitle') {
+      if (val) {
+        newState.bannerTitleChanged = true
+      } else {
+        newState.bannerTitleChanged = false
+      }
+    }
+    if (inputName === 'bannerDescription') {
+      if (val) {
+        newState.bannerDescriptionChanged = true
+      } else {
+        newState.bannerDescriptionChanged = false
+      }
+    }
     this.setState(newState)
   }
 
@@ -142,13 +121,31 @@ class CreateBanner extends React.Component<
       throw new Error('no missions to search')
     }
     this.setState({ page: page + 1 })
-    return fetchMissions(location, searchText, page)
+    return fetchMissions(location, searchText, page + 1)
+  }
+
+  onMissionsChanged = (missions: Array<Mission>) => {
+    const { bannerTitleChanged, bannerDescriptionChanged } = this.state
+    const result = extract(missions.map((m) => m.title))
+    const addedMissions = _(result.results)
+      .chain()
+      .map((m, index) => ({ ...m, mission: missions[index] }))
+      .sortBy((m) => m.missionMarker?.parsed)
+      .map((m) => m.mission)
+      .value()
+    const newState: Pick<CreateBannerState, any> = { addedMissions }
+    if (!bannerTitleChanged) {
+      newState.bannerTitle = result.title
+    }
+    if (!bannerDescriptionChanged) {
+      newState.bannerDescription = addedMissions[0].description
+    }
+    this.setState(newState)
   }
 
   onAddMission = (mission: Mission) => {
-    this.setState((old) => ({
-      addedMissions: old.addedMissions.concat([mission]),
-    }))
+    const { addedMissions } = this.state
+    this.onMissionsChanged([...addedMissions, mission])
   }
 
   onManageMission = (mission: Mission) => {
@@ -156,9 +153,36 @@ class CreateBanner extends React.Component<
     this.setState({ addedMissions: _(addedMissions).without(mission) })
   }
 
+  onCreateBanner = () => {
+    const { createBanner, history } = this.props
+    const { addedMissions, bannerTitle, bannerDescription } = this.state
+    const missions = addedMissions.reduce<NumDictionary<Mission>>(
+      (prev, curr, index) => ({
+        ...prev,
+        [index]: curr,
+      }),
+      {}
+    )
+    createBanner({
+      uuid: 'new-banner',
+      title: bannerTitle!,
+      description: bannerDescription,
+      missions,
+      numberOfMissions: addedMissions.length,
+      startLatitude: addedMissions[0].startLatitude!,
+      startLongitude: addedMissions[0].startLongitude!,
+    })
+    history.push('/preview-banner')
+  }
+
   render() {
     const { missions, hasMore } = this.props
-    const { addedMissions, bannerTitle, bannerDescription } = this.state
+    const {
+      addedMissions,
+      bannerTitle,
+      bannerDescription,
+      searchText,
+    } = this.state
 
     const unusedMissions = _.filter(
       missions,
@@ -190,12 +214,13 @@ class CreateBanner extends React.Component<
                 }
               />
             </Row>
-            <Row style={{ maxHeight: 500, overflowY: 'scroll' }}>
+            <Row>
               <SearchMissionList
                 missions={unusedMissions}
                 hasMoreMissions={hasMore}
-                loadMoreMissions={this.onLoadMoreMissions}
                 inverse={false}
+                initial={!!searchText}
+                loadMoreMissions={this.onLoadMoreMissions}
                 onSelectMission={this.onAddMission}
               />
             </Row>
@@ -221,6 +246,7 @@ class CreateBanner extends React.Component<
               Banner Title
               <Input
                 placeholder="Start typing..."
+                value={bannerTitle}
                 onChange={(e) =>
                   this.onInputChange(e.target.value, 'bannerTitle')
                 }
@@ -230,6 +256,7 @@ class CreateBanner extends React.Component<
               Description
               <Input.TextArea
                 placeholder="Start typing..."
+                value={bannerDescription}
                 onChange={(e) =>
                   this.onInputChange(e.target.value, 'bannerDescription')
                 }
@@ -238,10 +265,13 @@ class CreateBanner extends React.Component<
             <Row>Advanced Options</Row>
             <Row>
               Preview
-              <BannerImage missions={addedMissions} />
+              <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
+                <BannerImage missions={addedMissions} />
+              </Scrollbars>
             </Row>
             <Row>
               <Button
+                onClick={this.onCreateBanner}
                 disabled={
                   !addedMissions.length || !bannerTitle || !bannerDescription
                 }
@@ -257,6 +287,7 @@ class CreateBanner extends React.Component<
 }
 
 export interface CreateBannerProps extends RouteComponentProps {
+  previousBanner: Banner | undefined
   missions: Array<Mission>
   hasMore: Boolean
   fetchMissions: (
@@ -264,6 +295,8 @@ export interface CreateBannerProps extends RouteComponentProps {
     query: string,
     page: number
   ) => Promise<void>
+  createBanner: (banner: Banner) => void
+  resetSearchMissions: () => void
 }
 
 interface CreateBannerState {
@@ -271,17 +304,22 @@ interface CreateBannerState {
   page: number
   searchText: string | null
   location: string | null
-  bannerTitle: string | null
-  bannerDescription: string | null
+  bannerTitle: string | undefined
+  bannerDescription: string | undefined
+  bannerTitleChanged: boolean
+  bannerDescriptionChanged: boolean
 }
 
 const mapStateToProps = (state: RootState) => ({
+  previousBanner: getCreatedBanner(state),
   missions: getMissions(state),
   hasMore: getHasMoreSearchedMissions(state),
 })
 
 const mapDispatchToProps = {
   fetchMissions: searchMissionsAction,
+  createBanner: createBannerAction,
+  resetSearchMissions: resetSearchMissionsAction,
 }
 
 export default connect(

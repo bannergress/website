@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux'
+import { RootState } from '../../storeTypes'
 import { Place } from '../place'
 import {
   BannerActionTypes,
@@ -10,9 +11,12 @@ import {
   RESET_BROWSED_BANNERS,
   SEARCH_BANNERS,
   RESET_SEARCH_BANNERS,
+  CREATE_BANNER,
+  REMOVE_CREATED_BANNER,
 } from './actionTypes'
 import * as api from './api'
-import { BannerOrder, BannerOrderDirection } from './types'
+import { getCreatedBanner } from './selectors'
+import { Banner, BannerOrder, BannerOrderDirection } from './types'
 
 export const loadBannerAction = (id: string) => async (
   dispatch: Dispatch<BannerActionTypes>
@@ -103,4 +107,29 @@ export const loadSearchBannersAction = (
     //   type: BROWSE_SEARCH_ERROR,
     // })
   }
+}
+
+export const createBannerAction = (banner: Banner) => (
+  dispatch: Dispatch<BannerActionTypes>
+) => {
+  dispatch({
+    type: CREATE_BANNER,
+    payload: banner,
+  })
+}
+
+export const submitBanner = () => async (
+  dispatch: Dispatch<BannerActionTypes>,
+  getState: () => RootState
+) => {
+  const banner: Partial<Banner> = getCreatedBanner(getState())!
+  banner.uuid = undefined
+  const response = await api.postBanner(banner!)
+  if (response.ok) {
+    dispatch({
+      type: REMOVE_CREATED_BANNER,
+    })
+    return response.data!.uuid
+  }
+  return Promise.reject()
 }

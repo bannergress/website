@@ -20,7 +20,9 @@ export const useInfiniteScroll = ({ callback }: Options) => {
           (entries) => {
             if (!isFetching && entries[0].isIntersecting) {
               setIsFetching(true)
-              callback().finally(() => setIsFetching(false))
+              callback()
+                .catch()
+                .finally(() => setIsFetching(false))
             }
           },
           {

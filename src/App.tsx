@@ -18,6 +18,7 @@ import { authenticateApi } from './api'
 
 import './App.less'
 import { CreateBanner } from './pages/create-banner'
+import { PreviewBanner } from './pages/preview-banner'
 
 const App: React.FC = () => (
   <ReactKeycloakProvider
@@ -47,6 +48,7 @@ const App: React.FC = () => (
               <Route path="/banner/:id" component={BannerInfo} />
               <Route path="/search/:term" component={Search} />
               <Route path="/new-banner" component={CreateBanner} />
+              <Route path="/preview-banner" component={PreviewBanner} />
               <Route component={Home} />
             </Switch>
           </div>

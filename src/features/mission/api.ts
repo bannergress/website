@@ -21,13 +21,13 @@ const getMissions = (startIndex: number, numberOfMissions: number) => {
 
 export const searchMissions = (
   location: string | null,
-  search: string,
+  query: string,
   page: number
 ) =>
   isMock
     ? { data: getMissions(page * PAGE_SIZE, PAGE_SIZE), ok: true, status: 200 }
     : api.get<Array<Mission>>('missions/unused', {
-        search,
+        query,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
       })

@@ -29,3 +29,7 @@ export const searchMissionsAction = (
     throw new Error('Error loading missions')
   }
 }
+
+export const resetSearchMissionsAction = () => (
+  dispatch: Dispatch<MissionActionTypes>
+) => dispatch({ type: RESET_SEARCH_MISSIONS })

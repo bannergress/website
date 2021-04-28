@@ -7,12 +7,13 @@ export interface NumDictionary<T> {
 export interface Banner {
   uuid: string
   title: string
+  description?: string
   numberOfMissions: number
   startLatitude: number
   startLongitude: number
-  lengthMeters: number
-  formattedAddress: string
-  picture: string
+  lengthMeters?: number
+  formattedAddress?: string
+  picture?: string
   missions?: NumDictionary<Mission>
 }
 
@@ -23,6 +24,7 @@ export interface BannerState {
   searchBanners: Array<Banner>
   canBrowseMore: Boolean
   canSearchMore: Boolean
+  createdBanner: Banner | undefined
 }
 
 export type BannerOrder =

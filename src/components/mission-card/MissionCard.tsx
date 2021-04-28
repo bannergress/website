@@ -1,14 +1,11 @@
 import React, { Fragment } from 'react'
 import { Card, Row } from 'antd'
-
-// import { Scrollbars } from 'react-custom-scrollbars'
 import { ReactComponent as SVGChevron } from '../../img/icons/chevron.svg'
 
 import StepList from '../step-list'
+import { Mission } from '../../features/mission'
 
 import './mission-card.less'
-
-import { Mission } from '../../features/mission'
 
 class MissionCard extends React.Component<MissionCardProps, MissionCardState> {
   constructor(props: MissionCardProps) {
@@ -38,7 +35,7 @@ class MissionCard extends React.Component<MissionCardProps, MissionCardState> {
   }
 
   render() {
-    const { mission } = this.props
+    const { mission, showExpandOption } = this.props
     const { expanded } = this.state
     return (
       <Fragment>
@@ -66,13 +63,15 @@ class MissionCard extends React.Component<MissionCardProps, MissionCardState> {
                   <div className="mission-title">{mission?.title}</div>
                 </Row>
               </div>
-              <div>
-                <SVGChevron
-                  fill="#FFF"
-                  className={`icon ${expanded ? 'open' : ''}`}
-                  key="showpanel"
-                />
-              </div>
+              {showExpandOption && (
+                <div>
+                  <SVGChevron
+                    fill="#FFF"
+                    className={`icon ${expanded ? 'open' : ''}`}
+                    key="showpanel"
+                  />
+                </div>
+              )}
             </Row>
             {expanded ? <StepList steps={mission?.steps} /> : null}
           </Card>
@@ -85,6 +84,7 @@ class MissionCard extends React.Component<MissionCardProps, MissionCardState> {
 export interface MissionCardProps {
   mission: Mission | undefined
   expanded: boolean
+  showExpandOption: boolean
 }
 
 interface MissionCardState {

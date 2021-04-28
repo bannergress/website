@@ -171,3 +171,6 @@ export const searchBanners = (
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
       })
+
+export const postBanner = (banner: Partial<Banner>) =>
+  api.post<Banner>('bnrs', banner)
