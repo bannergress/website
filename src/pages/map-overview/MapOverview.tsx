@@ -2,6 +2,7 @@ import { LatLng, LatLngBounds } from 'leaflet'
 import React, { Fragment } from 'react'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import { RouteComponentProps } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 import './map.less'
 
 export class MapOverview extends React.Component<MapOverviewProps> {
@@ -34,6 +35,9 @@ export class MapOverview extends React.Component<MapOverviewProps> {
       parameterMap.set('bounds', parameterMap.get('bounds').split(','))
       return (
         <Fragment>
+          <Helmet>
+            <title>Map</title>
+          </Helmet>
           <MapContainer
             bounds={
               new LatLngBounds(
@@ -58,6 +62,9 @@ export class MapOverview extends React.Component<MapOverviewProps> {
     }
     return (
       <Fragment>
+        <Helmet>
+          <title>Map</title>
+        </Helmet>
         <MapContainer
           center={
             new LatLng(
