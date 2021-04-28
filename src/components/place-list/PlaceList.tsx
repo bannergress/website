@@ -32,7 +32,7 @@ const PlaceList: FC<PlaceListProps> = ({
             role="button"
             tabIndex={0}
           >
-            &lt; {place.formattedAddress}
+            &lt; {place.longName}
           </div>
         ))}
         {places?.map((place) => (
@@ -43,7 +43,7 @@ const PlaceList: FC<PlaceListProps> = ({
             role="button"
             tabIndex={0}
           >
-            {place.formattedAddress}
+            {place.longName}
           </div>
         ))}
       </Fragment>

@@ -12,7 +12,9 @@ describe('features > banner > bannerReducer', () => {
       banners: [],
       recentBanners: [],
       browsedBanners: [],
+      searchBanners: [],
       canBrowseMore: true,
+      canSearchMore: true,
     }
 
     const expectedState: BannerState = {
@@ -30,7 +32,9 @@ describe('features > banner > bannerReducer', () => {
       ],
       recentBanners: [],
       browsedBanners: [],
+      searchBanners: [],
       canBrowseMore: true,
+      canSearchMore: true,
     }
 
     const action: BannerActionTypes = {
@@ -54,7 +58,9 @@ describe('features > banner > bannerReducer', () => {
       banners: [],
       recentBanners: [],
       browsedBanners: [],
+      searchBanners: [],
       canBrowseMore: true,
+      canSearchMore: true,
     }
 
     const expectedState: BannerState = {
@@ -72,7 +78,9 @@ describe('features > banner > bannerReducer', () => {
         },
       ],
       browsedBanners: [],
+      searchBanners: [],
       canBrowseMore: true,
+      canSearchMore: true,
     }
 
     const action: BannerActionTypes = {

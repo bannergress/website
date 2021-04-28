@@ -4,19 +4,20 @@ export interface POI {
   latitude: number
   longitude: number
   picture: string
-  type: 'portal' | 'fieldTrip'
+  type: 'portal' | 'fieldTripWaypoint' | 'unavailable'
 }
 
 export interface Step {
   poi: POI
   objective:
     | 'hack'
-    | 'install a mod'
-    | 'capture or upgrade'
-    | 'create link'
-    | 'create field'
-    | 'passphrase'
-    | 'fieldTrip'
+    | 'captureOrUpgrade'
+    | 'createLink'
+    | 'createField'
+    | 'installMod'
+    | 'takePhoto'
+    | 'viewWaypoint'
+    | 'enterPassphrase'
 }
 
 export interface Mission {

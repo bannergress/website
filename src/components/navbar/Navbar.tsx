@@ -5,6 +5,10 @@ import { Menu, Row, Input, Divider } from 'antd'
 import LoginInNavbar from '../login/login-in-navbar'
 
 import Logo from '../../img/logo/logo64.png'
+import { ReactComponent as SVGHome } from '../../img/icons/home.svg'
+import { ReactComponent as SVGBrowse } from '../../img/icons/browse.svg'
+import { ReactComponent as SVGMap } from '../../img/icons/map.svg'
+
 import './Navbar.less'
 import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
 
@@ -15,6 +19,7 @@ const menuItems = [
     key: '1',
     path: '/',
     title: 'Home',
+    icon: <SVGHome className="icon" />,
     isPublic: true,
     regExp: '^/$',
   },
@@ -22,6 +27,7 @@ const menuItems = [
     key: '2',
     path: '/browse',
     title: 'Browse',
+    icon: <SVGBrowse className="icon" />,
     isPublic: true,
     regExp: '^/browse',
   },
@@ -29,6 +35,7 @@ const menuItems = [
     key: '3',
     path: '/map',
     title: 'Map',
+    icon: <SVGMap className="icon" />,
     isPublic: true,
     regExp: '^/map',
   },
@@ -36,6 +43,7 @@ const menuItems = [
     key: '4',
     path: '/favourites',
     title: 'Favourites',
+    icon: <SVGHome className="icon" />,
     isPublic: false,
     regExp: '^/favourites',
   },
@@ -69,14 +77,17 @@ export const Navbar: React.FC = () => {
         </Row>
       </NavLink>
       <Divider type="vertical" />
-      <div className="">
+      <div className="menu-main">
         <Row justify="space-between">
           <Menu theme="dark" mode="horizontal" selectedKeys={getSelectedKeys()}>
             {menuItems.map(
               (item) =>
                 (item.isPublic || userIsLogged) && (
                   <Menu.Item key={item.key}>
-                    <NavLink to={item.path}>{item.title}</NavLink>
+                    <NavLink to={item.path}>
+                      {item.icon}
+                      {item.title}
+                    </NavLink>
                   </Menu.Item>
                 )
             )}

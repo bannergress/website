@@ -51,11 +51,11 @@ const getMissions = (numberOfMissions: number) => {
             id: '3',
             picture: '',
             title: 'Mock POI 3',
-            type: 'fieldTrip',
+            type: 'fieldTripWaypoint',
             latitude: 49.032618 + getRandomInt(200, 0.0001, 0),
             longitude: 10.971546 + getRandomInt(200, 0.0001, 0),
           },
-          objective: 'fieldTrip',
+          objective: 'viewWaypoint',
         },
         {
           poi: {
@@ -77,7 +77,7 @@ const getMissions = (numberOfMissions: number) => {
             latitude: 49.032618 + getRandomInt(200, 0.0001, 0),
             longitude: 10.971546 + getRandomInt(200, 0.0001, 0),
           },
-          objective: 'capture or upgrade',
+          objective: 'captureOrUpgrade',
         },
         {
           poi: {
@@ -152,6 +152,22 @@ export const getBanners = (
         orderBy: order,
         orderDirection,
         placeId,
+        limit: PAGE_SIZE,
+        offset: page * PAGE_SIZE,
+      })
+
+export const searchBanners = (
+  searchTerm: string,
+  order: string,
+  orderDirection: string,
+  page: number
+) =>
+  isMock
+    ? { data: createBanners(page), ok: true, status: 200 }
+    : api.get<Array<Banner>>('bnrs', {
+        orderBy: order,
+        orderDirection,
+        query: searchTerm,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
       })

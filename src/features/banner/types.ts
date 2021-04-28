@@ -20,8 +20,14 @@ export interface BannerState {
   banners: Array<Banner>
   recentBanners: Array<Banner>
   browsedBanners: Array<Banner>
+  searchBanners: Array<Banner>
   canBrowseMore: Boolean
+  canSearchMore: Boolean
 }
 
-export type BannerOrder = 'created' | 'distance' | 'name' | 'totalmissions'
+export type BannerOrder =
+  | 'created'
+  | 'lengthMeters'
+  | 'title'
+  | 'numberOfMissions'
 export type BannerOrderDirection = 'ASC' | 'DESC'
