@@ -1,0 +1,50 @@
+@import "../../index";
+
+.search-mission-card {
+  margin-top: 1rem;
+  background-color: @color-panel-bg;
+
+  .mission-content {
+    max-height: 70px;
+    align-content: flex-start;
+    cursor: pointer;
+  }
+
+
+  .mission-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: grey;
+  }
+
+  .mission-title {
+    font-size: 18px;
+    padding-left: 1rem;
+  }
+  .mission-title:first-letter {
+    text-transform: uppercase;
+  }
+
+  .icon {
+    cursor: pointer;
+    height: 1.5rem;
+    width: 1.5rem;
+    transition: transform ease 0.3s;
+    &.open {
+      transform:rotate(180deg);
+    }
+  }
+
+  .ant-card-body {
+    padding: 1rem;
+    transition: height ease 0.3s;
+  }
+
+  .mission-arrow {
+    background-color: white;
+  }
+}

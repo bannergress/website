@@ -2,25 +2,31 @@ import React, { Fragment } from 'react'
 
 import { Row, Layout, Button, Card } from 'antd'
 
-import { mapMissions, Mission, NumDictionary } from '../../features/banner'
+import { NumDictionary } from '../../features/banner'
 import './mission-list.less'
 import MissionCard from '../mission-card'
+import { mapMissions, Mission } from '../../features/mission'
 
 export class MissionList extends React.Component<MissionListProps, {}> {
   componentDidMount() {}
 
-  renderMission = (mission: Mission) => {
-    const { expanded } = this.props
+  renderMission = (mission: Mission | undefined) => {
+    const { expanded, onExpand } = this.props
     if (mission) {
       return (
-        <MissionCard key={mission.id} mission={mission} expanded={expanded} />
+        <MissionCard
+          key={mission.id}
+          mission={mission}
+          expanded={expanded}
+          showExpandOption={onExpand !== undefined}
+        />
       )
     }
     return undefined
   }
 
   render() {
-    const { missions, numberOfMissions, expanded, onExpand } = this.props
+    const { missions, expanded, onExpand } = this.props
     if (missions) {
       return (
         <Fragment>
@@ -37,18 +43,20 @@ export class MissionList extends React.Component<MissionListProps, {}> {
                   >
                     <Row justify="space-between">
                       <h2>Missions in this banner</h2>
-                      <Button
-                        className="bg-button bg-button-default"
-                        onClick={onExpand}
-                      >
-                        {expanded ? 'Collapse all' : 'Expand all'}
-                      </Button>
+                      {onExpand && (
+                        <Button
+                          className="bg-button bg-button-default"
+                          onClick={onExpand}
+                        >
+                          {expanded ? 'Collapse all' : 'Expand all'}
+                        </Button>
+                      )}
                     </Row>
                   </Card>
                 </Row>
 
                 <Row justify="center">
-                  {mapMissions(missions, numberOfMissions, this.renderMission)}
+                  {mapMissions(missions, this.renderMission)}
                 </Row>
               </div>
             </Layout>
@@ -70,9 +78,8 @@ export class MissionList extends React.Component<MissionListProps, {}> {
 
 export interface MissionListProps {
   missions: NumDictionary<Mission>
-  numberOfMissions: number
   expanded: boolean
-  onExpand: () => void
+  onExpand?: () => void
 }
 
 export default MissionList

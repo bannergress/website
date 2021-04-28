@@ -1,10 +1,10 @@
-import { BannerState } from './types'
 import {
   BannerActionTypes,
   LOAD_BANNER,
   LOAD_RECENT_BANNERS,
 } from './actionTypes'
 import bannerReducer from './reducer'
+import { BannerState } from './types'
 
 describe('features > banner > bannerReducer', () => {
   it(`load banner, if ${LOAD_BANNER} action is provided`, () => {

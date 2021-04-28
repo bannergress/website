@@ -42,7 +42,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
     const { expanded } = this.state
     const banner = getBanner(match.params.id)
     if (banner) {
-      const { missions, numberOfMissions } = banner
+      const { missions } = banner
       return (
         <Fragment>
           <Helmet>
@@ -57,7 +57,6 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
                   {missions && (
                     <MissionList
                       missions={missions}
-                      numberOfMissions={numberOfMissions}
                       expanded={expanded}
                       onExpand={this.onExpand}
                     />

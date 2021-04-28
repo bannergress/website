@@ -1,5 +1,6 @@
 import { api } from '../../api'
-import { Banner, Mission, NumDictionary } from './types'
+import { Mission } from '../mission'
+import { Banner, NumDictionary } from './types'
 
 const isMock = process.env.REACT_APP_USE_MOCK === 'true'
 export const PAGE_SIZE = 9
@@ -170,3 +171,6 @@ export const searchBanners = (
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
       })
+
+export const postBanner = (banner: Partial<Banner>) =>
+  api.post<Banner>('bnrs', banner)

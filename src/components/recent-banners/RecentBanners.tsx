@@ -18,9 +18,9 @@ export class RecentBanners extends React.Component<RecentBannersProps, {}> {
     fetchRecentBanners()
   }
 
-  goToBanner(bannerId: number) {
+  onCreateBanner = () => {
     const { history } = this.props
-    history.push(`/banner/${bannerId}`)
+    history.push('/new-banner')
   }
 
   render() {
@@ -31,7 +31,10 @@ export class RecentBanners extends React.Component<RecentBannersProps, {}> {
           <Layout className="px1">
             <Row justify="space-between" className="pr-1">
               <h2>{titleList}</h2>
-              <Button className="bg-button bg-button-default">
+              <Button
+                onClick={this.onCreateBanner}
+                className="bg-button bg-button-default"
+              >
                 Submit a New Banner
               </Button>
             </Row>
