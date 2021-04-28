@@ -30,8 +30,11 @@ class MissionCard extends React.Component<MissionCardProps, MissionCardState> {
   }
 
   onExpand = () => {
+    const { showExpandOption } = this.props
     const { expanded } = this.state
-    this.setState({ expanded: !expanded })
+    if (showExpandOption) {
+      this.setState({ expanded: !expanded })
+    }
   }
 
   render() {
