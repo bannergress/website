@@ -22,39 +22,44 @@ class Search extends React.Component<SearchProps, SearchState> {
     this.state = {
       selectedOrder: 'created',
       selectedDirection: 'DESC',
+      searchTerm: '',
       page: 0,
       status: 'initial',
     }
   }
 
-  componentDidMount() {
-    const { selectedDirection, selectedOrder } = this.state
+  static getDerivedStateFromProps(props: SearchProps, state: SearchState) {
+    const { match } = props
+    const { searchTerm } = state
+    const newTerm = decodeURIComponent(match.params.term)
 
-    this.doFetchBanners(
-      this.getSearchTerm(),
-      selectedOrder,
-      selectedDirection,
-      0
-    )
+    if (searchTerm !== newTerm) {
+      return {
+        searchTerm: newTerm,
+        page: 0,
+      }
+    }
+
+    return null
   }
 
-  componentDidUpdate(prevProps: SearchProps) {
-    const { match } = this.props
-    const { match: prevMatch } = prevProps
-    const { selectedOrder, selectedDirection } = this.state
+  componentDidMount() {
+    const { selectedDirection, selectedOrder, searchTerm } = this.state
 
-    if (prevMatch.params.term !== match.params.term) {
-      this.doFetchBanners(
-        this.getSearchTerm(),
-        selectedOrder,
-        selectedDirection,
-        0
-      )
+    this.doFetchBanners(searchTerm, selectedOrder, selectedDirection, 0)
+  }
+
+  componentDidUpdate(prevProps: SearchProps, prevState: SearchState) {
+    const { searchTerm: prevSearchTerm } = prevState
+    const { searchTerm, selectedOrder, selectedDirection } = this.state
+
+    if (prevSearchTerm !== searchTerm) {
+      this.doFetchBanners(searchTerm, selectedOrder, selectedDirection, 0)
     }
   }
 
   onOrderSelected = (newOrder: BannerOrder) => {
-    const { selectedOrder, selectedDirection } = this.state
+    const { selectedOrder, selectedDirection, searchTerm } = this.state
     let newDirection: BannerOrderDirection = 'ASC'
     if (newOrder === selectedOrder) {
       newDirection = selectedDirection === 'ASC' ? 'DESC' : 'ASC'
@@ -67,30 +72,20 @@ class Search extends React.Component<SearchProps, SearchState> {
         selectedDirection: newDirection,
       })
     }
-    this.doFetchBanners(this.getSearchTerm(), newOrder, newDirection, 0)
+    this.doFetchBanners(searchTerm, newOrder, newDirection, 0)
   }
 
   onLoadMoreBanners = () => {
-    const { selectedOrder, selectedDirection, page } = this.state
+    const { fetchBanners } = this.props
+    const { selectedOrder, selectedDirection, page, searchTerm } = this.state
     this.setState({ page: page + 1 })
-    return this.doFetchBanners(
-      this.getSearchTerm(),
-      selectedOrder,
-      selectedDirection,
-      page + 1
-    )
+    return fetchBanners(searchTerm, selectedOrder, selectedDirection, page + 1)
   }
 
   getPageTitle() {
-    const { match } = this.props
-    const title = `Search for ${decodeURIComponent(match.params.term)}`
+    const { searchTerm } = this.state
+    const title = `Search for ${searchTerm}`
     return title
-  }
-
-  getSearchTerm() {
-    const { match } = this.props
-    const term = decodeURIComponent(match.params.term)
-    return term
   }
 
   async doFetchBanners(
@@ -178,6 +173,7 @@ export interface SearchProps extends RouteComponentProps<{ term: string }> {
 interface SearchState {
   selectedOrder: BannerOrder
   selectedDirection: BannerOrderDirection
+  searchTerm: string
   page: number
   status: 'initial' | 'success' | 'loading' | 'error'
 }
