@@ -14,7 +14,7 @@ const Announcement: React.FC = () => {
           <Row>
             <Col span="24">
               <h1>Announcements</h1>
-              <Card style={{ backgroundColor: '#404040', width: '100%' }}>
+              <Card style={{ backgroundColor: '#2e2e2e', width: '100%' }}>
                 Team will post announcements here to inform agents about what
                 new features etc. have been added to the site. This will stay
                 for a while given that the site is new.

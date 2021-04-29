@@ -22,7 +22,7 @@ const BannerCard: FC<BannerCardProps> = ({ banner }) => {
         <div className="banner-card" key={banner?.uuid}>
           <Card
             title={banner?.title}
-            style={{ width: 448, backgroundColor: '#404040' }}
+            style={{ width: 448, backgroundColor: '#2e2e2e' }}
           >
             <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
               <Row align="top" justify="start" className="banner-pic">
