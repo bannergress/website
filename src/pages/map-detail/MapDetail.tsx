@@ -61,11 +61,13 @@ const showMissionRoutesOnMap = (missions: NumDictionary<Mission>) => {
     if (mission) {
       const { steps } = mission
       if (steps) {
-        steps.forEach((step) =>
-          missionPolylinesTemp.push(
-            new LatLng(step.poi.latitude, step.poi.longitude)
-          )
-        )
+        steps.forEach((step) => {
+          if (step.poi.latitude && step.poi.longitude) {
+            missionPolylinesTemp.push(
+              new LatLng(step.poi.latitude, step.poi.longitude)
+            )
+          }
+        })
       }
       // defines lineStyle based on the mission type
       let lineStyle

@@ -109,13 +109,21 @@ export const loadSearchBannersAction = (
   }
 }
 
-export const createBannerAction = (banner: Banner) => (
+export const createBannerAction = (banner: Partial<Banner>) => async (
   dispatch: Dispatch<BannerActionTypes>
 ) => {
-  dispatch({
-    type: CREATE_BANNER,
-    payload: banner,
-  })
+  const response = await api.postBannerPreview(banner)
+  if (response.ok && response.data) {
+    dispatch({
+      type: CREATE_BANNER,
+      payload: {
+        ...banner,
+        ...response.data,
+      },
+    })
+  } else {
+    throw Error('Error while loading preview')
+  }
 }
 
 export const submitBanner = () => async (
@@ -123,15 +131,16 @@ export const submitBanner = () => async (
   getState: () => RootState
 ) => {
   const banner: Partial<Banner> = getCreatedBanner(getState())!
-  banner.uuid = undefined
-  banner.width = 6
-  banner.type = 'sequential'
   const response = await api.postBanner(banner!)
   if (response.ok) {
     dispatch({
       type: REMOVE_CREATED_BANNER,
     })
+    dispatch({
+      type: LOAD_BANNER,
+      payload: banner,
+    })
     return response.data!.uuid
   }
-  return Promise.reject()
+  throw Error('Error while creating banner')
 }

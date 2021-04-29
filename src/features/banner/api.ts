@@ -174,3 +174,6 @@ export const searchBanners = (
 
 export const postBanner = (banner: Partial<Banner>) =>
   api.post<Banner>('bnrs', banner)
+
+export const postBannerPreview = (banner: Partial<Banner>) =>
+  api.post<Banner>('bnrs/preview', banner)

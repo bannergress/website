@@ -11,6 +11,7 @@ import { RootState } from '../../storeTypes'
 import BannerList from '../banner-list'
 
 import './recent-banners.less'
+import IfUserLoggedIn from '../login/if-user-logged-in'
 
 export class RecentBanners extends React.Component<RecentBannersProps, {}> {
   componentDidMount() {
@@ -31,12 +32,14 @@ export class RecentBanners extends React.Component<RecentBannersProps, {}> {
           <Layout className="px1">
             <Row justify="space-between" className="pr-1">
               <h1>{titleList}</h1>
-              <Button
-                onClick={this.onCreateBanner}
-                className="bg-button bg-button-default"
-              >
-                Submit a New Banner
-              </Button>
+              <IfUserLoggedIn>
+                <Button
+                  onClick={this.onCreateBanner}
+                  className="bg-button bg-button-default"
+                >
+                  Submit a New Banner
+                </Button>
+              </IfUserLoggedIn>
             </Row>
             <BannerList banners={banners} hasMoreBanners={false} />
           </Layout>

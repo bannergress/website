@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
 import { Row, Col, Input, Button } from 'antd'
 import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars'
@@ -42,6 +42,7 @@ class CreateBanner extends React.Component<
       bannerDescription: undefined,
       bannerTitleChanged: false,
       bannerDescriptionChanged: false,
+      loading: false,
     }
   }
 
@@ -163,16 +164,27 @@ class CreateBanner extends React.Component<
       }),
       {}
     )
+    this.setState({ loading: true })
     createBanner({
-      uuid: 'new-banner',
       title: bannerTitle!,
       description: bannerDescription,
       missions,
       numberOfMissions: addedMissions.length,
-      startLatitude: addedMissions[0].startLatitude!,
-      startLongitude: addedMissions[0].startLongitude!,
+      width: 6,
+      type: 'sequential',
     })
-    history.push('/preview-banner')
+      .then(() => {
+        history.push('/preview-banner')
+      })
+      .catch(() => this.setState({ loading: false }))
+  }
+
+  getPromptMessage = () => {
+    const { loading, addedMissions } = this.state
+    if (loading || addedMissions.length === 0) {
+      return true
+    }
+    return 'Are you sure you want to leave and discard this banner?'
   }
 
   render() {
@@ -182,6 +194,7 @@ class CreateBanner extends React.Component<
       bannerTitle,
       bannerDescription,
       searchText,
+      loading,
     } = this.state
 
     const unusedMissions = _.filter(
@@ -191,6 +204,8 @@ class CreateBanner extends React.Component<
 
     return (
       <Fragment>
+        <Prompt message={this.getPromptMessage} />
+        {loading && <>Loading...</>}
         <h1>New Banner</h1>
         <Row gutter={[16, 0]}>
           <Col span={8} className="add-missions-col">
@@ -272,9 +287,7 @@ class CreateBanner extends React.Component<
             <Row>
               <Button
                 onClick={this.onCreateBanner}
-                disabled={
-                  !addedMissions.length || !bannerTitle || !bannerDescription
-                }
+                disabled={!addedMissions.length || !bannerTitle}
               >
                 Review
               </Button>
@@ -295,7 +308,7 @@ export interface CreateBannerProps extends RouteComponentProps {
     query: string,
     page: number
   ) => Promise<void>
-  createBanner: (banner: Banner) => void
+  createBanner: (banner: Partial<Banner>) => Promise<void>
   resetSearchMissions: () => void
 }
 
@@ -308,6 +321,7 @@ interface CreateBannerState {
   bannerDescription: string | undefined
   bannerTitleChanged: boolean
   bannerDescriptionChanged: boolean
+  loading: boolean
 }
 
 const mapStateToProps = (state: RootState) => ({
