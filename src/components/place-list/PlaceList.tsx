@@ -24,20 +24,23 @@ const PlaceList: FC<PlaceListProps> = ({
   ) {
     return (
       <Fragment>
-        {title && <h1>{title}</h1>}
+        {title && <h2>{title}</h2>}
         {selectedPlaces?.map((place) => (
-          <div
-            key={place.id}
-            onClick={() => onSelectPlace(place)}
-            onKeyPress={(e) => onKeyPress(e, place)}
-            role="button"
-            tabIndex={0}
-          >
-            &lt; <PlaceEntry place={place} />
-          </div>
+          <h2 className="places-list-item">
+            <span
+              key={place.id}
+              onClick={() => onSelectPlace(place)}
+              onKeyPress={(e) => onKeyPress(e, place)}
+              role="button"
+              tabIndex={0}
+            >
+              ❮ <PlaceEntry place={place} />
+            </span>
+          </h2>
         ))}
         {places?.map((place) => (
           <div
+            className="places-list-item places-list-child"
             key={place.id}
             onClick={() => onSelectPlace(place)}
             onKeyPress={(e) => onKeyPress(e, place)}

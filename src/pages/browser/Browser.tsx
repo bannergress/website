@@ -217,7 +217,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
           <title>{pageTitle}</title>
         </Helmet>
 
-        <Row gutter={[16, 0]}>
+        <Row>
           <Col span={4} className="places-list">
             <Layout>
               <PlaceList

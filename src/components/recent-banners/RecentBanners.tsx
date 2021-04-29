@@ -30,7 +30,7 @@ export class RecentBanners extends React.Component<RecentBannersProps, {}> {
         <Row justify="center">
           <Layout className="px1">
             <Row justify="space-between" className="pr-1">
-              <h2>{titleList}</h2>
+              <h1>{titleList}</h1>
               <Button
                 onClick={this.onCreateBanner}
                 className="bg-button bg-button-default"

@@ -37,7 +37,7 @@ const App: React.FC = () => (
             <Navbar />
           </Header>
         </Layout>
-        <Layout>
+        <Layout className="main">
           <div className="container">
             <Switch>
               <Route path="/" component={Home} exact />

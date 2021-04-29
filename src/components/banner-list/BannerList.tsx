@@ -20,7 +20,7 @@ const BannerList: FC<BannerListProps> = ({
   if (banners && banners.length > 0) {
     return (
       <Fragment>
-        <Row justify="space-around" className="banner-list" gutter={[16, 16]}>
+        <Row justify="space-around" className="banner-list">
           {banners?.map((bannerItem) => (
             <div key={bannerItem.uuid} className="banner-card">
               <Link
