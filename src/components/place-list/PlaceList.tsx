@@ -4,6 +4,7 @@ import { Row } from 'antd'
 import { Place } from '../../features/place'
 
 import './place-list.less'
+import PlaceEntry from './PlaceEntry'
 
 const PlaceList: FC<PlaceListProps> = ({
   title,
@@ -32,7 +33,7 @@ const PlaceList: FC<PlaceListProps> = ({
             role="button"
             tabIndex={0}
           >
-            &lt; {place.longName}
+            &lt; <PlaceEntry place={place} />
           </div>
         ))}
         {places?.map((place) => (
@@ -43,7 +44,7 @@ const PlaceList: FC<PlaceListProps> = ({
             role="button"
             tabIndex={0}
           >
-            {place.longName}
+            <PlaceEntry place={place} />
           </div>
         ))}
       </Fragment>
