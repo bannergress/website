@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
-import { Row, Col, Input, Button } from 'antd'
+import { Input } from 'antd'
 import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars'
 
@@ -24,6 +24,9 @@ import {
 import SearchMissionList from '../../components/search-mission-list'
 import BannerImage from '../../components/banner-image'
 import { extract } from '../../features/banner/naming'
+
+import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg'
+import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
 
 class CreateBanner extends React.Component<
   CreateBannerProps,
@@ -203,98 +206,79 @@ class CreateBanner extends React.Component<
     )
 
     return (
-      <Fragment>
+      <div className="create-banner">
         <Prompt message={this.getPromptMessage} />
         {loading && <>Loading...</>}
         <h1>New Banner</h1>
-        <Row gutter={[16, 0]}>
-          <Col span={8} className="add-missions-col">
-            <Row justify="start">
-              <h1>① Add Missions</h1>
-            </Row>
-            <Row>
-              Location (Optional)
-              <Input
-                placeholder="Start typing..."
-                onChange={(e) => this.onInputChange(e.target.value, 'location')}
-              />
-            </Row>
-            <Row>
-              Search for missions
-              <span>You can search by mission name or author</span>
-              <Input
-                placeholder="New Banner"
-                onChange={(e) =>
-                  this.onInputChange(e.target.value, 'searchText')
-                }
-              />
-            </Row>
-            <Row>
-              <SearchMissionList
-                missions={unusedMissions}
-                hasMoreMissions={hasMore}
-                inverse={false}
-                initial={!!searchText}
-                loadMoreMissions={this.onLoadMoreMissions}
-                onSelectMission={this.onAddMission}
-              />
-            </Row>
-          </Col>
-          <Col span={8}>
-            <Row justify="start">
-              <h1>② Arrange</h1>
-            </Row>
-            <Row style={{ maxHeight: 800, overflowY: 'scroll' }}>
-              <SearchMissionList
-                missions={addedMissions}
-                hasMoreMissions={false}
-                inverse
-                onSelectMission={this.onManageMission}
-              />
-            </Row>
-          </Col>
-          <Col span={8}>
-            <Row justify="start">
-              <h1>③ Information</h1>
-            </Row>
-            <Row>
-              Banner Title
-              <Input
-                placeholder="Start typing..."
-                value={bannerTitle}
-                onChange={(e) =>
-                  this.onInputChange(e.target.value, 'bannerTitle')
-                }
-              />
-            </Row>
-            <Row>
-              Description
-              <Input.TextArea
-                placeholder="Start typing..."
-                value={bannerDescription}
-                onChange={(e) =>
-                  this.onInputChange(e.target.value, 'bannerDescription')
-                }
-              />
-            </Row>
-            <Row>Advanced Options</Row>
-            <Row>
-              Preview
+        <div className="create-banner-steps">
+          <div>
+            <h1>① Add Missions</h1>
+            <h3>Location (Optional)</h3>
+            <Input
+              placeholder="Start typing..."
+              onChange={(e) => this.onInputChange(e.target.value, 'location')}
+            />
+            <h3>Search for missions</h3>
+            <span>You can search by mission name or author</span>
+            <Input
+              placeholder="New Banner"
+              onChange={(e) => this.onInputChange(e.target.value, 'searchText')}
+            />
+            <h3>Search results</h3>
+            <SearchMissionList
+              missions={unusedMissions}
+              hasMoreMissions={hasMore}
+              icon={<SVGRightArrow />}
+              initial={!!searchText}
+              loadMoreMissions={this.onLoadMoreMissions}
+              onSelectMission={this.onAddMission}
+            />
+          </div>
+          <div>
+            <h1>② Arrange</h1>
+            <SearchMissionList
+              missions={addedMissions}
+              hasMoreMissions={false}
+              icon={<SVGCross />}
+              onSelectMission={this.onManageMission}
+            />
+          </div>
+          <div>
+            <h1>③ Information</h1>
+            <h3>Banner Title</h3>
+            <Input
+              placeholder="Start typing..."
+              value={bannerTitle}
+              onChange={(e) =>
+                this.onInputChange(e.target.value, 'bannerTitle')
+              }
+            />
+            <h3>Description</h3>
+            <Input.TextArea
+              placeholder="Start typing..."
+              value={bannerDescription}
+              onChange={(e) =>
+                this.onInputChange(e.target.value, 'bannerDescription')
+              }
+            />
+            <h3>Advanced Options</h3>
+            <h3>Preview</h3>
+            <div className="create-banner-preview">
               <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
                 <BannerImage missions={addedMissions} />
               </Scrollbars>
-            </Row>
-            <Row>
-              <Button
-                onClick={this.onCreateBanner}
-                disabled={!addedMissions.length || !bannerTitle}
-              >
-                Review
-              </Button>
-            </Row>
-          </Col>
-        </Row>
-      </Fragment>
+            </div>
+            <button
+              type="button"
+              onClick={this.onCreateBanner}
+              className="positive-action-button"
+              disabled={addedMissions.length < 2 || !bannerTitle}
+            >
+              Review
+            </button>
+          </div>
+        </div>
+      </div>
     )
   }
 }

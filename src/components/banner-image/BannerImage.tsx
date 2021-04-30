@@ -1,34 +1,17 @@
-import React, { Fragment, FC } from 'react'
-import { Row } from 'antd'
-import _ from 'underscore'
+import React, { FC } from 'react'
 
 import { Mission } from '../../features/mission'
 
 import './banner-image.less'
+import MissionImage from '../mission-image/MissionImage'
 
 const BannerImage: FC<BannerImageProps> = ({ missions }) => {
   return (
-    <Fragment>
-      <Row align="top" justify="start" className="banner-image">
-        {_([...missions])
-          .chain()
-          .reverse()
-          .map((m) => (
-            <div
-              className="banner-circle"
-              color="#000"
-              title={m.title}
-              key={m.id}
-              style={{
-                backgroundImage: `url('${m.picture}')`,
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: '100%',
-              }}
-            />
-          ))
-          .value()}
-      </Row>
-    </Fragment>
+    <div className="banner-image">
+      {missions.map((m) => (
+        <MissionImage key={m.id} mission={m} />
+      ))}
+    </div>
   )
 }
 

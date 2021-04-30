@@ -6,6 +6,7 @@ import StepList from '../step-list'
 import { Mission } from '../../features/mission'
 
 import './mission-card.less'
+import MissionImage from '../mission-image/MissionImage'
 
 class MissionCard extends React.Component<MissionCardProps, MissionCardState> {
   constructor(props: MissionCardProps) {
@@ -52,17 +53,7 @@ class MissionCard extends React.Component<MissionCardProps, MissionCardState> {
             >
               <div>
                 <Row align="middle">
-                  <div
-                    className="mission-circle"
-                    color="#000"
-                    title={mission?.title}
-                    key={mission?.id}
-                    style={{
-                      backgroundImage: `url('${mission?.picture}')`,
-                      backgroundRepeat: 'no-repeat',
-                      backgroundSize: '100%',
-                    }}
-                  />
+                  {mission && <MissionImage mission={mission} />}
                   <div className="mission-title">{mission?.title}</div>
                 </Row>
               </div>

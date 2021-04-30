@@ -1,0 +1,36 @@
+.create-banner {
+    margin: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & > * {
+        max-width: 1240px;
+    }
+    & > h1 {
+        width: 100%;
+    }
+}
+
+.create-banner-steps {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 50px;
+    row-gap: 50px;
+    width: 100%;
+    & > div {
+        flex-grow: 1;
+        flex-basis: 10%;
+        min-width: 300px;
+    }
+}
+
+.create-banner-preview {
+    background: #2e2e2e;
+    border-radius: 5px;
+    max-width: 400px;
+    padding: 15px;
+    margin: 10px 0 10px;
+    & .banner-image {
+        margin: auto;
+    }
+}
