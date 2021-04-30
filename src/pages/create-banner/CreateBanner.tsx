@@ -210,7 +210,7 @@ class CreateBanner extends React.Component<
         <Row gutter={[16, 0]}>
           <Col span={8} className="add-missions-col">
             <Row justify="start">
-              <span className="number">1</span> Add Missions
+              <h1>① Add Missions</h1>
             </Row>
             <Row>
               Location (Optional)
@@ -242,7 +242,7 @@ class CreateBanner extends React.Component<
           </Col>
           <Col span={8}>
             <Row justify="start">
-              <span className="number">2</span> Arrange
+              <h1>② Arrange</h1>
             </Row>
             <Row style={{ maxHeight: 800, overflowY: 'scroll' }}>
               <SearchMissionList
@@ -255,7 +255,7 @@ class CreateBanner extends React.Component<
           </Col>
           <Col span={8}>
             <Row justify="start">
-              <span className="number">3</span> Information
+              <h1>③ Information</h1>
             </Row>
             <Row>
               Banner Title
