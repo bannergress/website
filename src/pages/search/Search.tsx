@@ -65,11 +65,13 @@ class Search extends React.Component<SearchProps, SearchState> {
       newDirection = selectedDirection === 'ASC' ? 'DESC' : 'ASC'
       this.setState({
         selectedDirection: newDirection,
+        page: 0,
       })
     } else {
       this.setState({
         selectedOrder: newOrder,
         selectedDirection: newDirection,
+        page: 0,
       })
     }
     this.doFetchBanners(searchTerm, newOrder, newDirection, 0)
@@ -124,7 +126,7 @@ class Search extends React.Component<SearchProps, SearchState> {
             <>
               {banners.length > 0 && (
                 <>
-                  <Row>
+                  <Row justify="start" className="order-chooser">
                     <BannerOrderChooser
                       selectedOrder={selectedOrder}
                       selectedDirection={selectedDirection}

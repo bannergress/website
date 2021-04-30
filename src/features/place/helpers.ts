@@ -7,3 +7,7 @@ export const createMapUri = (place: Place) => {
   const coordinates = `${place.boundaryMinLatitude},${place.boundaryMinLongitude},${place.boundaryMaxLatitude},${place.boundaryMaxLongitude}`
   return generatePath('/map?bounds=:coords', { coords: coordinates })
 }
+
+export const createBrowseUri = (place: Place) => {
+  return generatePath('/browse/:id', { id: place.id })
+}
