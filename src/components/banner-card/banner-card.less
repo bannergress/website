@@ -40,6 +40,10 @@
   font-weight: bold;
 }
 
+.banner-info-item {
+  font-size: 14px;
+}
+
 .banner-card-picture {
   aspect-ratio: 2 / 1;
 }
@@ -72,4 +76,10 @@
   90% { background-position-y: 100%; }
   95% { background-position-y: 100%; }
   100% { background-position-y: 0%; }
+}
+
+.banner-card-title, .banner-info-item {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-x: hidden;
 }

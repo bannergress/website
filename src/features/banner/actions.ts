@@ -37,7 +37,7 @@ export const loadBannerAction = (id: string) => async (
 export const loadRecentBannersAction = () => async (
   dispatch: Dispatch<BannerActionTypes>
 ) => {
-  const response = await api.getRecentBanners(10)
+  const response = await api.getRecentBanners(12)
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: LOAD_RECENT_BANNERS,

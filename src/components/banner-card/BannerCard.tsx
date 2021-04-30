@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import { Row } from 'antd'
 
 import './banner-card.less'
 
@@ -9,7 +8,7 @@ import { Banner } from '../../features/banner'
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL
 
-const getDistance = (distance: number) => `${(distance / 1000).toFixed(1)}km`
+const getDistance = (distance: number) => `${(distance / 1000).toFixed(1)} km`
 
 const BannerCard: FC<BannerCardProps> = ({ banner }) => {
   const url = banner && banner.picture && new URL(banner.picture, baseUrl).href
@@ -30,17 +29,17 @@ const BannerCard: FC<BannerCardProps> = ({ banner }) => {
           </div>
         </div>
       )}
-      <Row align="middle">
+      <div className="banner-info-item">
         <SVGExplorer fill="#1DA57A" className="icon" />
         {banner?.numberOfMissions} Missions,{' '}
         {banner && banner.lengthMeters
           ? getDistance(banner?.lengthMeters)
           : null}
-      </Row>
-      <Row align="middle">
+      </div>
+      <div className="banner-info-item">
         <SVGPointer fill="#1DA57A" className="icon" />
         {banner?.formattedAddress}
-      </Row>
+      </div>
     </div>
   )
 }

@@ -1,18 +1,13 @@
-import React, { Fragment } from 'react'
-import { Row, Layout } from 'antd'
+import React from 'react'
 
 const FooterMain: React.FC = () => {
   return (
-    <Fragment>
-      <Layout className="mt-1">
-        <Row justify="center" align="middle" className="footer-main">
-          Credits, Other features, and disclaimers.
-          <br />
-          Social Media links maybe.
-          <br /> Support Contact.
-        </Row>
-      </Layout>
-    </Fragment>
+    <div className="footer-main">
+      Credits, Other features, and disclaimers.
+      <br />
+      Social Media links maybe.
+      <br /> Support Contact.
+    </div>
   )
 }
 

@@ -1,19 +1,19 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import Announcement from '../components/announcement'
 import RecentBanners from '../components/recent-banners'
 import FooterMain from '../components/footer-main'
 
+import './home.less'
+
 export const Home: React.FC = () => {
   const titleList: string = 'Latest Banners'
   return (
-    <Fragment>
-      <div className="mt-1">
+    <div className="home">
+      <div className="announcement-and-recent-banners">
         <Announcement />
+        <RecentBanners titleList={titleList} />
       </div>
-      <div className="mt-1" />
-      <RecentBanners titleList={titleList} />
-      <div className="mt-1" />
       <FooterMain />
-    </Fragment>
+    </div>
   )
 }

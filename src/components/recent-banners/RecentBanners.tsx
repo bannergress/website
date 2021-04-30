@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { Row, Layout, Button } from 'antd'
+import { Button } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import {
   getRecentBanners,
@@ -27,24 +27,20 @@ export class RecentBanners extends React.Component<RecentBannersProps, {}> {
   render() {
     const { titleList, banners } = this.props
     return (
-      <Fragment>
-        <Row justify="center">
-          <Layout className="px1">
-            <Row justify="space-between" className="pr-1">
-              <h1>{titleList}</h1>
-              <IfUserLoggedIn>
-                <Button
-                  onClick={this.onCreateBanner}
-                  className="bg-button bg-button-default"
-                >
-                  Submit a New Banner
-                </Button>
-              </IfUserLoggedIn>
-            </Row>
-            <BannerList banners={banners} hasMoreBanners={false} />
-          </Layout>
-        </Row>
-      </Fragment>
+      <div className="recent-banners">
+        <div className="recent-banners-title">
+          <h1>{titleList}</h1>
+          <IfUserLoggedIn>
+            <Button
+              onClick={this.onCreateBanner}
+              className="bg-button bg-button-default"
+            >
+              Submit a New Banner
+            </Button>
+          </IfUserLoggedIn>
+        </div>
+        <BannerList banners={banners} hasMoreBanners={false} />
+      </div>
     )
   }
 }
