@@ -26,9 +26,8 @@ const PlaceList: FC<PlaceListProps> = ({
       <Fragment>
         {title && <h2>{title}</h2>}
         {selectedPlaces?.map((place) => (
-          <h2 className="places-list-item">
+          <h2 className="places-list-item" key={place.id}>
             <span
-              key={place.id}
               onClick={() => onSelectPlace(place)}
               onKeyPress={(e) => onKeyPress(e, place)}
               role="button"
