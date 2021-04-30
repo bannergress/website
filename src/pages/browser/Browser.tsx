@@ -131,11 +131,13 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
       newDirection = selectedDirection === 'ASC' ? 'DESC' : 'ASC'
       this.setState({
         selectedDirection: newDirection,
+        page: 0,
       })
     } else {
       this.setState({
         selectedOrder: newOrder,
         selectedDirection: newDirection,
+        page: 0,
       })
     }
     fetchBanners(
