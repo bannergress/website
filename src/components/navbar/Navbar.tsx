@@ -8,6 +8,7 @@ import Logo from '../../img/logo/logo64.png'
 import { ReactComponent as SVGHome } from '../../img/icons/home.svg'
 import { ReactComponent as SVGBrowse } from '../../img/icons/browse.svg'
 import { ReactComponent as SVGMap } from '../../img/icons/map.svg'
+import { ReactComponent as SVGHelp } from '../../img/icons/help.svg'
 
 import './Navbar.less'
 import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
@@ -41,11 +42,11 @@ const menuItems = [
   },
   {
     key: '4',
-    path: '/favourites',
-    title: 'Favourites',
-    icon: <SVGHome className="icon" />,
-    isPublic: false,
-    regExp: '^/favourites',
+    path: '/help',
+    title: 'Help',
+    icon: <SVGHelp className="icon" />,
+    isPublic: true,
+    regExp: '^/help',
   },
 ]
 
