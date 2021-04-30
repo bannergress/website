@@ -20,9 +20,9 @@ const BannerList: FC<BannerListProps> = ({
   if (banners && banners.length > 0) {
     return (
       <Fragment>
-        <Row justify="space-around" className="banner-list">
+        <div className="banner-list">
           {banners?.map((bannerItem) => (
-            <div key={bannerItem.uuid} className="banner-card">
+            <div key={bannerItem.uuid} className="banner-list-item">
               <Link
                 to={generatePath('/banner/:uuid', { uuid: bannerItem.uuid })}
                 title={bannerItem.title}
@@ -31,8 +31,12 @@ const BannerList: FC<BannerListProps> = ({
               </Link>
             </div>
           ))}
-          {hasMoreBanners && <div ref={ref}>Loading more items...</div>}
-        </Row>
+          {hasMoreBanners && (
+            <div ref={ref} className="banner-card">
+              Loading more items...
+            </div>
+          )}
+        </div>
       </Fragment>
     )
   }
