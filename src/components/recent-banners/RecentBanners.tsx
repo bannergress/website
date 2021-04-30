@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import {
   getRecentBanners,
@@ -31,12 +30,13 @@ export class RecentBanners extends React.Component<RecentBannersProps, {}> {
         <div className="recent-banners-title">
           <h1>{titleList}</h1>
           <IfUserLoggedIn>
-            <Button
+            <button
+              type="button"
               onClick={this.onCreateBanner}
-              className="bg-button bg-button-default"
+              className="positive-action-button submit-new-button"
             >
               Submit a New Banner
-            </Button>
+            </button>
           </IfUserLoggedIn>
         </div>
         <BannerList banners={banners} hasMoreBanners={false} />

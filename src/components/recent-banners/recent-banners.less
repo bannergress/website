@@ -4,6 +4,24 @@
 
 .recent-banners-title {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: baseline;
+  column-gap: 20px;
+  margin: 20px 0 20px;
+  & > h1 {
+    flex-grow: 10000;
+  }
+  & > .submit-new-button {
+    flex-grow: 1;
+  }
+}
+
+.positive-action-button {
+  background: #077561;
+  color: white;
+  padding: 0.5em 2em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
