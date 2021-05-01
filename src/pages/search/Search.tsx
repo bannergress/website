@@ -16,6 +16,8 @@ import {
 import { RootState } from '../../storeTypes'
 import { loadSearchBannersAction } from '../../features/banner/actions'
 
+import './search.less'
+
 class Search extends React.Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {
     super(props)
@@ -112,49 +114,54 @@ class Search extends React.Component<SearchProps, SearchState> {
         <Helmet>
           <title>{title}</title>
         </Helmet>
-        <Layout>
-          <Row>
-            <h2>{title}</h2>
-          </Row>
+        <div className="search-page">
+          <div className="search-content">
+            <h1>{title}</h1>
 
-          <Row>{/* TODO Show search results for location if found */}</Row>
+            <h2>Places</h2>
+            <div>{/* TODO Show search results for location if found */}</div>
 
-          <Row>
             <Divider type="horizontal" />
-          </Row>
-          {status === 'success' && (
-            <>
-              {banners.length > 0 && (
-                <>
-                  <Row justify="start" className="order-chooser">
-                    <BannerOrderChooser
-                      selectedOrder={selectedOrder}
-                      selectedDirection={selectedDirection}
-                      onOrderClicked={this.onOrderSelected}
-                    />
-                  </Row>
 
-                  <Row>
-                    <BannerList
-                      banners={banners}
-                      hasMoreBanners={hasMore}
-                      loadMoreBanners={this.onLoadMoreBanners}
-                    />
-                  </Row>
+            <h2>Banners</h2>
+
+            <Layout>
+              {status === 'success' && (
+                <>
+                  {banners.length > 0 && (
+                    <>
+                      <Row justify="start" className="order-chooser">
+                        <BannerOrderChooser
+                          selectedOrder={selectedOrder}
+                          selectedDirection={selectedDirection}
+                          onOrderClicked={this.onOrderSelected}
+                        />
+                      </Row>
+
+                      <Row>
+                        <BannerList
+                          banners={banners}
+                          hasMoreBanners={hasMore}
+                          loadMoreBanners={this.onLoadMoreBanners}
+                        />
+                      </Row>
+                    </>
+                  )}
+
+                  {banners.length === 0 && (
+                    <>
+                      <Row>No banners found</Row>
+                    </>
+                  )}
                 </>
               )}
 
-              {banners.length === 0 && (
-                <>
-                  <Row>No banners found</Row>
-                </>
+              {(status === 'initial' || status === 'loading') && (
+                <>Loading...</>
               )}
-            </>
-          )}
-
-          {(status === 'initial' || status === 'loading') && <>Loading...</>}
-        </Layout>
-
+            </Layout>
+          </div>
+        </div>
         <FooterMain />
       </Fragment>
     )
