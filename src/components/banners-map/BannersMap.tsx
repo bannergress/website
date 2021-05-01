@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import { LatLng, LatLngBounds, Map as LeafletMap } from 'leaflet'
 import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet'
+import MarkerClusterGroup from 'react-leaflet-cluster'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import 'leaflet-loading'
 
@@ -69,10 +70,17 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
   showBannersOnMap = () => {
     const { banners } = this.props
     const { selectedBannerId } = this.state
+    const colorTemp = `#${(0x1000000 + Math.random() * 0xffffff)
+      .toString(16)
+      .substr(1, 6)}`
     return banners.map((banner: Banner) => (
       <CircleMarker
         key={banner.uuid}
-        pathOptions={{ color: 'red', fillColor: 'red', fillOpacity: 1 }}
+        pathOptions={{
+          color: colorTemp,
+          fillColor: colorTemp,
+          fillOpacity: 1,
+        }}
         radius={5}
         center={[banner.startLatitude, banner.startLongitude]}
         eventHandlers={{
@@ -80,7 +88,7 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
         }}
         className={selectedBannerId === banner.uuid ? 'selected' : ''}
       >
-        <Tooltip permanent>{banner.title}</Tooltip>
+        <Tooltip>{banner.title}</Tooltip>
       </CircleMarker>
     ))
   }
@@ -128,11 +136,11 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
           // @ts-ignore
           loadingControl={loading}
         >
-          {this.showBannersOnMap()}
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png"
           />
+          <MarkerClusterGroup>{this.showBannersOnMap()}</MarkerClusterGroup>
         </MapContainer>
       </Fragment>
     )
