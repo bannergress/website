@@ -44,8 +44,19 @@
   font-size: 14px;
 }
 
-.banner-card-picture {
-  aspect-ratio: 2 / 1;
+// Support for browsers that don't support aspect-ratio yet. 
+// Can be removed once this feature is implemented in all major browsers
+
+@supports (aspect-ratio: 1/1) {
+  .banner-card-picture {
+      aspect-ratio: 2 / 1;
+  }
+}
+
+@supports not (aspect-ratio: 1/1) {
+  .banner-card-picture {
+      height: 200px; // 200 Pixel is half of 400px max-width of .banner-card
+  }
 }
 
 .banner-card-picture-inner {
