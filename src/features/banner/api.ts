@@ -177,3 +177,17 @@ export const postBanner = (banner: Partial<Banner>) =>
 
 export const postBannerPreview = (banner: Partial<Banner>) =>
   api.post<Banner>('bnrs/preview', banner)
+
+export const searchMapBanners = (
+  topRightLat: number,
+  topRightLng: number,
+  bottomLeftLat: number,
+  bottomLeftLng: number
+) =>
+  api.get<Array<Banner>>('bnrs', {
+    minLatitude: bottomLeftLat,
+    maxLatitude: topRightLat,
+    minLongitude: bottomLeftLng,
+    maxLongitude: topRightLng,
+    limit: 50,
+  })

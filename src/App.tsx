@@ -15,10 +15,11 @@ import { Search } from './pages/search'
 import { Browser } from './pages/browser'
 import BannerList from './components/recent-banners'
 import { authenticateApi } from './api'
-
-import './App.less'
 import { CreateBanner } from './pages/create-banner'
 import { PreviewBanner } from './pages/preview-banner'
+import { PrivateRoute } from './components/login/private-route'
+
+import './App.less'
 
 const App: React.FC = () => (
   <ReactKeycloakProvider
@@ -42,13 +43,13 @@ const App: React.FC = () => (
             <Switch>
               <Route path="/" component={Home} exact />
               <Route path="/about" component={About} />
-              <Route path="/map/" component={MapOverview} />
+              <Route path="/map" component={MapOverview} />
               <Route path="/browse/:places*" component={Browser} />
               <Route path="/favorites" component={BannerList} />
               <Route path="/banner/:id" component={BannerInfo} />
               <Route path="/search/:term" component={Search} />
-              <Route path="/new-banner" component={CreateBanner} />
-              <Route path="/preview-banner" component={PreviewBanner} />
+              <PrivateRoute path="/new-banner" component={CreateBanner} />
+              <PrivateRoute path="/preview-banner" component={PreviewBanner} />
               <Route component={Home} />
             </Switch>
           </div>

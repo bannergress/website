@@ -13,6 +13,7 @@ import {
   RESET_SEARCH_BANNERS,
   CREATE_BANNER,
   REMOVE_CREATED_BANNER,
+  SEARCH_MAP_BANNERS,
 } from './actionTypes'
 import * as api from './api'
 import { getCreatedBanner } from './selectors'
@@ -126,7 +127,7 @@ export const createBannerAction = (banner: Partial<Banner>) => async (
   }
 }
 
-export const submitBanner = () => async (
+export const submitBannerAction = () => async (
   dispatch: Dispatch<BannerActionTypes>,
   getState: () => RootState
 ) => {
@@ -143,4 +144,28 @@ export const submitBanner = () => async (
     return response.data!.uuid
   }
   throw Error('Error while creating banner')
+}
+
+export const loadMapBannersAction = (
+  topRightLat: number,
+  topRightLng: number,
+  bottomLeftLat: number,
+  bottomLeftLng: number
+) => async (dispatch: Dispatch<BannerActionTypes>) => {
+  const response = await api.searchMapBanners(
+    topRightLat,
+    topRightLng,
+    bottomLeftLat,
+    bottomLeftLng
+  )
+  if (response.ok && response.data !== undefined) {
+    dispatch({
+      type: SEARCH_MAP_BANNERS,
+      payload: response.data,
+    })
+  } else {
+    // dispatch({
+    //   type: BROWSE_SEARCH_ERROR,
+    // })
+  }
 }

@@ -1,63 +1,65 @@
-import { LatLng, LatLngBounds } from 'leaflet'
 import React, { Fragment } from 'react'
-import { MapContainer, TileLayer } from 'react-leaflet'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { Col, Row } from 'antd'
+import { connect } from 'react-redux'
+import { LatLngBounds } from 'leaflet'
+import Scrollbars from 'react-custom-scrollbars'
+
+import { RootState } from '../../storeTypes'
+import { Banner, getMapBanners, loadMapBanners } from '../../features/banner'
+import BannerList from '../../components/banner-list'
+import BannersMap from '../../components/banners-map'
+
 import './map.less'
 
-export class MapOverview extends React.Component<MapOverviewProps> {
+class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   constructor(props: MapOverviewProps) {
     super(props)
-    this.state = {}
+    this.state = {
+      bounds: undefined,
+      selectedBannerId: undefined,
+      status: 'initial',
+    }
   }
 
-  getParameters() {
-    const { location } = this.props
-    const parametersTemp = location.search.substring(1).split('&')
-    const parameterMap = new Map()
-    // set default values
-    parameterMap.set('lat', 0)
-    parameterMap.set('lng', 0)
-    parameterMap.set('zoom', 3)
-    for (let i = 0; i < parametersTemp.length; i += 1) {
-      parameterMap.set(
-        parametersTemp[i].split('=')[0],
-        parametersTemp[i].split('=')[1]
-      )
+  onMapChanged = (bounds: LatLngBounds) => {
+    this.setState({ bounds })
+    this.onLoadBanners(bounds)
+  }
+
+  onSelectBanner = (banner: Banner) => {
+    this.setState({ selectedBannerId: banner.uuid })
+  }
+
+  onLoadBanners = async (bounds: LatLngBounds) => {
+    const { fetchBanners } = this.props
+    if (bounds) {
+      this.setState({ status: 'loading' })
+      try {
+        await fetchBanners(
+          bounds.getNorth(),
+          bounds.getEast(),
+          bounds.getSouth(),
+          bounds.getWest()
+        )
+        this.setState({ status: 'ready' })
+      } catch {
+        this.setState({ status: 'error' })
+      }
     }
-    return parameterMap
   }
 
   render() {
-    const parameterMap = this.getParameters()
-    // if bounds parameter is set, use this, otherwise use lat,lng,zoom to center the map
-    if (parameterMap.has('bounds')) {
-      parameterMap.set('bounds', parameterMap.get('bounds').split(','))
-      return (
-        <Fragment>
-          <Helmet>
-            <title>Map</title>
-          </Helmet>
-          <MapContainer
-            bounds={
-              new LatLngBounds(
-                new LatLng(
-                  Number(parameterMap.get('bounds')[0]),
-                  Number(parameterMap.get('bounds')[1])
-                ),
-                new LatLng(
-                  Number(parameterMap.get('bounds')[2]),
-                  Number(parameterMap.get('bounds')[3])
-                )
-              )
-            }
-          >
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png"
-            />
-          </MapContainer>
-        </Fragment>
+    const { getBanners } = this.props
+    const { bounds, selectedBannerId, status } = this.state
+    let banners: Array<Banner> = []
+    if (bounds) {
+      banners = getBanners(
+        bounds.getNorth(),
+        bounds.getEast(),
+        bounds.getSouth(),
+        bounds.getWest()
       )
     }
     return (
@@ -65,23 +67,72 @@ export class MapOverview extends React.Component<MapOverviewProps> {
         <Helmet>
           <title>Map</title>
         </Helmet>
-        <MapContainer
-          center={
-            new LatLng(
-              Number(parameterMap.get('lat')),
-              Number(parameterMap.get('lng'))
-            )
-          }
-          zoom={parameterMap.get('zoom')}
-        >
-          <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png"
-          />
-        </MapContainer>
+        <Row style={{ height: '100%' }}>
+          <Col style={{ width: 400 }}>
+            <h2>Banners in This Area</h2>
+            <Scrollbars>
+              <BannerList
+                banners={banners}
+                hasMoreBanners={false}
+                selectedBannerId={selectedBannerId}
+              />
+            </Scrollbars>
+          </Col>
+          <Col style={{ width: window.innerWidth - 415 }}>
+            <BannersMap
+              banners={banners}
+              onMapChanged={this.onMapChanged}
+              onSelectBanner={this.onSelectBanner}
+              loading={status === 'loading'}
+            />
+          </Col>
+        </Row>
       </Fragment>
     )
   }
 }
-export interface MapOverviewProps
-  extends RouteComponentProps<{ lat: string; lng: string }> {}
+export interface MapOverviewProps extends RouteComponentProps {
+  getBanners: (
+    topRightLat: number,
+    topRightLng: number,
+    bottomLeftLat: number,
+    bottomLeftLng: number
+  ) => Array<Banner>
+  fetchBanners: (
+    topRightLat: number,
+    topRightLng: number,
+    bottomLeftLat: number,
+    bottomLeftLng: number
+  ) => Promise<void>
+}
+
+interface MapOverviewState {
+  bounds: LatLngBounds | undefined
+  selectedBannerId: string | undefined
+  status: 'initial' | 'loading' | 'ready' | 'error'
+}
+
+const mapStateToProps = (state: RootState) => ({
+  getBanners: (
+    topRightLat: number,
+    topRightLng: number,
+    bottomLeftLat: number,
+    bottomLeftLng: number
+  ) =>
+    getMapBanners(
+      state,
+      topRightLat,
+      topRightLng,
+      bottomLeftLat,
+      bottomLeftLng
+    ),
+})
+
+const mapDispatchToProps = {
+  fetchBanners: loadMapBanners,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(MapOverview))

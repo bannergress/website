@@ -1,4 +1,6 @@
+import _ from 'underscore'
 import { RootState } from '../../storeTypes'
+import { containsBanner } from './helpers'
 
 export const getBanner = (state: RootState, id: string) =>
   state.banner.banners.find((b) => b.uuid === id)
@@ -17,3 +19,18 @@ export const getHasMoreSearchBanners = (state: RootState) =>
   state.banner.canSearchMore
 
 export const getCreatedBanner = (state: RootState) => state.banner.createdBanner
+
+export const getMapBanners = (
+  state: RootState,
+  topRightLat: number,
+  topRightLng: number,
+  bottomLeftLat: number,
+  bottomLeftLng: number
+) =>
+  _(state.banner.banners)
+    .chain()
+    .filter((b) =>
+      containsBanner(b, topRightLat, topRightLng, bottomLeftLat, bottomLeftLng)
+    )
+    .take(50)
+    .value()

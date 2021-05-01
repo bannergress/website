@@ -6,12 +6,15 @@ import { Location } from 'history'
 
 import BannerCard from '../../components/banner-card'
 import MissionList from '../../components/mission-list'
-import { Banner, getCreatedBanner } from '../../features/banner'
+import {
+  Banner,
+  getCreatedBanner,
+  submitBanner as submitBannerAction,
+} from '../../features/banner'
 import { MapDetail } from '../map-detail'
-import { submitBanner as submitBannerAction } from '../../features/banner/actions'
+import { RootState } from '../../storeTypes'
 
 import './preview-banner.less'
-import { RootState } from '../../storeTypes'
 
 class PreviewBanner extends React.Component<
   PreviewBannerProps,

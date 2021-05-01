@@ -1,3 +1,1 @@
-import { MapOverview } from './MapOverview'
-
-export { MapOverview }
+export { default as MapOverview } from './MapOverview'

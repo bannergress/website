@@ -10,6 +10,7 @@ import {
   SEARCH_BANNERS,
   RESET_SEARCH_BANNERS,
   CREATE_BANNER,
+  SEARCH_MAP_BANNERS,
 } from './actionTypes'
 import { Banner, BannerState } from './types'
 
@@ -68,6 +69,8 @@ export default (state = initialState, action: BannerActionTypes) => {
       return state
     case CREATE_BANNER:
       return { ...state, createdBanner: action.payload }
+    case SEARCH_MAP_BANNERS:
+      return { ...state, banners: extend(action.payload, state.banners) }
     default:
       return state
   }

@@ -1,4 +1,4 @@
-import React, { Fragment, FC } from 'react'
+import React, { Fragment, FC, useEffect, useRef } from 'react'
 import { Row } from 'antd'
 import { Link, generatePath } from 'react-router-dom'
 
@@ -12,7 +12,23 @@ const BannerList: FC<BannerListProps> = ({
   banners,
   hasMoreBanners,
   loadMoreBanners,
+  selectedBannerId,
 }) => {
+  const itemsRef = useRef<Array<HTMLDivElement | null>>([])
+
+  useEffect(() => {
+    itemsRef.current = itemsRef.current.slice(0, banners?.length || 0)
+  }, [banners])
+
+  useEffect(() => {
+    const index = banners?.findIndex((b) => b.uuid === selectedBannerId)
+    if (index && itemsRef.current[index]) {
+      itemsRef.current[index]!.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      })
+    }
+  }, [banners, selectedBannerId])
   const [ref] = useInfiniteScroll({
     callback: loadMoreBanners,
   })
@@ -21,8 +37,16 @@ const BannerList: FC<BannerListProps> = ({
     return (
       <Fragment>
         <div className="banner-list">
-          {banners?.map((bannerItem) => (
-            <div key={bannerItem.uuid} className="banner-list-item">
+          {banners?.map((bannerItem, index) => (
+            <div
+              key={bannerItem.uuid}
+              ref={(b) => {
+                itemsRef.current[index] = b
+              }}
+              className={`banner-list-item${
+                bannerItem.uuid === selectedBannerId ? ' selected' : ''
+              }`}
+            >
               <Link
                 to={generatePath('/banner/:uuid', { uuid: bannerItem.uuid })}
                 title={bannerItem.title}
@@ -40,17 +64,14 @@ const BannerList: FC<BannerListProps> = ({
       </Fragment>
     )
   }
-  return (
-    <Fragment>
-      <Row>Loading...</Row>
-    </Fragment>
-  )
+  return <Fragment>{hasMoreBanners && <Row>Loading...</Row>}</Fragment>
 }
 
 export interface BannerListProps {
   banners: Array<Banner> | undefined
   hasMoreBanners: Boolean
   loadMoreBanners?: () => Promise<void>
+  selectedBannerId?: string
 }
 
 export default BannerList
