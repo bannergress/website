@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { LatLng, LatLngBounds, Map as LeafletMap } from 'leaflet'
 import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet'
-import MarkerClusterGroup from 'react-leaflet-cluster'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+// import MarkerClusterGroup from 'react-leaflet-cluster'
+import _ from 'underscore'
 import 'leaflet-loading'
 
 import { Banner } from '../../features/banner'
@@ -26,6 +27,27 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
     }
   }
 
+  shouldComponentUpdate(
+    nextProps: Readonly<MapOverviewProps>,
+    nexState: Readonly<MapOverviewState>
+  ) {
+    const { banners, loading } = this.props
+    const { selectedBannerId, zoom } = this.state
+    if (
+      nextProps.banners.length !== banners.length ||
+      !_.isEqual(nextProps.banners, banners) ||
+      selectedBannerId !== nexState.selectedBannerId ||
+      (zoom <= 15 && nexState.zoom > 15) ||
+      (zoom > 15 && nexState.zoom <= 15)
+    ) {
+      return true
+    }
+    if (this.map && loading !== nextProps.loading) {
+      this.map.fireEvent(nextProps.loading ? 'dataloading' : 'dataload')
+    }
+    return false
+  }
+
   onMapDragged = () => {
     const { location, history, onMapChanged } = this.props
     const urlParams = new URLSearchParams(location.search)
@@ -36,7 +58,7 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
       pathname: location.pathname,
       search: urlParams.toString(),
     })
-    this.setState({ center })
+    this.setState({ center, selectedBannerId: undefined })
     onMapChanged(this.map!.getBounds())
   }
 
@@ -49,7 +71,7 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
       pathname: location.pathname,
       search: urlParams.toString(),
     })
-    this.setState({ zoom })
+    this.setState({ zoom, selectedBannerId: undefined })
     onMapChanged(this.map!.getBounds())
   }
 
@@ -69,32 +91,35 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
 
   showBannersOnMap = () => {
     const { banners } = this.props
-    const { selectedBannerId } = this.state
-    const colorTemp = `#${(0x1000000 + Math.random() * 0xffffff)
-      .toString(16)
-      .substr(1, 6)}`
-    return banners.map((banner: Banner) => (
-      <CircleMarker
-        key={banner.uuid}
-        pathOptions={{
-          color: colorTemp,
-          fillColor: colorTemp,
-          fillOpacity: 1,
-        }}
-        radius={5}
-        center={[banner.startLatitude, banner.startLongitude]}
-        eventHandlers={{
-          click: () => this.onSelectBanner(banner),
-        }}
-        className={selectedBannerId === banner.uuid ? 'selected' : ''}
-      >
-        <Tooltip>{banner.title}</Tooltip>
-      </CircleMarker>
-    ))
+    const { selectedBannerId, zoom } = this.state
+    const weight = zoom > 15 ? 20 : 5
+    return banners.map((banner: Banner) => {
+      const selected = selectedBannerId === banner.uuid
+      const color = selected ? '#16d4b2' : '#6832da'
+      return (
+        <CircleMarker
+          key={`${banner.uuid}${selected ? 'selected' : ''}`}
+          pathOptions={{
+            color,
+            fillColor: color,
+            fillOpacity: 1,
+            weight,
+            className: 'banner-marker',
+          }}
+          radius={5}
+          center={[banner.startLatitude, banner.startLongitude]}
+          eventHandlers={{
+            click: () => this.onSelectBanner(banner),
+          }}
+          className={selected ? 'selected' : ''}
+        >
+          <Tooltip permanent={selected}>{banner.title}</Tooltip>
+        </CircleMarker>
+      )
+    })
   }
 
   render() {
-    const { loading } = this.props
     const { center, zoom } = this.state
     // if bounds parameter is set, use this, otherwise use lat,lng,zoom to center the map
     // if (parameterMap.has('bounds')) {
@@ -127,6 +152,7 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
     //     </Fragment>
     //   )
     // }
+
     return (
       <Fragment>
         <MapContainer
@@ -134,13 +160,13 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
           zoom={zoom}
           whenCreated={this.onMapCreated}
           // @ts-ignore
-          loadingControl={loading}
+          loadingControl
         >
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png"
           />
-          <MarkerClusterGroup>{this.showBannersOnMap()}</MarkerClusterGroup>
+          {this.showBannersOnMap()}
         </MapContainer>
       </Fragment>
     )

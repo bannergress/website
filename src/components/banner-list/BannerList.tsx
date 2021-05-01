@@ -22,7 +22,7 @@ const BannerList: FC<BannerListProps> = ({
 
   useEffect(() => {
     const index = banners?.findIndex((b) => b.uuid === selectedBannerId)
-    if (index && itemsRef.current[index]) {
+    if (index !== undefined && index >= 0 && itemsRef.current[index]) {
       itemsRef.current[index]!.scrollIntoView({
         behavior: 'smooth',
         block: 'center',

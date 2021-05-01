@@ -32,5 +32,5 @@ export const getMapBanners = (
     .filter((b) =>
       containsBanner(b, topRightLat, topRightLng, bottomLeftLat, bottomLeftLng)
     )
-    .take(50)
+    .take(500)
     .value()

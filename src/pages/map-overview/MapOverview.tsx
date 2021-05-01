@@ -67,10 +67,10 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
         <Helmet>
           <title>Map</title>
         </Helmet>
-        <Row style={{ height: '100%' }}>
-          <Col style={{ width: 400 }}>
+        <Row className="map-overview">
+          <Col className="map-banners">
             <h2>Banners in This Area</h2>
-            <Scrollbars>
+            <Scrollbars className="banners-scroll">
               <BannerList
                 banners={banners}
                 hasMoreBanners={false}
@@ -78,7 +78,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
               />
             </Scrollbars>
           </Col>
-          <Col style={{ width: window.innerWidth - 415 }}>
+          <Col className="map-explorer">
             <BannersMap
               banners={banners}
               onMapChanged={this.onMapChanged}
