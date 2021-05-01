@@ -64,7 +64,7 @@ const showMissionRoutesOnMap = (missions: NumDictionary<Mission>) => {
       const { steps } = mission
       if (steps) {
         steps.forEach((step) => {
-          if (step.poi.latitude && step.poi.longitude) {
+          if (step.poi && step.poi.latitude && step.poi.longitude) {
             missionPolylinesTemp.push(
               new LatLng(step.poi.latitude, step.poi.longitude)
             )

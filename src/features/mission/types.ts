@@ -8,17 +8,19 @@ export interface POI {
 }
 
 export interface Step {
-  poi: POI
-  objective:
-    | 'hack'
-    | 'captureOrUpgrade'
-    | 'createLink'
-    | 'createField'
-    | 'installMod'
-    | 'takePhoto'
-    | 'viewWaypoint'
-    | 'enterPassphrase'
+  poi?: POI
+  objective?: Objective
 }
+
+export type Objective =
+  | 'hack'
+  | 'captureOrUpgrade'
+  | 'createLink'
+  | 'createField'
+  | 'installMod'
+  | 'takePhoto'
+  | 'viewWaypoint'
+  | 'enterPassphrase'
 
 export interface Mission {
   id: string
