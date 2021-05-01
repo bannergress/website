@@ -5,6 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { store, persistor } from './store'
 
 import './index.less'
+import './mobile.less'
 
 import App from './App'
 

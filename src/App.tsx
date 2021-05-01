@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Layout } from 'antd'
-import { Header } from 'antd/es/layout/layout'
 import { Helmet } from 'react-helmet'
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import keycloak from './keycloak'
@@ -20,6 +19,7 @@ import { PreviewBanner } from './pages/preview-banner'
 import { PrivateRoute } from './components/login/private-route'
 
 import './App.less'
+import MenuMain from './components/menu-main/MenuMain'
 
 const App: React.FC = () => (
   <ReactKeycloakProvider
@@ -33,10 +33,8 @@ const App: React.FC = () => (
     <Helmet defaultTitle="Bannergress" titleTemplate="Bannergress - %s" />
     <Layout>
       <BrowserRouter>
-        <Layout>
-          <Header className="px-1">
-            <Navbar />
-          </Header>
+        <Layout className="top-menu">
+          <Navbar />
         </Layout>
         <Layout className="main">
           <div className="container">
@@ -54,6 +52,9 @@ const App: React.FC = () => (
             </Switch>
           </div>
         </Layout>
+        <div className="bottom-menu">
+          <MenuMain />
+        </div>
       </BrowserRouter>
     </Layout>
   </ReactKeycloakProvider>
