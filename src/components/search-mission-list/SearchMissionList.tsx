@@ -12,7 +12,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
   hasMoreMissions,
   loadMoreMissions,
   onSelectMission,
-  inverse,
+  icon,
   initial,
 }) => {
   const [ref] = useInfiniteScroll({
@@ -32,7 +32,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
             <SearchMissionCard
               key={mission.id}
               mission={mission}
-              inverse={inverse}
+              icon={icon}
               onSelectMission={onSelectMission}
             />
           ))}
@@ -49,7 +49,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
 export interface SearchMissionListProps {
   missions: Array<Mission> | undefined
   hasMoreMissions: Boolean
-  inverse: boolean
+  icon: JSX.Element
   initial?: boolean
   loadMoreMissions?: () => Promise<void>
   onSelectMission: (mission: Mission) => void

@@ -3,6 +3,14 @@
 .search-mission-card {
   margin-top: 1rem;
   background-color: @color-panel-bg;
+  margin-top: 1rem;
+  background-color: #404040;
+  border-radius: 5px;
+  display: flex;
+  column-gap: 10px;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
 
   .mission-content {
     max-height: 70px;
@@ -11,19 +19,10 @@
   }
 
 
-  .mission-circle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: grey;
-  }
-
   .mission-title {
     font-size: 18px;
     padding-left: 1rem;
+    flex: 1;
   }
   .mission-title:first-letter {
     text-transform: uppercase;
@@ -44,7 +43,12 @@
     transition: height ease 0.3s;
   }
 
-  .mission-arrow {
-    background-color: white;
+  .mission-button {
+    height: 50px;
+    width: 50px;
+    background: none;
+    border: none;
+    fill: white;
+    cursor: pointer;
   }
 }
