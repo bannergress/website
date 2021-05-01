@@ -10,26 +10,11 @@ import './step-list.less'
 const StepList: FC<StepListProps> = ({ steps }) => {
   if (steps && steps.length > 0) {
     return (
-      <Fragment>
-        <Row className="step-list mt-1">
-          <Layout>
-            {steps.map((step, indx) => (
-              <StepCard
-                step={step}
-                indexPortal={indx}
-                key={`step-${indx + 1}`}
-              />
-            ))}
-          </Layout>
-        </Row>
-      </Fragment>
-    )
-  }
-  if (steps && steps.length === 0) {
-    return (
-      <Fragment>
-        <Row>No steps</Row>
-      </Fragment>
+      <div className="step-list">
+        {steps.map((step, indx) => (
+          <StepCard step={step} key={`step-${indx + 1}`} />
+        ))}
+      </div>
     )
   }
   return (

@@ -92,17 +92,14 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
   showBannersOnMap = () => {
     const { banners } = this.props
     const { selectedBannerId } = this.state
-    return banners.map((banner: Banner) => {
-      const selected = selectedBannerId === banner.uuid
-      return (
-        <BannerMarker
-          key={`${banner.uuid}${selected ? 'selected' : ''}`}
-          banner={banner}
-          selected={selected}
-          onSelect={() => this.onSelectBanner(banner)}
-        />
-      )
-    })
+    return banners.map((banner: Banner) => (
+      <BannerMarker
+        key={banner.uuid}
+        banner={banner}
+        selected={selectedBannerId === banner.uuid}
+        onSelect={() => this.onSelectBanner(banner)}
+      />
+    ))
   }
 
   render() {
