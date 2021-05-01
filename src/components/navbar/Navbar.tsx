@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory, NavLink } from 'react-router-dom'
 import { generatePath } from 'react-router'
-import { Row, Input, Divider } from 'antd'
+import { Input } from 'antd'
 import LoginInNavbar from '../login/login-in-navbar'
 import MenuMain from '../menu-main/MenuMain'
 
@@ -22,30 +22,20 @@ export const Navbar: React.FC = () => {
     }
   }
   return (
-    <Row justify="space-between" align="middle">
+    <div className="top-menu">
       <NavLink to="/">
-        <Row justify="start" align="middle">
-          <div
-            className="brand-logo"
-            style={{ backgroundImage: `url(${Logo})` }}
-          >
-            &nbsp;
-          </div>
-        </Row>
+        <div className="brand-logo" style={{ backgroundImage: `url(${Logo})` }}>
+          &nbsp;
+        </div>
       </NavLink>
-      <Divider type="vertical" />
       <MenuMain />
-      <Row align="middle">
-        <Search
-          placeholder="Search Banners or Places"
-          onSearch={callSearch}
-          style={{ width: 200 }}
-        />
-      </Row>
-      <Row>
-        <LoginInNavbar />
-      </Row>
-    </Row>
+      <Search
+        className="search-bar"
+        placeholder="Search Banners or Places"
+        onSearch={callSearch}
+      />
+      <LoginInNavbar />
+    </div>
   )
 }
 

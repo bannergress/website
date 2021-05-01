@@ -1,3 +1,10 @@
+.top-menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .brand-logo {
   display: flex;
   height: 64px;
@@ -5,4 +12,16 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
+}
+
+.search-bar {
+  max-width: 200px;
+
+  & .ant-input-group {
+    display: flex;
+  }
+
+  & .ant-input-search-button {
+    height: 100%;
+  }
 }

@@ -33,9 +33,7 @@ const App: React.FC = () => (
     <Helmet defaultTitle="Bannergress" titleTemplate="Bannergress - %s" />
     <Layout>
       <BrowserRouter>
-        <Layout className="top-menu">
-          <Navbar />
-        </Layout>
+        <Navbar />
         <Layout className="main">
           <div className="container">
             <Switch>
