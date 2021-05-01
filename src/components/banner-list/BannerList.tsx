@@ -43,15 +43,16 @@ const BannerList: FC<BannerListProps> = ({
               ref={(b) => {
                 itemsRef.current[index] = b
               }}
-              className={`banner-list-item${
-                bannerItem.uuid === selectedBannerId ? ' selected' : ''
-              }`}
             >
               <Link
                 to={generatePath('/banner/:uuid', { uuid: bannerItem.uuid })}
                 title={bannerItem.title}
               >
-                <BannerCard banner={bannerItem} key={bannerItem.uuid} />
+                <BannerCard
+                  banner={bannerItem}
+                  key={bannerItem.uuid}
+                  selected={bannerItem.uuid === selectedBannerId}
+                />
               </Link>
             </div>
           ))}

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { LatLng, LatLngBounds, Map as LeafletMap } from 'leaflet'
-import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet'
+import { MapContainer, TileLayer } from 'react-leaflet'
 // import MarkerClusterGroup from 'react-leaflet-cluster'
 import _ from 'underscore'
 import 'leaflet-loading'
@@ -9,6 +9,7 @@ import 'leaflet-loading'
 import { Banner } from '../../features/banner'
 
 import './banners-map.less'
+import BannerMarker from './BannerMarker'
 
 class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
   private map: LeafletMap | undefined = undefined
@@ -91,30 +92,15 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
 
   showBannersOnMap = () => {
     const { banners } = this.props
-    const { selectedBannerId, zoom } = this.state
-    const weight = zoom > 15 ? 20 : 5
+    const { selectedBannerId } = this.state
     return banners.map((banner: Banner) => {
-      const selected = selectedBannerId === banner.uuid
-      const color = selected ? '#16d4b2' : '#6832da'
       return (
-        <CircleMarker
-          key={`${banner.uuid}${selected ? 'selected' : ''}`}
-          pathOptions={{
-            color,
-            fillColor: color,
-            fillOpacity: 1,
-            weight,
-            className: 'banner-marker',
-          }}
-          radius={5}
-          center={[banner.startLatitude, banner.startLongitude]}
-          eventHandlers={{
-            click: () => this.onSelectBanner(banner),
-          }}
-          className={selected ? 'selected' : ''}
-        >
-          <Tooltip permanent={selected}>{banner.title}</Tooltip>
-        </CircleMarker>
+        <BannerMarker
+          key={banner.uuid}
+          banner={banner}
+          selected={selectedBannerId === banner.uuid}
+          onSelect={() => this.onSelectBanner(banner)}
+        />
       )
     })
   }

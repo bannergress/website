@@ -10,14 +10,15 @@ const baseUrl = process.env.REACT_APP_API_BASE_URL
 
 const getDistance = (distance: number) => `${(distance / 1000).toFixed(1)} km`
 
-const BannerCard: FC<BannerCardProps> = ({ banner }) => {
+const BannerCard: FC<BannerCardProps> = ({ banner, selected }) => {
   const url = banner && banner.picture && new URL(banner.picture, baseUrl).href
+  const className = selected ? 'banner-card selected' : 'banner-card'
   const innerClassName =
     banner && banner.numberOfMissions > 18
       ? 'banner-card-picture-inner banner-card-picture-inner-animated'
       : 'banner-card-picture-inner'
   return (
-    <div className="banner-card" key={banner?.uuid}>
+    <div className={className}>
       <div className="banner-card-title">{banner?.title}</div>
       {banner && url && (
         <div className="banner-card-picture">
@@ -46,6 +47,7 @@ const BannerCard: FC<BannerCardProps> = ({ banner }) => {
 
 export interface BannerCardProps {
   banner: Banner | undefined
+  selected: boolean
 }
 
 export default BannerCard
