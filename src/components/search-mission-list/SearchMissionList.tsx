@@ -23,12 +23,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
   if (missions && missions.length > 0) {
     return (
       <Fragment>
-        <Scrollbars
-          autoHeight
-          autoHeightMin={100}
-          autoHeightMax={800}
-          className="search-mission-list"
-        >
+        <Scrollbars className="search-mission-list">
           {missions?.map((mission) => (
             <SearchMissionCard
               key={mission.id}

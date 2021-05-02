@@ -20,9 +20,10 @@ import {
   getCreatedBanner,
   NumDictionary,
 } from '../../features/banner'
+import { extract } from '../../features/banner/naming'
 import SearchMissionList from '../../components/search-mission-list'
 import BannerImage from '../../components/banner-image'
-import { extract } from '../../features/banner/naming'
+import LoadingOverlay from '../../components/loading-overlay'
 import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg'
 import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
 
@@ -208,10 +209,15 @@ class CreateBanner extends React.Component<
     return (
       <div className="create-banner">
         <Prompt message={this.getPromptMessage} />
-        {loading && <>Loading...</>}
+        <LoadingOverlay
+          active={loading}
+          text="Saving..."
+          spinner
+          fadeSpeed={500}
+        />
         <h1>New Banner</h1>
         <div className="create-banner-steps">
-          <div>
+          <div className="missions-search">
             <h1>① Add Missions</h1>
             <h3>Location (Optional)</h3>
             <Input
@@ -234,7 +240,7 @@ class CreateBanner extends React.Component<
               onSelectMission={this.onAddMission}
             />
           </div>
-          <div>
+          <div className="missions-arrange">
             <h1>② Arrange</h1>
             <SearchMissionList
               missions={addedMissions}

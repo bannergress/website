@@ -12,6 +12,7 @@ import {
 } from '../../features/banner'
 import BannerCard from '../../components/banner-card'
 import MissionList from '../../components/mission-list'
+import LoadingOverlay from '../../components/loading-overlay'
 import { MapDetail } from '../map-detail'
 
 import './preview-banner.less'
@@ -68,7 +69,12 @@ class PreviewBanner extends React.Component<
 
     return (
       <Fragment>
-        {loading && <Fragment>Saving banner...</Fragment>}
+        <LoadingOverlay
+          active={loading}
+          text="Saving..."
+          spinner
+          fadeSpeed={500}
+        />
         <Prompt message={this.getPromptMessage} />
         <Row>
           <Col span={1}>
