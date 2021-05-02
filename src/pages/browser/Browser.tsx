@@ -203,7 +203,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     let selectedPlace: Place | null = null
     if (selectedPlaces && selectedPlaces.length) {
       selectedPlace = selectedPlaces[selectedPlaces.length - 1]
-      administrativeAreas = getAdministrativeAreas(selectedPlace)
+      administrativeAreas = getAdministrativeAreas(selectedPlace) || []
     }
 
     let pageTitle = 'Countries'
