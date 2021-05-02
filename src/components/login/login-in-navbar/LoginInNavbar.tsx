@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import { NavLink } from 'react-router-dom'
 import { Row, Col, Modal } from 'antd'
 import { useKeycloak } from '@react-keycloak/web'
 
@@ -64,15 +63,23 @@ const LoginInNavbar: React.FC = () => {
       </Modal>
 
       <IfUserLoggedIn>
-        <NavLink to="#" onClick={() => keycloak.logout()}>
+        <button
+          className="link-button"
+          type="button"
+          onClick={() => keycloak.logout()}
+        >
           Logout <UserName />
-        </NavLink>
+        </button>
       </IfUserLoggedIn>
 
       <IfUserLoggedOut>
-        <NavLink to="#" onClick={() => openModal()}>
+        <button
+          className="link-button"
+          type="button"
+          onClick={() => openModal()}
+        >
           Login
-        </NavLink>
+        </button>
       </IfUserLoggedOut>
 
       <IfUserInitializing>
