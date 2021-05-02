@@ -27,7 +27,7 @@ export const searchMissions = (
   isMock
     ? { data: getMissions(page * PAGE_SIZE, PAGE_SIZE), ok: true, status: 200 }
     : api.get<Array<Mission>>('missions/unused', {
-        query,
+        query: encodeURI(query),
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
       })
