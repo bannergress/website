@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
-import { Input, Select, InputNumber, Row, Col } from 'antd'
+import { Input, Select, InputNumber, Row, Col, Slider } from 'antd'
 import { Helmet } from 'react-helmet'
 import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars'
@@ -258,6 +258,19 @@ class CreateBanner extends React.Component<
     }))
   }
 
+  canSubmitBanner = () => {
+    const { addedMissions, bannerTitle } = this.state
+    const indexes = addedMissions.map((mission) => mission.index)
+    const hasDuplicates = _(indexes).uniq(true).length !== addedMissions.length
+
+    return (
+      addedMissions.length >= 2 &&
+      bannerTitle &&
+      _(addedMissions).all((m) => m.index !== undefined) &&
+      !hasDuplicates
+    )
+  }
+
   render() {
     const { missions, hasMore } = this.props
     const {
@@ -274,10 +287,6 @@ class CreateBanner extends React.Component<
       missions,
       (m) => !_.some(addedMissions, (a) => a.id === m.id)
     )
-    const canSubmit =
-      addedMissions.length >= 2 &&
-      bannerTitle &&
-      _(addedMissions).all((m) => m.index !== undefined)
 
     return (
       <div className="create-banner">
@@ -377,19 +386,19 @@ class CreateBanner extends React.Component<
                     <h4>Banner width</h4>
                   </Col>
                   <Col span={12}>
-                    <InputNumber
+                    <Slider
                       min={1}
                       max={6}
+                      onChange={(val: number) =>
+                        this.onInputChange(val, 'bannerWidth')
+                      }
                       value={bannerWidth}
-                      onChange={(val) => this.onInputChange(val, 'bannerWidth')}
                     />
                   </Col>
                 </Row>
               </div>
             </div>
-            <h3 title="If there are missing missions, you'll see the definitive image in the next page">
-              Preview*
-            </h3>
+            <h3>Preview</h3>
             <div className="create-banner-preview">
               <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
                 <BannerImage missions={addedMissions} width={bannerWidth} />
@@ -399,7 +408,7 @@ class CreateBanner extends React.Component<
               type="button"
               onClick={this.onCreateBanner}
               className="positive-action-button"
-              disabled={!canSubmit}
+              disabled={!this.canSubmitBanner()}
             >
               Review
             </button>
