@@ -258,6 +258,19 @@ class CreateBanner extends React.Component<
     }))
   }
 
+  canSubmitBanner = () => {
+    const { addedMissions, bannerTitle } = this.state
+    const indexes = addedMissions.map((mission) => mission.index)
+    const hasDuplicates = _(indexes).uniq(true).length !== addedMissions.length
+
+    return (
+      addedMissions.length >= 2 &&
+      bannerTitle &&
+      _(addedMissions).all((m) => m.index !== undefined) &&
+      !hasDuplicates
+    )
+  }
+
   render() {
     const { missions, hasMore } = this.props
     const {
@@ -274,10 +287,6 @@ class CreateBanner extends React.Component<
       missions,
       (m) => !_.some(addedMissions, (a) => a.id === m.id)
     )
-    const canSubmit =
-      addedMissions.length >= 2 &&
-      bannerTitle &&
-      _(addedMissions).all((m) => m.index !== undefined)
 
     return (
       <div className="create-banner">
@@ -401,7 +410,7 @@ class CreateBanner extends React.Component<
               type="button"
               onClick={this.onCreateBanner}
               className="positive-action-button"
-              disabled={!canSubmit}
+              disabled={!this.canSubmitBanner()}
             >
               Review
             </button>
