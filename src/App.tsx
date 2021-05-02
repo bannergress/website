@@ -15,7 +15,7 @@ import { Browser } from './pages/browser'
 import { CreateBanner } from './pages/create-banner'
 import { PreviewBanner } from './pages/preview-banner'
 import { PrivateRoute } from './components/login/private-route'
-import BannerList from './components/recent-banners'
+import { Help } from './pages/help'
 import MenuMain from './components/menu-main/MenuMain'
 import Navbar from './components/navbar'
 
@@ -41,9 +41,9 @@ const App: React.FC = () => (
               <Route path="/about" component={About} />
               <Route path="/map" component={MapOverview} />
               <Route path="/browse/:places*" component={Browser} />
-              <Route path="/favorites" component={BannerList} />
               <Route path="/banner/:id" component={BannerInfo} />
               <Route path="/search/:term" component={Search} />
+              <Route path="/help" component={Help} />
               <PrivateRoute path="/new-banner" component={CreateBanner} />
               <PrivateRoute path="/preview-banner" component={PreviewBanner} />
               <Route component={Home} />
