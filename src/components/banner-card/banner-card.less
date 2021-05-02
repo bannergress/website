@@ -91,6 +91,13 @@
   }
 }
 
+/* Accessibility: Disable the animation to avoid vestibular motion triggers */
+@media (prefers-reduced-motion) {
+  .banner-card-picture-inner-animated {
+    animation-name: none;
+  }
+}
+
 @keyframes banner-animation {
   0% { background-position-y: 0%; }
   5% { background-position-y: 0%; }
