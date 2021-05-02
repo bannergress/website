@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
-import { Input, Select, InputNumber, Row, Col } from 'antd'
+import { Input, Select, InputNumber, Row, Col, Slider } from 'antd'
 import { Helmet } from 'react-helmet'
 import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars'
@@ -377,11 +377,13 @@ class CreateBanner extends React.Component<
                     <h4>Banner width</h4>
                   </Col>
                   <Col span={12}>
-                    <InputNumber
+                    <Slider
                       min={1}
                       max={6}
+                      onChange={(val: number) =>
+                        this.onInputChange(val, 'bannerWidth')
+                      }
                       value={bannerWidth}
-                      onChange={(val) => this.onInputChange(val, 'bannerWidth')}
                     />
                   </Col>
                 </Row>
