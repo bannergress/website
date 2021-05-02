@@ -398,9 +398,7 @@ class CreateBanner extends React.Component<
                 </Row>
               </div>
             </div>
-            <h3 title="If there are missing missions, you'll see the definitive image in the next page">
-              Preview*
-            </h3>
+            <h3>Preview</h3>
             <div className="create-banner-preview">
               <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
                 <BannerImage missions={addedMissions} width={bannerWidth} />
