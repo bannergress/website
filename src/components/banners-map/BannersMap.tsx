@@ -20,7 +20,10 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
     const lat = Number(urlParams.get('lat')) || 0
     const lng = Number(urlParams.get('lng')) || 0
     const zoom = Number(urlParams.get('zoom')) || 3
+    const initialBounds = BannersMap.getBoundsFromUrlParameters(urlParams)
+
     this.state = {
+      initialBounds,
       center: new LatLng(lat, lng),
       zoom,
       selectedBannerId: undefined,
@@ -48,39 +51,60 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
     return false
   }
 
-  onMapDragged = () => {
+  static getBoundsFromUrlParameters(urlParams: URLSearchParams) {
+    let result = null
+    const bounds = urlParams.get('bounds') || ''
+    if (bounds !== '') {
+      try {
+        const initialBoundArray = bounds.split(',')
+
+        if (initialBoundArray.length === 4) {
+          result = new LatLngBounds(
+            new LatLng(
+              Number(initialBoundArray[0]),
+              Number(initialBoundArray[1])
+            ),
+            new LatLng(
+              Number(initialBoundArray[2]),
+              Number(initialBoundArray[3])
+            )
+          )
+        }
+      } catch (error) {
+        // Just ignore bound if not in a valid format
+        console.log('Invalid bounds', bounds)
+      }
+    }
+    return result
+  }
+
+  onMapDraggedOrZoomed = () => {
     const { location, history, onMapChanged } = this.props
     const urlParams = new URLSearchParams(location.search)
     const center = this.map!.getCenter()
+    const zoom = this.map!.getZoom()
     urlParams.set('lat', center.lat.toString())
     urlParams.set('lng', center.lng.toString())
-    history.replace({
-      pathname: location.pathname,
-      search: urlParams.toString(),
-    })
-    this.setState({ center, selectedBannerId: undefined })
-    onMapChanged(this.map!.getBounds())
-  }
-
-  onMapZoom = () => {
-    const { location, history, onMapChanged } = this.props
-    const urlParams = new URLSearchParams(location.search)
-    const zoom = this.map!.getZoom()
     urlParams.set('zoom', zoom.toString())
+    urlParams.delete('bounds')
     history.replace({
       pathname: location.pathname,
       search: urlParams.toString(),
     })
-    this.setState({ zoom, selectedBannerId: undefined })
+    this.setState({
+      center,
+      zoom,
+      selectedBannerId: undefined,
+      initialBounds: null,
+    })
     onMapChanged(this.map!.getBounds())
   }
 
   onMapCreated = (map: LeafletMap) => {
-    const { onMapChanged } = this.props
     this.map = map
-    map.addEventListener('dragend', this.onMapDragged)
-    map.addEventListener('zoomend', this.onMapZoom)
-    onMapChanged(map.getBounds())
+    map.addEventListener('dragend', this.onMapDraggedOrZoomed)
+    map.addEventListener('zoomend', this.onMapDraggedOrZoomed)
+    this.onMapDraggedOrZoomed()
   }
 
   onSelectBanner = (banner: Banner) => {
@@ -106,44 +130,16 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 
   render() {
-    const { center, zoom } = this.state
-    // if bounds parameter is set, use this, otherwise use lat,lng,zoom to center the map
-    // if (parameterMap.has('bounds')) {
-    //   parameterMap.set('bounds', parameterMap.get('bounds').split(','))
-    //   return (
-    //     <Fragment>
-    //       <Helmet>
-    //         <title>Map</title>
-    //       </Helmet>
-    //       <MapContainer
-    //         bounds={
-    //           new LatLngBounds(
-    //             new LatLng(
-    //               Number(parameterMap.get('bounds')[0]),
-    //               Number(parameterMap.get('bounds')[1])
-    //             ),
-    //             new LatLng(
-    //               Number(parameterMap.get('bounds')[2]),
-    //               Number(parameterMap.get('bounds')[3])
-    //             )
-    //           )
-    //         }
-    //         whenCreated={this.onMapCreated}
-    //       >
-    //         <TileLayer
-    //           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    //           url="https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png"
-    //         />
-    //       </MapContainer>
-    //     </Fragment>
-    //   )
-    // }
+    const { initialBounds, center, zoom } = this.state
+
+    const startParams = initialBounds
+      ? { bounds: initialBounds }
+      : { center, zoom }
 
     return (
       <Fragment>
         <MapContainer
-          center={center}
-          zoom={zoom}
+          {...startParams}
           whenCreated={this.onMapCreated}
           // @ts-ignore
           loadingControl
@@ -166,6 +162,7 @@ export interface MapOverviewProps extends RouteComponentProps {
 }
 
 interface MapOverviewState {
+  initialBounds: LatLngBounds | null
   center: LatLng
   zoom: number
   selectedBannerId: string | undefined
