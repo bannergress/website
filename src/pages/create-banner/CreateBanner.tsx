@@ -59,7 +59,16 @@ class CreateBanner extends React.Component<
     const { previousBanner } = this.props
     if (previousBanner) {
       const { title, description, missions, type, width } = previousBanner
-      const addedMissions = mapMissions(missions, (m) => m)
+      const addedMissions = mapMissions<Mission & { index?: number }>(
+        missions,
+        (m, index) =>
+          m
+            ? {
+                ...m,
+                index: index + 1,
+              }
+            : undefined
+      )
       this.setState({
         bannerTitle: title,
         bannerDescription: description,
@@ -156,7 +165,7 @@ class CreateBanner extends React.Component<
       .chain()
       .map((m, index) => ({ ...m, mission: missions[index] }))
       .sortBy((m) => m.missionMarker?.parsed)
-      .map((m) => m.mission)
+      .map((m) => ({ ...m.mission, index: m.missionMarker?.parsed }))
       .value()
     const newState: Pick<CreateBannerState, any> = { addedMissions }
     if (!bannerTitleChanged) {
@@ -188,9 +197,9 @@ class CreateBanner extends React.Component<
       bannerWidth,
     } = this.state
     const missions = addedMissions.reduce<NumDictionary<Mission>>(
-      (prev, curr, index) => ({
+      (prev, curr) => ({
         ...prev,
-        [index]: curr,
+        [curr.index! - 1]: curr,
       }),
       {}
     )
@@ -218,6 +227,31 @@ class CreateBanner extends React.Component<
     return 'Are you sure you want to leave and discard this banner?'
   }
 
+  changeMissionNumber = (
+    mission: Mission & { index?: number },
+    pos: number,
+    index: number
+  ) => {
+    this.setState((state) => ({
+      addedMissions: _([...state.addedMissions])
+        .chain()
+        .without(state.addedMissions[pos])
+        .push({ ...mission, index })
+        .sortBy((a) => a.index)
+        .value(),
+    }))
+  }
+
+  getMissionIndexEditor = (
+    mission: Mission & { index?: number },
+    pos: number
+  ) => (
+    <InputNumber
+      value={mission.index}
+      onChange={(val) => this.changeMissionNumber(mission, pos, val)}
+    />
+  )
+
   toogleAdvancedOptions = () => {
     this.setState((state) => ({
       showAdvancedOptions: !state.showAdvancedOptions,
@@ -240,6 +274,10 @@ class CreateBanner extends React.Component<
       missions,
       (m) => !_.some(addedMissions, (a) => a.id === m.id)
     )
+    const canSubmit =
+      addedMissions.length >= 2 &&
+      bannerTitle &&
+      _(addedMissions).all((m) => m.index !== undefined)
 
     return (
       <div className="create-banner">
@@ -283,6 +321,7 @@ class CreateBanner extends React.Component<
               hasMoreMissions={false}
               icon={<SVGCross />}
               onSelectMission={this.onManageMission}
+              missionEditor={this.getMissionIndexEditor}
             />
           </div>
           <div>
@@ -348,7 +387,9 @@ class CreateBanner extends React.Component<
                 </Row>
               </div>
             </div>
-            <h3>Preview</h3>
+            <h3 title="If there are missing missions, you'll see the definitive image in the next page">
+              Preview*
+            </h3>
             <div className="create-banner-preview">
               <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
                 <BannerImage missions={addedMissions} width={bannerWidth} />
@@ -358,7 +399,7 @@ class CreateBanner extends React.Component<
               type="button"
               onClick={this.onCreateBanner}
               className="positive-action-button"
-              disabled={addedMissions.length < 2 || !bannerTitle}
+              disabled={!canSubmit}
             >
               Review
             </button>
@@ -383,7 +424,7 @@ export interface CreateBannerProps extends RouteComponentProps {
 }
 
 interface CreateBannerState {
-  addedMissions: Array<Mission>
+  addedMissions: Array<Mission & { index?: number }>
   page: number
   searchText: string | null
   location: string | null

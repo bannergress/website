@@ -7,13 +7,15 @@ import './search-mission-card.less'
 
 const SearchMissionCard: FC<SearchMissionCardProps> = ({
   mission,
-  onSelectMission,
   icon,
+  onSelectMission,
+  missionEditor,
 }) => {
   return (
     <div className="search-mission-card">
       <MissionImage mission={mission} />
       <div className="mission-title">{mission?.title}</div>
+      {missionEditor && missionEditor()}
       <button
         type="button"
         onClick={() => onSelectMission(mission)}
@@ -28,9 +30,10 @@ const SearchMissionCard: FC<SearchMissionCardProps> = ({
 }
 
 export interface SearchMissionCardProps {
-  mission: Mission
-  onSelectMission: (mission: Mission) => void
+  mission: Mission & { index?: number }
+  onSelectMission: (mission: Mission & { index?: number }) => void
   icon: JSX.Element
+  missionEditor?: () => JSX.Element
 }
 
 export default SearchMissionCard

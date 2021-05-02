@@ -11,10 +11,11 @@ import './search-mission-list.less'
 const SearchMissionList: FC<SearchMissionListProps> = ({
   missions,
   hasMoreMissions,
+  initial,
+  icon,
   loadMoreMissions,
   onSelectMission,
-  icon,
-  initial,
+  missionEditor,
 }) => {
   const [ref] = useInfiniteScroll({
     callback: loadMoreMissions,
@@ -24,12 +25,15 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
     return (
       <Fragment>
         <Scrollbars className="search-mission-list">
-          {missions?.map((mission) => (
+          {missions?.map((mission, index) => (
             <SearchMissionCard
               key={mission.id}
               mission={mission}
               icon={icon}
               onSelectMission={onSelectMission}
+              missionEditor={() =>
+                missionEditor ? missionEditor(mission, index) : <></>
+              }
             />
           ))}
           {hasMoreMissions && <div ref={ref}>Loading more items...</div>}
@@ -43,12 +47,16 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
 }
 
 export interface SearchMissionListProps {
-  missions: Array<Mission> | undefined
+  missions: Array<Mission & { index?: number }> | undefined
   hasMoreMissions: Boolean
   icon: JSX.Element
   initial?: boolean
   loadMoreMissions?: () => Promise<void>
-  onSelectMission: (mission: Mission) => void
+  onSelectMission: (mission: Mission & { index?: number }) => void
+  missionEditor?: (
+    mission: Mission & { index?: number },
+    pos: number
+  ) => JSX.Element
 }
 
 export default SearchMissionList

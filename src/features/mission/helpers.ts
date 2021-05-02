@@ -39,3 +39,16 @@ export const mapMissionsInverse = <T>(
   }
   return result
 }
+
+export const searchMissionIndex = (
+  missions: NumDictionary<Mission>,
+  mission: Mission
+) => {
+  const key = Object.keys(missions).find(
+    (k) => missions[Number(k)].id === mission.id
+  )
+  if (key) {
+    return Number(key)
+  }
+  return undefined
+}
