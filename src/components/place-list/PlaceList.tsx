@@ -23,9 +23,7 @@ const PlaceList: FC<PlaceListProps> = ({
     (places && places.length > 0) ||
     (selectedPlaces && selectedPlaces.length > 0)
   ) {
-    // Sort places by name for listing for now. Might choose later on to sort by
-    // number of banners or other criterion
-    const sortedPlaces = places ? sortPlaces(places, order) : undefined
+    const sortedPlaces = places ? sortPlaces(places, order) : places
 
     return (
       <Fragment>
