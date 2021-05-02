@@ -17,7 +17,7 @@ import {
 } from './actionTypes'
 import * as api from './api'
 import { getCreatedBanner } from './selectors'
-import { Banner, BannerOrder, BannerOrderDirection } from './types'
+import { Banner, ApiOrder, ApiOrderDirection } from './types'
 
 export const loadBannerAction = (id: string) => async (
   dispatch: Dispatch<BannerActionTypes>
@@ -53,8 +53,8 @@ export const loadRecentBannersAction = () => async (
 
 export const loadBrowsedBannersAction = (
   place: Partial<Place> | null,
-  order: BannerOrder,
-  orderDirection: BannerOrderDirection,
+  order: ApiOrder,
+  orderDirection: ApiOrderDirection,
   page: number
 ) => async (dispatch: Dispatch<BannerActionTypes>) => {
   if (page === 0) {
@@ -80,8 +80,8 @@ export const loadBrowsedBannersAction = (
 
 export const loadSearchBannersAction = (
   searchTerm: string,
-  order: BannerOrder,
-  orderDirection: BannerOrderDirection,
+  order: ApiOrder,
+  orderDirection: ApiOrderDirection,
   page: number
 ) => async (dispatch: Dispatch<BannerActionTypes>) => {
   if (page === 0) {

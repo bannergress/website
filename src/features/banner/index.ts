@@ -20,10 +20,11 @@ import {
 } from './actions'
 import {
   Banner,
+  BannerType,
   BannerState,
   NumDictionary,
-  BannerOrder,
-  BannerOrderDirection,
+  ApiOrder,
+  ApiOrderDirection,
 } from './types'
 
 export { default as BannerReducer } from './reducer'
@@ -49,8 +50,9 @@ export {
 }
 export type {
   Banner,
+  BannerType,
   BannerState,
   NumDictionary,
-  BannerOrder,
-  BannerOrderDirection,
+  ApiOrder as BannerOrder,
+  ApiOrderDirection as BannerOrderDirection,
 }

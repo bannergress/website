@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Prompt, RouteComponentProps, withRouter } from 'react-router'
 import { Location } from 'history'
 import { Col, Row } from 'antd'
+import { Helmet } from 'react-helmet'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -69,13 +70,14 @@ class PreviewBanner extends React.Component<
 
     return (
       <Fragment>
+        <Helmet>Create Banner</Helmet>
+        <Prompt message={this.getPromptMessage} />
         <LoadingOverlay
           active={loading}
           text="Saving..."
           spinner
           fadeSpeed={500}
         />
-        <Prompt message={this.getPromptMessage} />
         <Row>
           <Col span={1}>
             <button type="button" onClick={() => history.goBack()}>

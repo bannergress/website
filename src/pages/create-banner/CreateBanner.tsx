@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
-import { Input } from 'antd'
+import { Input, Select, InputNumber, Row, Col } from 'antd'
+import { Helmet } from 'react-helmet'
 import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars'
 
@@ -16,6 +17,7 @@ import {
 } from '../../features/mission'
 import {
   Banner,
+  BannerType,
   createBanner as createBannerAction,
   getCreatedBanner,
   NumDictionary,
@@ -46,19 +48,24 @@ class CreateBanner extends React.Component<
       bannerDescription: undefined,
       bannerTitleChanged: false,
       bannerDescriptionChanged: false,
-      loading: false,
+      bannerType: 'sequential',
+      bannerWidth: 6,
+      showAdvancedOptions: false,
+      status: 'initial',
     }
   }
 
   componentDidMount() {
     const { previousBanner } = this.props
     if (previousBanner) {
-      const { title, description, missions } = previousBanner
+      const { title, description, missions, type, width } = previousBanner
       const addedMissions = mapMissions(missions, (m) => m)
       this.setState({
         bannerTitle: title,
         bannerDescription: description,
         addedMissions,
+        bannerType: type!,
+        bannerWidth: width!,
       })
     }
   }
@@ -88,18 +95,31 @@ class CreateBanner extends React.Component<
     }, 1000)
   }
 
-  searchMissions = () => {
-    const { fetchMissions } = this.props
+  searchMissions = async () => {
+    const { fetchMissions, resetSearchMissions } = this.props
     const { searchText, location } = this.state
     if (searchText && searchText.length > 2) {
-      this.setState({ page: 0 })
-      fetchMissions(location, searchText, 0).catch()
+      try {
+        this.setState({ page: 0, status: 'searching' })
+        await fetchMissions(location, searchText, 0)
+        this.setState({ status: 'ready' })
+      } catch {
+        this.setState({ status: 'error' })
+      }
+    } else {
+      resetSearchMissions()
     }
   }
 
   onInputChange = (
-    val: string,
-    inputName: 'searchText' | 'location' | 'bannerTitle' | 'bannerDescription'
+    val: string | number,
+    inputName:
+      | 'searchText'
+      | 'location'
+      | 'bannerTitle'
+      | 'bannerDescription'
+      | 'bannerType'
+      | 'bannerWidth'
   ) => {
     const newState: Pick<CreateBannerState, any> = { [inputName]: val }
     if (inputName === 'bannerTitle') {
@@ -158,9 +178,15 @@ class CreateBanner extends React.Component<
     this.setState({ addedMissions: _(addedMissions).without(mission) })
   }
 
-  onCreateBanner = () => {
+  onCreateBanner = async () => {
     const { createBanner, history } = this.props
-    const { addedMissions, bannerTitle, bannerDescription } = this.state
+    const {
+      addedMissions,
+      bannerTitle,
+      bannerDescription,
+      bannerType,
+      bannerWidth,
+    } = this.state
     const missions = addedMissions.reduce<NumDictionary<Mission>>(
       (prev, curr, index) => ({
         ...prev,
@@ -168,27 +194,34 @@ class CreateBanner extends React.Component<
       }),
       {}
     )
-    this.setState({ loading: true })
-    createBanner({
-      title: bannerTitle!,
-      description: bannerDescription,
-      missions,
-      numberOfMissions: addedMissions.length,
-      width: 6,
-      type: 'sequential',
-    })
-      .then(() => {
-        history.push('/preview-banner')
+    try {
+      this.setState({ status: 'loading' })
+      await createBanner({
+        title: bannerTitle!,
+        description: bannerDescription,
+        missions,
+        numberOfMissions: addedMissions.length,
+        width: bannerWidth,
+        type: bannerType,
       })
-      .catch(() => this.setState({ loading: false }))
+      history.push('/preview-banner')
+    } catch {
+      this.setState({ status: 'error' })
+    }
   }
 
   getPromptMessage = () => {
-    const { loading, addedMissions } = this.state
-    if (loading || addedMissions.length === 0) {
+    const { status, addedMissions } = this.state
+    if (status === 'loading' || addedMissions.length === 0) {
       return true
     }
     return 'Are you sure you want to leave and discard this banner?'
+  }
+
+  toogleAdvancedOptions = () => {
+    this.setState((state) => ({
+      showAdvancedOptions: !state.showAdvancedOptions,
+    }))
   }
 
   render() {
@@ -197,8 +230,10 @@ class CreateBanner extends React.Component<
       addedMissions,
       bannerTitle,
       bannerDescription,
-      searchText,
-      loading,
+      bannerType,
+      bannerWidth,
+      showAdvancedOptions,
+      status,
     } = this.state
 
     const unusedMissions = _.filter(
@@ -208,9 +243,10 @@ class CreateBanner extends React.Component<
 
     return (
       <div className="create-banner">
+        <Helmet>Create Banner</Helmet>
         <Prompt message={this.getPromptMessage} />
         <LoadingOverlay
-          active={loading}
+          active={status === 'loading'}
           text="Saving..."
           spinner
           fadeSpeed={500}
@@ -235,7 +271,7 @@ class CreateBanner extends React.Component<
               missions={unusedMissions}
               hasMoreMissions={hasMore}
               icon={<SVGRightArrow />}
-              initial={!!searchText}
+              initial={status === 'initial' || status === 'ready'}
               loadMoreMissions={this.onLoadMoreMissions}
               onSelectMission={this.onAddMission}
             />
@@ -267,11 +303,55 @@ class CreateBanner extends React.Component<
                 this.onInputChange(e.target.value, 'bannerDescription')
               }
             />
-            <h3>Advanced Options</h3>
+            <div className="advanced-options">
+              <h3>
+                Advanced Options{' '}
+                <button
+                  type="button"
+                  onClick={this.toogleAdvancedOptions}
+                  className={showAdvancedOptions ? 'open' : 'closed'}
+                >
+                  ▸
+                </button>
+              </h3>
+              <div
+                className={`adv-options-container ${
+                  showAdvancedOptions && 'open'
+                }`}
+              >
+                <Row>
+                  <Col span={12}>
+                    <h4>Banner type</h4>
+                  </Col>
+                  <Col span={12}>
+                    <Select
+                      defaultValue={bannerType}
+                      onChange={(val) => this.onInputChange(val, 'bannerType')}
+                    >
+                      <Select.Option value="sequential">
+                        Sequential
+                      </Select.Option>
+                      <Select.Option value="anyOrder">Any order</Select.Option>
+                    </Select>
+                  </Col>
+                  <Col span={12}>
+                    <h4>Banner width</h4>
+                  </Col>
+                  <Col span={12}>
+                    <InputNumber
+                      min={1}
+                      max={6}
+                      value={bannerWidth}
+                      onChange={(val) => this.onInputChange(val, 'bannerWidth')}
+                    />
+                  </Col>
+                </Row>
+              </div>
+            </div>
             <h3>Preview</h3>
             <div className="create-banner-preview">
               <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
-                <BannerImage missions={addedMissions} />
+                <BannerImage missions={addedMissions} width={bannerWidth} />
               </Scrollbars>
             </div>
             <button
@@ -311,7 +391,10 @@ interface CreateBannerState {
   bannerDescription: string | undefined
   bannerTitleChanged: boolean
   bannerDescriptionChanged: boolean
-  loading: boolean
+  bannerType: BannerType
+  bannerWidth: number
+  showAdvancedOptions: boolean
+  status: 'initial' | 'searching' | 'ready' | 'loading' | 'error'
 }
 
 const mapStateToProps = (state: RootState) => ({

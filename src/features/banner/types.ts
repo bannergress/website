@@ -15,7 +15,7 @@ export interface Banner {
   formattedAddress?: string
   picture?: string
   missions?: NumDictionary<Mission>
-  type?: 'sequential' | 'anyOrder'
+  type?: BannerType
   width?: number
 }
 
@@ -29,9 +29,7 @@ export interface BannerState {
   createdBanner: Banner | undefined
 }
 
-export type BannerOrder =
-  | 'created'
-  | 'lengthMeters'
-  | 'title'
-  | 'numberOfMissions'
-export type BannerOrderDirection = 'ASC' | 'DESC'
+export type BannerType = 'sequential' | 'anyOrder'
+
+export type ApiOrder = 'created' | 'lengthMeters' | 'title' | 'numberOfMissions'
+export type ApiOrderDirection = 'ASC' | 'DESC'
