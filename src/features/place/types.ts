@@ -26,3 +26,5 @@ export interface PlaceState {
   countries: Array<Place>
   administrativeAreas: Dictionary<Array<Place>>
 }
+
+export type PlaceSortOrder = 'name' | 'numberOfBanners'

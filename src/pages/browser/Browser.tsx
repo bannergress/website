@@ -222,6 +222,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
             <Layout>
               <PlaceList
                 title={selectedPlace ? undefined : 'Countries'}
+                order="numberOfBanners"
                 places={administrativeAreas || countries}
                 selectedPlaces={selectedPlaces}
                 onSelectPlace={this.onPlaceSelected}

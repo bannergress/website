@@ -1,13 +1,14 @@
 import React, { Fragment, FC } from 'react'
 import { Row } from 'antd'
 
-import { Place } from '../../features/place'
+import { Place, PlaceSortOrder, sortPlaces } from '../../features/place'
 import PlaceEntry from './PlaceEntry'
 
 import './place-list.less'
 
 const PlaceList: FC<PlaceListProps> = ({
   title,
+  order,
   selectedPlaces,
   places,
   onSelectPlace,
@@ -24,11 +25,7 @@ const PlaceList: FC<PlaceListProps> = ({
   ) {
     // Sort places by name for listing for now. Might choose later on to sort by
     // number of banners or other criterion
-    let sortedPlaces = null
-    if (places) {
-      sortedPlaces = [...places]
-      sortedPlaces.sort((a, b) => a.longName.localeCompare(b.longName))
-    }
+    const sortedPlaces = places ? sortPlaces(places, order) : undefined
 
     return (
       <Fragment>
@@ -72,6 +69,7 @@ export interface PlaceListProps {
   title?: string
   selectedPlaces?: Array<Place>
   places: Array<Place> | undefined
+  order: PlaceSortOrder
   onSelectPlace: (place: Place) => void
 }
 
