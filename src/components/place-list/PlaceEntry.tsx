@@ -4,7 +4,7 @@ import { Place } from '../../features/place'
 
 import './place-entry.less'
 
-const PlaceEntry: FC<PlaceProps> = ({ place }) => (
+const PlaceEntry: FC<PlaceProps> = ({ place, showNumbers }) => (
   <>
     {place.type === 'country' && (
       <>
@@ -19,11 +19,14 @@ const PlaceEntry: FC<PlaceProps> = ({ place }) => (
       </>
     )}
     {place.longName}
+
+    {showNumbers && <span className="place-number-of-banners">({place.numberOfBanners})</span>}
   </>
 )
 
 export interface PlaceProps {
   place: Place
+  showNumbers: boolean
 }
 
 export default PlaceEntry
