@@ -22,6 +22,14 @@ const PlaceList: FC<PlaceListProps> = ({
     (places && places.length > 0) ||
     (selectedPlaces && selectedPlaces.length > 0)
   ) {
+    // Sort places by name for listing for now. Might choose later on to sort by
+    // number of banners or other criterion
+    let sortedPlaces = null
+    if (places) {
+      sortedPlaces = [...places]
+      sortedPlaces.sort((a, b) => a.longName.localeCompare(b.longName))
+    }
+
     return (
       <Fragment>
         {title && <h2>{title}</h2>}
@@ -38,7 +46,7 @@ const PlaceList: FC<PlaceListProps> = ({
             </span>
           </h2>
         ))}
-        {places?.map((place) => (
+        {sortedPlaces?.map((place) => (
           <div
             key={place.id}
             className="places-list-item places-list-child"
