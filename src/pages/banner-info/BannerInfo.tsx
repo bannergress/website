@@ -50,7 +50,6 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
               <Row>
                 <Col span={8}>
                   <BannerCard banner={banner} selected={false} />
-                  <div className="mt-1" />
                   {missions && (
                     <MissionList
                       missions={missions}

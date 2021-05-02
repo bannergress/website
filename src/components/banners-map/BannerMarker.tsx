@@ -10,24 +10,38 @@ const BannerMarker: FC<BannerMarkerProps> = ({
 }) => {
   const color = selected ? '#16d4b2' : '#6832da'
   return (
-    <CircleMarker
-      pathOptions={{
-        color: 'rgba(0, 0, 0, 0.4)',
-        fillColor: color,
-        fillOpacity: 1,
-        weight: 8,
-        stroke: true,
-        className: 'banner-marker',
-      }}
-      radius={12}
-      center={[banner.startLatitude, banner.startLongitude]}
-      eventHandlers={{
-        click: onSelect,
-      }}
-      className={selected ? 'selected' : ''}
-    >
-      <Tooltip permanent={selected}>{banner.title}</Tooltip>
-    </CircleMarker>
+    <>
+      <CircleMarker
+        pathOptions={{
+          fillColor: color,
+          fillOpacity: 1,
+          fill: true,
+          stroke: false,
+        }}
+        radius={12}
+        center={[banner.startLatitude, banner.startLongitude]}
+        eventHandlers={{
+          click: onSelect,
+        }}
+      >
+        <Tooltip permanent={selected}>{banner.title}</Tooltip>
+      </CircleMarker>
+      <CircleMarker
+        pathOptions={{
+          color: 'rgba(0, 0, 0, 0.4)',
+          weight: 8,
+          fill: false,
+          stroke: true,
+        }}
+        radius={16}
+        center={[banner.startLatitude, banner.startLongitude]}
+        eventHandlers={{
+          click: onSelect,
+        }}
+      >
+        <Tooltip permanent={selected}>{banner.title}</Tooltip>
+      </CircleMarker>
+    </>
   )
 }
 

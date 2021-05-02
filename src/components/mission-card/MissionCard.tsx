@@ -1,5 +1,4 @@
-import React, { Fragment } from 'react'
-import { Card, Row } from 'antd'
+import React from 'react'
 
 import { Mission } from '../../features/mission'
 import MissionImage from '../mission-image/MissionImage'
@@ -42,35 +41,26 @@ class MissionCard extends React.Component<MissionCardProps, MissionCardState> {
     const { mission, showExpandOption } = this.props
     const { expanded } = this.state
     return (
-      <Fragment>
-        <div className="mission-card" key={mission?.id}>
-          <Card style={{ width: 448, backgroundColor: '#404040' }}>
-            <Row
-              align="middle"
-              justify="space-between"
-              className="mission-content"
-              onClick={this.onExpand}
-            >
-              <div>
-                <Row align="middle">
-                  {mission && <MissionImage mission={mission} />}
-                  <div className="mission-title">{mission?.title}</div>
-                </Row>
-              </div>
-              {showExpandOption && (
-                <div>
-                  <SVGChevron
-                    fill="#FFF"
-                    className={`icon ${expanded ? 'open' : ''}`}
-                    key="showpanel"
-                  />
-                </div>
-              )}
-            </Row>
-            {expanded ? <StepList steps={mission?.steps} /> : null}
-          </Card>
-        </div>
-      </Fragment>
+      <div className="mission-card" key={mission?.id}>
+        <button
+          className="mission-header"
+          onClick={this.onExpand}
+          type="button"
+        >
+          {mission && <MissionImage mission={mission} />}
+          <div className="mission-title">{mission?.title}</div>
+          {showExpandOption && (
+            <div>
+              <SVGChevron
+                fill="#FFF"
+                className={`icon ${expanded ? 'open' : ''}`}
+                key="showpanel"
+              />
+            </div>
+          )}
+        </button>
+        {expanded && <StepList steps={mission?.steps} />}
+      </div>
     )
   }
 }
