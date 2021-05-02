@@ -1,6 +1,5 @@
 import React, { Fragment, FC } from 'react'
 import { Row } from 'antd'
-import Layout from 'antd/es/layout/layout'
 
 import { Step } from '../../features/mission'
 import StepCard from '../step-card'

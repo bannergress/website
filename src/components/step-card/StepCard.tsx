@@ -1,12 +1,8 @@
 import React, { FC } from 'react'
-import Layout from 'antd/es/layout/layout'
 
-import { Step } from '../../features/mission'
+import { Step, Objective } from '../../features/mission'
 
 import './step-card.less'
-
-import { Step } from '../../features/mission'
-import { Objective } from '../../features/mission/types'
 
 const toObjective = (objective: Objective) => {
   switch (objective) {
