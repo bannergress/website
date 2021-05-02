@@ -1,18 +1,16 @@
 import React, { Fragment } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Row, Col, Modal } from 'antd'
-
 import { useKeycloak } from '@react-keycloak/web'
 
 import IfUserLoggedIn from '../if-user-logged-in'
 import IfUserLoggedOut from '../if-user-logged-out'
 import IfUserInitializing from '../if-user-initializing'
 import UserName from '../user-name'
-
-import './Login-in-navbar.less'
-
 import { ReactComponent as SVGGoogleLogo } from '../../../img/icons/google_logo.svg'
 import { ReactComponent as SVGFacebookLogo } from '../../../img/icons/facebook_logo.svg'
+
+import './Login-in-navbar.less'
 
 const LoginInNavbar: React.FC = () => {
   const { keycloak } = useKeycloak()

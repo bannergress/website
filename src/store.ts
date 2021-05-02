@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storageSession from 'redux-persist/lib/storage/session'
 import { devToolsEnhancer } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
+
 import { BannerReducer } from './features/banner'
 import { PlaceReducer } from './features/place'
 import { MissionReducer } from './features/mission'

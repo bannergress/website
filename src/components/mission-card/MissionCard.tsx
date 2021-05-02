@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react'
 import { Card, Row } from 'antd'
+
+import { Mission } from '../../features/mission'
+import MissionImage from '../mission-image/MissionImage'
+import StepList from '../step-list'
 import { ReactComponent as SVGChevron } from '../../img/icons/chevron.svg'
 
-import StepList from '../step-list'
-import { Mission } from '../../features/mission'
-
 import './mission-card.less'
-import MissionImage from '../mission-image/MissionImage'
 
 class MissionCard extends React.Component<MissionCardProps, MissionCardState> {
   constructor(props: MissionCardProps) {

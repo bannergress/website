@@ -1,16 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+
+import { RootState } from '../../storeTypes'
 import {
   getRecentBanners,
   loadRecentBanners,
   Banner,
 } from '../../features/banner'
-import { RootState } from '../../storeTypes'
+import IfUserLoggedIn from '../login/if-user-logged-in'
 import BannerList from '../banner-list'
 
 import './recent-banners.less'
-import IfUserLoggedIn from '../login/if-user-logged-in'
 
 export class RecentBanners extends React.Component<RecentBannersProps, {}> {
   componentDidMount() {

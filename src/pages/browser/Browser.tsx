@@ -21,12 +21,10 @@ import {
   Place,
   createMapUri,
 } from '../../features/place'
-
-import { ReactComponent as SVGMap } from '../../img/icons/map.svg'
-
 import PlaceList from '../../components/place-list'
 import BannerList from '../../components/banner-list'
 import BannerOrderChooser from '../../components/banner-order-chooser'
+import { ReactComponent as SVGMap } from '../../img/icons/map.svg'
 
 import './browser.less'
 

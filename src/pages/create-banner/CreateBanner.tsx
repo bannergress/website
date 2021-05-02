@@ -6,7 +6,6 @@ import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars'
 
 import { RootState } from '../../storeTypes'
-import './create-banner.less'
 import {
   getHasMoreSearchedMissions,
   getMissions,
@@ -24,9 +23,10 @@ import {
 import SearchMissionList from '../../components/search-mission-list'
 import BannerImage from '../../components/banner-image'
 import { extract } from '../../features/banner/naming'
-
 import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg'
 import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
+
+import './create-banner.less'
 
 class CreateBanner extends React.Component<
   CreateBannerProps,

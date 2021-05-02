@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
+import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { Col, Row } from 'antd'
-import { connect } from 'react-redux'
 import { LatLngBounds } from 'leaflet'
 import Scrollbars from 'react-custom-scrollbars'
 
@@ -24,7 +24,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 
   onMapChanged = (bounds: LatLngBounds) => {
-    this.setState({ bounds })
+    this.setState({ bounds, selectedBannerId: undefined })
     this.onLoadBanners(bounds)
   }
 

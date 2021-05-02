@@ -1,10 +1,10 @@
 import React, { Fragment, FC } from 'react'
 import { Row } from 'antd'
+import Layout from 'antd/es/layout/layout'
+
+import { Step } from '../../features/mission'
 
 import './step-card.less'
-
-import Layout from 'antd/es/layout/layout'
-import { Step } from '../../features/mission'
 
 const StepCard: FC<StepProps> = ({ step, indexPortal }) => {
   if (step) {

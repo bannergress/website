@@ -1,18 +1,18 @@
 import React, { Fragment } from 'react'
-import { Col, Row } from 'antd'
-import { Prompt, RouteComponentProps, withRouter } from 'react-router'
 import { connect } from 'react-redux'
+import { Prompt, RouteComponentProps, withRouter } from 'react-router'
 import { Location } from 'history'
+import { Col, Row } from 'antd'
 
-import BannerCard from '../../components/banner-card'
-import MissionList from '../../components/mission-list'
+import { RootState } from '../../storeTypes'
 import {
   Banner,
   getCreatedBanner,
   submitBanner as submitBannerAction,
 } from '../../features/banner'
+import BannerCard from '../../components/banner-card'
+import MissionList from '../../components/mission-list'
 import { MapDetail } from '../map-detail'
-import { RootState } from '../../storeTypes'
 
 import './preview-banner.less'
 

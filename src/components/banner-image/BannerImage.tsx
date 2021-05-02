@@ -1,9 +1,9 @@
 import React, { FC } from 'react'
 
 import { Mission } from '../../features/mission'
+import MissionImage from '../mission-image/MissionImage'
 
 import './banner-image.less'
-import MissionImage from '../mission-image/MissionImage'
 
 const BannerImage: FC<BannerImageProps> = ({ missions }) => {
   return (

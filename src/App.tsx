@@ -5,21 +5,21 @@ import { Helmet } from 'react-helmet'
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import keycloak from './keycloak'
 
-import Navbar from './components/navbar'
+import { authenticateApi } from './api'
 import { About } from './pages/About'
 import { Home } from './pages/Home'
 import { MapOverview } from './pages/map-overview'
 import { BannerInfo } from './pages/banner-info'
 import { Search } from './pages/search'
 import { Browser } from './pages/browser'
-import BannerList from './components/recent-banners'
-import { authenticateApi } from './api'
 import { CreateBanner } from './pages/create-banner'
 import { PreviewBanner } from './pages/preview-banner'
 import { PrivateRoute } from './components/login/private-route'
+import BannerList from './components/recent-banners'
+import MenuMain from './components/menu-main/MenuMain'
+import Navbar from './components/navbar'
 
 import './App.less'
-import MenuMain from './components/menu-main/MenuMain'
 
 const App: React.FC = () => (
   <ReactKeycloakProvider

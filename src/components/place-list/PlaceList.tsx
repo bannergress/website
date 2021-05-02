@@ -2,9 +2,9 @@ import React, { Fragment, FC } from 'react'
 import { Row } from 'antd'
 
 import { Place } from '../../features/place'
+import PlaceEntry from './PlaceEntry'
 
 import './place-list.less'
-import PlaceEntry from './PlaceEntry'
 
 const PlaceList: FC<PlaceListProps> = ({
   title,
@@ -26,27 +26,28 @@ const PlaceList: FC<PlaceListProps> = ({
       <Fragment>
         {title && <h2>{title}</h2>}
         {selectedPlaces?.map((place) => (
-          <h2 className="places-list-item" key={place.id}>
+          <h2 key={place.id} className="places-list-item">
             <span
+              key={place.id}
               onClick={() => onSelectPlace(place)}
               onKeyPress={(e) => onKeyPress(e, place)}
               role="button"
               tabIndex={0}
             >
-              ❮ <PlaceEntry place={place} />
+              ❮ <PlaceEntry key={place.id} place={place} />
             </span>
           </h2>
         ))}
         {places?.map((place) => (
           <div
-            className="places-list-item places-list-child"
             key={place.id}
+            className="places-list-item places-list-child"
             onClick={() => onSelectPlace(place)}
             onKeyPress={(e) => onKeyPress(e, place)}
             role="button"
             tabIndex={0}
           >
-            <PlaceEntry place={place} />
+            <PlaceEntry key={place.id} place={place} />
           </div>
         ))}
       </Fragment>

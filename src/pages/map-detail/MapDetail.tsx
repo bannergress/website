@@ -9,8 +9,10 @@ import {
   TileLayer,
   Tooltip,
 } from 'react-leaflet'
+
 import { Banner, NumDictionary } from '../../features/banner'
 import { mapMissions, Mission } from '../../features/mission'
+
 import './map.less'
 
 // set to null if all missions should be rendered

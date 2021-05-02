@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react'
-
 import { Row, Layout, Button, Card } from 'antd'
 
 import { NumDictionary } from '../../features/banner'
-import './mission-list.less'
-import MissionCard from '../mission-card'
 import { mapMissions, Mission } from '../../features/mission'
+import MissionCard from '../mission-card'
+
+import './mission-list.less'
 
 export class MissionList extends React.Component<MissionListProps, {}> {
   componentDidMount() {}

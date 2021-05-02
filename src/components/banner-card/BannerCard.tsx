@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
 
-import './banner-card.less'
-
+import { Banner } from '../../features/banner'
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
-import { Banner } from '../../features/banner'
+
+import './banner-card.less'
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL
 

@@ -45,12 +45,13 @@ const BannerList: FC<BannerListProps> = ({
               }}
             >
               <Link
+                key={bannerItem.uuid}
                 to={generatePath('/banner/:uuid', { uuid: bannerItem.uuid })}
                 title={bannerItem.title}
               >
                 <BannerCard
-                  banner={bannerItem}
                   key={bannerItem.uuid}
+                  banner={bannerItem}
                   selected={bannerItem.uuid === selectedBannerId}
                 />
               </Link>

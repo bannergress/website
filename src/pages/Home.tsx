@@ -1,4 +1,5 @@
 import React from 'react'
+
 import Announcement from '../components/announcement'
 import RecentBanners from '../components/recent-banners'
 import FooterMain from '../components/footer-main'

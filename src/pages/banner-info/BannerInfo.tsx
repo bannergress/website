@@ -1,23 +1,20 @@
 import React, { Fragment } from 'react'
-
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Layout, Row, Col } from 'antd'
 import { Helmet } from 'react-helmet'
 
 import { RootState } from '../../storeTypes'
-
 import {
   Banner,
   getBanner as getBannerSelector,
   loadBanner,
 } from '../../features/banner'
-
 import BannerCard from '../../components/banner-card'
 import MissionList from '../../components/mission-list'
+import { MapDetail } from '../map-detail'
 
 import './banner-info.less'
-import { MapDetail } from '../map-detail'
 
 class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
   constructor(props: BannerInfoProps) {

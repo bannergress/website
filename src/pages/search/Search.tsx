@@ -3,18 +3,19 @@ import { connect } from 'react-redux'
 import { Row, Layout, Divider } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import FooterMain from '../../components/footer-main'
-import BannerList from '../../components/banner-list'
-import BannerOrderChooser from '../../components/banner-order-chooser'
+
+import { RootState } from '../../storeTypes'
 import {
   Banner,
   BannerOrder,
   BannerOrderDirection,
   getSearchBanners,
   getHasMoreSearchBanners,
+  loadSearchBanners as loadSearchBannersAction,
 } from '../../features/banner'
-import { RootState } from '../../storeTypes'
-import { loadSearchBannersAction } from '../../features/banner/actions'
+import BannerOrderChooser from '../../components/banner-order-chooser'
+import BannerList from '../../components/banner-list'
+import FooterMain from '../../components/footer-main'
 
 import './search.less'
 

@@ -2,14 +2,13 @@ import React, { Fragment } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { LatLng, LatLngBounds, Map as LeafletMap } from 'leaflet'
 import { MapContainer, TileLayer } from 'react-leaflet'
-// import MarkerClusterGroup from 'react-leaflet-cluster'
-import _ from 'underscore'
 import 'leaflet-loading'
+import _ from 'underscore'
 
 import { Banner } from '../../features/banner'
+import BannerMarker from './BannerMarker'
 
 import './banners-map.less'
-import BannerMarker from './BannerMarker'
 
 class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
   private map: LeafletMap | undefined = undefined
@@ -94,11 +93,12 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
     const { banners } = this.props
     const { selectedBannerId } = this.state
     return banners.map((banner: Banner) => {
+      const selected = selectedBannerId === banner.uuid
       return (
         <BannerMarker
-          key={banner.uuid}
+          key={`${banner.uuid}${selected ? 'selected' : ''}`}
           banner={banner}
-          selected={selectedBannerId === banner.uuid}
+          selected={selected}
           onSelect={() => this.onSelectBanner(banner)}
         />
       )
