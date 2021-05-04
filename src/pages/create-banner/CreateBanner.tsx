@@ -18,9 +18,10 @@ import {
 import {
   Banner,
   BannerType,
-  createBanner as createBannerAction,
   getCreatedBanner,
   NumDictionary,
+  createBanner as createBannerAction,
+  removePendingBanner as removePendingBannerAction,
 } from '../../features/banner'
 import { extract } from '../../features/banner/naming'
 import SearchMissionList from '../../components/search-mission-list'
@@ -90,8 +91,12 @@ class CreateBanner extends React.Component<
   }
 
   componentWillUnmount() {
-    const { resetSearchMissions } = this.props
+    const { resetSearchMissions, removePendingBanner } = this.props
+    const { status } = this.state
     resetSearchMissions()
+    if (status !== 'loading') {
+      removePendingBanner()
+    }
   }
 
   handleSearch = () => {
@@ -430,6 +435,7 @@ export interface CreateBannerProps extends RouteComponentProps {
   ) => Promise<void>
   createBanner: (banner: Partial<Banner>) => Promise<void>
   resetSearchMissions: () => void
+  removePendingBanner: () => void
 }
 
 interface CreateBannerState {
@@ -457,6 +463,7 @@ const mapDispatchToProps = {
   fetchMissions: searchMissionsAction,
   createBanner: createBannerAction,
   resetSearchMissions: resetSearchMissionsAction,
+  removePendingBanner: removePendingBannerAction,
 }
 
 export default connect(

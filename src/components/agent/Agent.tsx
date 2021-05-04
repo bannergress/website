@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { NamedAgent } from '../../features/mission/types'
+import { NamedAgent } from '../../features/mission'
 
 import './agent.less'
 

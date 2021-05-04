@@ -17,6 +17,7 @@ import {
   createBannerAction,
   submitBannerAction,
   loadMapBannersAction,
+  removePendingBannerAction,
 } from './actions'
 import {
   Banner,
@@ -47,6 +48,7 @@ export {
   createBannerAction as createBanner,
   submitBannerAction as submitBanner,
   loadMapBannersAction as loadMapBanners,
+  removePendingBannerAction as removePendingBanner,
 }
 export type {
   Banner,

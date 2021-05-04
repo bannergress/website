@@ -169,3 +169,11 @@ export const loadMapBannersAction = (
     // })
   }
 }
+
+export const removePendingBannerAction = () => (
+  dispatch: Dispatch<BannerActionTypes>
+) => {
+  dispatch({
+    type: REMOVE_CREATED_BANNER,
+  })
+}

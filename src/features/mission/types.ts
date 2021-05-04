@@ -31,7 +31,7 @@ export interface Mission {
   startLatitude?: number
   startLongitude?: number
   type?: 'hidden' | 'anyOrder' | 'sequential'
-  online?: Boolean,
+  online?: Boolean
   author?: NamedAgent
 }
 
@@ -41,6 +41,6 @@ export interface MissionState {
 }
 
 export interface NamedAgent {
-  name: string,
+  name: string
   faction: 'enlightened' | 'resistance'
 }

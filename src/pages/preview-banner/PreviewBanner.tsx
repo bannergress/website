@@ -9,6 +9,7 @@ import {
   Banner,
   getCreatedBanner,
   submitBanner as submitBannerAction,
+  removePendingBanner as removePendingBannerAction,
 } from '../../features/banner'
 import BannerCard from '../../components/banner-card'
 import MissionList from '../../components/mission-list'
@@ -36,6 +37,14 @@ class PreviewBanner extends React.Component<
     }
   }
 
+  componentWillUnmount() {
+    const { removePendingBanner } = this.props
+    const { loading } = this.state
+    if (!loading) {
+      removePendingBanner()
+    }
+  }
+
   onSubmitBanner = () => {
     const { submitBanner, history } = this.props
     this.setState({ loading: true })
@@ -59,8 +68,13 @@ class PreviewBanner extends React.Component<
     return 'Are you sure you want to leave and discard this banner?'
   }
 
+  onBack = () => {
+    const { history } = this.props
+    this.setState({ loading: true }, () => history.goBack())
+  }
+
   render() {
-    const { banner, history } = this.props
+    const { banner } = this.props
     const { loading, expanded } = this.state
     if (!banner) {
       return <Fragment />
@@ -78,7 +92,7 @@ class PreviewBanner extends React.Component<
           fadeSpeed={500}
         />
         <div className="banner-info-overview">
-          <button type="button" onClick={() => history.goBack()}>
+          <button type="button" onClick={this.onBack}>
             &lt;
           </button>
           <BannerCard banner={banner} selected={false} />
@@ -108,6 +122,7 @@ class PreviewBanner extends React.Component<
 export interface PreviewBannerProps extends RouteComponentProps {
   banner: Banner | undefined
   submitBanner: () => Promise<string>
+  removePendingBanner: () => void
 }
 
 interface PreviewBannerState {
@@ -121,6 +136,7 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = {
   submitBanner: submitBannerAction,
+  removePendingBanner: removePendingBannerAction,
 }
 
 export default connect(
