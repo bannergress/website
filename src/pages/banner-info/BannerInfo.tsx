@@ -54,7 +54,9 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
               />
             )}
           </div>
-          <MapDetail banner={banner} />
+          <div className="banner-info-additional">
+            <MapDetail banner={banner} />
+          </div>
         </div>
       )
     }

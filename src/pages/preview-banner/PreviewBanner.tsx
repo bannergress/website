@@ -2,7 +2,6 @@ import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Prompt, RouteComponentProps, withRouter } from 'react-router'
 import { Location } from 'history'
-import { Col, Row } from 'antd'
 import { Helmet } from 'react-helmet'
 
 import { RootState } from '../../storeTypes'
@@ -69,7 +68,7 @@ class PreviewBanner extends React.Component<
     const { missions } = banner
 
     return (
-      <Fragment>
+      <div className="banner-info">
         <Helmet>Create Banner</Helmet>
         <Prompt message={this.getPromptMessage} />
         <LoadingOverlay
@@ -78,35 +77,30 @@ class PreviewBanner extends React.Component<
           spinner
           fadeSpeed={500}
         />
-        <Row>
-          <Col span={1}>
-            <button type="button" onClick={() => history.goBack()}>
-              &lt;
-            </button>
-          </Col>
-          <Col span={8}>
-            <BannerCard banner={banner} selected={false} />
-            <div className="mt-1" />
-            {missions && (
-              <MissionList
-                missions={missions}
-                expanded={expanded}
-                onExpand={this.onExpand}
-              />
-            )}
-          </Col>
-          <Col span={15} className="mt-1 pl-1 pr-1">
-            <Row>
-              <MapDetail banner={banner} />
-            </Row>
-            <Row>
-              <button type="button" onClick={this.onSubmitBanner}>
-                Submit Banner
-              </button>
-            </Row>
-          </Col>
-        </Row>
-      </Fragment>
+        <div className="banner-info-overview">
+          <button type="button" onClick={() => history.goBack()}>
+            &lt;
+          </button>
+          <BannerCard banner={banner} selected={false} />
+          {missions && (
+            <MissionList
+              missions={missions}
+              expanded={expanded}
+              onExpand={this.onExpand}
+            />
+          )}
+        </div>
+        <div className="banner-info-additional">
+          <MapDetail banner={banner} />
+          <button
+            type="button"
+            className="positive-action-button"
+            onClick={this.onSubmitBanner}
+          >
+            Submit Banner
+          </button>
+        </div>
+      </div>
     )
   }
 }
