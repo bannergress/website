@@ -20,7 +20,7 @@ const PlaceEntry: FC<PlaceProps> = ({ place, showNumbers }) => (
     )}
     {place.longName}
 
-    {showNumbers && <span className="place-number-of-banners">({place.numberOfBanners})</span>}
+    {showNumbers && <> ({place.numberOfBanners})</>}
   </>
 )
 

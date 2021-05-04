@@ -18,7 +18,7 @@ export const sortPlaces = (places: Place[], order: PlaceSortOrder) => {
   const sortFunc =
     order === 'name'
       ? (a: Place, b: Place) => a.longName.localeCompare(b.longName)
-      : (a: Place, b: Place) => b.numberOfBanners - a.numberOfBanners;
+      : (a: Place, b: Place) => b.numberOfBanners - a.numberOfBanners
 
   sorted.sort(sortFunc)
 
