@@ -407,7 +407,7 @@ class CreateBanner extends React.Component<
             <button
               type="button"
               onClick={this.onCreateBanner}
-              className="positive-action-button"
+              className="positive-action-button button-review"
               disabled={!this.canSubmitBanner()}
             >
               Review
