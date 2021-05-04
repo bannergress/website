@@ -30,7 +30,7 @@ export class MissionList extends React.Component<MissionListProps, {}> {
     if (missions) {
       return (
         <div>
-          <div>
+          <div className="mission-list-header">
             <h2>Missions in this banner</h2>
             {onExpand && (
               <Button

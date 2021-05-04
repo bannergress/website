@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
-import { Layout, Row, Col } from 'antd'
 import { Helmet } from 'react-helmet'
 
 import { RootState } from '../../storeTypes'
@@ -41,30 +40,22 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
     if (banner) {
       const { missions } = banner
       return (
-        <Fragment>
+        <div className="banner-info">
           <Helmet>
             <title>{banner.title}</title>
           </Helmet>
-          <Row justify="center" className="banner-info">
-            <Layout>
-              <Row>
-                <Col span={8}>
-                  <BannerCard banner={banner} selected={false} />
-                  {missions && (
-                    <MissionList
-                      missions={missions}
-                      expanded={expanded}
-                      onExpand={this.onExpand}
-                    />
-                  )}
-                </Col>
-                <Col span={16} className="mt-1 pl-1 pr-1">
-                  <MapDetail banner={banner} />
-                </Col>
-              </Row>
-            </Layout>
-          </Row>
-        </Fragment>
+          <div className="banner-info-overview">
+            <BannerCard banner={banner} selected={false} />
+            {missions && (
+              <MissionList
+                missions={missions}
+                expanded={expanded}
+                onExpand={this.onExpand}
+              />
+            )}
+          </div>
+          <MapDetail banner={banner} />
+        </div>
       )
     }
     return <Fragment>loading</Fragment>
