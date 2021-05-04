@@ -1,5 +1,4 @@
-import React, { Fragment, FC } from 'react'
-import { Row } from 'antd'
+import React, { FC } from 'react'
 
 import { BannerOrder, BannerOrderDirection } from '../../features/banner'
 import { ReactComponent as SVGUpArrow } from '../../img/icons/up-arrow.svg'
@@ -28,22 +27,20 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
       className={getButtonClass(type)}
       onClick={() => onOrderClicked(type)}
     >
-      {title} <SVGUpArrow className="arrow" />
+      <div className="order-button-inner">
+        {title} <SVGUpArrow className="arrow" />
+      </div>
     </button>
   )
 
   return (
-    <Fragment>
-      <Row justify="start">
-        <h4>Sort by</h4>
-      </Row>
-      <Row className="order-chooser">
-        {getButton('Date Created', 'created')}
-        {getButton('A-Z', 'title')}
-        {getButton('Distance', 'lengthMeters')}
-        {getButton('Total Missions', 'numberOfMissions')}
-      </Row>
-    </Fragment>
+    <div className="order-chooser">
+      <h4>Sort by</h4>
+      {getButton('Date Created', 'created')}
+      {getButton('A-Z', 'title')}
+      {getButton('Distance', 'lengthMeters')}
+      {getButton('Total Missions', 'numberOfMissions')}
+    </div>
   )
 }
 
