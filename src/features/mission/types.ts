@@ -31,10 +31,16 @@ export interface Mission {
   startLatitude?: number
   startLongitude?: number
   type?: 'hidden' | 'anyOrder' | 'sequential'
-  online?: Boolean
+  online?: Boolean,
+  author?: NamedAgent
 }
 
 export interface MissionState {
   searchedMissions: Array<Mission>
   canSearchMore: Boolean
+}
+
+export interface NamedAgent {
+  name: string,
+  faction: 'enlightened' | 'resistance'
 }

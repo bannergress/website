@@ -7,25 +7,25 @@
   background-color: #404040;
   border-radius: 5px;
   display: flex;
-  column-gap: 10px;
+  column-gap: 15px;
   justify-content: space-between;
   padding: 10px;
   align-items: center;
 
-  .mission-content {
-    max-height: 70px;
-    align-content: flex-start;
-    cursor: pointer;
+  .mission-image {
+    flex-shrink: 0;
   }
 
-
-  .mission-title {
-    font-size: 18px;
-    padding-left: 1rem;
+  .mission-title-and-author {
     flex: 1;
   }
-  .mission-title:first-letter {
-    text-transform: uppercase;
+
+  .mission-title {
+    line-height: 130%;
+  }
+
+  .mission-agent {
+    font-size: 14px;
   }
 
   .icon {
@@ -50,5 +50,6 @@
     border: none;
     fill: white;
     cursor: pointer;
+    flex-shrink: 0;
   }
 }
