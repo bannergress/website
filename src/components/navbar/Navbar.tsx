@@ -4,7 +4,7 @@ import { useHistory, NavLink } from 'react-router-dom'
 import { Input } from 'antd'
 
 import LoginInNavbar from '../login/login-in-navbar'
-import MenuMain from '../menu-main/MenuMain'
+import MenuMain from '../menu-main'
 import Logo from '../../img/logo/logo64.png'
 
 import './Navbar.less'
@@ -29,12 +29,14 @@ export const Navbar: React.FC = () => {
         </div>
       </NavLink>
       <MenuMain />
-      <Search
-        className="search-bar"
-        placeholder="Search Banners or Places"
-        onSearch={callSearch}
-      />
-      <LoginInNavbar />
+      <div>
+        <Search
+          className="search-bar"
+          placeholder="Search Banners or Places"
+          onSearch={callSearch}
+        />
+        <LoginInNavbar />
+      </div>
     </div>
   )
 }
