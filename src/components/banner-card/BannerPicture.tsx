@@ -82,7 +82,7 @@ const BannerPicture: FC<BannerPictureProps> = ({ title, url }) => {
         ref={ref}
         className="banner-card-picture"
         onClick={() => setModalOpened(true)}
-        onKeyPress={(e) => (e.key === 'U+000D' ? setModalOpened(true) : null)}
+        onKeyPress={(e) => (e.key === 'Enter' ? setModalOpened(true) : null)}
         role="button"
         tabIndex={0}
       >

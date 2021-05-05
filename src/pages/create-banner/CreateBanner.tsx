@@ -109,6 +109,13 @@ class CreateBanner extends React.Component<
     }, 1000)
   }
 
+  onSearchForced = () => {
+    if (this.timer) {
+      clearTimeout(this.timer)
+    }
+    this.searchMissions()
+  }
+
   searchMissions = async () => {
     const { fetchMissions, resetSearchMissions } = this.props
     const { searchText, location } = this.state
@@ -328,8 +335,11 @@ class CreateBanner extends React.Component<
             <h3>Search for missions</h3>
             <span>You can search by mission name or author</span>
             <Input
-              placeholder="New Banner"
+              placeholder="Enter at least 3 chars..."
               onChange={(e) => this.onInputChange(e.target.value, 'searchText')}
+              onKeyPress={(k) =>
+                k.key === 'Enter' ? this.onSearchForced() : null
+              }
             />
             <div className="results-title">
               <h3>Search results</h3>

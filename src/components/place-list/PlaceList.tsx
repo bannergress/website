@@ -14,7 +14,7 @@ const PlaceList: FC<PlaceListProps> = ({
   onSelectPlace,
 }) => {
   const onKeyPress = (event: React.KeyboardEvent<Element>, place: Place) => {
-    if (event.key === 'U+000D') {
+    if (event.key === 'Enter') {
       onSelectPlace(place)
     }
   }
