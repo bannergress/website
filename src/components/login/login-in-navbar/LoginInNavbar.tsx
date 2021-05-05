@@ -5,15 +5,19 @@ import { useKeycloak } from '@react-keycloak/web'
 import IfUserLoggedIn from '../if-user-logged-in'
 import IfUserLoggedOut from '../if-user-logged-out'
 import IfUserInitializing from '../if-user-initializing'
-import UserName from '../user-name'
 import { ReactComponent as SVGGoogleLogo } from '../../../img/icons/google_logo.svg'
 import { ReactComponent as SVGFacebookLogo } from '../../../img/icons/facebook_logo.svg'
 
 import './Login-in-navbar.less'
+import MenuUser from '../../menu-user'
 
 const LoginInNavbar: React.FC = () => {
   const { keycloak } = useKeycloak()
   const [modalIsOpen, setIsOpen] = React.useState(false)
+  const idTokenParsed = (keycloak.idTokenParsed as any) || {}
+  const user = {
+    picture: idTokenParsed.picture,
+  }
 
   function openModal() {
     setIsOpen(true)
@@ -63,27 +67,21 @@ const LoginInNavbar: React.FC = () => {
       </Modal>
 
       <IfUserLoggedIn>
-        <button
-          className="link-button"
-          type="button"
-          onClick={() => keycloak.logout()}
-        >
-          Logout <UserName />
-        </button>
+        <MenuUser user={user} logout={() => keycloak.logout()} />
       </IfUserLoggedIn>
 
       <IfUserLoggedOut>
         <button
-          className="link-button"
+          className="sign-in-button"
           type="button"
           onClick={() => openModal()}
         >
-          Login
+          Sign In
         </button>
       </IfUserLoggedOut>
 
       <IfUserInitializing>
-        <>Checking Login...</>
+        <div className="sign-in-button">...</div>
       </IfUserInitializing>
     </Fragment>
   )

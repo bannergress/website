@@ -16,7 +16,7 @@ import { CreateBanner } from './pages/create-banner'
 import { PreviewBanner } from './pages/preview-banner'
 import { PrivateRoute } from './components/login/private-route'
 import { Help } from './pages/help'
-import MenuMain from './components/menu-main/MenuMain'
+import MenuMain from './components/menu-main'
 import Navbar from './components/navbar'
 
 import './App.less'

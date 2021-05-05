@@ -57,4 +57,6 @@ export type {
   NumDictionary,
   ApiOrder as BannerOrder,
   ApiOrderDirection as BannerOrderDirection,
+  ApiOrder,
+  ApiOrderDirection,
 }

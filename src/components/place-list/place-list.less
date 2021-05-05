@@ -1,15 +1,23 @@
 .places-list-item {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  column-gap: 0.3em;
 }
 
 .places-list {
-    padding-top: 5em;
-    padding-left: 2em;
-    padding-right: 1em;
+  padding-top: 5em;
+  padding-left: 2em;
+  padding-right: 1em;
 }
 
 .places-list-child {
-    margin-left: 1em;
+  margin-left: 1em;
+
+  .place-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }

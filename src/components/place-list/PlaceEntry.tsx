@@ -18,9 +18,13 @@ const PlaceEntry: FC<PlaceProps> = ({ place, showNumbers }) => (
         </span>{' '}
       </>
     )}
-    {place.longName}
+    <span className="place-name" title={place.longName}>
+      {place.longName}
+    </span>
 
-    {showNumbers && <> ({place.numberOfBanners})</>}
+    {showNumbers && (
+      <span className="place-number-of-banners">({place.numberOfBanners})</span>
+    )}
   </>
 )
 

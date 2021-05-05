@@ -2,12 +2,27 @@
   font-size: 16px;
 }
 
-.mission-list-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+::-webkit-scrollbar {
+  width: 4px;
+  background: transparent;
+}
 
-  h2 {
-    margin-bottom: 0;
+::-webkit-scrollbar-thumb {
+  background: #969696;
+}
+
+.mission-list {
+  .mission-list-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    h2 {
+      margin-bottom: 0;
+    }
+  }
+  .mission-list-body {
+    height: calc(100vh - 540px);
+    min-height: 320px;
+    overflow-y: scroll;
   }
 }

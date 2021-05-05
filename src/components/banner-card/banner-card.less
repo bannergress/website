@@ -26,6 +26,34 @@
   &.selected {
     border-color: #16d4b2;
   }
+
+}
+
+.banner-card-modal {
+  .ant-modal-content {
+    background: none !important;
+    box-shadow: none !important;
+    height: 0 !important;
+    width: 0 !important;
+
+    .ant-modal-close {
+      display: none;
+    }
+
+    button {
+      cursor: default;
+      background: none !important;
+      border: none;
+    }
+
+    img {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      max-height: 100%;
+    }
+  }
 }
 
 .banner-card-title {

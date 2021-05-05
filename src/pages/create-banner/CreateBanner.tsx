@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
-import { Input, Select, InputNumber, Row, Col, Slider } from 'antd'
+import { Input, Select, InputNumber, Row, Col, Slider, Button } from 'antd'
 import { Helmet } from 'react-helmet'
 import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars'
@@ -22,6 +22,8 @@ import {
   NumDictionary,
   createBanner as createBannerAction,
   removePendingBanner as removePendingBannerAction,
+  ApiOrder,
+  ApiOrderDirection,
 } from '../../features/banner'
 import { extract } from '../../features/banner/naming'
 import SearchMissionList from '../../components/search-mission-list'
@@ -109,13 +111,20 @@ class CreateBanner extends React.Component<
     }, 1000)
   }
 
+  onSearchForced = () => {
+    if (this.timer) {
+      clearTimeout(this.timer)
+    }
+    this.searchMissions()
+  }
+
   searchMissions = async () => {
     const { fetchMissions, resetSearchMissions } = this.props
     const { searchText, location } = this.state
     if (searchText && searchText.length > 2) {
       try {
         this.setState({ page: 0, status: 'searching' })
-        await fetchMissions(location, searchText, 0)
+        await fetchMissions(location, searchText, 'title', 'ASC', 0)
         this.setState({ status: 'ready' })
       } catch {
         this.setState({ status: 'error' })
@@ -160,7 +169,7 @@ class CreateBanner extends React.Component<
       throw new Error('no missions to search')
     }
     this.setState({ page: page + 1 })
-    return fetchMissions(location, searchText, page + 1)
+    return fetchMissions(location, searchText, 'title', 'ASC', page + 1)
   }
 
   onMissionsChanged = (missions: Array<Mission>) => {
@@ -185,6 +194,19 @@ class CreateBanner extends React.Component<
   onAddMission = (mission: Mission) => {
     const { addedMissions } = this.state
     this.onMissionsChanged([...addedMissions, mission])
+  }
+
+  onAddAllMissions = async (unusedMissions: Array<Mission>) => {
+    const { hasMore } = this.props
+    const { addedMissions } = this.state
+    if (unusedMissions && unusedMissions.length) {
+      this.onMissionsChanged([...addedMissions, ...unusedMissions])
+      if (hasMore) {
+        this.setState({ page: 0, status: 'searching' })
+        await this.onLoadMoreMissions()
+        this.setState({ status: 'ready' })
+      }
+    }
   }
 
   onManageMission = (mission: Mission) => {
@@ -315,10 +337,23 @@ class CreateBanner extends React.Component<
             <h3>Search for missions</h3>
             <span>You can search by mission name or author</span>
             <Input
-              placeholder="New Banner"
+              placeholder="Enter at least 3 chars..."
               onChange={(e) => this.onInputChange(e.target.value, 'searchText')}
+              onKeyPress={(k) =>
+                k.key === 'Enter' ? this.onSearchForced() : null
+              }
             />
-            <h3>Search results</h3>
+            <div className="results-title">
+              <h3>Search results</h3>
+              {unusedMissions && unusedMissions.length > 0 && (
+                <Button
+                  role="button"
+                  onClick={() => this.onAddAllMissions(unusedMissions)}
+                >
+                  Add All
+                </Button>
+              )}
+            </div>
             <SearchMissionList
               missions={unusedMissions}
               hasMoreMissions={hasMore}
@@ -431,6 +466,8 @@ export interface CreateBannerProps extends RouteComponentProps {
   fetchMissions: (
     location: string | null,
     query: string,
+    order: ApiOrder,
+    orderDirection: ApiOrderDirection,
     page: number
   ) => Promise<void>
   createBanner: (banner: Partial<Banner>) => Promise<void>

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
@@ -11,6 +11,7 @@ import {
 } from '../../features/banner'
 import BannerCard from '../../components/banner-card'
 import MissionList from '../../components/mission-list'
+import LoadingOverlay from '../../components/loading-overlay'
 import { MapDetail } from '../map-detail'
 
 import './banner-info.less'
@@ -60,7 +61,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
         </div>
       )
     }
-    return <Fragment>loading</Fragment>
+    return <LoadingOverlay active spinner text="Loading..." fadeSpeed={500} />
   }
 }
 
