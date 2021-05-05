@@ -6,22 +6,32 @@ import {
   RouteProps,
 } from 'react-router-dom'
 import { useUserLoggedIn } from '../../../hooks/UserLoggedIn'
+import LoadingOverlay from '../../loading-overlay'
 
 export const PrivateRoute: React.FC<PrivateRouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const isAutherized = useUserLoggedIn()
+  const [authenticated, initialized] = useUserLoggedIn()
 
   return (
     <Route
       {...rest}
       render={(props) => {
-        return isAutherized ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={{ pathname: '/' }} />
-        )
+        if (!initialized) {
+          return (
+            <LoadingOverlay
+              active
+              spinner
+              text="Checking Login..."
+              fadeSpeed={500}
+            />
+          )
+        }
+        if (authenticated) {
+          return <Component {...props} />
+        }
+        return <Redirect to={{ pathname: '/' }} />
       }}
     />
   )

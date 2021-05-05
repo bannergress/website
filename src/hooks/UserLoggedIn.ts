@@ -1,6 +1,12 @@
 import { useKeycloak } from '@react-keycloak/web'
 
-export const useUserLoggedIn = () => {
-  const { keycloak, initialized: keycloakInitialized } = useKeycloak()
-  return keycloakInitialized && keycloak && keycloak.authenticated
+export const useUserLoggedIn = (): [
+  authenticated: boolean,
+  initialized: boolean
+] => {
+  const { keycloak, initialized } = useKeycloak()
+  return [
+    (initialized && keycloak && keycloak.authenticated) === true,
+    initialized,
+  ]
 }
