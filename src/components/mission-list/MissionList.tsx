@@ -29,7 +29,7 @@ export class MissionList extends React.Component<MissionListProps, {}> {
     const { missions, expanded, onExpand } = this.props
     if (missions) {
       return (
-        <div>
+        <div className="mission-list">
           <div className="mission-list-header">
             <h2>Missions in this banner</h2>
             {onExpand && (
@@ -41,7 +41,10 @@ export class MissionList extends React.Component<MissionListProps, {}> {
               </Button>
             )}
           </div>
-          <div>{mapMissions(missions, this.renderMission)}</div>
+          <div className="mt-1" />
+          <div className="mission-list-body">
+            {mapMissions(missions, this.renderMission)}
+          </div>
         </div>
       )
     }
