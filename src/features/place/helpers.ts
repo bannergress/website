@@ -1,4 +1,5 @@
 import { generatePath } from 'react-router-dom'
+import _ from 'underscore'
 
 import { Place, PlaceSortOrder } from './types'
 
@@ -13,14 +14,18 @@ export const createBrowseUri = (place: Place) => {
 }
 
 export const sortPlaces = (places: Place[], order: PlaceSortOrder) => {
-  const sorted = [...places]
+  let sorted = _([...places]).chain()
 
-  const sortFunc =
-    order === 'name'
-      ? (a: Place, b: Place) => a.longName.localeCompare(b.longName)
-      : (a: Place, b: Place) => b.numberOfBanners - a.numberOfBanners
+  // Sort places by name
+  sorted = sorted.sortBy((p) => p.longName)
 
-  sorted.sort(sortFunc)
+  if (order === 'numberOfBanners') {
+    // Apply order by number of banners
+    sorted = sorted
+      .reverse()
+      .sortBy((p) => p.numberOfBanners)
+      .reverse()
+  }
 
-  return sorted
+  return sorted.value()
 }
