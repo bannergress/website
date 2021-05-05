@@ -23,13 +23,13 @@ export const Navbar: React.FC = () => {
   }
   return (
     <div className="top-menu">
-      <NavLink to="/">
+      <NavLink to="/" className="brand-menu">
         <div className="brand-logo" style={{ backgroundImage: `url(${Logo})` }}>
           &nbsp;
         </div>
       </NavLink>
       <MenuMain />
-      <div>
+      <div className="right-menu">
         <Search
           className="search-bar"
           placeholder="Search Banners or Places"
