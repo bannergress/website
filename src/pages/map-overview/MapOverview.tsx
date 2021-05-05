@@ -29,7 +29,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 
   onSelectBanner = (banner: Banner) => {
-    this.setState({ selectedBannerId: banner.uuid })
+    this.setState({ selectedBannerId: banner.id })
   }
 
   onLoadBanners = async (bounds: LatLngBounds) => {

@@ -5,7 +5,7 @@ export interface NumDictionary<T> {
 }
 
 export interface Banner {
-  uuid: string
+  id: string
   title: string
   description?: string
   numberOfMissions: number
