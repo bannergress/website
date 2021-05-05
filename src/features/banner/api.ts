@@ -1,5 +1,5 @@
 import { api } from '../../api'
-import { Mission } from '../mission'
+import { Mission } from '../mission/types'
 import { Banner, NumDictionary } from './types'
 
 const isMock = process.env.REACT_APP_USE_MOCK === 'true'

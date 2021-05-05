@@ -22,6 +22,8 @@ import {
   NumDictionary,
   createBanner as createBannerAction,
   removePendingBanner as removePendingBannerAction,
+  ApiOrder,
+  ApiOrderDirection,
 } from '../../features/banner'
 import { extract } from '../../features/banner/naming'
 import SearchMissionList from '../../components/search-mission-list'
@@ -122,7 +124,7 @@ class CreateBanner extends React.Component<
     if (searchText && searchText.length > 2) {
       try {
         this.setState({ page: 0, status: 'searching' })
-        await fetchMissions(location, searchText, 0)
+        await fetchMissions(location, searchText, 'title', 'ASC', 0)
         this.setState({ status: 'ready' })
       } catch {
         this.setState({ status: 'error' })
@@ -167,7 +169,7 @@ class CreateBanner extends React.Component<
       throw new Error('no missions to search')
     }
     this.setState({ page: page + 1 })
-    return fetchMissions(location, searchText, page + 1)
+    return fetchMissions(location, searchText, 'title', 'ASC', page + 1)
   }
 
   onMissionsChanged = (missions: Array<Mission>) => {
@@ -464,6 +466,8 @@ export interface CreateBannerProps extends RouteComponentProps {
   fetchMissions: (
     location: string | null,
     query: string,
+    order: ApiOrder,
+    orderDirection: ApiOrderDirection,
     page: number
   ) => Promise<void>
   createBanner: (banner: Partial<Banner>) => Promise<void>
