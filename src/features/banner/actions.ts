@@ -1,6 +1,5 @@
 import { Dispatch } from 'redux'
 import { RootState } from '../../storeTypes'
-import { Place } from '../place'
 import {
   BannerActionTypes,
   BROWSE_BANNERS,
@@ -52,7 +51,7 @@ export const loadRecentBannersAction = () => async (
 }
 
 export const loadBrowsedBannersAction = (
-  place: Partial<Place> | null,
+  placeId: string | null,
   order: ApiOrder,
   orderDirection: ApiOrderDirection,
   page: number
@@ -62,7 +61,12 @@ export const loadBrowsedBannersAction = (
       type: RESET_BROWSED_BANNERS,
     })
   }
-  const response = await api.getBanners(place?.id, order, orderDirection, page)
+  const response = await api.getBanners(
+    placeId ?? undefined,
+    order,
+    orderDirection,
+    page
+  )
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: BROWSE_BANNERS,
@@ -141,7 +145,7 @@ export const submitBannerAction = () => async (
       type: LOAD_BANNER,
       payload: banner,
     })
-    return response.data!.uuid
+    return response.data!.id
   }
   throw Error('Error while creating banner')
 }

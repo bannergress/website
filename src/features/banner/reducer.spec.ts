@@ -21,7 +21,7 @@ describe('features > banner > bannerReducer', () => {
     const expectedState: BannerState = {
       banners: [
         {
-          uuid: '1',
+          id: '1',
           title: 'Banner 1',
           numberOfMissions: 0,
           startLatitude: 0,
@@ -42,7 +42,7 @@ describe('features > banner > bannerReducer', () => {
     const action: BannerActionTypes = {
       type: LOAD_BANNER,
       payload: {
-        uuid: '1',
+        id: '1',
         title: 'Banner 1',
         numberOfMissions: 0,
         startLatitude: 0,
@@ -70,7 +70,7 @@ describe('features > banner > bannerReducer', () => {
       banners: [],
       recentBanners: [
         {
-          uuid: '1',
+          id: '1',
           title: 'Banner 1',
           numberOfMissions: 0,
           startLatitude: 0,
@@ -91,7 +91,7 @@ describe('features > banner > bannerReducer', () => {
       type: LOAD_RECENT_BANNERS,
       payload: [
         {
-          uuid: '1',
+          id: '1',
           title: 'Banner 1',
           numberOfMissions: 0,
           startLatitude: 0,

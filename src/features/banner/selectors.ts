@@ -3,7 +3,7 @@ import { RootState } from '../../storeTypes'
 import { containsBanner } from './helpers'
 
 export const getBanner = (state: RootState, id: string) =>
-  state.banner.banners.find((b) => b.uuid === id)
+  state.banner.banners.find((b) => b.id === id)
 
 export const getRecentBanners = (state: RootState) => state.banner.recentBanners
 

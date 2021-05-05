@@ -32,7 +32,7 @@ const extend = (
   return _.uniq(
     _.flatten([source, target]),
     false,
-    (a: Partial<Banner>) => a.uuid
+    (a: Partial<Banner>) => a.id
   )
 }
 

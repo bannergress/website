@@ -8,6 +8,7 @@ import bannerReducer from './reducer'
 describe('features > place > placeReducer', () => {
   it(`load countries, if ${LOAD_COUNTRIES} action is provided`, () => {
     const initialState = {
+      allPlaces: [],
       countries: [],
       administrativeAreas: {},
     }
@@ -26,18 +27,20 @@ describe('features > place > placeReducer', () => {
   })
   it(`load administrative areas, if ${LOAD_ADMINISTRATIVE_AREAS} action is provided`, () => {
     const initialState = {
+      allPlaces: [],
       countries: [],
       administrativeAreas: {},
     }
 
     const expectedState = {
+      allPlaces: [],
       countries: [],
       administrativeAreas: { de: [{ id: '1' }] },
     }
 
     const action: PlaceActionTypes = {
       type: LOAD_ADMINISTRATIVE_AREAS,
-      payload: { countryId: 'de', administrativeAreas: [{ id: '1' }] },
+      payload: { placeId: 'de', administrativeAreas: [{ id: '1' }] },
     }
 
     expect(bannerReducer(initialState, action)).toEqual(expectedState)

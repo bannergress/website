@@ -40,7 +40,7 @@ const App: React.FC = () => (
               <Route path="/" component={Home} exact />
               <Route path="/about" component={About} />
               <Route path="/map" component={MapOverview} />
-              <Route path="/browse/:places*" component={Browser} />
+              <Route path="/browse/:placeId?" component={Browser} />
               <Route path="/banner/:id" component={BannerInfo} />
               <Route path="/search/:term" component={Search} />
               <Route path="/help" component={Help} />

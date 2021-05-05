@@ -17,6 +17,8 @@ import {
   getCountries,
   getAdministrativeAreas as getAdministrativeAreasSelector,
   loadAdministrativeAreas as loadAdministrativeAreasAction,
+  loadPlace as loadPlaceAction,
+  getPlace as getPlaceSelector,
   loadCountries as loadCountriesAction,
   Place,
   createMapUri,
@@ -34,7 +36,6 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     this.state = {
       selectedOrder: 'created',
       selectedDirection: 'DESC',
-      selectedPlaces: [],
       page: 0,
       status: 'initial',
     }
@@ -45,85 +46,49 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
       fetchCountries,
       fetchAdministrativeAreas,
       fetchBanners,
+      fetchPlace,
       match,
     } = this.props
     const { selectedDirection, selectedOrder } = this.state
-    const { places } = match.params
-
-    let placesIds: Array<string> = []
-    if (places) {
-      placesIds = places.split('/')
-    }
+    const { placeId } = match.params
 
     const promises: Array<Promise<any>> = []
-    promises.push(fetchCountries())
-    if (placesIds && placesIds.length > 0) {
-      for (let i = 0; i < placesIds.length; i += 1) {
-        promises.push(fetchAdministrativeAreas({ id: placesIds[i] }, i + 1))
-      }
+
+    if (placeId) {
+      promises.push(fetchAdministrativeAreas(placeId))
+      promises.push(fetchPlace(placeId))
+    } else {
+      promises.push(fetchCountries())
     }
+
     Promise.all(promises)
       .then(() => this.setState({ status: 'success' }))
       .catch(() => this.setState({ status: 'error' }))
-    fetchBanners(
-      { id: placesIds[placesIds.length] },
-      selectedOrder,
-      selectedDirection,
-      0
-    )
+
+    fetchBanners(placeId, selectedOrder, selectedDirection, 0)
   }
 
   static getDerivedStateFromProps(props: BrowserProps, state: BrowserState) {
-    const { countries, getAdministrativeAreas, match } = props
-    const { selectedPlaces } = state
-    const { places } = match.params
-    const placesIds = places?.split('/') || []
-    const selectedPlacesIds = selectedPlaces.map((s) => s.id)
-    if (placesIds.join(',') !== selectedPlacesIds.join(',')) {
-      if (placesIds.length === 0) {
-        return { ...state, selectedPlaces: [] }
-      }
-      const country = countries.find((c) => c.id === placesIds[0])
-      if (country) {
-        const administrativeAreas: Array<Place> = []
-        for (let i = 1; i < placesIds.length; i += 1) {
-          const areas = getAdministrativeAreas(
-            i === 1 ? country : administrativeAreas[i - 2]
-          )
-          if (!areas) {
-            return state
-          }
-          const area = areas.find((a) => a.id === placesIds[i])
-          if (!area) {
-            return state
-          }
-          administrativeAreas.push(area)
-        }
-        return {
-          ...state,
-          selectedPlaces: [country, ...administrativeAreas],
-        }
-      }
-    }
-    return state
+    const { match } = props
+    const { placeId } = match.params
+
+    return { ...state, selectedPlaceId: placeId }
   }
 
-  componentDidUpdate(prevProps: BrowserProps, prevState: BrowserState) {
-    const { fetchBanners } = this.props
-    const { selectedPlaces, selectedOrder, selectedDirection } = this.state
-    if (selectedPlaces !== prevState.selectedPlaces) {
-      fetchBanners(
-        selectedPlaces[selectedPlaces.length - 1],
-        selectedOrder,
-        selectedDirection,
-        0
-      )
+  componentDidUpdate(prevProps: BrowserProps) {
+    const { fetchBanners, match } = this.props
+    const { placeId } = match.params
+    const { selectedOrder, selectedDirection } = this.state
+    if (placeId !== prevProps.match.params.placeId) {
+      fetchBanners(placeId, selectedOrder, selectedDirection, 0)
     }
   }
 
   onOrderSelected = (newOrder: BannerOrder) => {
-    const { fetchBanners } = this.props
-    const { selectedOrder, selectedDirection, selectedPlaces } = this.state
+    const { fetchBanners, match } = this.props
+    const { placeId } = match.params
+    const { selectedOrder, selectedDirection } = this.state
+
     let newDirection: BannerOrderDirection = 'ASC'
     if (newOrder === selectedOrder) {
       newDirection = selectedDirection === 'ASC' ? 'DESC' : 'ASC'
@@ -138,60 +103,66 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
         page: 0,
       })
     }
-    fetchBanners(
-      selectedPlaces[selectedPlaces.length - 1],
-      newOrder,
-      newDirection,
-      0
-    )
+    fetchBanners(placeId, newOrder, newDirection, 0)
   }
 
-  onPlaceSelected = (place: Place) => {
-    const { fetchAdministrativeAreas, history } = this.props
-    const { selectedPlaces } = this.state
+  onPlaceSelected = async (place: Place) => {
+    const {
+      fetchAdministrativeAreas,
+      fetchCountries,
+      getAdministrativeAreas,
+      countries,
+      history,
+    } = this.props
+    const { selectedPlaceId } = this.state
 
-    let places: Array<Place> = []
-    if (selectedPlaces.indexOf(place) < 0) {
-      places = [...selectedPlaces, place]
-      fetchAdministrativeAreas(place, selectedPlaces.length + 1).then(() =>
-        this.setState({
-          // selectedPlaces: places,
-          page: 1,
-        })
-      )
+    const parentPlaceIdOfSelectedPlace = place?.parentPlaceId
+    let newPlaceId: string | undefined
+
+    if (parentPlaceIdOfSelectedPlace === selectedPlaceId) {
+      newPlaceId = place.id
+      // When going down, we always want to reload the list
+      await fetchAdministrativeAreas(newPlaceId)
     } else {
-      places = [...selectedPlaces.slice(0, selectedPlaces.indexOf(place))]
-      this.setState({
-        // selectedPlaces: places,
-        page: 0,
-      })
+      newPlaceId = place.parentPlaceId
+
+      // When going up, only reload the list when missing
+      if (newPlaceId) {
+        if ((getAdministrativeAreas(newPlaceId) ?? []).length === 0) {
+          await fetchAdministrativeAreas(newPlaceId)
+        }
+      } else if (countries.length === 0) {
+        await fetchCountries()
+      }
     }
-    history.push(`/browse${places.map((p) => `/${p.id}`).join('')}`)
+
+    this.setState({
+      selectedPlaceId: newPlaceId,
+      page: 0,
+    })
+    history.push(`/browse/${newPlaceId || ''}`)
   }
 
   onLoadMoreBanners = () => {
-    const { fetchBanners } = this.props
-    const {
-      selectedPlaces,
-      selectedOrder,
-      selectedDirection,
-      page,
-    } = this.state
+    const { fetchBanners, match } = this.props
+    const { placeId } = match.params
+    const { selectedOrder, selectedDirection, page } = this.state
     this.setState({ page: page + 1 })
-    return fetchBanners(
-      selectedPlaces[selectedPlaces.length - 1],
-      selectedOrder,
-      selectedDirection,
-      page + 1
-    )
+    return fetchBanners(placeId, selectedOrder, selectedDirection, page + 1)
   }
 
   render() {
-    const { countries, banners, getAdministrativeAreas, hasMore } = this.props
+    const {
+      countries,
+      banners,
+      getAdministrativeAreas,
+      getPlace,
+      hasMore,
+    } = this.props
     const {
       selectedDirection,
       selectedOrder,
-      selectedPlaces,
+      selectedPlaceId,
       status,
     } = this.state
 
@@ -201,15 +172,31 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
 
     let administrativeAreas: Array<Place> | null = null
     let selectedPlace: Place | null = null
-    if (selectedPlaces && selectedPlaces.length) {
-      selectedPlace = selectedPlaces[selectedPlaces.length - 1]
-      administrativeAreas = getAdministrativeAreas(selectedPlace) || []
+    let selectedPlaces: Place[] = []
+
+    if (selectedPlaceId) {
+      selectedPlace = getPlace(selectedPlaceId)
+
+      if (selectedPlace) {
+        administrativeAreas = getAdministrativeAreas(selectedPlaceId) || []
+        selectedPlaces = [selectedPlace]
+
+        // Get parent path
+        let currentParentPlace: Place | null = selectedPlace
+        while (currentParentPlace?.parentPlaceId) {
+          currentParentPlace = getPlace(currentParentPlace?.parentPlaceId)
+
+          if (currentParentPlace) {
+            selectedPlaces.push(currentParentPlace)
+          }
+        }
+        selectedPlaces.reverse()
+      }
     }
 
-    let pageTitle = 'Countries'
-    if (selectedPlace) {
-      pageTitle = selectedPlace.formattedAddress
-    }
+    const pageTitle = selectedPlace
+      ? selectedPlace.formattedAddress
+      : 'Countries'
 
     return (
       <Fragment>
@@ -264,18 +251,17 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
   }
 }
 
-export interface BrowserProps extends RouteComponentProps<{ places: string }> {
+export interface BrowserProps extends RouteComponentProps<{ placeId: string }> {
   banners: Array<Banner>
   countries: Array<Place>
   hasMore: Boolean
-  getAdministrativeAreas: (place: Place) => Array<Place>
+  getAdministrativeAreas: (parentPlaceId: string) => Array<Place>
+  getPlace: (placeID: string) => Place | null
   fetchCountries: () => Promise<void>
-  fetchAdministrativeAreas: (
-    place: Partial<Place>,
-    level: number
-  ) => Promise<void>
+  fetchAdministrativeAreas: (parentPlaceId: string) => Promise<void>
+  fetchPlace: (placeID: string) => Promise<void>
   fetchBanners: (
-    country: Partial<Place> | null,
+    placeId: string | null,
     order: BannerOrder,
     orderDirection: BannerOrderDirection,
     page: number
@@ -285,7 +271,7 @@ export interface BrowserProps extends RouteComponentProps<{ places: string }> {
 interface BrowserState {
   selectedOrder: BannerOrder
   selectedDirection: BannerOrderDirection
-  selectedPlaces: Array<Place>
+  selectedPlaceId?: string
   page: number
   status: 'initial' | 'success' | 'loading' | 'error'
 }
@@ -293,8 +279,9 @@ interface BrowserState {
 const mapStateToProps = (state: RootState) => ({
   countries: getCountries(state),
   banners: getBrowsedBanners(state),
-  getAdministrativeAreas: (place: Place) =>
-    getAdministrativeAreasSelector(state, place),
+  getAdministrativeAreas: (parentPlaceId: string) =>
+    getAdministrativeAreasSelector(state, parentPlaceId),
+  getPlace: (placeId: string) => getPlaceSelector(state, placeId),
   hasMore: getHasMoreBrowsedBanners(state),
 })
 
@@ -302,6 +289,7 @@ const mapDispatchToProps = {
   fetchCountries: loadCountriesAction,
   fetchBanners: loadBrowsedBannersAction,
   fetchAdministrativeAreas: loadAdministrativeAreasAction,
+  fetchPlace: loadPlaceAction,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Browser))

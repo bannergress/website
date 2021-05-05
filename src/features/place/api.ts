@@ -5,6 +5,7 @@ const isMock = process.env.REACT_APP_USE_MOCK === 'true'
 
 const createPlaces = (): Array<Place> => [
   {
+    // 0
     id: 'DE',
     formattedAddress: 'Germany',
     longName: 'Germany',
@@ -14,8 +15,10 @@ const createPlaces = (): Array<Place> => [
     boundaryMinLongitude: 0,
     boundaryMaxLatitude: 0,
     boundaryMaxLongitude: 0,
+    type: 'country',
   },
   {
+    // 1
     id: 'FR',
     formattedAddress: 'France',
     longName: 'France',
@@ -25,8 +28,10 @@ const createPlaces = (): Array<Place> => [
     boundaryMinLongitude: 0,
     boundaryMaxLatitude: 0,
     boundaryMaxLongitude: 0,
+    type: 'country',
   },
   {
+    // 2
     id: 'US',
     formattedAddress: 'USA',
     longName: 'United States',
@@ -36,8 +41,10 @@ const createPlaces = (): Array<Place> => [
     boundaryMinLongitude: 0,
     boundaryMaxLatitude: 0,
     boundaryMaxLongitude: 0,
+    type: 'country',
   },
   {
+    // 3
     id: 'ES',
     formattedAddress: 'Spain',
     longName: 'Spain',
@@ -47,8 +54,10 @@ const createPlaces = (): Array<Place> => [
     boundaryMinLongitude: 0,
     boundaryMaxLatitude: 0,
     boundaryMaxLongitude: 0,
+    type: 'country',
   },
   {
+    // 4
     id: 'FI',
     formattedAddress: 'Finland',
     longName: 'Finland',
@@ -58,8 +67,10 @@ const createPlaces = (): Array<Place> => [
     boundaryMinLongitude: 0,
     boundaryMaxLatitude: 0,
     boundaryMaxLongitude: 0,
+    type: 'country',
   },
   {
+    // 5
     id: 'BY',
     formattedAddress: 'Bavaria, Germany',
     longName: 'Bavaria',
@@ -69,8 +80,11 @@ const createPlaces = (): Array<Place> => [
     boundaryMinLongitude: 0,
     boundaryMaxLatitude: 0,
     boundaryMaxLongitude: 0,
+    parentPlaceId: 'DE',
+    type: 'administrative_area_level_1',
   },
   {
+    // 6
     id: 'CT',
     formattedAddress: 'Catalonia, Spain',
     longName: 'Catalonia',
@@ -80,8 +94,11 @@ const createPlaces = (): Array<Place> => [
     boundaryMinLongitude: 0,
     boundaryMaxLatitude: 0,
     boundaryMaxLongitude: 0,
+    parentPlaceId: 'ES',
+    type: 'administrative_area_level_1',
   },
   {
+    // 7
     id: 'FL',
     formattedAddress: 'Florida',
     longName: 'Florida, United States',
@@ -91,19 +108,15 @@ const createPlaces = (): Array<Place> => [
     boundaryMinLongitude: 0,
     boundaryMaxLatitude: 0,
     boundaryMaxLongitude: 0,
+    parentPlaceId: 'US',
+    type: 'administrative_area_level_1',
   },
 ]
-
-const createHierarchy = (): { [key: string]: string } => ({
-  FL: 'US',
-  CT: 'ES',
-  BY: 'DE',
-})
 
 export const getCountries = () =>
   isMock
     ? {
-        data: createPlaces().filter((place) => !createHierarchy()[place.id]),
+        data: createPlaces().filter((place) => place.type === 'country'),
         ok: true,
         status: 200,
       }
@@ -116,7 +129,7 @@ export const getAdministrativeAreas = (parentPlaceId: string) =>
   isMock
     ? {
         data: createPlaces().filter(
-          (place) => createHierarchy()[place.id] === parentPlaceId
+          (place) => place.parentPlaceId === parentPlaceId
         ),
         ok: true,
         status: 200,
@@ -125,3 +138,12 @@ export const getAdministrativeAreas = (parentPlaceId: string) =>
         used: 'true',
         parentPlaceId,
       })
+
+export const getPlace = (placeId: string) =>
+  isMock
+    ? {
+        data: createPlaces().find((place) => place.id === placeId),
+        ok: true,
+        status: 200,
+      }
+    : api.get<Place>(`places/${placeId}`)

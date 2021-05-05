@@ -12,6 +12,8 @@ export interface Place {
   boundaryMinLongitude: number
   boundaryMaxLatitude: number
   boundaryMaxLongitude: number
+  parentPlace?: Place
+  parentPlaceId?: string
   type?:
     | 'country'
     | 'administrative_area_level_1'
@@ -23,6 +25,7 @@ export interface Place {
 }
 
 export interface PlaceState {
+  allPlaces: Dictionary<Place>
   countries: Array<Place>
   administrativeAreas: Dictionary<Array<Place>>
 }
