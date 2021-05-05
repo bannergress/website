@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
-import { Input, Select, InputNumber, Row, Col, Slider } from 'antd'
+import { Input, Select, InputNumber, Row, Col, Slider, Button } from 'antd'
 import { Helmet } from 'react-helmet'
 import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars'
@@ -187,6 +187,16 @@ class CreateBanner extends React.Component<
     this.onMissionsChanged([...addedMissions, mission])
   }
 
+  onAddAllMissions = async (unusedMissions: Array<Mission>) => {
+    const { addedMissions } = this.state
+    if (unusedMissions && unusedMissions.length) {
+      this.onMissionsChanged([...addedMissions, ...unusedMissions])
+      this.setState({ page: 0, status: 'searching' })
+      await this.onLoadMoreMissions()
+      this.setState({ status: 'ready' })
+    }
+  }
+
   onManageMission = (mission: Mission) => {
     const { addedMissions } = this.state
     this.setState({ addedMissions: _(addedMissions).without(mission) })
@@ -318,7 +328,17 @@ class CreateBanner extends React.Component<
               placeholder="New Banner"
               onChange={(e) => this.onInputChange(e.target.value, 'searchText')}
             />
-            <h3>Search results</h3>
+            <div className="results-title">
+              <h3>Search results</h3>
+              {unusedMissions && unusedMissions.length > 0 && (
+                <Button
+                  role="button"
+                  onClick={() => this.onAddAllMissions(unusedMissions)}
+                >
+                  Add All
+                </Button>
+              )}
+            </div>
             <SearchMissionList
               missions={unusedMissions}
               hasMoreMissions={hasMore}
