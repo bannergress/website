@@ -188,12 +188,15 @@ class CreateBanner extends React.Component<
   }
 
   onAddAllMissions = async (unusedMissions: Array<Mission>) => {
+    const { hasMore } = this.props
     const { addedMissions } = this.state
     if (unusedMissions && unusedMissions.length) {
       this.onMissionsChanged([...addedMissions, ...unusedMissions])
-      this.setState({ page: 0, status: 'searching' })
-      await this.onLoadMoreMissions()
-      this.setState({ status: 'ready' })
+      if (hasMore) {
+        this.setState({ page: 0, status: 'searching' })
+        await this.onLoadMoreMissions()
+        this.setState({ status: 'ready' })
+      }
     }
   }
 
