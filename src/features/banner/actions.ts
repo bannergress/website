@@ -141,7 +141,7 @@ export const submitBannerAction = () => async (
       type: LOAD_BANNER,
       payload: banner,
     })
-    return response.data!.uuid
+    return response.data!.id
   }
   throw Error('Error while creating banner')
 }

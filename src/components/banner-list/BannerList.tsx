@@ -21,7 +21,7 @@ const BannerList: FC<BannerListProps> = ({
   }, [banners])
 
   useEffect(() => {
-    const index = banners?.findIndex((b) => b.uuid === selectedBannerId)
+    const index = banners?.findIndex((b) => b.id === selectedBannerId)
     if (index !== undefined && index >= 0 && itemsRef.current[index]) {
       itemsRef.current[index]!.scrollIntoView({
         behavior: 'smooth',
@@ -39,20 +39,20 @@ const BannerList: FC<BannerListProps> = ({
         <div className="banner-list">
           {banners?.map((bannerItem, index) => (
             <div
-              key={bannerItem.uuid}
+              key={bannerItem.id}
               ref={(b) => {
                 itemsRef.current[index] = b
               }}
             >
               <Link
-                key={bannerItem.uuid}
-                to={generatePath('/banner/:uuid', { uuid: bannerItem.uuid })}
+                key={bannerItem.id}
+                to={generatePath('/banner/:id', { id: bannerItem.id })}
                 title={bannerItem.title}
               >
                 <BannerCard
-                  key={bannerItem.uuid}
+                  key={bannerItem.id}
                   banner={bannerItem}
-                  selected={bannerItem.uuid === selectedBannerId}
+                  selected={bannerItem.id === selectedBannerId}
                 />
               </Link>
             </div>
