@@ -22,6 +22,8 @@ const showMissionStartPointsOnMap = (missions: NumDictionary<Mission>) => {
   let color = '#6832da'
   let startLat = 0
   let startLng = 0
+  let missionNumber = 1
+  let icon = null
   mapMissions(missions, (mission) => {
     if (mission && mission?.steps!) {
       // get the first available waypoint in the mission and set it as start point
@@ -32,38 +34,46 @@ const showMissionStartPointsOnMap = (missions: NumDictionary<Mission>) => {
           break
         }
       }
+
+      // use custom icon
+      const iconHidden = divIcon({
+        className: 'custom-div-icon',
+        html: `<div class='marker-pin'>${missionNumber}<sup><i class='fas fa-eye-slash awesome'></sup></div>`,
+        iconAnchor: [0, 0],
+      })
+      const iconNormal = divIcon({
+        className: 'custom-div-icon',
+        html: `<div class='marker-pin'>${missionNumber}</div>`,
+        iconAnchor: [0, 0],
+      })
       // change color temporary to visualize hidden missions
       if (mission.type === 'hidden') {
         color = 'green'
+        icon = iconHidden
       } else {
         color = '#6832da'
+        icon = iconNormal
       }
 
-      // preparation for using e.g. an icon as a marker
-      // const icon = divIcon({
-      //   className: 'custom-div-icon',
-      //   html:
-      //     "<div style='background-color:#4838cc;' class='marker-pin'>&#128065</div><i class='fas fa-eye-slash awesome'>",
-      //   iconSize: [30, 42],
-      //   iconAnchor: [15, 42],
-      // })
-
       missionStartPoints.push(
-        <CircleMarker
-          key={mission.id}
-          pathOptions={{
-            fillColor: color,
-            fillOpacity: 1,
-            fill: true,
-            stroke: false,
-          }}
-          radius={7}
-          center={[startLat, startLng]}
-        >
-          <Tooltip permanent>{mission.title}</Tooltip>
-        </CircleMarker>
-        // <Marker key={mission.id} icon={icon} position={[startLat, startLng]} />
+        //   <CircleMarker
+        //     key={mission.id}
+        //     pathOptions={{
+        //       fillColor: color,
+        //       fillOpacity: 1,
+        //       fill: true,
+        //       stroke: false,
+        //     }}
+        //     radius={7}
+        //     center={[startLat, startLng]}
+        //   >
+        //     <Tooltip>{mission.title}</Tooltip>
+        //   </CircleMarker>
+        <Marker key={mission.id} icon={icon} position={[startLat, startLng]}>
+          <Tooltip offset={[20, 0]}>{mission.title}</Tooltip>
+        </Marker>
       )
+      missionNumber += 1
     }
   })
   // const forVariable = missionsToShow ?? numberOfMissions
@@ -108,12 +118,14 @@ const showMissionRoutesOnMap = (missions: NumDictionary<Mission>) => {
       let lineStyle
       if (mission.type === 'anyOrder')
         lineStyle = {
-          color: '#6832da',
+          color: 'rgba(0, 0, 0, 0.4)',
           dashArray: '10, 10',
+          weight: 8,
         }
       if (mission.type === 'sequential')
         lineStyle = {
-          color: '#6832da',
+          color: 'rgba(0, 0, 0, 0.4)',
+          weight: 8,
         }
       missionPolylines.push(
         <Polyline
@@ -135,7 +147,8 @@ export const MapDetail: React.FC<MapDetailProps> = ({ banner }) => (
   <Fragment>
     <MapContainer
       center={[banner?.startLatitude, banner?.startLongitude]}
-      zoom={12}
+      zoom={15}
+      maxZoom={25}
     >
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
