@@ -41,7 +41,9 @@ interface LoadPlaceErrorAction {
 
 interface SearchPlacesAction {
   type: typeof SEARCH_PLACES
-  payload: Array<Place>
+  payload: {
+    places: Array<Place>
+  }
 }
 
 export type PlaceActionTypes =
