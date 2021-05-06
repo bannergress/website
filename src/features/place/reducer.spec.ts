@@ -11,6 +11,7 @@ describe('features > place > placeReducer', () => {
       allPlaces: [],
       countries: [],
       administrativeAreas: {},
+      searchPlaces: [],
     }
 
     const expectedState = {
@@ -30,12 +31,14 @@ describe('features > place > placeReducer', () => {
       allPlaces: [],
       countries: [],
       administrativeAreas: {},
+      searchPlaces: [],
     }
 
     const expectedState = {
       allPlaces: [],
       countries: [],
       administrativeAreas: { de: [{ id: '1' }] },
+      searchPlaces: [],
     }
 
     const action: PlaceActionTypes = {

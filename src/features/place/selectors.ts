@@ -8,3 +8,5 @@ export const getAdministrativeAreas = (
 
 export const getPlace = (state: RootState, placeId: string) =>
   state.place.allPlaces[placeId]
+
+export const getSearchPlaces = (state: RootState) => state.place.searchPlaces

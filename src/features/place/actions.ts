@@ -7,6 +7,7 @@ import {
   LOAD_ADMINISTRATIVE_AREAS_ERROR,
   LOAD_PLACE,
   LOAD_PLACE_ERROR,
+  SEARCH_PLACES,
 } from './actionTypes'
 import * as api from './api'
 import { Place } from './types'
@@ -62,5 +63,23 @@ export const loadPlaceAction = (placeId: string) => async (
     dispatch({
       type: LOAD_PLACE_ERROR,
     })
+  }
+}
+
+export const loadSearchPlacesAction = (searchTerm: string) => async (
+  dispatch: Dispatch<PlaceActionTypes>
+) => {
+  const response = await api.searchPlaces(searchTerm)
+  if (response.ok && response.data !== undefined) {
+    dispatch({
+      type: SEARCH_PLACES,
+      payload: {
+        places: response.data,
+      },
+    })
+  } else {
+    // dispatch({
+    //   type: SOME_ERROR,
+    // })
   }
 }
