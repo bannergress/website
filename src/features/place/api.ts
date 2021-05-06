@@ -147,3 +147,11 @@ export const getPlace = (placeId: string) =>
         status: 200,
       }
     : api.get<Place>(`places/${placeId}`)
+
+export const searchPlaces = (searchTerm: string) =>
+  isMock
+    ? { data: createPlaces(), ok: true, status: 200 }
+    : api.get<Array<Place>>('places', {
+        used: true,
+        query: searchTerm,
+      })

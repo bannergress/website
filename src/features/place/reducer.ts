@@ -7,6 +7,7 @@ import {
   LOAD_ADMINISTRATIVE_AREAS_ERROR,
   LOAD_PLACE_ERROR,
   LOAD_PLACE,
+  SEARCH_PLACES,
 } from './actionTypes'
 import { Dictionary, Place } from './types'
 
@@ -14,6 +15,7 @@ const initialState = {
   allPlaces: {},
   countries: [],
   administrativeAreas: {},
+  searchPlaces: [],
 }
 
 function AddPlacesToDictionary(
@@ -81,6 +83,11 @@ export default (state = initialState, action: PlaceActionTypes) => {
           action.payload,
           state.allPlaces
         ),
+      }
+    case SEARCH_PLACES:
+      return {
+        ...state,
+        searchPlaces: action.payload,
       }
 
     case LOAD_COUNTRIES_ERROR:

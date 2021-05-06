@@ -623,9 +623,7 @@ describe('features > banner > naming > titleExtraction', () => {
     expect(result).toEqual(expected)
   })
   it(`handles La Petite France (Strasbourg)`, () => {
-    const input = [
-      'La Petite France (Strasbourg) - 1\\6',
-    ]
+    const input = ['La Petite France (Strasbourg) - 1\\6']
     const result = extract(input)
     expect(result.title).toEqual('La Petite France (Strasbourg)')
   })
