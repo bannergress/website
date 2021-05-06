@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Prompt, RouteComponentProps, withRouter } from 'react-router'
 import { Location } from 'history'
 import { Helmet } from 'react-helmet'
+import { LatLngBounds } from 'leaflet'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -10,6 +11,7 @@ import {
   getCreatedBanner,
   submitBanner as submitBannerAction,
   removePendingBanner as removePendingBannerAction,
+  getBannerBounds,
 } from '../../features/banner'
 import BannerCard from '../../components/banner-card'
 import MissionList from '../../components/mission-list'
@@ -105,7 +107,10 @@ class PreviewBanner extends React.Component<
           )}
         </div>
         <div className="banner-info-additional">
-          <MapDetail banner={banner} />
+          <MapDetail
+            banner={banner}
+            bounds={new LatLngBounds(getBannerBounds(banner))}
+          />
           <button
             type="button"
             className="positive-action-button"

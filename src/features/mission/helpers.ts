@@ -52,3 +52,32 @@ export const searchMissionIndex = (
   }
   return undefined
 }
+
+export const getMissionBounds = (mission: Mission) => {
+  let maxLatitude = mission.startLatitude
+  let maxLongitude = mission.startLongitude
+  let minLatitude = mission.startLatitude
+  let minLongitude = mission.startLongitude
+  if (mission.steps) {
+    mission.steps.forEach((step) => {
+      if (step.poi) {
+        if (!maxLatitude || step.poi.latitude > maxLatitude) {
+          maxLatitude = step.poi.latitude
+        }
+        if (!minLatitude || step.poi.latitude < minLatitude) {
+          minLatitude = step.poi.latitude
+        }
+        if (!maxLongitude || step.poi.longitude > maxLongitude) {
+          maxLongitude = step.poi.longitude
+        }
+        if (!minLongitude || step.poi.longitude < minLongitude) {
+          minLongitude = step.poi.longitude
+        }
+      }
+    })
+  }
+  return [
+    [minLatitude, minLongitude],
+    [maxLatitude, maxLongitude],
+  ]
+}

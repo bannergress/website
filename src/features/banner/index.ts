@@ -27,6 +27,7 @@ import {
   ApiOrder,
   ApiOrderDirection,
 } from './types'
+import { getBannerBounds } from './helpers'
 
 export { default as BannerReducer } from './reducer'
 export { actionTypes }
@@ -60,3 +61,4 @@ export type {
   ApiOrder,
   ApiOrderDirection,
 }
+export { getBannerBounds }

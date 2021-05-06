@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { divIcon, LatLng, point } from 'leaflet'
+import { divIcon, LatLng, LatLngBounds, point } from 'leaflet'
 import React, { Fragment } from 'react'
 import {
   CircleMarker,
@@ -143,13 +143,9 @@ const showMissionRoutesOnMap = (missions: NumDictionary<Mission>) => {
   return missionPolylines
 }
 
-export const MapDetail: React.FC<MapDetailProps> = ({ banner }) => (
+export const MapDetail: React.FC<MapDetailProps> = ({ banner, bounds }) => (
   <Fragment>
-    <MapContainer
-      center={[banner?.startLatitude, banner?.startLongitude]}
-      zoom={15}
-      maxZoom={25}
-    >
+    <MapContainer bounds={bounds} maxZoom={25}>
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png"
@@ -163,4 +159,5 @@ export const MapDetail: React.FC<MapDetailProps> = ({ banner }) => (
 
 export interface MapDetailProps {
   banner: Banner
+  bounds: LatLngBounds
 }

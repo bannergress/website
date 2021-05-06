@@ -9,7 +9,7 @@ import {
   Objective,
   NamedAgent,
 } from './types'
-import { mapMissions, mapMissionsInverse } from './helpers'
+import { mapMissions, mapMissionsInverse, getMissionBounds } from './helpers'
 
 export { default as MissionReducer } from './reducer'
 export { actionTypes }
@@ -19,4 +19,4 @@ export {
   resetSearchMissionsAction as resetSearchMissions,
 }
 export type { Mission, Step, POI, MissionState, Objective, NamedAgent }
-export { mapMissions, mapMissionsInverse }
+export { mapMissions, mapMissionsInverse, getMissionBounds }

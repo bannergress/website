@@ -2,11 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { LatLngBounds } from 'leaflet'
 
 import { RootState } from '../../storeTypes'
 import {
   Banner,
   getBanner as getBannerSelector,
+  getBannerBounds,
   loadBanner,
 } from '../../features/banner'
 import BannerCard from '../../components/banner-card'
@@ -21,12 +23,15 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
     super(props)
     this.state = {
       expanded: false,
+      status: 'initial',
     }
   }
 
   componentDidMount() {
     const { fetchBanner, match } = this.props
     fetchBanner(match.params.id)
+      .then(() => this.setState({ status: 'ready' }))
+      .catch(() => this.setState({ status: 'error' }))
   }
 
   onExpand = () => {
@@ -36,7 +41,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
 
   render() {
     const { getBanner, match } = this.props
-    const { expanded } = this.state
+    const { expanded, status } = this.state
     const banner = getBanner(match.params.id)
     if (banner) {
       const { missions } = banner
@@ -56,7 +61,12 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
             )}
           </div>
           <div className="banner-info-additional">
-            <MapDetail banner={banner} />
+            {status === 'ready' && (
+              <MapDetail
+                banner={banner}
+                bounds={new LatLngBounds(getBannerBounds(banner))}
+              />
+            )}
           </div>
         </div>
       )
@@ -72,6 +82,7 @@ export interface BannerInfoProps extends RouteComponentProps<{ id: string }> {
 
 interface BannerInfoState {
   expanded: boolean
+  status: 'initial' | 'loading' | 'ready' | 'error'
 }
 
 const mapStateToProps = (state: RootState) => ({
