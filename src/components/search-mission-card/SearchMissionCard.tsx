@@ -41,7 +41,7 @@ export interface SearchMissionCardProps {
   mission: Mission & { index?: number }
   onSelectMission: (mission: Mission & { index?: number }) => void
   icon: JSX.Element
-  missionEditor?: () => JSX.Element
+  missionEditor?: () => JSX.Element | undefined
 }
 
 export default SearchMissionCard

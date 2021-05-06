@@ -5,8 +5,13 @@ import MissionImage from '../mission-image/MissionImage'
 
 import './banner-image.less'
 
-const BannerImage: FC<BannerImageProps> = ({ missions, width }) => {
+const BannerImage: FC<BannerImageProps> = ({ missions, width, useIndex }) => {
   const mapMissions = () => {
+    if (!useIndex) {
+      return missions.map((mission) => (
+        <MissionImage key={mission.id} mission={mission} />
+      ))
+    }
     const result: Array<JSX.Element> = []
     let i = 0
     let j = 1
@@ -41,6 +46,7 @@ const BannerImage: FC<BannerImageProps> = ({ missions, width }) => {
 export interface BannerImageProps {
   missions: Array<Mission & { index?: number }>
   width: number
+  useIndex: boolean
 }
 
 export default BannerImage

@@ -224,10 +224,13 @@ class CreateBanner extends React.Component<
       bannerWidth,
     } = this.state
     const missions = addedMissions.reduce<NumDictionary<Mission>>(
-      (prev, curr) => ({
-        ...prev,
-        [curr.index! - 1]: curr,
-      }),
+      (prev, curr, currentIndex) => {
+        const index = bannerType === 'anyOrder' ? currentIndex : curr.index! - 1
+        return {
+          ...prev,
+          [index]: curr,
+        }
+      },
       {}
     )
     try {
@@ -274,14 +277,20 @@ class CreateBanner extends React.Component<
   getMissionIndexEditor = (
     mission: Mission & { index?: number },
     pos: number
-  ) => (
-    <InputNumber
-      value={mission.index}
-      max={1000}
-      onChange={(val) => this.changeMissionNumber(mission, pos, val)}
-      onBlur={this.onOrderMissions}
-    />
-  )
+  ) => {
+    const { bannerType } = this.state
+    if (bannerType === 'sequential') {
+      return (
+        <InputNumber
+          value={mission.index}
+          max={1000}
+          onChange={(val) => this.changeMissionNumber(mission, pos, val)}
+          onBlur={this.onOrderMissions}
+        />
+      )
+    }
+    return undefined
+  }
 
   toogleAdvancedOptions = () => {
     this.setState((state) => ({
@@ -290,7 +299,7 @@ class CreateBanner extends React.Component<
   }
 
   canSubmitBanner = () => {
-    const { addedMissions, bannerTitle } = this.state
+    const { addedMissions, bannerTitle, bannerType } = this.state
     const indexes = addedMissions.map((mission) => mission.index)
     const hasDuplicates = _(indexes).uniq(false).length !== addedMissions.length
 
@@ -298,7 +307,7 @@ class CreateBanner extends React.Component<
       addedMissions.length >= 2 &&
       bannerTitle &&
       _(addedMissions).all((m) => m.index !== undefined) &&
-      !hasDuplicates
+      (!hasDuplicates || bannerType === 'anyOrder')
     )
   }
 
@@ -445,7 +454,11 @@ class CreateBanner extends React.Component<
             <h3>Preview</h3>
             <div className="create-banner-preview">
               <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
-                <BannerImage missions={addedMissions} width={bannerWidth} />
+                <BannerImage
+                  missions={addedMissions}
+                  width={bannerWidth}
+                  useIndex={bannerType === 'sequential'}
+                />
               </Scrollbars>
             </div>
             <button

@@ -56,7 +56,7 @@ export interface SearchMissionListProps {
   missionEditor?: (
     mission: Mission & { index?: number },
     pos: number
-  ) => JSX.Element
+  ) => JSX.Element | undefined
 }
 
 export default SearchMissionList
