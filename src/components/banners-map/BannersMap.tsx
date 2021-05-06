@@ -10,6 +10,8 @@ import BannerMarker from './BannerMarker'
 
 import './banners-map.less'
 
+import 'leaflet/dist/leaflet.css'
+
 class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
   private map: LeafletMap | undefined = undefined
 
