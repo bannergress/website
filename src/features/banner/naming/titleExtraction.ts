@@ -154,7 +154,7 @@ function toTitleCandidate(
   const raw = title
     .substr(start, length)
     .replace(
-      /^[\p{Separator}\p{Punctuation}]+|[\p{Separator}\p{Punctuation}]+$/gu,
+      /^[\p{Separator}\p{Connector_Punctuation}\p{Dash_Punctuation}\p{Close_Punctuation}\p{Final_Punctuation}\p{Other_Punctuation}]+|[\p{Separator}\p{Connector_Punctuation}\p{Dash_Punctuation}\p{Open_Punctuation}\p{Initial_Punctuation}\p{Other_Punctuation}]+$/gu,
       ''
     )
   return raw
