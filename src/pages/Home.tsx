@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Announcement from '../components/announcement'
+import NewsList from '../components/news-list'
 import RecentBanners from '../components/recent-banners'
 import FooterMain from '../components/footer-main'
 
@@ -11,7 +11,7 @@ export const Home: React.FC = () => {
   return (
     <div className="home">
       <div className="announcement-and-recent-banners">
-        <Announcement />
+        <NewsList />
         <RecentBanners titleList={titleList} />
       </div>
       <FooterMain />

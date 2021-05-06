@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 import { BannerReducer } from './features/banner'
 import { PlaceReducer } from './features/place'
 import { MissionReducer } from './features/mission'
+import { NewsReducer } from './features/news'
 
 const persistConfig = {
   key: 'root',
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   banner: BannerReducer,
   place: PlaceReducer,
   mission: MissionReducer,
+  news: NewsReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

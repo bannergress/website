@@ -7,11 +7,12 @@ import MissionCard from '../mission-card'
 
 import './mission-list.less'
 
-export class MissionList extends React.Component<MissionListProps, {}> {
-  componentDidMount() {}
-
-  renderMission = (mission: Mission | undefined) => {
-    const { expanded, onExpand } = this.props
+const MissionList: React.FC<MissionListProps> = ({
+  missions,
+  expanded,
+  onExpand,
+}) => {
+  const renderMission = (mission: Mission | undefined) => {
     if (mission) {
       return (
         <MissionCard
@@ -25,39 +26,33 @@ export class MissionList extends React.Component<MissionListProps, {}> {
     return undefined
   }
 
-  render() {
-    const { missions, expanded, onExpand } = this.props
-    if (missions) {
-      return (
-        <div className="mission-list">
-          <div className="mission-list-header">
-            <h2>Missions in this banner</h2>
-            {onExpand && (
-              <Button
-                className="bg-button bg-button-default"
-                onClick={onExpand}
-              >
-                {expanded ? 'Collapse all' : 'Expand all'}
-              </Button>
-            )}
-          </div>
-          <div className="mt-1" />
-          <div className="mission-list-body">
-            {mapMissions(missions, this.renderMission)}
-          </div>
-        </div>
-      )
-    }
+  if (missions) {
     return (
-      <Fragment>
-        <Row justify="center">
-          <Layout>
-            <div>Loading</div>
-          </Layout>
-        </Row>
-      </Fragment>
+      <div className="mission-list">
+        <div className="mission-list-header">
+          <h2>Missions in this banner</h2>
+          {onExpand && (
+            <Button className="bg-button bg-button-default" onClick={onExpand}>
+              {expanded ? 'Collapse all' : 'Expand all'}
+            </Button>
+          )}
+        </div>
+        <div className="mt-1" />
+        <div className="mission-list-body">
+          {mapMissions(missions, renderMission)}
+        </div>
+      </div>
     )
   }
+  return (
+    <Fragment>
+      <Row justify="center">
+        <Layout>
+          <div>Loading...</div>
+        </Layout>
+      </Row>
+    </Fragment>
+  )
 }
 
 export interface MissionListProps {
