@@ -259,13 +259,15 @@ class CreateBanner extends React.Component<
     pos: number,
     index: number
   ) => {
+    const { addedMissions } = this.state
+    const updatedMissions = [...addedMissions]
+    updatedMissions.splice(pos, 1, { ...mission, index })
+    this.setState({ addedMissions: updatedMissions })
+  }
+
+  onOrderMissions = () => {
     this.setState((state) => ({
-      addedMissions: _([...state.addedMissions])
-        .chain()
-        .without(state.addedMissions[pos])
-        .push({ ...mission, index })
-        .sortBy((a) => a.index)
-        .value(),
+      addedMissions: _([...state.addedMissions]).sortBy((a) => a.index),
     }))
   }
 
@@ -275,7 +277,9 @@ class CreateBanner extends React.Component<
   ) => (
     <InputNumber
       value={mission.index}
+      max={1000}
       onChange={(val) => this.changeMissionNumber(mission, pos, val)}
+      onBlur={this.onOrderMissions}
     />
   )
 
@@ -288,7 +292,7 @@ class CreateBanner extends React.Component<
   canSubmitBanner = () => {
     const { addedMissions, bannerTitle } = this.state
     const indexes = addedMissions.map((mission) => mission.index)
-    const hasDuplicates = _(indexes).uniq(true).length !== addedMissions.length
+    const hasDuplicates = _(indexes).uniq(false).length !== addedMissions.length
 
     return (
       addedMissions.length >= 2 &&
