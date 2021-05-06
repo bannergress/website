@@ -36,6 +36,7 @@ const PlaceList: FC<PlaceListProps> = ({
               onKeyPress={(e) => onKeyPress(e, place)}
               role="button"
               tabIndex={0}
+              className="places-list-link"
             >
               ❮ <PlaceEntry key={place.id} place={place} showNumbers={false} />
             </span>
