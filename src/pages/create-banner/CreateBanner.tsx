@@ -321,7 +321,7 @@ class CreateBanner extends React.Component<
         <Prompt message={this.getPromptMessage} />
         <LoadingOverlay
           active={status === 'loading'}
-          text="Saving..."
+          text="Generatin preview..."
           spinner
           fadeSpeed={500}
         />
