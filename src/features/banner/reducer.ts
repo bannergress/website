@@ -28,13 +28,13 @@ const initialState: BannerState = {
 const extend = (
   source: Array<Partial<Banner>>,
   target: Array<Partial<Banner>>
-): Array<Partial<Banner>> => {
-  return _.uniq(
-    _.flatten([source, target]),
-    false,
-    (a: Partial<Banner>) => a.id
-  )
-}
+): Array<Partial<Banner>> =>
+  _.uniq(_.flatten([source, target]), false, (a: Partial<Banner>) => a.id)
+
+const extendSorted = (
+  source: Array<Partial<Banner>>,
+  target: Array<Partial<Banner>>
+): Array<Partial<Banner>> => _.sortBy(extend(source, target), (b) => b.title)
 
 export default (state = initialState, action: BannerActionTypes) => {
   switch (action.type) {
@@ -43,7 +43,7 @@ export default (state = initialState, action: BannerActionTypes) => {
     case LOAD_RECENT_BANNERS:
       return {
         ...state,
-        banners: extend(state.banners, action.payload),
+        banners: extendSorted(state.banners, action.payload),
         recentBanners: action.payload,
       }
     case RESET_BROWSED_BANNERS:
@@ -51,14 +51,14 @@ export default (state = initialState, action: BannerActionTypes) => {
     case BROWSE_BANNERS:
       return {
         ...state,
-        banners: extend(state.banners, action.payload.banners),
+        banners: extendSorted(state.banners, action.payload.banners),
         browsedBanners: extend(state.browsedBanners, action.payload.banners),
         canBrowseMore: action.payload.hasMore,
       }
     case SEARCH_BANNERS:
       return {
         ...state,
-        banners: extend(state.banners, action.payload.banners),
+        banners: extendSorted(state.banners, action.payload.banners),
         searchBanners: extend(state.searchBanners, action.payload.banners),
         canSearchMore: action.payload.hasMore,
       }
@@ -73,7 +73,7 @@ export default (state = initialState, action: BannerActionTypes) => {
     case REMOVE_CREATED_BANNER:
       return { ...state, createdBanner: undefined }
     case SEARCH_MAP_BANNERS:
-      return { ...state, banners: extend(action.payload, state.banners) }
+      return { ...state, banners: extendSorted(state.banners, action.payload) }
     default:
       return state
   }

@@ -43,7 +43,11 @@ const getImageAnimation = (
   return undefined
 }
 
-const BannerPicture: FC<BannerPictureProps> = ({ title, url }) => {
+const BannerPicture: FC<BannerPictureProps> = ({
+  title,
+  url,
+  showFullImage = false,
+}) => {
   const { ref, inView } = useInView({ threshold: 1 })
   const [modalOpened, setModalOpened] = useState(false)
   const [fullImage, setFullImage] = useState(false)
@@ -52,6 +56,7 @@ const BannerPicture: FC<BannerPictureProps> = ({ title, url }) => {
   const loaded = useLoaded(imgRef)
   const animate =
     loaded && inView && !window.matchMedia('(prefers-reduced-motion)').matches
+
   useEffect(() => {
     const innerDiv = innerRef.current
     const img = imgRef.current
@@ -95,8 +100,10 @@ const BannerPicture: FC<BannerPictureProps> = ({ title, url }) => {
       <div
         ref={ref}
         className="banner-card-picture"
-        onClick={() => setModalOpened(true)}
-        onKeyPress={(e) => (e.key === 'Enter' ? setModalOpened(true) : null)}
+        onClick={() => setModalOpened(showFullImage)}
+        onKeyPress={(e) =>
+          e.key === 'Enter' ? setModalOpened(showFullImage) : null
+        }
         role="button"
         tabIndex={0}
       >
@@ -111,6 +118,7 @@ const BannerPicture: FC<BannerPictureProps> = ({ title, url }) => {
 export interface BannerPictureProps {
   url: string
   title?: string
+  showFullImage?: boolean
 }
 
 export default BannerPicture

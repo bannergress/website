@@ -7,7 +7,12 @@ import { LatLngBounds } from 'leaflet'
 import Scrollbars from 'react-custom-scrollbars'
 
 import { RootState } from '../../storeTypes'
-import { Banner, getMapBanners, loadMapBanners } from '../../features/banner'
+import {
+  Banner,
+  getMapBanners,
+  loadMapBanners,
+  loadBanner,
+} from '../../features/banner'
 import BannerList from '../../components/banner-list'
 import BannersMap from '../../components/banners-map'
 
@@ -24,12 +29,20 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 
   onMapChanged = (bounds: LatLngBounds) => {
-    this.setState({ bounds, selectedBannerId: undefined })
+    this.setState({ bounds })
     this.onLoadBanners(bounds)
   }
 
-  onSelectBanner = (banner: Banner) => {
-    this.setState({ selectedBannerId: banner.id })
+  onSelectBanner = async (banner: Banner) => {
+    const { fetchPreviewBanner } = this.props
+    const { selectedBannerId } = this.state
+    if (selectedBannerId !== banner.id) {
+      this.setState({ status: 'loading' })
+      await fetchPreviewBanner(banner.id)
+      this.setState({ selectedBannerId: banner.id, status: 'ready' })
+    } else {
+      this.setState({ selectedBannerId: undefined })
+    }
   }
 
   onLoadBanners = async (bounds: LatLngBounds) => {
@@ -75,6 +88,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
                 banners={banners}
                 hasMoreBanners={false}
                 selectedBannerId={selectedBannerId}
+                onSelectBanner={this.onSelectBanner}
               />
             </Scrollbars>
           </Col>
@@ -82,6 +96,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
             <BannersMap
               banners={banners}
               onMapChanged={this.onMapChanged}
+              selectedBannerId={selectedBannerId}
               onSelectBanner={this.onSelectBanner}
               loading={status === 'loading'}
             />
@@ -104,6 +119,7 @@ export interface MapOverviewProps extends RouteComponentProps {
     bottomLeftLat: number,
     bottomLeftLng: number
   ) => Promise<void>
+  fetchPreviewBanner: (id: string) => Promise<void>
 }
 
 interface MapOverviewState {
@@ -130,6 +146,7 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = {
   fetchBanners: loadMapBanners,
+  fetchPreviewBanner: loadBanner,
 }
 
 export default connect(

@@ -1,21 +1,23 @@
 import React, { Fragment } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { LatLng, LatLngBounds, Map as LeafletMap } from 'leaflet'
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { MapContainer } from 'react-leaflet'
 import 'leaflet-loading'
 import _ from 'underscore'
 
-import { Banner } from '../../features/banner'
+import { Banner, getBannerBounds } from '../../features/banner'
 import BannerMarker from './BannerMarker'
 
 import './banners-map.less'
 
 import 'leaflet/dist/leaflet.css'
+import { showBannerRouteOnMap } from './showBannerRouteOnMap'
+import { getAttributionLayer } from './getAttributionLayer'
 
-class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
+class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   private map: LeafletMap | undefined = undefined
 
-  constructor(props: MapOverviewProps) {
+  constructor(props: BannersMapProps) {
     super(props)
     const { location } = this.props
     const urlParams = new URLSearchParams(location.search)
@@ -33,22 +35,36 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 
   shouldComponentUpdate(
-    nextProps: Readonly<MapOverviewProps>,
-    nexState: Readonly<MapOverviewState>
+    nextProps: Readonly<BannersMapProps>,
+    nexState: Readonly<BannersMapState>
   ) {
-    const { banners, loading } = this.props
-    const { selectedBannerId, zoom } = this.state
+    const {
+      banners,
+      loading,
+      selectedBannerId: selectedBannerFromPropsId,
+    } = this.props
+    const { selectedBannerId: selectedBannerFromStateId } = this.state
+
+    if (this.map && loading !== nextProps.loading) {
+      this.map.fireEvent(nextProps.loading ? 'dataloading' : 'dataload')
+    }
+
+    if (selectedBannerFromPropsId !== nextProps.selectedBannerId) {
+      this.setState({ selectedBannerId: nextProps.selectedBannerId })
+      const banner = banners.find((b) => b.id === nextProps.selectedBannerId)
+      if (banner) {
+        this.map!.fitBounds(new LatLngBounds(getBannerBounds(banner)), {
+          animate: true,
+        })
+      }
+      return true
+    }
     if (
       nextProps.banners.length !== banners.length ||
       !_.isEqual(nextProps.banners, banners) ||
-      selectedBannerId !== nexState.selectedBannerId ||
-      (zoom <= 15 && nexState.zoom > 15) ||
-      (zoom > 15 && nexState.zoom <= 15)
+      selectedBannerFromStateId !== nexState.selectedBannerId
     ) {
       return true
-    }
-    if (this.map && loading !== nextProps.loading) {
-      this.map.fireEvent(nextProps.loading ? 'dataloading' : 'dataload')
     }
     return false
   }
@@ -96,7 +112,6 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
     this.setState({
       center,
       zoom,
-      selectedBannerId: undefined,
       initialBounds: null,
     })
     onMapChanged(this.map!.getBounds())
@@ -112,7 +127,6 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
   onSelectBanner = (banner: Banner) => {
     const { onSelectBanner } = this.props
     onSelectBanner(banner)
-    this.setState({ selectedBannerId: banner.id })
   }
 
   showBannersOnMap = () => {
@@ -126,6 +140,16 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
         onSelect={() => this.onSelectBanner(banner)}
       />
     ))
+  }
+
+  showSelectedBannerRoute = () => {
+    const { banners } = this.props
+    const { selectedBannerId } = this.state
+    const selectedBanner = banners.find((b) => b.id === selectedBannerId)
+    if (selectedBanner && selectedBanner.missions) {
+      return showBannerRouteOnMap(selectedBanner)
+    }
+    return undefined
   }
 
   render() {
@@ -142,25 +166,25 @@ class BannersMap extends React.Component<MapOverviewProps, MapOverviewState> {
           whenCreated={this.onMapCreated}
           // @ts-ignore
           loadingControl
+          minZoom={3}
         >
-          <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png"
-          />
+          {getAttributionLayer()}
           {this.showBannersOnMap()}
+          {this.showSelectedBannerRoute()}
         </MapContainer>
       </Fragment>
     )
   }
 }
-export interface MapOverviewProps extends RouteComponentProps {
+export interface BannersMapProps extends RouteComponentProps {
   banners: Array<Banner>
   loading: boolean
+  selectedBannerId?: string
   onMapChanged: (bounds: LatLngBounds) => void
   onSelectBanner: (banner: Banner) => void
 }
 
-interface MapOverviewState {
+interface BannersMapState {
   initialBounds: LatLngBounds | null
   center: LatLng
   zoom: number

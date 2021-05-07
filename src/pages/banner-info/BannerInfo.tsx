@@ -51,7 +51,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
             <title>{banner.title}</title>
           </Helmet>
           <div className="banner-info-overview">
-            <BannerCard banner={banner} selected={false} />
+            <BannerCard banner={banner} selected={false} showFullImage />
             {missions && (
               <MissionList
                 missions={missions}

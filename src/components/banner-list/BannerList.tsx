@@ -1,6 +1,6 @@
 import React, { Fragment, FC, useEffect, useRef } from 'react'
 import { Row } from 'antd'
-import { Link, generatePath } from 'react-router-dom'
+import { Link, generatePath, useHistory } from 'react-router-dom'
 
 import { Banner } from '../../features/banner'
 import BannerCard from '../banner-card'
@@ -13,8 +13,13 @@ const BannerList: FC<BannerListProps> = ({
   hasMoreBanners,
   loadMoreBanners,
   selectedBannerId,
+  onSelectBanner,
 }) => {
   const itemsRef = useRef<Array<HTMLDivElement | null>>([])
+  const [ref] = useInfiniteScroll({
+    callback: loadMoreBanners,
+  })
+  const history = useHistory()
 
   useEffect(() => {
     itemsRef.current = itemsRef.current.slice(0, banners?.length || 0)
@@ -29,34 +34,57 @@ const BannerList: FC<BannerListProps> = ({
       })
     }
   }, [banners, selectedBannerId])
-  const [ref] = useInfiniteScroll({
-    callback: loadMoreBanners,
-  })
+
+  const getBannerCardWithLink = (banner: Banner, contents: JSX.Element) =>
+    onSelectBanner ? (
+      <div
+        key={banner.id}
+        role="button"
+        title={banner.title}
+        onClick={() => onSelectBanner(banner)}
+        onKeyPress={(e) => e.key === 'Enter' && onSelectBanner(banner)}
+        className="banner-card-link"
+        tabIndex={0}
+      >
+        {contents}
+      </div>
+    ) : (
+      <Link
+        key={banner.id}
+        to={generatePath('/banner/:id', { id: banner.id })}
+        title={banner.title}
+      >
+        {contents}
+      </Link>
+    )
 
   if (banners && banners.length > 0) {
     return (
       <Fragment>
         <div className="banner-list">
-          {banners?.map((bannerItem, index) => (
-            <div
-              key={bannerItem.id}
-              ref={(b) => {
-                itemsRef.current[index] = b
-              }}
-            >
-              <Link
-                key={bannerItem.id}
-                to={generatePath('/banner/:id', { id: bannerItem.id })}
-                title={bannerItem.title}
+          {banners?.map((banner, index) => {
+            const bannerCard = getBannerCardWithLink(
+              banner,
+              <BannerCard
+                key={banner.id}
+                banner={banner}
+                selected={banner.id === selectedBannerId}
+                onDetails={() =>
+                  history.push(generatePath('/banner/:id', { id: banner.id }))
+                }
+              />
+            )
+            return (
+              <div
+                key={banner.id}
+                ref={(b) => {
+                  itemsRef.current[index] = b
+                }}
               >
-                <BannerCard
-                  key={bannerItem.id}
-                  banner={bannerItem}
-                  selected={bannerItem.id === selectedBannerId}
-                />
-              </Link>
-            </div>
-          ))}
+                {bannerCard}
+              </div>
+            )
+          })}
           {hasMoreBanners && (
             <div ref={ref} className="banner-card">
               Loading more items...
@@ -72,8 +100,9 @@ const BannerList: FC<BannerListProps> = ({
 export interface BannerListProps {
   banners: Array<Banner> | undefined
   hasMoreBanners: Boolean
-  loadMoreBanners?: () => Promise<void>
   selectedBannerId?: string
+  loadMoreBanners?: () => Promise<void>
+  onSelectBanner?: (banner: Banner) => void
 }
 
 export default BannerList
