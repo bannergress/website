@@ -1,8 +1,10 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { Button, Modal } from 'antd'
 import { useInView } from 'react-intersection-observer'
+import Scrollbars from 'react-custom-scrollbars'
 
 import { useLoaded } from '../../hooks/Loaded'
+import { ReactComponent as SVGMinimize } from '../../img/icons/minimize.svg'
 
 const getImageAnimation = (
   innerDiv: HTMLDivElement | null,
@@ -44,6 +46,7 @@ const getImageAnimation = (
 const BannerPicture: FC<BannerPictureProps> = ({ title, url }) => {
   const { ref, inView } = useInView({ threshold: 1 })
   const [modalOpened, setModalOpened] = useState(false)
+  const [fullImage, setFullImage] = useState(false)
   const innerRef = useRef<HTMLDivElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
   const loaded = useLoaded(imgRef)
@@ -60,22 +63,33 @@ const BannerPicture: FC<BannerPictureProps> = ({ title, url }) => {
     }
   }, [innerRef, imgRef, animate])
 
+  const onCloseModal = () => {
+    setModalOpened(false)
+    setFullImage(false)
+  }
+
   return (
     <>
       <Modal
         visible={modalOpened}
-        onCancel={() => setModalOpened(false)}
-        onOk={() => setModalOpened(false)}
+        onCancel={onCloseModal}
+        onOk={onCloseModal}
         footer={null}
         centered
         className="banner-card-modal"
+        width="95%"
       >
         <Button
           role="button"
-          className="modal-image"
-          onClick={() => setModalOpened(false)}
+          className={`modal-image ${fullImage && 'full-size'}`}
+          onClick={() => setFullImage(!fullImage)}
         >
-          <img alt={title} src={url} />
+          <Scrollbars>
+            <img alt={title} src={url} />
+          </Scrollbars>
+        </Button>
+        <Button role="button" className="close-button" onClick={onCloseModal}>
+          <SVGMinimize /> Exit Full Screen
         </Button>
       </Modal>
       <div

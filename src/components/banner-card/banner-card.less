@@ -30,28 +30,63 @@
 }
 
 .banner-card-modal {
+  height: 95%;
+  
   .ant-modal-content {
-    background: none !important;
-    box-shadow: none !important;
-    height: 0 !important;
-    width: 0 !important;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    background-color: #2e2e2e;
+
+    .ant-modal-body {
+      width: 100%;
+    }
 
     .ant-modal-close {
       display: none;
     }
 
-    button {
+    .modal-image {
+      height: 100%;
+      width: 100%;
       cursor: default;
       background: none !important;
       border: none;
+      margin: 0 !important;
+      padding: 0 !important;
+      
+      div {
+        margin: 0 !important;
+      }
+
+      img {
+        max-height: 100%;
+        margin: auto;
+      }
+      &.full-size {
+        img {
+          max-height: initial;
+        }
+      }
     }
 
-    img {
-      position: fixed;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      max-height: 100%;
+    .close-button {
+      position: absolute;
+      bottom: 15px;
+      background-color: #2e2e2e;
+      right: 15px;
+      border: none;
+      line-height: 1em;
+      color: white !important;
+
+      svg, span {
+        vertical-align: middle;
+        display: inline-block;
+      }
+
+      svg {
+        margin-right: 10px;
+      }
     }
   }
 }
