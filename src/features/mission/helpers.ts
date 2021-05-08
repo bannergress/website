@@ -60,7 +60,7 @@ export const getMissionBounds = (mission: Mission) => {
   let minLongitude = mission.startLongitude
   if (mission.steps) {
     mission.steps.forEach((step) => {
-      if (step.poi) {
+      if (step.poi && step.poi.type !== 'unavailable') {
         if (!maxLatitude || step.poi.latitude > maxLatitude) {
           maxLatitude = step.poi.latitude
         }

@@ -4,8 +4,14 @@ import { Polyline } from 'react-leaflet'
 import _ from 'underscore'
 
 import { Banner } from '../../features/banner'
-import { mapMissions } from '../../features/mission'
+import { mapMissions, Step } from '../../features/mission'
 import SquareMarker from './SquareMarker'
+
+const hasLatLng = (step: Step) =>
+  step.poi &&
+  step.poi.type !== 'unavailable' &&
+  step.poi.latitude &&
+  step.poi.longitude
 
 export const showBannerRouteOnMap = (banner: Banner) => {
   const missionPolylines: LatLng[] = []
@@ -14,24 +20,19 @@ export const showBannerRouteOnMap = (banner: Banner) => {
     if (mission) {
       const { steps } = mission
       if (steps) {
-        const step = steps.find(
-          (s) => s.poi && s.poi.latitude && s.poi.longitude
-        )
-        const last = _([...steps])
+        const firstPOI = steps.find(hasLatLng)?.poi
+        const lastPOI = _([...steps])
           .chain()
-          .filter((s) => s.poi && s.poi.latitude && s.poi.longitude)
+          .filter(hasLatLng)
           .last()
-          .value()
-        if (step) {
+          .value()?.poi
+        if (firstPOI && firstPOI.type !== 'unavailable') {
           missionPolylines.push(
-            new LatLng(step.poi!.latitude, step.poi!.longitude)
+            new LatLng(firstPOI.latitude, firstPOI.longitude)
           )
         }
-        if (last) {
-          lastMissionCoords = new LatLng(
-            last.poi!.latitude,
-            last.poi!.longitude
-          )
+        if (lastPOI && lastPOI.type !== 'unavailable') {
+          lastMissionCoords = new LatLng(lastPOI.latitude, lastPOI.longitude)
         }
       }
     }

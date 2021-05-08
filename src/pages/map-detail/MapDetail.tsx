@@ -30,9 +30,10 @@ const showMissionStartPointsOnMap = (missions: NumDictionary<Mission>) => {
     if (mission && mission?.steps!) {
       // get the first available waypoint in the mission and set it as start point
       for (let i = 0; i < mission.steps.length; i += 1) {
-        if (mission.steps[i].poi?.latitude && mission.steps[i].poi?.latitude) {
-          startLat = mission.steps[i].poi!.latitude
-          startLng = mission.steps[i].poi!.longitude
+        const { poi } = mission.steps[i]
+        if (poi && poi.type !== 'unavailable' && poi.latitude && poi.latitude) {
+          startLat = poi.latitude
+          startLng = poi.longitude
           break
         }
       }
@@ -88,10 +89,14 @@ const showMissionRoutesOnMap = (missions: NumDictionary<Mission>) => {
       const { steps } = mission
       if (steps) {
         steps.forEach((step) => {
-          if (step.poi && step.poi.latitude && step.poi.longitude) {
-            missionPolylinesTemp.push(
-              new LatLng(step.poi.latitude, step.poi.longitude)
-            )
+          const { poi } = step
+          if (
+            poi &&
+            poi.type !== 'unavailable' &&
+            poi.latitude &&
+            poi.longitude
+          ) {
+            missionPolylinesTemp.push(new LatLng(poi.latitude, poi.longitude))
           }
         })
       }

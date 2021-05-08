@@ -8,6 +8,9 @@ import {
   MissionState,
   Objective,
   NamedAgent,
+  PortalPOI,
+  UnavailablePOI,
+  FieldTripWaypointPOI,
 } from './types'
 import { mapMissions, mapMissionsInverse, getMissionBounds } from './helpers'
 
@@ -18,5 +21,15 @@ export {
   searchMissionsAction as searchMissions,
   resetSearchMissionsAction as resetSearchMissions,
 }
-export type { Mission, Step, POI, MissionState, Objective, NamedAgent }
+export type {
+  Mission,
+  Step,
+  POI,
+  MissionState,
+  Objective,
+  NamedAgent,
+  PortalPOI,
+  UnavailablePOI,
+  FieldTripWaypointPOI,
+}
 export { mapMissions, mapMissionsInverse, getMissionBounds }
