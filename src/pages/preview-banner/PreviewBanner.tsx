@@ -16,7 +16,7 @@ import {
 import BannerCard from '../../components/banner-card'
 import MissionList from '../../components/mission-list'
 import LoadingOverlay from '../../components/loading-overlay'
-import { MapDetail } from '../map-detail'
+import { MapDetail } from '../../components/map-detail'
 
 import './preview-banner.less'
 
@@ -110,6 +110,8 @@ class PreviewBanner extends React.Component<
           <MapDetail
             banner={banner}
             bounds={new LatLngBounds(getBannerBounds(banner))}
+            openedMissionIndexes={[]}
+            onOpenMission={() => null}
           />
           <button
             type="button"

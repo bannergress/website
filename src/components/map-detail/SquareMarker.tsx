@@ -3,13 +3,13 @@ import React, { FC } from 'react'
 
 import { Marker } from 'react-leaflet'
 
-const SquareMarker: FC<SquareMarkerProps> = ({ bounds }) => {
+const SquareMarker: FC<SquareMarkerProps> = ({ coords, color }) => {
   const iconNormal = divIcon({
     className: 'custom-div-icon',
-    html: `<div class='square-marker-pin'></div>`,
+    html: `<div class="square-marker-pin color-${color}"></div>`,
     iconAnchor: [0, 0],
   })
-  return <Marker icon={iconNormal} position={[bounds.lat, bounds.lng]} />
+  return <Marker icon={iconNormal} position={[coords.lat, coords.lng]} />
   // const color = '#16d4b2'
   // // eslint-disable-next-line no-debugger
   // debugger
@@ -39,7 +39,8 @@ const SquareMarker: FC<SquareMarkerProps> = ({ bounds }) => {
 }
 
 export interface SquareMarkerProps {
-  bounds: LatLng
+  coords: LatLng
+  color: 'green' | 'blue'
 }
 
 export default SquareMarker

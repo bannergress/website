@@ -7,13 +7,16 @@ import { Banner } from '../../features/banner'
 import { mapMissions, Step } from '../../features/mission'
 import SquareMarker from './SquareMarker'
 
-const hasLatLng = (step: Step) =>
+export const hasLatLng = (step: Step) =>
   step.poi &&
   step.poi.type !== 'unavailable' &&
   step.poi.latitude &&
   step.poi.longitude
 
-export const showBannerRouteOnMap = (banner: Banner) => {
+export const showBannerRouteOnMap = (
+  banner: Banner,
+  color: 'green' | 'blue'
+) => {
   const missionPolylines: LatLng[] = []
   let lastMissionCoords: LatLng | undefined
   mapMissions(banner.missions, (mission) => {
@@ -53,7 +56,7 @@ export const showBannerRouteOnMap = (banner: Banner) => {
           pathOptions={lineStyle}
           positions={missionPolylines}
         />
-        <SquareMarker bounds={lastCoordinates!} />
+        <SquareMarker coords={lastCoordinates!} color={color} />
       </>
     )
   }

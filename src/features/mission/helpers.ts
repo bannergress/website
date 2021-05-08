@@ -14,7 +14,7 @@ export const mapMissions = <T>(
   const maxKey: number = _(keys).last() || 0
   for (let i = 0; i <= maxKey; i += 1) {
     const val = handler(missions[i], i)
-    if (val) {
+    if (val !== undefined && val !== null) {
       result.push(val)
     }
   }
@@ -33,7 +33,7 @@ export const mapMissionsInverse = <T>(
   const maxKey: number = _(keys).last() || 0
   for (let i = maxKey; i >= 0; i -= 1) {
     const val = handler(missions[i], i)
-    if (val) {
+    if (val !== undefined && val !== null) {
       result.push(val)
     }
   }

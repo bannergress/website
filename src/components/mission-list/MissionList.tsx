@@ -9,17 +9,19 @@ import './mission-list.less'
 
 const MissionList: React.FC<MissionListProps> = ({
   missions,
+  expandedMissionIndexes = [],
   expanded,
   onExpand,
+  onExpandAll,
 }) => {
-  const renderMission = (mission: Mission | undefined) => {
+  const renderMission = (mission: Mission | undefined, index: number) => {
     if (mission) {
       return (
         <MissionCard
           key={mission.id}
           mission={mission}
-          expanded={expanded}
-          showExpandOption={onExpand !== undefined}
+          expanded={expandedMissionIndexes.includes(index)}
+          onExpand={() => onExpand && onExpand(index)}
         />
       )
     }
@@ -32,7 +34,10 @@ const MissionList: React.FC<MissionListProps> = ({
         <div className="mission-list-header">
           <h2>Missions in this banner</h2>
           {onExpand && (
-            <Button className="bg-button bg-button-default" onClick={onExpand}>
+            <Button
+              className="bg-button bg-button-default"
+              onClick={onExpandAll}
+            >
               {expanded ? 'Collapse all' : 'Expand all'}
             </Button>
           )}
@@ -57,8 +62,10 @@ const MissionList: React.FC<MissionListProps> = ({
 
 export interface MissionListProps {
   missions: NumDictionary<Mission>
+  expandedMissionIndexes?: Array<number>
   expanded: boolean
-  onExpand?: () => void
+  onExpand?: (index: number) => void
+  onExpandAll?: () => void
 }
 
 export default MissionList

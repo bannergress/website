@@ -12,8 +12,8 @@ import BannerMarker from './BannerMarker'
 import './banners-map.less'
 
 import 'leaflet/dist/leaflet.css'
-import { showBannerRouteOnMap } from './showBannerRouteOnMap'
-import { getAttributionLayer } from './getAttributionLayer'
+import { showBannerRouteOnMap } from '../map-detail/showBannerRouteOnMap'
+import { getAttributionLayer } from '../map-detail/getAttributionLayer'
 
 class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   private map: LeafletMap | undefined = undefined
@@ -31,27 +31,17 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
       initialBounds,
       center: new LatLng(lat, lng),
       zoom,
-      selectedBannerId: undefined,
     }
   }
 
-  shouldComponentUpdate(
-    nextProps: Readonly<BannersMapProps>,
-    nexState: Readonly<BannersMapState>
-  ) {
-    const {
-      banners,
-      loading,
-      selectedBannerId: selectedBannerFromPropsId,
-    } = this.props
-    const { selectedBannerId: selectedBannerFromStateId } = this.state
+  shouldComponentUpdate(nextProps: Readonly<BannersMapProps>) {
+    const { banners, loading, selectedBannerId } = this.props
 
     if (this.map && loading !== nextProps.loading) {
       this.map.fireEvent(nextProps.loading ? 'dataloading' : 'dataload')
     }
 
-    if (selectedBannerFromPropsId !== nextProps.selectedBannerId) {
-      this.setState({ selectedBannerId: nextProps.selectedBannerId })
+    if (selectedBannerId !== nextProps.selectedBannerId) {
       const banner = banners.find((b) => b.id === nextProps.selectedBannerId)
       if (banner) {
         this.map!.fitBounds(new LatLngBounds(getBannerBounds(banner)), {
@@ -62,8 +52,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     }
     if (
       nextProps.banners.length !== banners.length ||
-      !_.isEqual(nextProps.banners, banners) ||
-      selectedBannerFromStateId !== nexState.selectedBannerId
+      !_.isEqual(nextProps.banners, banners)
     ) {
       return true
     }
@@ -131,8 +120,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   }
 
   showBannersOnMap = () => {
-    const { banners } = this.props
-    const { selectedBannerId } = this.state
+    const { banners, selectedBannerId } = this.props
     return banners.map((banner: Banner) => (
       <BannerMarker
         key={banner.id}
@@ -144,11 +132,10 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   }
 
   showSelectedBannerRoute = () => {
-    const { banners } = this.props
-    const { selectedBannerId } = this.state
+    const { banners, selectedBannerId } = this.props
     const selectedBanner = banners.find((b) => b.id === selectedBannerId)
     if (selectedBanner && selectedBanner.missions) {
-      return showBannerRouteOnMap(selectedBanner)
+      return showBannerRouteOnMap(selectedBanner, 'green')
     }
     return undefined
   }
@@ -215,7 +202,6 @@ interface BannersMapState {
   initialBounds: LatLngBounds | null
   center: LatLng
   zoom: number
-  selectedBannerId: string | undefined
 }
 
 export default withRouter(BannersMap)

@@ -1,7 +1,4 @@
-export type POI =
-  | PortalPOI
-  | FieldTripWaypointPOI
-  | UnavailablePOI;
+export type POI = PortalPOI | FieldTripWaypointPOI | UnavailablePOI
 
 export interface PortalPOI {
   id: string
@@ -21,7 +18,7 @@ export interface FieldTripWaypointPOI {
 }
 
 export interface UnavailablePOI {
-  id: string,
+  id: string
   type: 'unavailable'
 }
 

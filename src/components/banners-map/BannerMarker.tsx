@@ -32,7 +32,7 @@ const BannerMarker: FC<BannerMarkerProps> = ({
 export interface BannerMarkerProps {
   banner: Banner
   selected: boolean
-  onSelect: () => any
+  onSelect: () => void
 }
 
 export default BannerMarker

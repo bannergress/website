@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { LatLngBounds } from 'leaflet'
+import _ from 'underscore'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -14,15 +15,17 @@ import {
 import BannerCard from '../../components/banner-card'
 import MissionList from '../../components/mission-list'
 import LoadingOverlay from '../../components/loading-overlay'
-import { MapDetail } from '../map-detail'
+import { MapDetail } from '../../components/map-detail'
 
 import './banner-info.less'
+import { mapMissions } from '../../features/mission'
 
 class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
   constructor(props: BannerInfoProps) {
     super(props)
     this.state = {
       expanded: false,
+      expandedMissionIndexes: [],
       status: 'initial',
     }
   }
@@ -34,14 +37,42 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
       .catch(() => this.setState({ status: 'error' }))
   }
 
-  onExpand = () => {
+  onExpand = (index: number) => {
+    const { expandedMissionIndexes } = this.state
+    if (expandedMissionIndexes.indexOf(index) >= 0) {
+      const indexes = _(expandedMissionIndexes).without(index)
+      this.setState({
+        expandedMissionIndexes: indexes,
+        expanded: indexes.length > 0,
+      })
+    } else {
+      this.setState({
+        expandedMissionIndexes: [...expandedMissionIndexes, index],
+      })
+    }
+  }
+
+  onExpandAll = () => {
+    const { getBanner, match } = this.props
     const { expanded } = this.state
-    this.setState({ expanded: !expanded })
+    if (expanded) {
+      this.setState({ expanded: false, expandedMissionIndexes: [] })
+    } else {
+      const banner = getBanner(match.params.id)
+      let missionIndexes: Array<number> = []
+      if (banner && banner.missions) {
+        missionIndexes = mapMissions(
+          banner.missions,
+          (mission, index) => mission && index
+        )
+      }
+      this.setState({ expanded: true, expandedMissionIndexes: missionIndexes })
+    }
   }
 
   render() {
     const { getBanner, match } = this.props
-    const { expanded, status } = this.state
+    const { expanded, expandedMissionIndexes, status } = this.state
     const banner = getBanner(match.params.id)
     if (banner) {
       const { missions } = banner
@@ -55,8 +86,10 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
             {missions && (
               <MissionList
                 missions={missions}
+                expandedMissionIndexes={expandedMissionIndexes}
                 expanded={expanded}
                 onExpand={this.onExpand}
+                onExpandAll={this.onExpandAll}
               />
             )}
           </div>
@@ -65,6 +98,8 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
               <MapDetail
                 banner={banner}
                 bounds={new LatLngBounds(getBannerBounds(banner))}
+                openedMissionIndexes={expandedMissionIndexes}
+                onOpenMission={this.onExpand}
               />
             )}
           </div>
@@ -82,6 +117,7 @@ export interface BannerInfoProps extends RouteComponentProps<{ id: string }> {
 
 interface BannerInfoState {
   expanded: boolean
+  expandedMissionIndexes: Array<number>
   status: 'initial' | 'loading' | 'ready' | 'error'
 }
 
