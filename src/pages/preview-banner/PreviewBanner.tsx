@@ -4,6 +4,7 @@ import { Prompt, RouteComponentProps, withRouter } from 'react-router'
 import { Location } from 'history'
 import { Helmet } from 'react-helmet'
 import { LatLngBounds } from 'leaflet'
+import _ from 'underscore'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -13,6 +14,7 @@ import {
   removePendingBanner as removePendingBannerAction,
   getBannerBounds,
 } from '../../features/banner'
+import { mapMissions } from '../../features/mission'
 import BannerCard from '../../components/banner-card'
 import MissionList from '../../components/mission-list'
 import LoadingOverlay from '../../components/loading-overlay'
@@ -27,8 +29,9 @@ class PreviewBanner extends React.Component<
   constructor(props: PreviewBannerProps) {
     super(props)
     this.state = {
-      loading: false,
+      status: 'initial',
       expanded: false,
+      expandedMissionIndexes: [],
     }
   }
 
@@ -41,30 +44,57 @@ class PreviewBanner extends React.Component<
 
   componentWillUnmount() {
     const { removePendingBanner } = this.props
-    const { loading } = this.state
-    if (!loading) {
+    const { status } = this.state
+    if (status === 'loading') {
       removePendingBanner()
     }
   }
 
   onSubmitBanner = () => {
     const { submitBanner, history } = this.props
-    this.setState({ loading: true })
+    this.setState({ status: 'loading' })
     submitBanner()
       .then((bannerId) => {
         history.push(`/banner/${bannerId}`)
       })
-      .catch(() => this.setState({ loading: false }))
+      .catch(() => this.setState({ status: 'error' }))
   }
 
-  onExpand = () => {
+  onExpand = (index: number) => {
+    const { expandedMissionIndexes } = this.state
+    if (expandedMissionIndexes.indexOf(index) >= 0) {
+      const indexes = _(expandedMissionIndexes).without(index)
+      this.setState({
+        expandedMissionIndexes: indexes,
+        expanded: indexes.length > 0,
+      })
+    } else {
+      this.setState({
+        expandedMissionIndexes: [...expandedMissionIndexes, index],
+      })
+    }
+  }
+
+  onExpandAll = () => {
+    const { banner } = this.props
     const { expanded } = this.state
-    this.setState({ expanded: !expanded })
+    if (expanded) {
+      this.setState({ expanded: false, expandedMissionIndexes: [] })
+    } else {
+      let missionIndexes: Array<number> = []
+      if (banner && banner.missions) {
+        missionIndexes = mapMissions(
+          banner.missions,
+          (mission, index) => mission && index
+        )
+      }
+      this.setState({ expanded: true, expandedMissionIndexes: missionIndexes })
+    }
   }
 
   getPromptMessage = (location: Location<unknown>) => {
-    const { loading } = this.state
-    if (loading || location.pathname.includes('new-banner')) {
+    const { status } = this.state
+    if (status !== 'initial' || location.pathname.includes('new-banner')) {
       return true
     }
     return 'Are you sure you want to leave and discard this banner?'
@@ -72,12 +102,12 @@ class PreviewBanner extends React.Component<
 
   onBack = () => {
     const { history } = this.props
-    this.setState({ loading: true }, () => history.goBack())
+    this.setState({ status: 'regress' }, () => history.goBack())
   }
 
   render() {
     const { banner } = this.props
-    const { loading, expanded } = this.state
+    const { status, expanded, expandedMissionIndexes } = this.state
     if (!banner) {
       return <Fragment />
     }
@@ -88,7 +118,7 @@ class PreviewBanner extends React.Component<
         <Helmet>Create Banner</Helmet>
         <Prompt message={this.getPromptMessage} />
         <LoadingOverlay
-          active={loading}
+          active={status === 'loading'}
           text="Saving..."
           spinner
           fadeSpeed={500}
@@ -102,7 +132,9 @@ class PreviewBanner extends React.Component<
             <MissionList
               missions={missions}
               expanded={expanded}
+              expandedMissionIndexes={expandedMissionIndexes}
               onExpand={this.onExpand}
+              onExpandAll={this.onExpandAll}
             />
           )}
         </div>
@@ -110,8 +142,8 @@ class PreviewBanner extends React.Component<
           <MapDetail
             banner={banner}
             bounds={new LatLngBounds(getBannerBounds(banner))}
-            openedMissionIndexes={[]}
-            onOpenMission={() => null}
+            openedMissionIndexes={expandedMissionIndexes}
+            onOpenMission={this.onExpand}
           />
           <button
             type="button"
@@ -133,8 +165,9 @@ export interface PreviewBannerProps extends RouteComponentProps {
 }
 
 interface PreviewBannerState {
-  loading: boolean
   expanded: boolean
+  expandedMissionIndexes: Array<number>
+  status: 'initial' | 'loading' | 'regress' | 'error'
 }
 
 const mapStateToProps = (state: RootState) => ({
