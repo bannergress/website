@@ -108,15 +108,17 @@ const showMissionRoutesOnMap = (missions: NumDictionary<Mission>) => {
           color: 'rgba(0, 0, 0, 0.4)',
           weight: 8,
         }
-      missionPolylines.push(
-        <Polyline
-          key={`steps-${mission.id}`}
-          pathOptions={lineStyle}
-          positions={missionPolylinesTemp}
-        >
-          <Tooltip sticky>{mission.title}</Tooltip>
-        </Polyline>
-      )
+      if (missionPolylinesTemp.length > 0) {
+        missionPolylines.push(
+          <Polyline
+            key={`steps-${mission.id}`}
+            pathOptions={lineStyle}
+            positions={missionPolylinesTemp}
+          >
+            <Tooltip sticky>{mission.title}</Tooltip>
+          </Polyline>
+        )
+      }
       missionPolylinesTemp = []
       // console.log('missionPolylinesTemp', missionPolylinesTemp)
       // eslint-disable-next-line no-debugger
