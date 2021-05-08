@@ -49,7 +49,6 @@ const getMissions = (numberOfMissions: number) => {
         {
           poi: {
             id: '3',
-            picture: '',
             title: 'Mock POI 3',
             type: 'fieldTripWaypoint',
             latitude: 49.032618 + getRandomInt(200, 0.0001, 0),
