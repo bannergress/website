@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { LatLng, LatLngBounds, Map as LeafletMap } from 'leaflet'
-import { MapContainer } from 'react-leaflet'
+import { divIcon, LatLng, LatLngBounds, Map as LeafletMap } from 'leaflet'
+import { MapContainer, TileLayer } from 'react-leaflet'
 import 'leaflet-loading'
 import _ from 'underscore'
+import MarkerClusterGroup from 'react-leaflet-cluster'
 
 import { Banner, getBannerBounds } from '../../features/banner'
 import BannerMarker from './BannerMarker'
@@ -152,6 +153,21 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     return undefined
   }
 
+  createClusterCustomIcon = (cluster: any) => {
+    const numberMarkers = cluster.getAllChildMarkers().length
+    if (numberMarkers > 1)
+      return divIcon({
+        className: 'custom-div-icon',
+        html: `<div class='marker-pin-false'>M${numberMarkers}</div>`,
+        iconAnchor: [0, 0],
+      })
+    return divIcon({
+      className: 'custom-div-icon',
+      html: `<div class='marker-pin-false'></div>`,
+      iconAnchor: [0, 0],
+    })
+  }
+
   render() {
     const { initialBounds, center, zoom } = this.state
 
@@ -169,8 +185,19 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
           minZoom={3}
         >
           {getAttributionLayer()}
-          {this.showBannersOnMap()}
+          <MarkerClusterGroup
+            maxClusterRadius="10"
+            singleMarkerMode
+            iconCreateFunction={this.createClusterCustomIcon}
+          >
+            {this.showBannersOnMap()}
+          </MarkerClusterGroup>
+
           {this.showSelectedBannerRoute()}
+          <TileLayer
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png"
+          />
         </MapContainer>
       </Fragment>
     )

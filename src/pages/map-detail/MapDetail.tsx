@@ -10,6 +10,8 @@ import {
   Tooltip,
 } from 'react-leaflet'
 
+import MarkerClusterGroup from 'react-leaflet-cluster'
+
 import { Banner, NumDictionary } from '../../features/banner'
 import { mapMissions, Mission } from '../../features/mission'
 
@@ -38,7 +40,7 @@ const showMissionStartPointsOnMap = (missions: NumDictionary<Mission>) => {
       // use custom icon
       const iconHidden = divIcon({
         className: 'custom-div-icon',
-        html: `<div class='marker-pin'>${missionNumber}<sup><i class='fas fa-eye-slash awesome'></sup></div>`,
+        html: `<div class='marker-pin'>${missionNumber}<sup>H</sup></div>`,
         iconAnchor: [0, 0],
       })
       const iconNormal = divIcon({
@@ -56,43 +58,22 @@ const showMissionStartPointsOnMap = (missions: NumDictionary<Mission>) => {
       }
 
       missionStartPoints.push(
-        //   <CircleMarker
-        //     key={mission.id}
-        //     pathOptions={{
-        //       fillColor: color,
-        //       fillOpacity: 1,
-        //       fill: true,
-        //       stroke: false,
-        //     }}
-        //     radius={7}
-        //     center={[startLat, startLng]}
-        //   >
-        //     <Tooltip>{mission.title}</Tooltip>
-        //   </CircleMarker>
-        <Marker key={mission.id} icon={icon} position={[startLat, startLng]}>
+        <Marker
+          key={mission.id}
+          icon={icon}
+          position={[startLat, startLng]}
+          eventHandlers={{
+            click: (e) => {
+              console.log('marker clicked', e)
+            },
+          }}
+        >
           <Tooltip offset={[20, 0]}>{mission.title}</Tooltip>
         </Marker>
       )
       missionNumber += 1
     }
   })
-  // const forVariable = missionsToShow ?? numberOfMissions
-  // for (let i = 0; i < forVariable; i += 1) {
-  //   if (missions[i] !== undefined) {
-  //     const { steps } = missions[i]
-  //     if (steps) {
-  //       missionStartPoints.push(
-  //         <CircleMarker
-  //           pathOptions={{ color: 'red', fillColor: 'red', fillOpacity: 1 }}
-  //           radius={5}
-  //           center={[steps[0].poi.latitude, steps[0].poi.longitude]}
-  //         >
-  //           <Tooltip permanent>{missions[i].title}</Tooltip>
-  //         </CircleMarker>
-  //       )
-  //     }
-  //   }
-  // }
   return missionStartPoints
 }
 
@@ -132,7 +113,9 @@ const showMissionRoutesOnMap = (missions: NumDictionary<Mission>) => {
           key={`steps-${mission.id}`}
           pathOptions={lineStyle}
           positions={missionPolylinesTemp}
-        />
+        >
+          <Tooltip sticky>{mission.title}</Tooltip>
+        </Polyline>
       )
       missionPolylinesTemp = []
       // console.log('missionPolylinesTemp', missionPolylinesTemp)
@@ -150,7 +133,11 @@ export const MapDetail: React.FC<MapDetailProps> = ({ banner, bounds }) => (
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png"
       />
-      {banner?.missions ? showMissionStartPointsOnMap(banner?.missions) : null}
+      <MarkerClusterGroup showCoverageOnHover={false} maxClusterRadius="5">
+        {banner?.missions
+          ? showMissionStartPointsOnMap(banner?.missions)
+          : null}
+      </MarkerClusterGroup>
 
       {banner?.missions ? showMissionRoutesOnMap(banner?.missions) : null}
     </MapContainer>
