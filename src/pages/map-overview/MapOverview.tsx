@@ -12,6 +12,8 @@ import {
   getMapBanners,
   loadMapBanners,
   loadBanner,
+  getBanner as getBannerSelector,
+  extendSorted,
 } from '../../features/banner'
 import BannerList from '../../components/banner-list'
 import BannersMap from '../../components/banners-map'
@@ -64,7 +66,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 
   render() {
-    const { getBanners } = this.props
+    const { getBanners, getBanner } = this.props
     const { bounds, selectedBannerId, status } = this.state
     let banners: Array<Banner> = []
     if (bounds) {
@@ -74,6 +76,12 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
         bounds.getSouth(),
         bounds.getWest()
       )
+    }
+    if (selectedBannerId) {
+      const selectedBanner = getBanner(selectedBannerId)
+      if (selectedBanner) {
+        banners = extendSorted(banners, [selectedBanner])
+      }
     }
     return (
       <Fragment>
@@ -120,6 +128,7 @@ export interface MapOverviewProps extends RouteComponentProps {
     bottomLeftLng: number
   ) => Promise<void>
   fetchPreviewBanner: (id: string) => Promise<void>
+  getBanner: (bannerId: string) => Banner | undefined
 }
 
 interface MapOverviewState {
@@ -142,6 +151,7 @@ const mapStateToProps = (state: RootState) => ({
       bottomLeftLat,
       bottomLeftLng
     ),
+  getBanner: (bannerId: string) => getBannerSelector(state, bannerId),
 })
 
 const mapDispatchToProps = {

@@ -1,3 +1,5 @@
+import _ from 'underscore'
+
 import { mapMissions } from '../mission'
 import { getMissionBounds } from '../mission/helpers'
 import { Banner } from './types'
@@ -49,3 +51,13 @@ export const getBannerBounds = (
     [minLatitude - BOUNDS_MARGIN, minLongitude - BOUNDS_MARGIN],
   ]
 }
+
+export const extend = <T extends { id?: string; title?: string }>(
+  source: Array<T>,
+  target: Array<T>
+) => _.uniq(_.flatten([source, target]), false, (a) => a.id)
+
+export const extendSorted = <T extends { id?: string; title?: string }>(
+  source: Array<T>,
+  target: Array<T>
+) => _.sortBy(extend(source, target), (b) => b.title)

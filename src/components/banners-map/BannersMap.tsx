@@ -154,7 +154,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   }
 
   createClusterCustomIcon = (cluster: any) => {
-    const numberMarkers = cluster.getAllChildMarkers().length
+    const numberMarkers = cluster.getChildCount()
     if (numberMarkers > 1)
       return divIcon({
         className: 'custom-div-icon',

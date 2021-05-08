@@ -1,4 +1,3 @@
-import _ from 'underscore'
 import {
   BannerActionTypes,
   BROWSE_BANNERS,
@@ -13,7 +12,8 @@ import {
   REMOVE_CREATED_BANNER,
   SEARCH_MAP_BANNERS,
 } from './actionTypes'
-import { Banner, BannerState } from './types'
+import { extend, extendSorted } from './helpers'
+import { BannerState } from './types'
 
 const initialState: BannerState = {
   banners: [],
@@ -24,17 +24,6 @@ const initialState: BannerState = {
   canSearchMore: true,
   createdBanner: undefined,
 }
-
-const extend = (
-  source: Array<Partial<Banner>>,
-  target: Array<Partial<Banner>>
-): Array<Partial<Banner>> =>
-  _.uniq(_.flatten([source, target]), false, (a: Partial<Banner>) => a.id)
-
-const extendSorted = (
-  source: Array<Partial<Banner>>,
-  target: Array<Partial<Banner>>
-): Array<Partial<Banner>> => _.sortBy(extend(source, target), (b) => b.title)
 
 export default (state = initialState, action: BannerActionTypes) => {
   switch (action.type) {
