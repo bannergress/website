@@ -165,7 +165,7 @@ class Search extends React.Component<SearchProps, SearchState> {
             <Layout>
               {bannersStatus === 'success' && (
                 <>
-                  {banners.length > 100000 && (
+                  {banners.length > 0 && (
                     <>
                       <Row justify="start" className="order-chooser">
                         <BannerOrderChooser

@@ -1,0 +1,66 @@
+.banner-preview {
+  display: flex;
+  margin: 0 5%;
+  flex-direction: column;
+  row-gap: 10px;
+  // max-width: 1240px;
+
+  .banner-preview-header {
+    display: flex;
+    flex-direction: row;
+    column-gap: 20px;
+    align-items: center;
+
+    .back-button {
+      width: 30px;
+      height: 100%;
+      background: none;
+      border: none;
+      font-size: 2em;
+      line-height: 2em;
+      cursor: pointer;
+      margin-bottom: -6px;
+    }
+
+    h1 {
+      vertical-align: middle;
+      line-height: 2em;
+      margin: auto 0;
+    }
+  }
+
+  .banner-preview-content {
+    display: flex;
+    flex-flow: row;
+    column-gap: 20px;
+
+    .banner-preview-overview {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      width: 360px;
+      row-gap: 30px;
+
+      .banner-card {
+        width: 360px;
+      }
+
+      .mission-list-body {
+        height: calc(100vh - 530px);
+      }
+    }
+
+    .banner-preview-additional {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      row-gap: 30px;
+
+      .leaflet-container {
+        width: 100%;
+        min-height: 600px;
+        height: calc(100vh - 300px);
+      }
+    }
+  }
+}
