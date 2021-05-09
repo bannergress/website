@@ -46,6 +46,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
       if (banner) {
         this.map!.fitBounds(new LatLngBounds(getBannerBounds(banner)), {
           animate: true,
+          maxZoom: 15,
         })
       }
       return true
