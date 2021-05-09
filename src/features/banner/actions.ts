@@ -143,7 +143,7 @@ export const submitBannerAction = () => async (
     })
     dispatch({
       type: LOAD_BANNER,
-      payload: banner,
+      payload: { ...banner, ...response.data },
     })
     return response.data!.id
   }
