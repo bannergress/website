@@ -1,5 +1,5 @@
-import { Button } from 'antd'
 import React, { FC } from 'react'
+import { Link } from 'react-router-dom'
 
 import { Banner } from '../../features/banner'
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
@@ -16,7 +16,7 @@ const BannerCard: FC<BannerCardProps> = ({
   banner,
   selected,
   showFullImage,
-  onDetails,
+  detailsUrl,
 }) => {
   const url = banner && banner.picture && new URL(banner.picture, baseUrl).href
   const className = selected ? 'banner-card selected' : 'banner-card'
@@ -42,9 +42,9 @@ const BannerCard: FC<BannerCardProps> = ({
         <SVGPointer fill="#1DA57A" className="icon" />
         {banner?.formattedAddress}
       </div>
-      {selected && (
+      {selected && detailsUrl && (
         <div className="banner-info-details">
-          <Button onClick={onDetails}>Details</Button>
+          <Link to={detailsUrl}>Details</Link>
         </div>
       )}
     </div>
@@ -55,7 +55,7 @@ export interface BannerCardProps {
   banner: Banner | undefined
   selected: boolean
   showFullImage?: boolean
-  onDetails?: () => void
+  detailsUrl?: string
 }
 
 export default BannerCard

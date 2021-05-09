@@ -1,6 +1,6 @@
 import React, { Fragment, FC, useEffect, useRef } from 'react'
 import { Row } from 'antd'
-import { Link, generatePath, useHistory } from 'react-router-dom'
+import { Link, generatePath } from 'react-router-dom'
 
 import { Banner } from '../../features/banner'
 import BannerCard from '../banner-card'
@@ -19,7 +19,6 @@ const BannerList: FC<BannerListProps> = ({
   const [ref] = useInfiniteScroll({
     callback: loadMoreBanners,
   })
-  const history = useHistory()
 
   useEffect(() => {
     itemsRef.current = itemsRef.current.slice(0, banners?.length || 0)
@@ -69,9 +68,7 @@ const BannerList: FC<BannerListProps> = ({
                 key={banner.id}
                 banner={banner}
                 selected={banner.id === selectedBannerId}
-                onDetails={() =>
-                  history.push(generatePath('/banner/:id', { id: banner.id }))
-                }
+                detailsUrl={generatePath('/banner/:id', { id: banner.id })}
               />
             )
             return (
