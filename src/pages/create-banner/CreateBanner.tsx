@@ -350,7 +350,7 @@ class CreateBanner extends React.Component<
             <h3>Search for missions</h3>
             <span>You can search by mission name or author</span>
             <Input
-              placeholder="Enter at least 3 chars..."
+              placeholder="Enter at least 3 characters..."
               onChange={(e) => this.onInputChange(e.target.value, 'searchText')}
               onKeyPress={(k) =>
                 k.key === 'Enter' ? this.onSearchForced() : null
