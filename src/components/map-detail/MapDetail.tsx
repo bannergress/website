@@ -24,11 +24,13 @@ export const MapDetail: React.FC<MapDetailProps> = ({
       {getAttributionLayer()}
       <MapCluster>
         {banner.missions &&
-          showMissionStartPointsOnMap(banner.missions, onOpenMission)}
-        {banner.missions &&
           openedMissionIndexes &&
           openedMissionIndexes.length > 0 &&
           showMissionPortalsAndRoutes(banner.missions, openedMissionIndexes)}
+      </MapCluster>
+      <MapCluster>
+        {banner.missions &&
+          showMissionStartPointsOnMap(banner.missions, onOpenMission)}
       </MapCluster>
       {banner.missions &&
         banner.type !== 'anyOrder' &&
