@@ -19,6 +19,7 @@ import BannerCard from '../../components/banner-card'
 import MissionList from '../../components/mission-list'
 import LoadingOverlay from '../../components/loading-overlay'
 import { MapDetail } from '../../components/map-detail'
+import { ReactComponent as SVGBackArrow } from '../../img/icons/back-arrow.svg'
 
 import './preview-banner.less'
 
@@ -114,7 +115,7 @@ class PreviewBanner extends React.Component<
     const { missions } = banner
 
     return (
-      <div className="banner-info">
+      <div className="banner-preview">
         <Helmet>Create Banner</Helmet>
         <Prompt message={this.getPromptMessage} />
         <LoadingOverlay
@@ -123,35 +124,40 @@ class PreviewBanner extends React.Component<
           spinner
           fadeSpeed={500}
         />
-        <div className="banner-info-overview">
-          <button type="button" onClick={this.onBack}>
-            &lt;
+        <div className="banner-preview-header">
+          <button type="button" className="back-button" onClick={this.onBack}>
+            <SVGBackArrow />
           </button>
-          <BannerCard banner={banner} selected={false} />
-          {missions && (
-            <MissionList
-              missions={missions}
-              expanded={expanded}
-              expandedMissionIndexes={expandedMissionIndexes}
-              onExpand={this.onExpand}
-              onExpandAll={this.onExpandAll}
-            />
-          )}
+          <h1>Review</h1>
         </div>
-        <div className="banner-info-additional">
-          <MapDetail
-            banner={banner}
-            bounds={new LatLngBounds(getBannerBounds(banner))}
-            openedMissionIndexes={expandedMissionIndexes}
-            onOpenMission={this.onExpand}
-          />
-          <button
-            type="button"
-            className="positive-action-button"
-            onClick={this.onSubmitBanner}
-          >
-            Submit Banner
-          </button>
+        <div className="banner-preview-content">
+          <div className="banner-preview-overview">
+            <BannerCard banner={banner} selected={false} />
+            {missions && (
+              <MissionList
+                missions={missions}
+                expanded={expanded}
+                expandedMissionIndexes={expandedMissionIndexes}
+                onExpand={this.onExpand}
+                onExpandAll={this.onExpandAll}
+              />
+            )}
+          </div>
+          <div className="banner-preview-additional">
+            <MapDetail
+              banner={banner}
+              bounds={new LatLngBounds(getBannerBounds(banner))}
+              openedMissionIndexes={expandedMissionIndexes}
+              onOpenMission={this.onExpand}
+            />
+            <button
+              type="button"
+              className="positive-action-button"
+              onClick={this.onSubmitBanner}
+            >
+              Submit Banner
+            </button>
+          </div>
         </div>
       </div>
     )
