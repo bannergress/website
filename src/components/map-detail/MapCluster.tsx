@@ -2,11 +2,43 @@ import { divIcon } from 'leaflet'
 import React, { FC } from 'react'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 
+const createClusterLabel = (labels: string[], ordered: boolean): string => {
+  let hasFirstMission
+  let hasFinish
+  let otherMissions: string[]
+  if (ordered) {
+    otherMissions = []
+    labels.reverse().forEach((label) => {
+      switch (label) {
+        case '1':
+          hasFirstMission = true
+          break
+        case '🏁':
+          hasFinish = true
+          break
+        default:
+          otherMissions.push(label)
+          break
+      }
+    })
+  } else {
+    hasFirstMission = false
+    hasFinish = false
+    otherMissions = labels
+  }
+  const labelComponents = [
+    ...(hasFirstMission ? ['1'] : []),
+    ...(labels.length > 2 ? [`×${otherMissions.length}`] : otherMissions),
+    ...(hasFinish ? ['🏁'] : []),
+  ]
+  const result = labelComponents.join('<br>')
+  return result
+}
+
 const POIMarker: FC<POIMarkerProps> = ({ children }) => {
   const createClusterCustomIcon = (cluster: any) => {
     const numberMarkers = cluster.getChildCount()
     if (numberMarkers > 1) {
-      let label = `M${numberMarkers}`
       const innerLabels: Array<any> = cluster
         .getAllChildMarkers()
         .map((m: any) => {
@@ -20,9 +52,7 @@ const POIMarker: FC<POIMarkerProps> = ({ children }) => {
           return undefined
         })
         .filter((m: any) => m !== undefined)
-      if (innerLabels && innerLabels.length > 0 && innerLabels.length < 3) {
-        label = innerLabels.reverse().join('|') as string
-      }
+      const label = createClusterLabel(innerLabels, true)
       return divIcon({
         className: 'custom-div-icon',
         html: `<div class='marker-pin-false'>${label}</div>`,
