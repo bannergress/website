@@ -8,6 +8,7 @@ import {
   LOAD_PLACE,
   LOAD_PLACE_ERROR,
   SEARCH_PLACES,
+  RESET_SEARCH_PLACES,
 } from './actionTypes'
 import * as api from './api'
 import { Place } from './types'
@@ -66,14 +67,23 @@ export const loadPlaceAction = (placeId: string) => async (
   }
 }
 
-export const loadSearchPlacesAction = (searchTerm: string) => async (
-  dispatch: Dispatch<PlaceActionTypes>
-) => {
-  const response = await api.searchPlaces(searchTerm)
+export const loadSearchPlacesAction = (
+  searchTerm: string,
+  page: number
+) => async (dispatch: Dispatch<PlaceActionTypes>) => {
+  if (page === 0) {
+    dispatch({
+      type: RESET_SEARCH_PLACES,
+    })
+  }
+  const response = await api.searchPlaces(searchTerm, page)
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: SEARCH_PLACES,
-      payload: response.data,
+      payload: {
+        places: response.data,
+        hasMore: response.data && response.data.length >= api.PAGE_SIZE,
+      },
     })
   } else {
     // dispatch({

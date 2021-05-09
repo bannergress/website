@@ -8,6 +8,7 @@ export const LOAD_ADMINISTRATIVE_AREAS_ERROR = 'LOAD_ADMINISTRATIVE_AREAS_ERROR'
 export const LOAD_PLACE = 'LOAD_PLACE'
 export const LOAD_PLACE_ERROR = 'LOAD_PLACE_ERROR'
 export const SEARCH_PLACES = 'SEARCH_PLACES'
+export const RESET_SEARCH_PLACES = 'RESET_SEARCH_PLACES'
 
 interface LoadCountriesAction {
   type: typeof LOAD_COUNTRIES
@@ -41,7 +42,14 @@ interface LoadPlaceErrorAction {
 
 interface SearchPlacesAction {
   type: typeof SEARCH_PLACES
-  payload: Array<Place>
+  payload: {
+    places: Array<Place>
+    hasMore: Boolean
+  }
+}
+
+interface ResetSearchPlacesAction {
+  type: typeof RESET_SEARCH_PLACES
 }
 
 export type PlaceActionTypes =
@@ -52,4 +60,5 @@ export type PlaceActionTypes =
   | LoadPlaceAction
   | LoadPlaceErrorAction
   | SearchPlacesAction
+  | ResetSearchPlacesAction
   | RehydrateAction

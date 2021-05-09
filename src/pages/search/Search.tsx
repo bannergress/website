@@ -16,10 +16,12 @@ import {
 import {
   Place,
   getSearchPlaces,
+  getHasMoreSearchPlaces,
   loadSearchPlaces as loadSearchPlacesAction,
 } from '../../features/place'
 import BannerOrderChooser from '../../components/banner-order-chooser'
 import BannerList from '../../components/banner-list'
+import PlaceListFlat from '../../components/place-list-flat'
 import FooterMain from '../../components/footer-main'
 
 import './search.less'
@@ -31,7 +33,8 @@ class Search extends React.Component<SearchProps, SearchState> {
       selectedOrder: 'created',
       selectedDirection: 'DESC',
       searchTerm: '',
-      page: 0,
+      pageBanners: 0,
+      pagePlaces: 0,
       bannersStatus: 'initial',
       placesStatus: 'initial',
     }
@@ -45,7 +48,8 @@ class Search extends React.Component<SearchProps, SearchState> {
     if (searchTerm !== newTerm) {
       return {
         searchTerm: newTerm,
-        page: 0,
+        pageBanners: 0,
+        pagePlaces: 0,
       }
     }
 
@@ -56,7 +60,7 @@ class Search extends React.Component<SearchProps, SearchState> {
     const { selectedDirection, selectedOrder, searchTerm } = this.state
 
     this.doFetchBanners(searchTerm, selectedOrder, selectedDirection, 0)
-    this.doFetchPlaces(searchTerm)
+    this.doFetchPlaces(searchTerm, 0)
   }
 
   componentDidUpdate(prevProps: SearchProps, prevState: SearchState) {
@@ -65,7 +69,7 @@ class Search extends React.Component<SearchProps, SearchState> {
 
     if (prevSearchTerm !== searchTerm) {
       this.doFetchBanners(searchTerm, selectedOrder, selectedDirection, 0)
-      this.doFetchPlaces(searchTerm)
+      this.doFetchPlaces(searchTerm, 0)
     }
   }
 
@@ -76,13 +80,13 @@ class Search extends React.Component<SearchProps, SearchState> {
       newDirection = selectedDirection === 'ASC' ? 'DESC' : 'ASC'
       this.setState({
         selectedDirection: newDirection,
-        page: 0,
+        pageBanners: 0,
       })
     } else {
       this.setState({
         selectedOrder: newOrder,
         selectedDirection: newDirection,
-        page: 0,
+        pageBanners: 0,
       })
     }
     this.doFetchBanners(searchTerm, newOrder, newDirection, 0)
@@ -90,9 +94,26 @@ class Search extends React.Component<SearchProps, SearchState> {
 
   onLoadMoreBanners = () => {
     const { fetchBanners } = this.props
-    const { selectedOrder, selectedDirection, page, searchTerm } = this.state
-    this.setState({ page: page + 1 })
-    return fetchBanners(searchTerm, selectedOrder, selectedDirection, page + 1)
+    const {
+      selectedOrder,
+      selectedDirection,
+      pageBanners,
+      searchTerm,
+    } = this.state
+    this.setState({ pageBanners: pageBanners + 1 })
+    return fetchBanners(
+      searchTerm,
+      selectedOrder,
+      selectedDirection,
+      pageBanners + 1
+    )
+  }
+
+  onLoadMorePlaces = () => {
+    const { fetchPlaces } = this.props
+    const { pagePlaces, searchTerm } = this.state
+    this.setState({ pagePlaces: pagePlaces + 1 })
+    return fetchPlaces(searchTerm, pagePlaces + 1)
   }
 
   getPageTitle() {
@@ -105,18 +126,18 @@ class Search extends React.Component<SearchProps, SearchState> {
     searchTerm: string,
     order: BannerOrder,
     orderDirection: BannerOrderDirection,
-    page: number
+    pageBanners: number
   ) {
     const { fetchBanners } = this.props
     this.setState({ bannersStatus: 'loading' })
-    await fetchBanners(searchTerm, order, orderDirection, page)
+    await fetchBanners(searchTerm, order, orderDirection, pageBanners)
     this.setState({ bannersStatus: 'success' })
   }
 
-  async doFetchPlaces(searchTerm: string) {
+  async doFetchPlaces(searchTerm: string, pagePlaces: number) {
     const { fetchPlaces } = this.props
     this.setState({ placesStatus: 'loading' })
-    await fetchPlaces(searchTerm)
+    await fetchPlaces(searchTerm, pagePlaces)
     this.setState({ placesStatus: 'success' })
   }
 
@@ -128,7 +149,7 @@ class Search extends React.Component<SearchProps, SearchState> {
       selectedDirection,
       selectedOrder,
     } = this.state
-    const { banners, hasMoreBanners } = this.props
+    const { banners, places, hasMoreBanners, hasMorePlaces } = this.props
 
     return (
       <Fragment>
@@ -139,22 +160,12 @@ class Search extends React.Component<SearchProps, SearchState> {
           <div className="search-content">
             <h1>{title}</h1>
 
-            <h2>Places</h2>
-            <div>
-              {/* TODO Show search results for location if found */}
-              {(placesStatus === 'initial' || placesStatus === 'loading') && (
-                <>Loading...</>
-              )}
-            </div>
-
-            <Divider type="horizontal" />
-
             <h2>Banners</h2>
 
             <Layout>
               {bannersStatus === 'success' && (
                 <>
-                  {banners.length > 0 && (
+                  {banners.length > 100000 && (
                     <>
                       <Row justify="start" className="order-chooser">
                         <BannerOrderChooser
@@ -186,6 +197,38 @@ class Search extends React.Component<SearchProps, SearchState> {
                 <>Loading...</>
               )}
             </Layout>
+
+            <Divider type="horizontal" />
+
+            <h2>Places</h2>
+
+            <Layout>
+              {placesStatus === 'success' && (
+                <>
+                  {places.length > 0 && (
+                    <>
+                      <Row>
+                        <PlaceListFlat
+                          places={places}
+                          hasMorePlaces={hasMorePlaces}
+                          loadMorePlaces={this.onLoadMorePlaces}
+                        />
+                      </Row>
+                    </>
+                  )}
+
+                  {places.length === 0 && (
+                    <>
+                      <Row>No places found</Row>
+                    </>
+                  )}
+                </>
+              )}
+
+              {(placesStatus === 'initial' || placesStatus === 'loading') && (
+                <>Loading...</>
+              )}
+            </Layout>
           </div>
         </div>
         <FooterMain />
@@ -198,20 +241,22 @@ export interface SearchProps extends RouteComponentProps<{ term: string }> {
   banners: Array<Banner>
   places: Array<Place>
   hasMoreBanners: Boolean
+  hasMorePlaces: Boolean
   fetchBanners: (
     searchTerm: string,
     order: BannerOrder,
     orderDirection: BannerOrderDirection,
-    page: number
+    pageBanners: number
   ) => Promise<void>
-  fetchPlaces: (searchTerm: string) => Promise<void>
+  fetchPlaces: (searchTerm: string, pagePlaces: number) => Promise<void>
 }
 
 interface SearchState {
   selectedOrder: BannerOrder
   selectedDirection: BannerOrderDirection
   searchTerm: string
-  page: number
+  pageBanners: number
+  pagePlaces: number
   bannersStatus: 'initial' | 'success' | 'loading' | 'error'
   placesStatus: 'initial' | 'success' | 'loading' | 'error'
 }
@@ -220,6 +265,7 @@ const mapStateToProps = (state: RootState) => ({
   banners: getSearchBanners(state),
   places: getSearchPlaces(state),
   hasMoreBanners: getHasMoreSearchBanners(state),
+  hasMorePlaces: getHasMoreSearchPlaces(state),
 })
 
 const mapDispatchToProps = {

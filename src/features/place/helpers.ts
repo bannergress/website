@@ -29,3 +29,8 @@ export const sortPlaces = (places: Place[], order: PlaceSortOrder) => {
 
   return sorted.value()
 }
+
+export const extend = <T extends { id?: string }>(
+  source: Array<T>,
+  target: Array<T>
+) => _.uniq(_.flatten([source, target]), false, (a) => a.id)

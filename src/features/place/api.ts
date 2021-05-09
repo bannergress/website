@@ -2,6 +2,7 @@ import { api } from '../../api'
 import { Place } from './types'
 
 const isMock = process.env.REACT_APP_USE_MOCK === 'true'
+export const PAGE_SIZE = 9
 
 const createPlaces = (): Array<Place> => [
   {
@@ -148,10 +149,12 @@ export const getPlace = (placeId: string) =>
       }
     : api.get<Place>(`places/${placeId}`)
 
-export const searchPlaces = (searchTerm: string) =>
+export const searchPlaces = (searchTerm: string, page: number) =>
   isMock
     ? { data: createPlaces(), ok: true, status: 200 }
     : api.get<Array<Place>>('places', {
         used: true,
         query: searchTerm,
+        limit: PAGE_SIZE,
+        offset: page * PAGE_SIZE,
       })

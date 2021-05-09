@@ -4,6 +4,7 @@ import {
   getAdministrativeAreas,
   getPlace,
   getSearchPlaces,
+  getHasMoreSearchPlaces,
 } from './selectors'
 import {
   loadCountriesAction,
@@ -17,7 +18,13 @@ import { createMapUri, createBrowseUri, sortPlaces } from './helpers'
 
 export { default as PlaceReducer } from './reducer'
 export { actionTypes }
-export { getCountries, getAdministrativeAreas, getPlace, getSearchPlaces }
+export {
+  getCountries,
+  getAdministrativeAreas,
+  getPlace,
+  getSearchPlaces,
+  getHasMoreSearchPlaces,
+}
 export {
   loadCountriesAction as loadCountries,
   loadAdministrativeAreasAction as loadAdministrativeAreas,
