@@ -30,7 +30,9 @@ export const MapDetail: React.FC<MapDetailProps> = ({
           openedMissionIndexes.length > 0 &&
           showMissionPortalsAndRoutes(banner.missions, openedMissionIndexes)}
       </MapCluster>
-      {banner.missions && showBannerRouteOnMap(banner, 'blue')}
+      {banner.missions &&
+        banner.type !== 'anyOrder' &&
+        showBannerRouteOnMap(banner, 'blue')}
     </MapContainer>
   </Fragment>
 )

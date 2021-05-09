@@ -306,8 +306,8 @@ class CreateBanner extends React.Component<
     return (
       addedMissions.length >= 2 &&
       bannerTitle &&
-      _(addedMissions).all((m) => m.index !== undefined) &&
-      (!hasDuplicates || bannerType === 'anyOrder')
+      ((_(addedMissions).all((m) => m.index !== undefined) && !hasDuplicates) ||
+        bannerType === 'anyOrder')
     )
   }
 
