@@ -8,12 +8,17 @@
 
 .place-card-title {
   display: flex;
-  flex-direction: row;
   white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
   column-gap: 0.3em;
+
+  .place-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
+
+
+
 
 .place-card-name {
   white-space: nowrap; 
