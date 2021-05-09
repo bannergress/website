@@ -342,11 +342,13 @@ class CreateBanner extends React.Component<
         <div className="create-banner-steps">
           <div className="missions-search">
             <h1>① Add Missions</h1>
+            {/*
             <h3>Location (Optional)</h3>
             <Input
               placeholder="Start typing..."
               onChange={(e) => this.onInputChange(e.target.value, 'location')}
             />
+            */}
             <h3>Search for missions</h3>
             <span>You can search by mission name or author</span>
             <Input
