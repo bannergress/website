@@ -341,7 +341,9 @@ class CreateBanner extends React.Component<
         <h1>New Banner</h1>
         <div className="create-banner-steps">
           <div className="missions-search">
-            <h1>① Add Missions</h1>
+            <h1>
+              <span className="ellipse">1</span> Add Missions
+            </h1>
             {/*
             <h3>Location (Optional)</h3>
             <Input
@@ -350,7 +352,9 @@ class CreateBanner extends React.Component<
             />
             */}
             <h3>Search for missions</h3>
-            <span>You can search by mission name or author</span>
+            <span className="search-mission-subtitle">
+              You can search by mission name or author
+            </span>
             <Input
               placeholder="Enter at least 3 characters..."
               onChange={(e) => this.onInputChange(e.target.value, 'searchText')}
@@ -379,7 +383,9 @@ class CreateBanner extends React.Component<
             />
           </div>
           <div className="missions-arrange">
-            <h1>② Arrange</h1>
+            <h1>
+              <span className="ellipse">2</span> Arrange
+            </h1>
             <SearchMissionList
               missions={addedMissions}
               hasMoreMissions={false}
@@ -388,8 +394,10 @@ class CreateBanner extends React.Component<
               missionEditor={this.getMissionIndexEditor}
             />
           </div>
-          <div>
-            <h1>③ Information</h1>
+          <div className="create-banner-info">
+            <h1>
+              <span className="ellipse">3</span> Information
+            </h1>
             <h3>Banner Title</h3>
             <Input
               placeholder="Start typing..."
