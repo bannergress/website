@@ -35,13 +35,12 @@ function getPlaceTypeTitle(place: Place) {
 
 const PlaceCard: FC<PlaceProps> = ({ place, showNumbers }) => (
   <div className="place-card">
-    <div>
+    <Link className="place-card-link" to={createBrowseUri(place)}>
       <div className="place-card-title">
-        <Link to={createBrowseUri(place)}>
-          <div className="place-card-name" title={place.longName}>
-            {place.longName}
-          </div>
-        </Link>
+        <div className="place-card-name" title={place.longName}>
+          {place.longName}
+        </div>
+
         {showNumbers && (
           <div className="place-card-number-of-banners">
             &nbsp; ({place.numberOfBanners})
@@ -51,20 +50,20 @@ const PlaceCard: FC<PlaceProps> = ({ place, showNumbers }) => (
       <div className="place-card-formatted-address">
         {place.formattedAddress}
       </div>
-      <div className="place-card-icon-row">
-        <div className="place-card-icon-container">
-          <Link to={createBrowseUri(place)}>
-            <SVGBrowse className="place-card-icon" title="Browse" />
-          </Link>
-        </div>
-        <div className="place-card-icon-container">
-          <Link to={createMapUri(place)}>
-            <SVGMap className="place-card-icon" title="Map" />
-          </Link>
-        </div>
-        <div title={getPlaceTypeTitle(place)} className="place-card-symbol">
-          {getPlaceSymbol(place)}
-        </div>
+    </Link>
+    <div className="place-card-icon-row">
+      <div className="place-card-icon-container">
+        <Link to={createBrowseUri(place)}>
+          <SVGBrowse className="place-card-icon" title="Browse" />
+        </Link>
+      </div>
+      <div className="place-card-icon-container">
+        <Link to={createMapUri(place)}>
+          <SVGMap className="place-card-icon" title="Map" />
+        </Link>
+      </div>
+      <div title={getPlaceTypeTitle(place)} className="place-card-symbol">
+        {getPlaceSymbol(place)}
       </div>
     </div>
   </div>
