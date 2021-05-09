@@ -37,11 +37,10 @@ const PlaceCard: FC<PlaceProps> = ({ place, showNumbers }) => (
   <div className="place-card">
     <div>
       <div className="place-card-title">
-        <Link to={createBrowseUri(place)}>
-          <div className="place-card-name" title={place.longName}>
-            {place.longName}
-          </div>
-        </Link>
+        <div className="place-card-name" title={place.longName}>
+          <Link to={createBrowseUri(place)}>{place.longName}</Link>
+        </div>
+
         {showNumbers && (
           <div className="place-card-number-of-banners">
             &nbsp; ({place.numberOfBanners})
