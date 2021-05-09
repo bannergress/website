@@ -22,7 +22,7 @@ const PlaceListFlat: FC<PlaceListFlatProps> = ({
         <div className="places-list-flat">
           {places?.map((place) => (
             <div key={place.id} className="places-list-flat-entry">
-              <PlaceCard key={place.id} place={place} showNumbers />
+              <PlaceCard key={place.id} place={place} />
             </div>
           ))}
 

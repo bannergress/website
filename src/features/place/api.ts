@@ -154,6 +154,7 @@ export const searchPlaces = (searchTerm: string, page: number) =>
     ? { data: createPlaces(), ok: true, status: 200 }
     : api.get<Array<Place>>('places', {
         used: true,
+        collapsePlaces: true,
         query: searchTerm,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,

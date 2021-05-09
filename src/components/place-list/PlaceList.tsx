@@ -37,7 +37,13 @@ const PlaceList: FC<PlaceListProps> = ({
               role="button"
               tabIndex={0}
             >
-              ❮ <PlaceEntry key={place.id} place={place} showNumbers={false} />
+              ❮{' '}
+              <PlaceEntry
+                key={place.id}
+                place={place}
+                showNumbers={false}
+                attribute="longName"
+              />
             </span>
           </h2>
         ))}
@@ -50,7 +56,12 @@ const PlaceList: FC<PlaceListProps> = ({
             role="button"
             tabIndex={0}
           >
-            <PlaceEntry key={place.id} place={place} showNumbers />
+            <PlaceEntry
+              key={place.id}
+              place={place}
+              showNumbers
+              attribute="longName"
+            />
           </div>
         ))}
       </Fragment>

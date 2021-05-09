@@ -4,7 +4,7 @@ import { Place } from '../../features/place'
 
 import './place-entry.less'
 
-const PlaceEntry: FC<PlaceProps> = ({ place, showNumbers }) => (
+const PlaceEntry: FC<PlaceProps> = ({ place, showNumbers, attribute }) => (
   <>
     {place.type === 'country' && (
       <>
@@ -18,8 +18,8 @@ const PlaceEntry: FC<PlaceProps> = ({ place, showNumbers }) => (
         </span>{' '}
       </>
     )}
-    <span className="place-name" title={place.longName}>
-      {place.longName}
+    <span className="place-name" title={place[attribute]}>
+      {place[attribute]}
     </span>
 
     {showNumbers && (
@@ -31,6 +31,7 @@ const PlaceEntry: FC<PlaceProps> = ({ place, showNumbers }) => (
 export interface PlaceProps {
   place: Place
   showNumbers: boolean
+  attribute: 'longName' | 'formattedAddress'
 }
 
 export default PlaceEntry

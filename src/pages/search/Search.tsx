@@ -160,6 +160,38 @@ class Search extends React.Component<SearchProps, SearchState> {
           <div className="search-content">
             <h1>{title}</h1>
 
+            <h2>Places</h2>
+
+            <Layout>
+              {placesStatus === 'success' && (
+                <>
+                  {places.length > 0 && (
+                    <>
+                      <Row>
+                        <PlaceListFlat
+                          places={places}
+                          hasMorePlaces={hasMorePlaces}
+                          loadMorePlaces={this.onLoadMorePlaces}
+                        />
+                      </Row>
+                    </>
+                  )}
+
+                  {places.length === 0 && (
+                    <>
+                      <Row>No places found</Row>
+                    </>
+                  )}
+                </>
+              )}
+
+              {(placesStatus === 'initial' || placesStatus === 'loading') && (
+                <>Loading...</>
+              )}
+            </Layout>
+
+            <Divider type="horizontal" />
+
             <h2>Banners</h2>
 
             <Layout>
@@ -194,38 +226,6 @@ class Search extends React.Component<SearchProps, SearchState> {
               )}
 
               {(bannersStatus === 'initial' || bannersStatus === 'loading') && (
-                <>Loading...</>
-              )}
-            </Layout>
-
-            <Divider type="horizontal" />
-
-            <h2>Places</h2>
-
-            <Layout>
-              {placesStatus === 'success' && (
-                <>
-                  {places.length > 0 && (
-                    <>
-                      <Row>
-                        <PlaceListFlat
-                          places={places}
-                          hasMorePlaces={hasMorePlaces}
-                          loadMorePlaces={this.onLoadMorePlaces}
-                        />
-                      </Row>
-                    </>
-                  )}
-
-                  {places.length === 0 && (
-                    <>
-                      <Row>No places found</Row>
-                    </>
-                  )}
-                </>
-              )}
-
-              {(placesStatus === 'initial' || placesStatus === 'loading') && (
                 <>Loading...</>
               )}
             </Layout>
