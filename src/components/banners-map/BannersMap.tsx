@@ -136,7 +136,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     const { banners, selectedBannerId } = this.props
     const selectedBanner = banners.find((b) => b.id === selectedBannerId)
     if (selectedBanner && selectedBanner.missions) {
-      return showBannerRouteOnMap(selectedBanner, 'green')
+      return showBannerRouteOnMap(selectedBanner, [], 'green')
     }
     return undefined
   }

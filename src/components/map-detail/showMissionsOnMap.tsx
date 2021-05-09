@@ -15,43 +15,49 @@ import { hasLatLng } from './showBannerRouteOnMap'
 
 export const showMissionStartPointsOnMap = (
   missions: NumDictionary<Mission>,
+  openedMissionIndexes: Array<number>,
   onOpenMission: (index: number) => void
 ) => {
-  let missionNumber = 1
+  let firstMission = true
   return mapMissions(missions, (mission, index) => {
-    // let color = '#6832da'
-    let startLat = 0
-    let startLng = 0
-    let icon = null
     if (mission && mission?.steps!) {
+      let startLat = 0
+      let startLng = 0
+      let icon = null
+      let title = <>{mission.title}</>
       // get the first available waypoint in the mission and set it as start point
       const firstStep = mission.steps.find(hasLatLng)
       if (firstStep && firstStep.poi && firstStep.poi.type !== 'unavailable') {
         startLat = firstStep.poi.latitude
         startLng = firstStep.poi.longitude
+        if (openedMissionIndexes.includes(index)) {
+          title = (
+            <>
+              {title}
+              <br />
+              {firstStep.poi.title}
+            </>
+          )
+        }
       }
 
       // use custom icon
       const iconHidden = divIcon({
         className: 'custom-div-icon',
-        html: `<div class='marker-pin'>${missionNumber}<sup>H</sup></div>`,
+        html: `<div class='marker-pin-hidden'>${index + 1}<sup>H</sup></div>`,
         iconAnchor: [0, 0],
       })
       const iconNormal = divIcon({
         className: 'custom-div-icon',
-        html: `<div class='marker-pin'>${missionNumber}</div>`,
+        html: `<div class='marker-pin-${firstMission}'>${index + 1}</div>`,
         iconAnchor: [0, 0],
       })
-      // change color temporary to visualize hidden missions
       if (mission.type === 'hidden') {
-        // color = 'green'
         icon = iconHidden
       } else {
-        // color = '#6832da'
         icon = iconNormal
       }
-
-      missionNumber += 1
+      firstMission = false
       return (
         <Marker
           key={mission.id}
@@ -61,7 +67,7 @@ export const showMissionStartPointsOnMap = (
             click: () => onOpenMission(index),
           }}
         >
-          <Tooltip offset={[20, 0]}>{mission.title}</Tooltip>
+          <Tooltip offset={[20, 0]}>{title}</Tooltip>
         </Marker>
       )
     }

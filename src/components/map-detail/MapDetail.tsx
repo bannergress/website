@@ -30,11 +30,15 @@ export const MapDetail: React.FC<MapDetailProps> = ({
       </MapCluster>
       <MapCluster>
         {banner.missions &&
-          showMissionStartPointsOnMap(banner.missions, onOpenMission)}
+          showMissionStartPointsOnMap(
+            banner.missions,
+            openedMissionIndexes,
+            onOpenMission
+          )}
+        {banner.missions &&
+          banner.type !== 'anyOrder' &&
+          showBannerRouteOnMap(banner, openedMissionIndexes, 'green')}
       </MapCluster>
-      {banner.missions &&
-        banner.type !== 'anyOrder' &&
-        showBannerRouteOnMap(banner, 'blue')}
     </MapContainer>
   </Fragment>
 )

@@ -1,6 +1,6 @@
 import React from 'react'
 import { LatLng } from 'leaflet'
-import { Polyline } from 'react-leaflet'
+import { Polyline, Tooltip } from 'react-leaflet'
 import _ from 'underscore'
 
 import { Banner } from '../../features/banner'
@@ -15,11 +15,13 @@ export const hasLatLng = (step: Step) =>
 
 export const showBannerRouteOnMap = (
   banner: Banner,
+  openedMissionIndexes: Array<number>,
   color: 'green' | 'blue'
 ) => {
   const missionPolylines: LatLng[] = []
   let lastMissionCoords: LatLng | undefined
-  mapMissions(banner.missions, (mission) => {
+  let lastMissionTitle: string | undefined
+  mapMissions(banner.missions, (mission, index) => {
     if (mission) {
       const { steps } = mission
       if (steps) {
@@ -36,6 +38,11 @@ export const showBannerRouteOnMap = (
         }
         if (lastPOI && lastPOI.type !== 'unavailable') {
           lastMissionCoords = new LatLng(lastPOI.latitude, lastPOI.longitude)
+          if (openedMissionIndexes.includes(index)) {
+            lastMissionTitle = lastPOI.title
+          } else {
+            lastMissionTitle = undefined
+          }
         }
       }
     }
@@ -56,7 +63,11 @@ export const showBannerRouteOnMap = (
           pathOptions={lineStyle}
           positions={missionPolylines}
         />
-        <SquareMarker coords={lastCoordinates!} color={color} />
+        <SquareMarker coords={lastCoordinates!} color={color}>
+          {lastMissionTitle && (
+            <Tooltip offset={[20, 0]}>{lastMissionTitle}</Tooltip>
+          )}
+        </SquareMarker>
       </>
     )
   }

@@ -2,9 +2,12 @@ import { divIcon } from 'leaflet'
 import React, { FC } from 'react'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 
-const createClusterLabel = (labels: string[], ordered: boolean): string => {
-  let hasFirstMission
-  let hasFinish
+const createClusterLabel = (
+  labels: string[],
+  ordered: boolean
+): [string, boolean] => {
+  let hasFirstMission = false
+  let hasFinish = false
   let otherMissions: string[]
   if (ordered) {
     otherMissions = []
@@ -32,54 +35,51 @@ const createClusterLabel = (labels: string[], ordered: boolean): string => {
     ...(hasFinish ? ['🏁'] : []),
   ]
   const result = labelComponents.join('<br>')
-  return result
+  return [result, hasFirstMission || hasFinish]
 }
 
-const POIMarker: FC<POIMarkerProps> = ({ children }) => {
-  const createClusterCustomIcon = (cluster: any) => {
-    const numberMarkers = cluster.getChildCount()
-    if (numberMarkers > 1) {
-      const innerLabels: Array<any> = cluster
-        .getAllChildMarkers()
-        .map((m: any) => {
-          let { options } = m
-          while (options.icon) {
-            options = options.icon.options
-          }
-          if (options.className === 'custom-div-icon') {
-            return options.html.match(/>(\d+)/)[1]
-          }
-          return undefined
-        })
-        .filter((m: any) => m !== undefined)
-      const label = createClusterLabel(innerLabels, true)
-      return divIcon({
-        className: 'custom-div-icon',
-        html: `<div class='marker-pin-false'>${label}</div>`,
-        iconAnchor: [0, 0],
+const getChildOptions = (marker: any) => {
+  let { options } = marker
+  while (options.icon) {
+    options = options.icon.options
+  }
+  return options
+}
+
+const createClusterCustomIcon = (cluster: any) => {
+  const numberMarkers = cluster.getChildCount()
+  if (numberMarkers > 1) {
+    const innerLabels: Array<any> = cluster
+      .getAllChildMarkers()
+      .map((m: any) => {
+        const options = getChildOptions(m)
+        if (options.className === 'custom-div-icon') {
+          return options.html.match(/>([^<]+)/)[1]
+        }
+        return undefined
       })
-    }
-    let { options } = cluster.getAllChildMarkers()[0]
-    while (options.icon) {
-      options = options.icon.options
-    }
+      .filter((m: any) => m !== undefined)
+    const [label, hasStartOrFinish] = createClusterLabel(innerLabels, true)
     return divIcon({
-      ...options,
+      className: 'custom-div-icon',
+      html: `<div class='marker-pin-${hasStartOrFinish}'>${label}</div>`,
+      iconAnchor: [0, 0],
     })
   }
-  return (
-    <MarkerClusterGroup
-      maxClusterRadius="10"
-      singleMarkerMode
-      iconCreateFunction={createClusterCustomIcon}
-    >
-      {children}
-    </MarkerClusterGroup>
-  )
+  const options = getChildOptions(cluster.getAllChildMarkers()[0])
+  return divIcon({
+    ...options,
+  })
 }
 
-export interface POIMarkerProps {
-  children: React.ReactNode
-}
+const POIMarker: FC = ({ children }) => (
+  <MarkerClusterGroup
+    maxClusterRadius="10"
+    singleMarkerMode
+    iconCreateFunction={createClusterCustomIcon}
+  >
+    {children}
+  </MarkerClusterGroup>
+)
 
 export default POIMarker
