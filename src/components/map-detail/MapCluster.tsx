@@ -53,7 +53,7 @@ const createClusterCustomIcon = (cluster: any) => {
       .getAllChildMarkers()
       .map((m: any) => {
         const options = getChildOptions(m)
-        if (options.className === 'custom-div-icon') {
+        if (options.className.includes('custom-div-icon')) {
           return options.html.match(/>([^<]+)/)[1]
         }
         return undefined
@@ -61,7 +61,7 @@ const createClusterCustomIcon = (cluster: any) => {
       .filter((m: any) => m !== undefined)
     const [label, hasStartOrFinish] = createClusterLabel(innerLabels, true)
     return divIcon({
-      className: 'custom-div-icon',
+      className: `custom-div-icon-${hasStartOrFinish}`,
       html: `<div class='marker-pin-${hasStartOrFinish}'>${label}</div>`,
       iconAnchor: [0, 0],
     })

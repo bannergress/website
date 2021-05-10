@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import { LatLng } from 'leaflet'
 import { Polyline, Tooltip } from 'react-leaflet'

@@ -5,7 +5,7 @@ import { Marker } from 'react-leaflet'
 
 const SquareMarker: FC<SquareMarkerProps> = ({ coords, color, children }) => {
   const iconNormal = divIcon({
-    className: 'custom-div-icon',
+    className: 'custom-div-icon-true',
     html: `<div class="square-marker-pin color-${color}">🏁</div>`,
     iconAnchor: [0, 0],
   })

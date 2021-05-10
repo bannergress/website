@@ -10,7 +10,7 @@ const BannerMarker: FC<BannerMarkerProps> = ({
   onSelect,
 }) => {
   const iconNormal = divIcon({
-    className: 'custom-div-icon',
+    className: `custom-div-icon-${selected}`,
     html: `<div class='marker-pin-${selected}'></div>`,
     iconAnchor: [0, 0],
   })

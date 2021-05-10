@@ -33,6 +33,7 @@ export const MapDetail: React.FC<MapDetailProps> = ({
           showMissionStartPointsOnMap(
             banner.missions,
             openedMissionIndexes,
+            banner.type === 'sequential',
             onOpenMission
           )}
         {banner.missions &&

@@ -1,5 +1,5 @@
-import { divIcon, LatLng } from 'leaflet'
 import React from 'react'
+import { divIcon, LatLng } from 'leaflet'
 import { Marker, Polyline, Tooltip } from 'react-leaflet'
 import _ from 'underscore'
 
@@ -16,6 +16,7 @@ import { hasLatLng } from './showBannerRouteOnMap'
 export const showMissionStartPointsOnMap = (
   missions: NumDictionary<Mission>,
   openedMissionIndexes: Array<number>,
+  isSequential: boolean,
   onOpenMission: (index: number) => void
 ) => {
   let firstMission = true
@@ -48,8 +49,10 @@ export const showMissionStartPointsOnMap = (
         iconAnchor: [0, 0],
       })
       const iconNormal = divIcon({
-        className: 'custom-div-icon',
-        html: `<div class='marker-pin-${firstMission}'>${index + 1}</div>`,
+        className: `custom-div-icon-${firstMission && isSequential}`,
+        html: `<div class='marker-pin-${firstMission && isSequential}'>${
+          index + 1
+        }</div>`,
         iconAnchor: [0, 0],
       })
       if (mission.type === 'hidden') {
