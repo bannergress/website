@@ -39,6 +39,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
 
   onExpand = (index: number) => {
     const { expandedMissionIndexes } = this.state
+    // console.log('EMI', expandedMissionIndexes)
     if (expandedMissionIndexes.indexOf(index) >= 0) {
       const indexes = _(expandedMissionIndexes).without(index)
       this.setState({

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import { LatLng } from 'leaflet'
 import { Polyline, Tooltip } from 'react-leaflet'
@@ -49,7 +50,7 @@ export const showBannerRouteOnMap = (
   })
   const lineStyle = {
     color: 'rgba(0, 0, 0, 0.4)',
-    weight: 8,
+    weight: 4,
   }
   if (lastMissionCoords) {
     missionPolylines.push(lastMissionCoords)

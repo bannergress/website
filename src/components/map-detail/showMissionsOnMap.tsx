@@ -82,9 +82,9 @@ export const showMissionPortalsAndRoutes = (
   let pois: Array<PortalPOI | FieldTripWaypointPOI> = []
   const lines: Array<JSX.Element> = []
   const lineStyle = {
-    color: 'rgba(0, 0, 0, 0.4)',
-    weight: 3,
-    dashArray: '3, 5',
+    color: 'rgba(27, 27, 27, 0.8)',
+    weight: 6,
+    dashArray: '0',
   }
 
   indexes.forEach((index) => {
@@ -95,10 +95,7 @@ export const showMissionPortalsAndRoutes = (
         .map((s) => (s.poi && s.poi.type !== 'unavailable' ? s.poi : undefined))
         .filter((p): p is PortalPOI | FieldTripWaypointPOI => !!p)
       if (missionPortals && missionPortals.length) {
-        lineStyle.color =
-          mission.type === 'sequential'
-            ? 'rgba(0, 0, 0, 0.4)'
-            : 'rgba(255, 0, 0, 0.4)'
+        lineStyle.dashArray = mission.type === 'sequential' ? '0' : '10'
         lines.push(
           <Polyline
             key={`mission-route-${mission.id}`}
@@ -106,7 +103,9 @@ export const showMissionPortalsAndRoutes = (
             positions={missionPortals.map(
               (p) => new LatLng(p.latitude, p.longitude)
             )}
-          />
+          >
+            <Tooltip sticky>{mission.title}</Tooltip>
+          </Polyline>
         )
       }
       pois = _(pois)
