@@ -1,44 +1,87 @@
 import React from 'react'
 import { generatePath } from 'react-router'
-import { useHistory, NavLink } from 'react-router-dom'
-import { Input } from 'antd'
+import { RouteComponentProps, withRouter, NavLink } from 'react-router-dom'
 
 import LoginInNavbar from '../login/login-in-navbar'
+import SearchInput from '../search-input'
 import MenuMain from '../menu-main'
 import Logo from '../../img/logo/logo64.png'
+import { ReactComponent as SVGSearch } from '../../img/icons/search.svg'
 
 import './Navbar.less'
 
-const { Search } = Input
+export class Navbar extends React.Component<RouteComponentProps, NavBarState> {
+  constructor(props: RouteComponentProps) {
+    super(props)
 
-export const Navbar: React.FC = () => {
-  const history = useHistory()
-  const callSearch = (value: string) => {
-    const trimmedValue = value.trim()
-
-    if (trimmedValue !== '') {
-      const path = generatePath('/search/:term', { term: trimmedValue })
-      history.push(path)
+    this.state = {
+      mobileSearchBarActive: false,
     }
   }
-  return (
-    <div className="top-menu">
-      <NavLink to="/" className="brand-menu">
-        <div className="brand-logo" style={{ backgroundImage: `url(${Logo})` }}>
-          &nbsp;
+
+  toggleMobileSeachBar() {
+    const { mobileSearchBarActive } = this.state
+    this.setState({ mobileSearchBarActive: !mobileSearchBarActive })
+  }
+
+  render() {
+    const { history } = this.props
+
+    const callSearch = (value: string) => {
+      const trimmedValue = value.trim()
+
+      if (trimmedValue !== '') {
+        const path = generatePath('/search/:term', { term: trimmedValue })
+        history.push(path)
+      }
+    }
+
+    const { mobileSearchBarActive } = this.state
+    const mobileSearchBarActiveClassName = mobileSearchBarActive ? 'active' : ''
+
+    return (
+      <>
+        <div className="top-menu">
+          <NavLink to="/" className="brand-menu">
+            <div
+              className="brand-logo"
+              style={{ backgroundImage: `url(${Logo})` }}
+            >
+              &nbsp;
+            </div>
+          </NavLink>
+          <MenuMain />
+          <div className="right-menu">
+            <div
+              className={`mobile-search-button-container ${mobileSearchBarActiveClassName}`}
+              title="Search"
+            >
+              <button
+                type="button"
+                onClick={() => this.toggleMobileSeachBar()}
+                className="mobile-search-button"
+              >
+                <SVGSearch className="search-button-icon" />
+              </button>
+            </div>
+            <div className="search-bar">
+              <SearchInput onSearch={callSearch} />
+            </div>
+            <LoginInNavbar />
+          </div>
         </div>
-      </NavLink>
-      <MenuMain />
-      <div className="right-menu">
-        <Search
-          className="search-bar"
-          placeholder="Search Banners or Places"
-          onSearch={callSearch}
-        />
-        <LoginInNavbar />
-      </div>
-    </div>
-  )
+        {mobileSearchBarActive && (
+          <div className="mobile-search-bar">
+            <SearchInput autoFocus onSearch={callSearch} />
+          </div>
+        )}
+      </>
+    )
+  }
 }
 
-export default Navbar
+export interface NavBarState {
+  mobileSearchBarActive: Boolean
+}
+
+export default withRouter(Navbar)

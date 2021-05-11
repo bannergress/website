@@ -22,7 +22,6 @@ import {
 import BannerOrderChooser from '../../components/banner-order-chooser'
 import BannerList from '../../components/banner-list'
 import PlaceListFlat from '../../components/place-list-flat'
-import FooterMain from '../../components/footer-main'
 
 import './search.less'
 
@@ -231,7 +230,6 @@ class Search extends React.Component<SearchProps, SearchState> {
             </Layout>
           </div>
         </div>
-        <FooterMain />
       </Fragment>
     )
   }
