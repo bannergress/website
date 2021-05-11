@@ -213,12 +213,13 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
             <h1 className="banner-count">
               {selectedPlace?.numberOfBanners} Banners
               {selectedPlace && (
-                <>
-                  &nbsp;in {selectedPlace.longName}
+                <span className="banner-count-place">
+                  {' '}
+                  in {selectedPlace.longName}
                   <Link to={createMapUri(selectedPlace)}>
                     <SVGMap className="browser-icon" title="Map" />
                   </Link>
-                </>
+                </span>
               )}
             </h1>
             <BannerOrderChooser
