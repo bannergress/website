@@ -344,6 +344,17 @@ class CreateBanner extends React.Component<
       (m) => !_.some(addedMissions, (a) => a.id === m.id)
     )
 
+    let unusedMissionsCount
+    if (unusedMissions.length) {
+      if (hasMore) {
+        unusedMissionsCount = ` (${unusedMissions.length}+)`
+      } else {
+        unusedMissionsCount = ` (${unusedMissions.length})`
+      }
+    } else {
+      unusedMissionsCount = ''
+    }
+
     return (
       <div className="create-banner">
         <Helmet>Create Banner</Helmet>
@@ -379,7 +390,7 @@ class CreateBanner extends React.Component<
               }
             />
             <div className="results-title">
-              <h3>Search results</h3>
+              <h3>Search results{unusedMissionsCount}</h3>
               {unusedMissions && unusedMissions.length > 0 && (
                 <Button
                   role="button"
