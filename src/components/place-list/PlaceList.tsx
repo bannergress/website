@@ -26,13 +26,13 @@ const PlaceList: FC<PlaceListProps> = ({
     const sortedPlaces = places ? sortPlaces(places, order) : places
 
     return (
-      <Fragment>
+      <div className="places-list">
         {title && <h2>{title}</h2>}
-        {selectedPlaces?.map((place) => (
+        {selectedPlaces?.map((place, index) => (
           <h2 key={place.id} className="places-list-item">
             <span
               key={place.id}
-              onClick={() => onSelectPlace(place)}
+              onClick={() => onSelectPlace(selectedPlaces[index - 1])}
               onKeyPress={(e) => onKeyPress(e, place)}
               role="button"
               tabIndex={0}
@@ -64,7 +64,7 @@ const PlaceList: FC<PlaceListProps> = ({
             />
           </div>
         ))}
-      </Fragment>
+      </div>
     )
   }
   return (

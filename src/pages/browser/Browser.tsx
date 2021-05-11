@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom'
-import { Layout, Row, Col } from 'antd'
 import { Helmet } from 'react-helmet'
 
 import { RootState } from '../../storeTypes'
@@ -29,6 +28,7 @@ import BannerOrderChooser from '../../components/banner-order-chooser'
 import { ReactComponent as SVGMap } from '../../img/icons/map.svg'
 
 import './browser.less'
+import { PlaceAccordion } from '../../components/place-accordion/PlaceAccordion'
 
 class Browser extends React.Component<BrowserProps, BrowserState> {
   constructor(props: BrowserProps) {
@@ -42,24 +42,16 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
   }
 
   componentDidMount() {
-    const {
-      fetchCountries,
-      fetchAdministrativeAreas,
-      fetchBanners,
-      fetchPlace,
-      match,
-    } = this.props
+    const { fetchBanners, fetchPlace, match } = this.props
     const { selectedDirection, selectedOrder } = this.state
     const { placeId } = match.params
 
     const promises: Array<Promise<any>> = []
 
     if (placeId) {
-      promises.push(fetchAdministrativeAreas(placeId))
       promises.push(fetchPlace(placeId))
-    } else {
-      promises.push(fetchCountries())
     }
+    promises.push(this.fetchChildren(placeId))
 
     Promise.all(promises)
       .then(() => this.setState({ status: 'success' }))
@@ -106,41 +98,39 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     fetchBanners(placeId, newOrder, newDirection, 0)
   }
 
-  onPlaceSelected = async (place: Place) => {
-    const {
-      fetchAdministrativeAreas,
-      fetchCountries,
-      getAdministrativeAreas,
-      countries,
-      history,
-    } = this.props
-    const { selectedPlaceId } = this.state
+  onPlaceSelected = async (place: Place | undefined) => {
+    const { history } = this.props
 
-    const parentPlaceIdOfSelectedPlace = place?.parentPlaceId
-    let newPlaceId: string | undefined
+    const newPlaceId = place?.id
 
-    if (parentPlaceIdOfSelectedPlace === selectedPlaceId) {
-      newPlaceId = place.id
-      // When going down, we always want to reload the list
-      await fetchAdministrativeAreas(newPlaceId)
-    } else {
-      newPlaceId = place.parentPlaceId
-
-      // When going up, only reload the list when missing
-      if (newPlaceId) {
-        if ((getAdministrativeAreas(newPlaceId) ?? []).length === 0) {
-          await fetchAdministrativeAreas(newPlaceId)
-        }
-      } else if (countries.length === 0) {
-        await fetchCountries()
-      }
-    }
+    this.fetchChildren(newPlaceId)
 
     this.setState({
       selectedPlaceId: newPlaceId,
       page: 0,
     })
     history.push(`/browse/${newPlaceId || ''}`)
+  }
+
+  fetchChildren = async (placeId: string | undefined) => {
+    const {
+      fetchAdministrativeAreas,
+      fetchCountries,
+      getAdministrativeAreas,
+      countries,
+    } = this.props
+
+    if (placeId) {
+      if ((getAdministrativeAreas(placeId) ?? []).length === 0) {
+        await fetchAdministrativeAreas(placeId)
+      }
+    } else if (countries.length === 0) {
+      await fetchCountries()
+    }
+  }
+
+  onPlaceExpanded = async (place: Place | undefined) => {
+    this.fetchChildren(place?.id)
   }
 
   onLoadMoreBanners = () => {
@@ -199,54 +189,51 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
       : 'Countries'
 
     return (
-      <Fragment>
+      <div className="browser">
         <Helmet>
           <title>{pageTitle}</title>
         </Helmet>
 
-        <Row>
-          <Col span={4} className="places-list">
-            <Layout>
-              <PlaceList
-                title={selectedPlace ? undefined : 'Countries'}
-                order="numberOfBanners"
-                places={administrativeAreas || countries}
-                selectedPlaces={selectedPlaces}
-                onSelectPlace={this.onPlaceSelected}
-              />
-            </Layout>
-          </Col>
-          <Col span={20}>
-            <Row justify="start" className="banner-count">
-              <h1>
-                {selectedPlace?.numberOfBanners} Banners
-                {selectedPlace && (
-                  <>
-                    &nbsp;in {selectedPlace.longName}
-                    <Link to={createMapUri(selectedPlace)}>
-                      <SVGMap className="browser-icon" title="Map" />
-                    </Link>
-                  </>
-                )}
-              </h1>
-            </Row>
-            <Row justify="start" className="order-chooser">
-              <BannerOrderChooser
-                selectedOrder={selectedOrder}
-                selectedDirection={selectedDirection}
-                onOrderClicked={this.onOrderSelected}
-              />
-            </Row>
-            <Row justify="start" className="banner-list">
-              <BannerList
-                banners={banners}
-                hasMoreBanners={hasMore}
-                loadMoreBanners={this.onLoadMoreBanners}
-              />
-            </Row>
-          </Col>
-        </Row>
-      </Fragment>
+        <PlaceList
+          title={selectedPlace ? undefined : 'Countries'}
+          order="numberOfBanners"
+          places={administrativeAreas || countries}
+          selectedPlaces={selectedPlaces}
+          onSelectPlace={this.onPlaceSelected}
+        />
+
+        <div className="places-content">
+          <PlaceAccordion
+            selectedPlaces={selectedPlaces}
+            order="numberOfBanners"
+            onSelectPlace={this.onPlaceSelected}
+            onExpandPlace={this.onPlaceExpanded}
+          />
+          <div className="places-banners">
+            <h1 className="banner-count">
+              {selectedPlace?.numberOfBanners} Banners
+              {selectedPlace && (
+                <>
+                  &nbsp;in {selectedPlace.longName}
+                  <Link to={createMapUri(selectedPlace)}>
+                    <SVGMap className="browser-icon" title="Map" />
+                  </Link>
+                </>
+              )}
+            </h1>
+            <BannerOrderChooser
+              selectedOrder={selectedOrder}
+              selectedDirection={selectedDirection}
+              onOrderClicked={this.onOrderSelected}
+            />
+            <BannerList
+              banners={banners}
+              hasMoreBanners={hasMore}
+              loadMoreBanners={this.onLoadMoreBanners}
+            />
+          </div>
+        </div>
+      </div>
     )
   }
 }
