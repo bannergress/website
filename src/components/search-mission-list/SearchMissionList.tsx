@@ -15,7 +15,9 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
   icon,
   loadMoreMissions,
   onSelectMission,
+  onMissionAuthorClick,
   missionEditor,
+  missionClass,
 }) => {
   const [ref] = useInfiniteScroll({
     callback: loadMoreMissions,
@@ -31,13 +33,22 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
               mission={mission}
               icon={icon}
               onSelectMission={onSelectMission}
+              onMissionAuthorClick={onMissionAuthorClick}
               missionEditor={() =>
                 missionEditor ? missionEditor(mission, index) : <></>
               }
+              className={missionClass ? missionClass(mission) : ''}
             />
           ))}
           {hasMoreMissions && <div ref={ref}>Loading more items...</div>}
         </Scrollbars>
+      </Fragment>
+    )
+  }
+  if (!hasMoreMissions && !initial) {
+    return (
+      <Fragment>
+        <Col>No missions found</Col>
       </Fragment>
     )
   }
@@ -57,6 +68,8 @@ export interface SearchMissionListProps {
     mission: Mission & { index?: number },
     pos: number
   ) => JSX.Element | undefined
+  missionClass?: (mission: Mission & { index?: number }) => string
+  onMissionAuthorClick?: (author: string) => void
 }
 
 export default SearchMissionList

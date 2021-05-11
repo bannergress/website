@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { Button } from 'antd'
 
 import { Mission } from '../../features/mission'
 import { Agent } from '../agent/Agent'
@@ -9,38 +10,44 @@ import './search-mission-card.less'
 const SearchMissionCard: FC<SearchMissionCardProps> = ({
   mission,
   icon,
+  className,
   onSelectMission,
+  onMissionAuthorClick,
   missionEditor,
 }) => {
   return (
-    <div className="search-mission-card">
+    <div className={`search-mission-card ${className}`}>
       <MissionImage mission={mission} />
       <div className="mission-title-and-author">
         <div className="mission-title">{mission?.title}</div>
         {mission.author && (
-          <div className="mission-agent">
+          <Button
+            className="mission-agent"
+            onClick={() =>
+              onMissionAuthorClick && onMissionAuthorClick(mission.author!.name)
+            }
+          >
             <Agent agent={mission.author} />
-          </div>
+          </Button>
         )}
       </div>
       {missionEditor && missionEditor()}
-      <button
-        type="button"
+      <Button
         onClick={() => onSelectMission(mission)}
-        onKeyPress={() => onSelectMission(mission)}
         className="mission-button"
-        tabIndex={0}
       >
         {icon}
-      </button>
+      </Button>
     </div>
   )
 }
 
 export interface SearchMissionCardProps {
   mission: Mission & { index?: number }
-  onSelectMission: (mission: Mission & { index?: number }) => void
   icon: JSX.Element
+  className: string
+  onSelectMission: (mission: Mission & { index?: number }) => void
+  onMissionAuthorClick?: (author: string) => void
   missionEditor?: () => JSX.Element | undefined
 }
 

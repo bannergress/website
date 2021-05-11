@@ -274,6 +274,16 @@ class CreateBanner extends React.Component<
     }))
   }
 
+  onMissionAuthorClicked = (author: string) => {
+    const { searchText } = this.state
+    if (
+      !searchText ||
+      author.localeCompare(searchText, undefined, { sensitivity: 'base' })
+    ) {
+      this.setState({ searchText: author }, () => this.onSearchForced())
+    }
+  }
+
   getMissionIndexEditor = (
     mission: Mission & { index?: number },
     pos: number
@@ -298,6 +308,21 @@ class CreateBanner extends React.Component<
     }))
   }
 
+  getMissionClass = (mission: Mission & { index?: number }) => {
+    const { addedMissions, bannerType } = this.state
+    if (
+      bannerType === 'sequential' &&
+      (!mission.index ||
+        mission.index < 0 ||
+        addedMissions.some(
+          (m) => m.id !== mission.id && m.index === mission.index
+        ))
+    ) {
+      return 'mission-error'
+    }
+    return ''
+  }
+
   canSubmitBanner = () => {
     const { addedMissions, bannerTitle, bannerType } = this.state
     const indexes = addedMissions.map((mission) => mission.index)
@@ -306,7 +331,8 @@ class CreateBanner extends React.Component<
     return (
       addedMissions.length >= 2 &&
       bannerTitle &&
-      ((_(addedMissions).all((m) => m.index !== undefined) && !hasDuplicates) ||
+      ((_(addedMissions).all((m) => m.index !== undefined && m.index > 0) &&
+        !hasDuplicates) ||
         bannerType === 'anyOrder')
     )
   }
@@ -315,6 +341,7 @@ class CreateBanner extends React.Component<
     const { missions, hasMore } = this.props
     const {
       addedMissions,
+      searchText,
       bannerTitle,
       bannerDescription,
       bannerType,
@@ -327,6 +354,17 @@ class CreateBanner extends React.Component<
       missions,
       (m) => !_.some(addedMissions, (a) => a.id === m.id)
     )
+
+    let unusedMissionsCount
+    if (unusedMissions.length) {
+      if (hasMore) {
+        unusedMissionsCount = ` (${unusedMissions.length}+)`
+      } else {
+        unusedMissionsCount = ` (${unusedMissions.length})`
+      }
+    } else {
+      unusedMissionsCount = ''
+    }
 
     return (
       <div className="create-banner">
@@ -357,13 +395,14 @@ class CreateBanner extends React.Component<
             </span>
             <Input
               placeholder="Enter at least 3 characters..."
+              value={searchText || ''}
               onChange={(e) => this.onInputChange(e.target.value, 'searchText')}
               onKeyPress={(k) =>
                 k.key === 'Enter' ? this.onSearchForced() : null
               }
             />
             <div className="results-title">
-              <h3>Search results</h3>
+              <h3>Search results{unusedMissionsCount}</h3>
               {unusedMissions && unusedMissions.length > 0 && (
                 <Button
                   role="button"
@@ -377,9 +416,13 @@ class CreateBanner extends React.Component<
               missions={unusedMissions}
               hasMoreMissions={hasMore}
               icon={<SVGRightArrow />}
-              initial={status === 'initial' || status === 'ready'}
+              initial={
+                status === 'initial' ||
+                (status === 'ready' && (!searchText || searchText.length < 3))
+              }
               loadMoreMissions={this.onLoadMoreMissions}
               onSelectMission={this.onAddMission}
+              onMissionAuthorClick={this.onMissionAuthorClicked}
             />
           </div>
           <div className="missions-arrange">
@@ -389,9 +432,12 @@ class CreateBanner extends React.Component<
             <SearchMissionList
               missions={addedMissions}
               hasMoreMissions={false}
+              initial
               icon={<SVGCross />}
               onSelectMission={this.onManageMission}
+              onMissionAuthorClick={this.onMissionAuthorClicked}
               missionEditor={this.getMissionIndexEditor}
+              missionClass={this.getMissionClass}
             />
           </div>
           <div className="create-banner-info">

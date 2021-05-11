@@ -3,7 +3,7 @@ import { ApiOrder, ApiOrderDirection } from '../banner/types'
 import { Mission } from './types'
 
 const isMock = process.env.REACT_APP_USE_MOCK === 'true'
-export const PAGE_SIZE = 20
+export const PAGE_SIZE = 100
 
 const getMissions = (startIndex: number, numberOfMissions: number) => {
   const missionList: Array<Mission> = []
