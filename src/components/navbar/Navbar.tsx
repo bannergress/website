@@ -1,6 +1,7 @@
 import React from 'react'
 import { generatePath } from 'react-router'
 import { RouteComponentProps, withRouter, NavLink } from 'react-router-dom'
+import { Location } from 'history'
 
 import LoginInNavbar from '../login/login-in-navbar'
 import SearchInput from '../search-input'
@@ -16,6 +17,20 @@ export class Navbar extends React.Component<RouteComponentProps, NavBarState> {
 
     this.state = {
       mobileSearchBarActive: false,
+    }
+
+    const { history } = this.props
+    history.listen(this.locationListen.bind(this))
+  }
+
+  locationListen(location: Location) {
+    // Hide Mobile search bar when navigating away from search
+
+    if (!location.pathname.startsWith('/search/')) {
+      const { mobileSearchBarActive } = this.state
+      if (mobileSearchBarActive) {
+        this.setState({ mobileSearchBarActive: false })
+      }
     }
   }
 
