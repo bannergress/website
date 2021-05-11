@@ -43,6 +43,13 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
       </Fragment>
     )
   }
+  if (!hasMoreMissions && !initial) {
+    return (
+      <Fragment>
+        <Col>No missions found</Col>
+      </Fragment>
+    )
+  }
   return (
     <Fragment>{hasMoreMissions && !initial && <Col>Loading...</Col>}</Fragment>
   )

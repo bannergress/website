@@ -331,6 +331,7 @@ class CreateBanner extends React.Component<
     const { missions, hasMore } = this.props
     const {
       addedMissions,
+      searchText,
       bannerTitle,
       bannerDescription,
       bannerType,
@@ -404,7 +405,10 @@ class CreateBanner extends React.Component<
               missions={unusedMissions}
               hasMoreMissions={hasMore}
               icon={<SVGRightArrow />}
-              initial={status === 'initial' || status === 'ready'}
+              initial={
+                status === 'initial' ||
+                (status === 'ready' && (!searchText || searchText.length < 3))
+              }
               loadMoreMissions={this.onLoadMoreMissions}
               onSelectMission={this.onAddMission}
             />
@@ -416,6 +420,7 @@ class CreateBanner extends React.Component<
             <SearchMissionList
               missions={addedMissions}
               hasMoreMissions={false}
+              initial
               icon={<SVGCross />}
               onSelectMission={this.onManageMission}
               missionEditor={this.getMissionIndexEditor}
