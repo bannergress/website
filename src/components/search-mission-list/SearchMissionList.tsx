@@ -15,6 +15,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
   icon,
   loadMoreMissions,
   onSelectMission,
+  onMissionAuthorClick,
   missionEditor,
   missionClass,
 }) => {
@@ -32,6 +33,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
               mission={mission}
               icon={icon}
               onSelectMission={onSelectMission}
+              onMissionAuthorClick={onMissionAuthorClick}
               missionEditor={() =>
                 missionEditor ? missionEditor(mission, index) : <></>
               }
@@ -67,6 +69,7 @@ export interface SearchMissionListProps {
     pos: number
   ) => JSX.Element | undefined
   missionClass?: (mission: Mission & { index?: number }) => string
+  onMissionAuthorClick?: (author: string) => void
 }
 
 export default SearchMissionList

@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { Button } from 'antd'
 
 import { Mission } from '../../features/mission'
 import { Agent } from '../agent/Agent'
@@ -11,6 +12,7 @@ const SearchMissionCard: FC<SearchMissionCardProps> = ({
   icon,
   className,
   onSelectMission,
+  onMissionAuthorClick,
   missionEditor,
 }) => {
   return (
@@ -19,21 +21,23 @@ const SearchMissionCard: FC<SearchMissionCardProps> = ({
       <div className="mission-title-and-author">
         <div className="mission-title">{mission?.title}</div>
         {mission.author && (
-          <div className="mission-agent">
+          <Button
+            className="mission-agent"
+            onClick={() =>
+              onMissionAuthorClick && onMissionAuthorClick(mission.author!.name)
+            }
+          >
             <Agent agent={mission.author} />
-          </div>
+          </Button>
         )}
       </div>
       {missionEditor && missionEditor()}
-      <button
-        type="button"
+      <Button
         onClick={() => onSelectMission(mission)}
-        onKeyPress={() => onSelectMission(mission)}
         className="mission-button"
-        tabIndex={0}
       >
         {icon}
-      </button>
+      </Button>
     </div>
   )
 }
@@ -43,6 +47,7 @@ export interface SearchMissionCardProps {
   icon: JSX.Element
   className: string
   onSelectMission: (mission: Mission & { index?: number }) => void
+  onMissionAuthorClick?: (author: string) => void
   missionEditor?: () => JSX.Element | undefined
 }
 

@@ -274,6 +274,16 @@ class CreateBanner extends React.Component<
     }))
   }
 
+  onMissionAuthorClicked = (author: string) => {
+    const { searchText } = this.state
+    if (
+      !searchText ||
+      author.localeCompare(searchText, undefined, { sensitivity: 'base' })
+    ) {
+      this.setState({ searchText: author }, () => this.onSearchForced())
+    }
+  }
+
   getMissionIndexEditor = (
     mission: Mission & { index?: number },
     pos: number
@@ -385,6 +395,7 @@ class CreateBanner extends React.Component<
             </span>
             <Input
               placeholder="Enter at least 3 characters..."
+              value={searchText || ''}
               onChange={(e) => this.onInputChange(e.target.value, 'searchText')}
               onKeyPress={(k) =>
                 k.key === 'Enter' ? this.onSearchForced() : null
@@ -411,6 +422,7 @@ class CreateBanner extends React.Component<
               }
               loadMoreMissions={this.onLoadMoreMissions}
               onSelectMission={this.onAddMission}
+              onMissionAuthorClick={this.onMissionAuthorClicked}
             />
           </div>
           <div className="missions-arrange">
@@ -423,6 +435,7 @@ class CreateBanner extends React.Component<
               initial
               icon={<SVGCross />}
               onSelectMission={this.onManageMission}
+              onMissionAuthorClick={this.onMissionAuthorClicked}
               missionEditor={this.getMissionIndexEditor}
               missionClass={this.getMissionClass}
             />
