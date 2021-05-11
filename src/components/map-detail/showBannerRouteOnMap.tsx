@@ -18,7 +18,7 @@ export const showBannerRouteOnMap = (
   openedMissionIndexes: Array<number>,
   color: 'green' | 'blue'
 ) => {
-  const missionPolylines: LatLng[] = []
+  const missionMultiPolylines: LatLng[][] = [[]]
   let lastMissionCoords: LatLng | undefined
   let lastMissionTitle: string | undefined
   mapMissions(banner.missions, (mission, index) => {
@@ -32,7 +32,7 @@ export const showBannerRouteOnMap = (
           .last()
           .value()?.poi
         if (firstPOI && firstPOI.type !== 'unavailable') {
-          missionPolylines.push(
+          missionMultiPolylines[missionMultiPolylines.length - 1].push(
             new LatLng(firstPOI.latitude, firstPOI.longitude)
           )
         }
@@ -40,6 +40,9 @@ export const showBannerRouteOnMap = (
           lastMissionCoords = new LatLng(lastPOI.latitude, lastPOI.longitude)
           if (openedMissionIndexes.includes(index)) {
             lastMissionTitle = lastPOI.title
+            missionMultiPolylines.push([
+              new LatLng(lastPOI.latitude, lastPOI.longitude),
+            ])
           } else {
             lastMissionTitle = undefined
           }
@@ -52,16 +55,18 @@ export const showBannerRouteOnMap = (
     weight: 4,
   }
   if (lastMissionCoords) {
-    missionPolylines.push(lastMissionCoords)
+    missionMultiPolylines[missionMultiPolylines.length - 1].push(
+      lastMissionCoords
+    )
   }
-  if (missionPolylines && missionPolylines.length) {
-    const lastCoordinates = _.last(missionPolylines)
+  if (missionMultiPolylines && missionMultiPolylines.length) {
+    const lastCoordinates = _.last(_.last(missionMultiPolylines) as LatLng[])
     return (
       <>
         <Polyline
           key={`steps-${banner.id}`}
           pathOptions={lineStyle}
-          positions={missionPolylines}
+          positions={missionMultiPolylines}
         />
         <SquareMarker coords={lastCoordinates!} color={color}>
           {lastMissionTitle && (
