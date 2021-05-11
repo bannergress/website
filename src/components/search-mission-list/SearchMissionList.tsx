@@ -16,6 +16,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
   loadMoreMissions,
   onSelectMission,
   missionEditor,
+  missionClass,
 }) => {
   const [ref] = useInfiniteScroll({
     callback: loadMoreMissions,
@@ -34,6 +35,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
               missionEditor={() =>
                 missionEditor ? missionEditor(mission, index) : <></>
               }
+              className={missionClass ? missionClass(mission) : ''}
             />
           ))}
           {hasMoreMissions && <div ref={ref}>Loading more items...</div>}
@@ -57,6 +59,7 @@ export interface SearchMissionListProps {
     mission: Mission & { index?: number },
     pos: number
   ) => JSX.Element | undefined
+  missionClass?: (mission: Mission & { index?: number }) => string
 }
 
 export default SearchMissionList

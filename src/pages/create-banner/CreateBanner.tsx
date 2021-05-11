@@ -298,6 +298,21 @@ class CreateBanner extends React.Component<
     }))
   }
 
+  getMissionClass = (mission: Mission & { index?: number }) => {
+    const { addedMissions, bannerType } = this.state
+    if (
+      bannerType === 'sequential' &&
+      (!mission.index ||
+        mission.index < 0 ||
+        addedMissions.some(
+          (m) => m.id !== mission.id && m.index === mission.index
+        ))
+    ) {
+      return 'mission-error'
+    }
+    return ''
+  }
+
   canSubmitBanner = () => {
     const { addedMissions, bannerTitle, bannerType } = this.state
     const indexes = addedMissions.map((mission) => mission.index)
@@ -306,7 +321,8 @@ class CreateBanner extends React.Component<
     return (
       addedMissions.length >= 2 &&
       bannerTitle &&
-      ((_(addedMissions).all((m) => m.index !== undefined) && !hasDuplicates) ||
+      ((_(addedMissions).all((m) => m.index !== undefined && m.index > 0) &&
+        !hasDuplicates) ||
         bannerType === 'anyOrder')
     )
   }
@@ -392,6 +408,7 @@ class CreateBanner extends React.Component<
               icon={<SVGCross />}
               onSelectMission={this.onManageMission}
               missionEditor={this.getMissionIndexEditor}
+              missionClass={this.getMissionClass}
             />
           </div>
           <div className="create-banner-info">
