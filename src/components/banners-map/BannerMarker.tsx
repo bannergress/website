@@ -11,7 +11,7 @@ const BannerMarker: FC<BannerMarkerProps> = ({
 }) => {
   const iconNormal = divIcon({
     className: `custom-div-icon-${selected}`,
-    html: `<div class='marker-pin-${selected}'></div>`,
+    html: `<div class='marker-pin-medium-${selected}'></div>`,
     iconAnchor: [0, 0],
   })
   return (

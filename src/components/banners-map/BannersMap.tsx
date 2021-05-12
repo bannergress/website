@@ -146,12 +146,12 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     if (numberMarkers > 1)
       return divIcon({
         className: 'custom-div-icon',
-        html: `<div class='marker-pin-false'>x${numberMarkers}</div>`,
+        html: `<div class='marker-pin-medium-false'>×${numberMarkers}</div>`,
         iconAnchor: [0, 0],
       })
     return divIcon({
       className: 'custom-div-icon',
-      html: `<div class='marker-pin-false'></div>`,
+      html: `<div class='marker-pin-medium-false'></div>`,
       iconAnchor: [0, 0],
     })
   }
