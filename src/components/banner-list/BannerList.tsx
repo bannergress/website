@@ -73,6 +73,7 @@ const BannerList: FC<BannerListProps> = ({
             )
             return (
               <div
+                className="banner-list-entry"
                 key={banner.id}
                 ref={(b) => {
                   itemsRef.current[index] = b

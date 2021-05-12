@@ -4,6 +4,7 @@
   border: #2e2e2e 2px solid;
   padding: 15px;
   color: white;
+  max-width: 400px;
 }
 
 .place-card-title {
@@ -20,6 +21,11 @@
 
 .place-card-type {
   font-size: 13px;
+  
+  // Use this to make the card grow until it its a limit
+  // Width is then actually limited by max-width in place-card (Width a card should have as long as there is enough space )
+  // and by max-width in list that includes the card (e.g. limit by available viewport)
+  min-width: 80vw;
 }
 
 
