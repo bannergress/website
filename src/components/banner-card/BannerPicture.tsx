@@ -14,27 +14,34 @@ const getImageAnimation = (
     if (innerDiv.clientHeight < innerDiv.scrollHeight - 1) {
       const ratioPercent =
         (1 - innerDiv.scrollHeight / innerDiv.clientHeight) * 50
+      const timeToBottom = 5_000
+      const timePause = 1_000
+      const timeToTop = 1_000
+      const timeTotal = timeToBottom + timePause + timeToTop + timePause
       return img.animate(
         [
           {
             marginTop: '0%',
           },
           {
+            marginTop: `${ratioPercent}%`,
+            offset: timeToBottom / timeTotal,
+          },
+          {
+            marginTop: `${ratioPercent}%`,
+            offset: (timeToBottom + timePause) / timeTotal,
+          },
+          {
             marginTop: '0%',
-            offset: 0.05,
+            offset: (timeToBottom + timePause + timeToTop) / timeTotal,
           },
           {
-            marginTop: `${ratioPercent}%`,
-            offset: 0.95,
-          },
-          {
-            marginTop: `${ratioPercent}%`,
+            marginTop: '0%',
           },
         ],
         {
-          direction: 'alternate',
           easing: 'ease-in-out',
-          duration: 10_000,
+          duration: timeTotal,
           iterations: Infinity,
         }
       )
