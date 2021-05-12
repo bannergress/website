@@ -20,7 +20,9 @@ const LoginInNavbar: React.FC = () => {
   }
 
   function openModal() {
-    setIsOpen(true)
+    // Skip login chooser for now
+    keycloak.login({ idpHint: 'google' })
+    // setIsOpen(true)
   }
 
   function closeModal() {
