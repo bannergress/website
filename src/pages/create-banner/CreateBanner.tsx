@@ -293,7 +293,7 @@ class CreateBanner extends React.Component<
       return (
         <InputNumber
           value={mission.index}
-          max={1000}
+          max={9999}
           min={1}
           onChange={(val) => this.changeMissionNumber(mission, pos, val)}
           onBlur={this.onOrderMissions}
