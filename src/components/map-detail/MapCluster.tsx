@@ -54,8 +54,7 @@ const createClusterCustomIcon = (cluster: any) => {
       .map((m: any) => {
         const options = getChildOptions(m)
         if (options.className.includes('custom-div-icon')) {
-          const match = options.html.match(/>([^<]+)/)
-          return match ? match[1] : undefined
+          return options.html.match(/>(.+)<\/div>$/)[1]
         }
         return undefined
       })
