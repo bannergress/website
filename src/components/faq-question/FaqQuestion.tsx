@@ -9,11 +9,11 @@ const FaqQuestion: React.FC<FaqQuestionProps> = ({ title, children }) => {
       <button
         type="button"
         onClick={() => setSelected(!selected)}
-        className="question"
+        className="faq-question-title"
       >
         {title}
       </button>
-      <div className={`answer ${selected && 'selected'}`}>{children}</div>
+      {selected && <div className="faq-question-answer">{children}</div>}
     </div>
   )
 }
