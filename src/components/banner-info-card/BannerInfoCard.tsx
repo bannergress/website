@@ -19,6 +19,7 @@ import { Agent } from '../agent/Agent'
 import { hasLatLng } from '../map-detail/showBannerRouteOnMap'
 
 import './banner-info-card.less'
+import IfUserLoggedIn from '../login/if-user-logged-in'
 
 const getDistance = (distance: number) => `${(distance / 1000).toFixed(1)} km`
 
@@ -266,7 +267,9 @@ const getStartPointButton = (banner: Banner) => {
 const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => (
   <div className="banner-info-card">
     <p>{banner.description}</p>
-    <p>Created by {getAgents(banner)}</p>
+    <IfUserLoggedIn>
+      <p>Created by {getAgents(banner)}</p>
+    </IfUserLoggedIn>
     {getMissionTypes(banner)}
     {getTotalDistance(banner)}
     {getInGameTime(banner)}
