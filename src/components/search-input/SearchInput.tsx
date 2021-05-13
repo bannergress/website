@@ -1,21 +1,43 @@
-import React, { Fragment, FC } from 'react'
-import { Input } from 'antd'
-
+import React, { FormEvent, Fragment, FC, useRef } from 'react'
+import { ReactComponent as SVGSearch } from '../../img/icons/search.svg'
 import './search-input.less'
 
-const { Search } = Input
-
 const SearchInput: FC<SearchInputProps> = ({ autoFocus, onSearch }) => {
+  const textInput = useRef<HTMLInputElement>(null)
+
+  function handleClick(e: FormEvent) {
+    e.preventDefault()
+
+    const term = textInput.current?.value || ''
+
+    if (term.trim() !== '') {
+      // When we set focus to the input automatically (i.e. on mobile),
+      // also remove it automatically after executing search so that the
+      // virtual keyboard closes
+      if (autoFocus) {
+        textInput.current?.blur()
+      }
+
+      onSearch(term)
+    }
+  }
+
   return (
     <Fragment>
-      <Search
-        placeholder="Search Banners or Places"
-        onSearch={onSearch}
-        enterKeyHint="search"
-        type="search"
-        className="search-input"
-        autoFocus={autoFocus || false}
-      />
+      <form className="search-input-form" name="search" onSubmit={handleClick}>
+        <input
+          placeholder="Search Banners or Places"
+          enterKeyHint="search"
+          type="search"
+          className="search-input"
+          // eslint-disable-next-line jsx-a11y/no-autofocus
+          autoFocus={autoFocus || false}
+          ref={textInput}
+        />
+        <button className="search-input-button" type="submit">
+          <SVGSearch className="search-input-icon" />
+        </button>
+      </form>
     </Fragment>
   )
 }
