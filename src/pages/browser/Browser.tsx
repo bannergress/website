@@ -112,7 +112,15 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     history.push(`/browse/${newPlaceId || ''}`)
   }
 
-  fetchChildren = async (placeId: string | undefined) => {
+  // By calling with forceLoad false, we could
+  // skip loading lists of places if already loaded
+  // during this session
+  // We use true for now so that new places are shown when
+  // banners were added by yourself or someone else while browsing
+  fetchChildren = async (
+    placeId: string | undefined,
+    forceLoad: boolean = true
+  ) => {
     const {
       fetchAdministrativeAreas,
       fetchCountries,
@@ -121,10 +129,10 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     } = this.props
 
     if (placeId) {
-      if ((getAdministrativeAreas(placeId) ?? []).length === 0) {
+      if (forceLoad || (getAdministrativeAreas(placeId) ?? []).length === 0) {
         await fetchAdministrativeAreas(placeId)
       }
-    } else if (countries.length === 0) {
+    } else if (forceLoad || countries.length === 0) {
       await fetchCountries()
     }
   }
