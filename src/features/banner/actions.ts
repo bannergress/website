@@ -136,7 +136,9 @@ export const submitBannerAction = () => async (
   getState: () => RootState
 ) => {
   const banner: Partial<Banner> = getCreatedBanner(getState())!
-  const response = await api.postBanner(banner!)
+  const response = await (banner.id
+    ? api.updateBanner(banner)
+    : api.postBanner(banner!))
   if (response.ok) {
     dispatch({
       type: REMOVE_CREATED_BANNER,

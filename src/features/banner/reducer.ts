@@ -10,6 +10,7 @@ import {
   RESET_SEARCH_BANNERS,
   CREATE_BANNER,
   REMOVE_CREATED_BANNER,
+  EDIT_BANNER,
   SEARCH_MAP_BANNERS,
 } from './actionTypes'
 import { extend, extendSorted } from './helpers'
@@ -61,6 +62,8 @@ export default (state = initialState, action: BannerActionTypes) => {
       return { ...state, createdBanner: action.payload }
     case REMOVE_CREATED_BANNER:
       return { ...state, createdBanner: undefined }
+    case EDIT_BANNER:
+      return { ...state, createdBanner: action.payload }
     case SEARCH_MAP_BANNERS:
       return { ...state, banners: extendSorted(state.banners, action.payload) }
     default:

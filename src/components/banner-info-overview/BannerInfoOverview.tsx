@@ -7,6 +7,7 @@ import MissionList from '../mission-list'
 import BannerInfoCard from '../banner-info-card'
 
 import './banner-info-overview.less'
+import { BannerEditTools } from '../banner-edit-tools/BannerEditTools'
 
 const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   banner,
@@ -18,6 +19,7 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   const { missions } = banner
   return (
     <div className="banner-info-overview">
+      <BannerEditTools banner={banner} />
       <div className="banner-info-container">
         <BannerCard banner={banner} selected={false} showFullImage />
         <Tabs defaultActiveKey="1">

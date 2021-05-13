@@ -12,6 +12,7 @@ export const SEARCH_BANNERS = 'SEARCH_BANNERS'
 export const SEARCH_MAP_BANNERS = 'SEARCH_MAP_BANNERS'
 export const CREATE_BANNER = 'CREATE_BANNER'
 export const REMOVE_CREATED_BANNER = 'REMOVE_CREATED_BANNER'
+export const EDIT_BANNER = 'EDIT_BANNER'
 
 interface LoadBannerAction {
   type: typeof LOAD_BANNER
@@ -64,6 +65,11 @@ interface RemoveCreatedBannerAction {
   type: typeof REMOVE_CREATED_BANNER
 }
 
+interface EditBannerAction {
+  type: typeof EDIT_BANNER
+  payload: Banner
+}
+
 interface SearchMapBannersAction {
   type: typeof SEARCH_MAP_BANNERS
   payload: Array<Partial<Banner>>
@@ -81,4 +87,5 @@ export type BannerActionTypes =
   | ResetSearchBannersAction
   | CreateBannerAction
   | RemoveCreatedBannerAction
+  | EditBannerAction
   | SearchMapBannersAction
