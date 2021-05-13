@@ -12,7 +12,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const [authenticated, initialized] = useUserLoggedIn()
+  const { authenticated, initialized } = useUserLoggedIn()
 
   return (
     <Route

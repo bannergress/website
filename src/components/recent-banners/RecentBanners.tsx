@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { FC, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -8,42 +8,45 @@ import {
   loadRecentBanners,
   Banner,
 } from '../../features/banner'
-import IfUserLoggedIn from '../login/if-user-logged-in'
+import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
 import BannerList from '../banner-list'
 
 import './recent-banners.less'
 
-export class RecentBanners extends React.Component<RecentBannersProps, {}> {
-  componentDidMount() {
-    const { fetchRecentBanners } = this.props
-    fetchRecentBanners()
-  }
+export const RecentBanners: FC<RecentBannersProps> = ({
+  titleList,
+  banners,
+  fetchRecentBanners,
+}) => {
+  const history = useHistory()
 
-  onCreateBanner = () => {
-    const { history } = this.props
+  useEffect(() => {
+    fetchRecentBanners()
+  }, [fetchRecentBanners])
+
+  const onCreateBanner = () => {
     history.push('/new-banner')
   }
 
-  render() {
-    const { titleList, banners } = this.props
-    return (
-      <div className="recent-banners">
-        <div className="recent-banners-title">
-          <h1>{titleList}</h1>
-          <IfUserLoggedIn>
-            <button
-              type="button"
-              onClick={this.onCreateBanner}
-              className="positive-action-button submit-new-button"
-            >
-              Submit a New Banner
-            </button>
-          </IfUserLoggedIn>
-        </div>
-        <BannerList banners={banners} hasMoreBanners={false} />
+  const { authenticated } = useUserLoggedIn()
+  const disabled = !authenticated
+
+  return (
+    <div className="recent-banners">
+      <div className="recent-banners-title">
+        <h1>{titleList}</h1>
+        <button
+          type="button"
+          onClick={onCreateBanner}
+          className="positive-action-button submit-new-button"
+          disabled={disabled}
+        >
+          Submit a New Banner
+        </button>
       </div>
-    )
-  }
+      <BannerList banners={banners} hasMoreBanners={false} />
+    </div>
+  )
 }
 
 export interface RecentBannersProps extends RouteComponentProps {
