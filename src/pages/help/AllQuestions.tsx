@@ -10,7 +10,7 @@ export const AllQuestions: React.FC = () => {
         <p>After the horrific loss of our favorite Ingress fan page, some agents came together to start this project.</p>
         <ul>
             <li>get everyone involved</li>
-            <li>be open source (<a href="https://github.com/bannergress">Github</a>)</li>
+            <li>be open source (soon™)</li>
             <li>be the long-term solution for finding banners</li>
             <li>never stop developing</li>
         </ul>
