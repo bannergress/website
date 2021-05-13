@@ -43,6 +43,7 @@ class CreateBanner extends React.Component<
   constructor(props: CreateBannerProps) {
     super(props)
     this.state = {
+      id: undefined,
       addedMissions: [],
       page: 0,
       searchText: null,
@@ -61,7 +62,7 @@ class CreateBanner extends React.Component<
   componentDidMount() {
     const { previousBanner } = this.props
     if (previousBanner) {
-      const { title, description, missions, type, width } = previousBanner
+      const { title, description, missions, type, width, id } = previousBanner
       const addedMissions = mapMissions<Mission & { index?: number }>(
         missions,
         (m, index) =>
@@ -73,6 +74,7 @@ class CreateBanner extends React.Component<
             : undefined
       )
       this.setState({
+        id,
         bannerTitle: title,
         bannerDescription: description,
         addedMissions,
@@ -227,6 +229,7 @@ class CreateBanner extends React.Component<
   onCreateBanner = async () => {
     const { createBanner, history } = this.props
     const {
+      id,
       addedMissions,
       bannerTitle,
       bannerDescription,
@@ -246,6 +249,7 @@ class CreateBanner extends React.Component<
     try {
       this.setState({ status: 'loading' })
       await createBanner({
+        id,
         title: bannerTitle!,
         description: bannerDescription,
         missions,
@@ -359,6 +363,7 @@ class CreateBanner extends React.Component<
       bannerWidth,
       showAdvancedOptions,
       status,
+      id,
     } = this.state
 
     const unusedMissions = _.filter(
@@ -377,9 +382,11 @@ class CreateBanner extends React.Component<
       unusedMissionsCount = ''
     }
 
+    const title = id ? 'Edit Banner' : 'New Banner'
+
     return (
       <div className="create-banner">
-        <Helmet>Create Banner</Helmet>
+        <Helmet>{title}</Helmet>
         <Prompt message={this.getPromptMessage} />
         <LoadingOverlay
           active={status === 'loading'}
@@ -387,7 +394,7 @@ class CreateBanner extends React.Component<
           spinner
           fadeSpeed={500}
         />
-        <h1>New Banner</h1>
+        <h1>{title}</h1>
         <div className="create-banner-steps">
           <div className="missions-search">
             <h1>
@@ -571,6 +578,7 @@ export interface CreateBannerProps extends RouteComponentProps {
 }
 
 interface CreateBannerState {
+  id: string | undefined
   addedMissions: Array<Mission & { index?: number }>
   page: number
   searchText: string | null

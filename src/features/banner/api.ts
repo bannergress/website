@@ -174,6 +174,12 @@ export const searchBanners = (
 export const postBanner = (banner: Partial<Banner>) =>
   api.post<Banner>('bnrs', banner)
 
+export const updateBanner = (banner: Partial<Banner>) =>
+  api.put<Banner>(`bnrs/${banner.id}`, banner)
+
+export const deleteBanner = (banner: Partial<Banner>) =>
+  api.delete<void>(`bnrs/${banner.id}`)
+
 export const postBannerPreview = (banner: Partial<Banner>) =>
   api.post<Banner>('bnrs/preview', banner)
 
