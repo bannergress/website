@@ -42,16 +42,25 @@ export const AllQuestions: React.FC = () => {
               <i><b>Caution:</b> Only Top 25 missions will be shown!<i></li>
             <li>Open <b>Missions in view</b><br />
               <i>You can find this link at the end of the right sidebar</i></li>
-            <li>A new window with Bannergress utilities on the top and a mission list (Only Top 25!) should be opened. <br />
+            <li>A new window with Bannergress utilities on the top and a mission list including status (Only Top 25!) should be opened. <br />
               Now you can the missions in different ways: <br />
               <ul>
                 <li>The fastest way to get many missions uploaded is to <b>Process all!</b> </li>
                 <li>If you explicitly want to upload one banner: use the <b>Filter by mission name</b></li>
-                <li>You can also upload <b>single missions</b> with the 🠗 on the right</li>
+                <li>You can also upload <b>single missions</b> with the 🠋 on the right</li>
               </ul>
              </li>
-                <li><b>Navigate</b> with the map controls (“N”, “E”, S”, “W”) and <b>repeat</b> step 5</li>     
+                <li><b>Navigate</b> with the map controls (“N”, “E”, S”, “W”) and <b>repeat</b> step 5 <br />
+                <i>We do get only missions if you hit a button!</i></li>     
         </ol>
+      </FaqQuestion>
+      <FaqQuestion key="4" title="Where can I find … (Useful links)">
+        <p>... the <a href="https://missions.ingress.com/">mission creator</a>?</p>
+        <p>... a <a href="https://www.giacintogarcea.com/ingress/tools/missionset/">tool to slice</a> a banner picture?</p>
+        <p><br /></p>
+        <p>... the <a href="https://iitc.app/">IITC-CE</a>?</p>
+        <p>... the <a href="https://github.com/bannergress/iitc-plugin/raw/main/iitc-plugin-bannergress.user.js">bannergress plugin</a>?</p>
+        <p>... an <a href="https://softspot.nl/ingress/plugins/iitc-plugin-missions-addon.user.js">IITC plugin</a> which shows <b>more</b> than the Top 25 missions?</p>
       </FaqQuestion>
 
     </>
