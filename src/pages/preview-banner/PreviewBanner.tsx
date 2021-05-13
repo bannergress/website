@@ -15,10 +15,9 @@ import {
   getBannerBounds,
 } from '../../features/banner'
 import { mapMissions } from '../../features/mission'
-import BannerCard from '../../components/banner-card'
-import MissionList from '../../components/mission-list'
 import LoadingOverlay from '../../components/loading-overlay'
 import { MapDetail } from '../../components/map-detail'
+import BannerInfoOverview from '../../components/banner-info-overview'
 import { ReactComponent as SVGBackArrow } from '../../img/icons/back-arrow.svg'
 
 import './preview-banner.less'
@@ -112,7 +111,6 @@ class PreviewBanner extends React.Component<
     if (!banner) {
       return <Fragment />
     }
-    const { missions } = banner
 
     return (
       <div className="banner-preview">
@@ -131,18 +129,13 @@ class PreviewBanner extends React.Component<
           <h1>Review</h1>
         </div>
         <div className="banner-preview-content">
-          <div className="banner-preview-overview">
-            <BannerCard banner={banner} selected={false} />
-            {missions && (
-              <MissionList
-                missions={missions}
-                expanded={expanded}
-                expandedMissionIndexes={expandedMissionIndexes}
-                onExpand={this.onExpand}
-                onExpandAll={this.onExpandAll}
-              />
-            )}
-          </div>
+          <BannerInfoOverview
+            banner={banner}
+            expanded={expanded}
+            expandedMissionIndexes={expandedMissionIndexes}
+            onExpand={this.onExpand}
+            onExpandAll={this.onExpandAll}
+          />
           <div className="banner-preview-additional">
             <MapDetail
               banner={banner}
