@@ -34,6 +34,26 @@ export const AllQuestions: React.FC = () => {
         </ol>
       <p>Now you are ready to scan missions! (Part 2)</p>  
       </FaqQuestion>
+      <FaqQuestion key="3" title="How do I get Ingress missions to bannergress.com? (Part 2: scan missions)">
+        <ol>
+            <li>Open your <a href=" https://intel.ingress.com/">IITC-CE</a></li>
+            <li>Go to the area which you want to scan</li>
+            <li><b>Zoom very closely</b> in mission dense areas <br />
+              <i><b>Caution:</b> Only Top 25 missions will be shown!<i></li>
+            <li>Open <b>Missions in view</b><br />
+              <i>You can find this link at the end of the right sidebar</i></li>
+            <li>A new window with Bannergress utilities on the top and a mission list (Only Top 25!) should be opened. <br />
+              Now you can the missions in different ways: <br />
+              <ul>
+                <li>The fastest way to get many missions uploaded is to <b>Process all!</b> </li>
+                <li>If you explicitly want to upload one banner: use the <b>Filter by mission name</b></li>
+                <li>You can also upload <b>single missions</b> with the 🠗 on the right</li>
+              </ul>
+             </li>
+                <li><b>Navigate</b> with the map controls (“N”, “E”, S”, “W”) and <b>repeat</b> step 5</li>     
+        </ol>
+      </FaqQuestion>
+
     </>
   )
   /* eslint-enable */
