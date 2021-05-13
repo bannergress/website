@@ -9,10 +9,10 @@ import { ReactComponent as SVGIntel } from '../../img/icons/intel.svg'
 import './search-mission-card.less'
 
 const getMissionIntelLink = (mission: Mission) => {
-  if (mission.startLatitude && mission.startLongitude) {
+  if (mission.id) {
     return (
       <a
-        href={`https://intel.ingress.com/?ll=${mission.startLatitude},${mission.startLongitude}&z=18`}
+        href={`https://intel.ingress.com/mission/${mission.id}`}
         target="_blank"
         rel="noreferrer"
       >
