@@ -39,7 +39,7 @@ export const AllQuestions: React.FC = () => {
             <li>Open your <a href=" https://intel.ingress.com/">IITC-CE</a></li>
             <li>Go to the area which you want to scan</li>
             <li><b>Zoom very closely</b> in mission dense areas <br />
-              <i><b>Caution:</b> Only Top 25 missions will be shown!<i></li>
+              <i><b>Caution:</b> Only Top 25 missions will be shown!</i></li>
             <li>Open <b>Missions in view</b><br />
               <i>You can find this link at the end of the right sidebar</i></li>
             <li>A new window with Bannergress utilities on the top and a mission list including status (Only Top 25!) should be opened. <br />
