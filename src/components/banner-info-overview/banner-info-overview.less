@@ -1,0 +1,52 @@
+.banner-info-overview {
+  height: calc(100vh - 152px);
+  min-height: 320px;
+  overflow-y: scroll;
+  width: 40%;
+  max-width: 400px;
+
+  .banner-info-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    row-gap: 30px;
+
+    .ant-tabs-nav-list {
+      width: 100%;
+      background-color: #2e2e2e;
+
+      .ant-tabs-ink-bar {
+        display: none;
+      }
+
+      .ant-tabs-tab {
+        margin: 0 !important;
+        background-color: #2e2e2e;
+        border: none;
+        border-radius: 4px;
+        width: 100%;
+        box-shadow: 0 0 2px 0 rgba(157, 96, 212, 0.5) !important;
+        border: solid 2px transparent !important;
+        background-origin: border-box !important;
+        background-clip: content-box, border-box !important;
+        box-shadow: 2px 1000px 1px #2e2e2e inset !important;
+        transition: linear-gradient ease 0.6s;
+
+        .ant-tabs-tab-btn {
+          text-align: center;
+          color: white;
+          width: 100%;
+        }
+      }
+
+      .ant-tabs-tab-active {
+        background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(180deg, #109393, #15D4B2) !important;
+
+        &:hover {
+          background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(0deg, #109393, #15D4B2) !important;
+        }
+      }
+    }
+  }
+}

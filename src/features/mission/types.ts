@@ -37,6 +37,8 @@ export type Objective =
   | 'viewWaypoint'
   | 'enterPassphrase'
 
+export type MissionType = 'hidden' | 'anyOrder' | 'sequential'
+
 export interface Mission {
   id: string
   title: string
@@ -45,7 +47,7 @@ export interface Mission {
   description?: string
   startLatitude?: number
   startLongitude?: number
-  type?: 'hidden' | 'anyOrder' | 'sequential'
+  type?: MissionType
   online?: Boolean
   author?: NamedAgent
 }

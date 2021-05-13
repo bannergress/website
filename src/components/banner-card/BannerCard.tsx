@@ -2,11 +2,11 @@ import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Banner } from '../../features/banner'
+import BannerPicture from './BannerPicture'
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
 
 import './banner-card.less'
-import BannerPicture from './BannerPicture'
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL
 
