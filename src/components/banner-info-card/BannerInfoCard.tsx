@@ -25,7 +25,12 @@ const getDistance = (distance: number) => `${(distance / 1000).toFixed(1)} km`
 const getAgents = (banner: Banner) =>
   _(mapMissions(banner.missions, (mission) => mission?.author))
     .uniq(false, (agent) => agent.name)
-    .map((agent) => <Agent key={agent.name} agent={agent} />)
+    .map((agent) => (
+      <>
+        {' '}
+        <Agent key={agent.name} agent={agent} />
+      </>
+    ))
 
 const getTypeName = (key: MissionType) => {
   switch (key) {
