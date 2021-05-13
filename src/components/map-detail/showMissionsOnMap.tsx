@@ -2,7 +2,7 @@ import React from 'react'
 import { divIcon, LatLng } from 'leaflet'
 import { Marker, Polyline, Tooltip } from 'react-leaflet'
 import _ from 'underscore'
-
+import { renderToStaticMarkup } from 'react-dom/server'
 import { NumDictionary } from '../../features/banner'
 import {
   FieldTripWaypointPOI,
@@ -12,6 +12,7 @@ import {
 } from '../../features/mission'
 import POIMarker from './POIMarker'
 import { hasLatLng } from './showBannerRouteOnMap'
+import { ReactComponent as EyeOffSVG } from '../../img/icons/eye-off-outline.svg'
 
 export const showMissionStartPointsOnMap = (
   missions: NumDictionary<Mission>,
@@ -43,9 +44,15 @@ export const showMissionStartPointsOnMap = (
       }
 
       // use custom icon
+      const hiddenMarkerContents = renderToStaticMarkup(
+        <div className="marker-pin">
+          {index + 1}
+          <EyeOffSVG />
+        </div>
+      )
       const iconHidden = divIcon({
         className: 'custom-div-icon',
-        html: `<div class='marker-pin-hidden'>${index + 1}<sup>H</sup></div>`,
+        html: hiddenMarkerContents,
         iconAnchor: [0, 0],
       })
       const iconNormal = divIcon({
