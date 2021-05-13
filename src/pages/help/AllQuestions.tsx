@@ -29,9 +29,10 @@ export const AllQuestions: React.FC = () => {
             <li><b>Refresh</b> (F5) your IITC</li>
             <li>Open <b>Bannergress settings</b> <br />
               <i>You can find this link at the end of the right sidebar</i></li>
-          <li>You have to <b>log in</b> first with your Google account</li>
+          <li>You have to <b>log in</b> first with your Google account <br />
+            <i>Click on <b>Log in</b> button</i></li>
         </ol>
-      <p>Now you are ready to scan missions!</p>  
+      <p>Now you are ready to scan missions! (Part 2)</p>  
       </FaqQuestion>
     </>
   )
