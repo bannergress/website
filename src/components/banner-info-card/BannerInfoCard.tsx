@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, Fragment } from 'react'
 import _ from 'underscore'
 import { LatLng } from 'leaflet'
 
@@ -26,11 +26,10 @@ const getDistance = (distance: number) => `${(distance / 1000).toFixed(1)} km`
 const getAgents = (banner: Banner) =>
   _(mapMissions(banner.missions, (mission) => mission?.author))
     .uniq(false, (agent) => agent.name)
-    .map((agent) => (
-      <>
-        {' '}
-        <Agent key={agent.name} agent={agent} />
-      </>
+    .map((agent, index) => (
+      <Fragment key={`${agent.name}-container`}>
+        {index > 0 && ','} <Agent key={agent.name} agent={agent} />
+      </Fragment>
     ))
 
 const getTypeName = (key: MissionType) => {
@@ -117,7 +116,7 @@ const getTotalDistance = (banner: Banner) => {
           {banner.lengthMeters && getDistance(banner.lengthMeters)}
         </div>
       </div>
-      {length !== undefined && (
+      {length !== undefined && length > 100 && (
         <div className="info-subrow">
           <div className="info-subtitle">Last to first waypoint</div>
           <div className="info-subcontent">{getDistance(length)}</div>
