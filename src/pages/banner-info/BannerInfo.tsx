@@ -12,13 +12,12 @@ import {
   getBannerBounds,
   loadBanner,
 } from '../../features/banner'
-import BannerCard from '../../components/banner-card'
-import MissionList from '../../components/mission-list'
 import LoadingOverlay from '../../components/loading-overlay'
 import { MapDetail } from '../../components/map-detail'
 
 import './banner-info.less'
 import { mapMissions } from '../../features/mission'
+import BannerInfoOverview from '../../components/banner-info-overview'
 
 class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
   constructor(props: BannerInfoProps) {
@@ -76,24 +75,18 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
     const { expanded, expandedMissionIndexes, status } = this.state
     const banner = getBanner(match.params.id)
     if (banner) {
-      const { missions } = banner
       return (
         <div className="banner-info">
           <Helmet>
             <title>{banner.title}</title>
           </Helmet>
-          <div className="banner-info-overview">
-            <BannerCard banner={banner} selected={false} showFullImage />
-            {missions && (
-              <MissionList
-                missions={missions}
-                expandedMissionIndexes={expandedMissionIndexes}
-                expanded={expanded}
-                onExpand={this.onExpand}
-                onExpandAll={this.onExpandAll}
-              />
-            )}
-          </div>
+          <BannerInfoOverview
+            banner={banner}
+            expanded={expanded}
+            expandedMissionIndexes={expandedMissionIndexes}
+            onExpand={this.onExpand}
+            onExpandAll={this.onExpandAll}
+          />
           <div className="banner-info-additional">
             {status === 'ready' && (
               <MapDetail

@@ -17,6 +17,7 @@ export interface Banner {
   missions?: NumDictionary<Mission>
   type?: BannerType
   width?: number
+  averageDurationMilliseconds?: number
 }
 
 export interface BannerState {

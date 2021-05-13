@@ -44,7 +44,11 @@ const MenuMain: React.FC = () => {
     <div className="menu-main">
       {menuItems.map((item) => {
         return (
-          <NavLink key={item.key} to={item.path} exact>
+          <NavLink
+            key={item.key}
+            to={item.path}
+            isActive={(_, location) => !!location.pathname.match(item.regExp)}
+          >
             {item.icon}
             {item.title}
           </NavLink>

@@ -11,6 +11,7 @@ import {
   PortalPOI,
   UnavailablePOI,
   FieldTripWaypointPOI,
+  MissionType,
 } from './types'
 import { mapMissions, mapMissionsInverse, getMissionBounds } from './helpers'
 
@@ -31,5 +32,6 @@ export type {
   PortalPOI,
   UnavailablePOI,
   FieldTripWaypointPOI,
+  MissionType,
 }
 export { mapMissions, mapMissionsInverse, getMissionBounds }
