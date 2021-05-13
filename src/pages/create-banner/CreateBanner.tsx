@@ -209,6 +209,16 @@ class CreateBanner extends React.Component<
     }
   }
 
+  onRemoveAllMissions = () => {
+    this.setState({
+      addedMissions: [],
+      bannerTitle: '',
+      bannerDescription: '',
+      bannerTitleChanged: false,
+      bannerDescriptionChanged: false,
+    })
+  }
+
   onManageMission = (mission: Mission) => {
     const { addedMissions } = this.state
     this.setState({ addedMissions: _(addedMissions).without(mission) })
@@ -430,6 +440,17 @@ class CreateBanner extends React.Component<
             <h1>
               <span className="ellipse">2</span> Arrange
             </h1>
+            <div className="results-title">
+              <h3>{addedMissions.length} Missions in Total</h3>
+              {addedMissions.length > 0 && (
+                <Button
+                  role="button"
+                  onClick={() => this.onRemoveAllMissions()}
+                >
+                  Remove All
+                </Button>
+              )}
+            </div>
             <SearchMissionList
               missions={addedMissions}
               hasMoreMissions={false}
