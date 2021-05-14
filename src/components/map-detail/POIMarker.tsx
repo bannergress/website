@@ -1,24 +1,27 @@
-import { divIcon } from 'leaflet'
 import React, { FC } from 'react'
 import { Marker, Tooltip } from 'react-leaflet'
+import { POIMarkerData, setMarkerData } from './MarkerData'
+import { getMarkerDataIcon } from './MarkerIcons'
 
-import { FieldTripWaypointPOI, PortalPOI } from '../../features/mission'
+import { AvailablePOI } from '../../features/mission'
 
 const POIMarker: FC<POIMarkerProps> = ({ poi }) => {
-  const iconNormal = divIcon({
-    className: 'custom-div-poi-icon',
-    html: `<div class='marker-poi-pin'></div>`,
-    iconAnchor: [0, 0],
-  })
+  const markerData: POIMarkerData = { markerType: 'poi', poi }
+  const icon = getMarkerDataIcon(markerData)
+
   return (
-    <Marker icon={iconNormal} position={[poi.latitude, poi.longitude]}>
+    <Marker
+      icon={icon}
+      position={[poi.latitude, poi.longitude]}
+      ref={(el) => setMarkerData(el, markerData)}
+    >
       <Tooltip offset={[20, 0]}>{poi.title}</Tooltip>
     </Marker>
   )
 }
 
 export interface POIMarkerProps {
-  poi: PortalPOI | FieldTripWaypointPOI
+  poi: AvailablePOI
 }
 
 export default POIMarker

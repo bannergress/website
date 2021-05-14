@@ -9,6 +9,7 @@
 }
 
 .marker-pin {
+  flex-direction: column;
   min-width: 40px;
   min-height: 40px;
   text-align: center;
@@ -25,6 +26,15 @@
   background-color: rgb(104, 50, 218);
   font-size: 16px;
   font-weight: bold;
+}
+
+.marker-pin-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
 }
 
 .marker-pin-medium {
@@ -64,7 +74,7 @@
   width: 30px !important;
   height: 30px !important;
   margin-left: -15px;
-  margin-top: -15px;
+  margin-top: -15px; 
   border: 5px solid rgba(0, 0, 0, 0.4);
   background-clip: padding-box;
   background-color: rgb(22, 212, 177);

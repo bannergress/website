@@ -1,4 +1,5 @@
 export type POI = PortalPOI | FieldTripWaypointPOI | UnavailablePOI
+export type AvailablePOI = PortalPOI | FieldTripWaypointPOI
 
 export interface PortalPOI {
   id: string
@@ -24,6 +25,11 @@ export interface UnavailablePOI {
 
 export interface Step {
   poi?: POI
+  objective?: Objective
+}
+
+export interface AvailableStep {
+  poi: AvailablePOI
   objective?: Objective
 }
 

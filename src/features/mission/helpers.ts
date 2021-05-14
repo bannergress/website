@@ -1,6 +1,6 @@
 import _ from 'underscore'
 import { NumDictionary } from '../banner/types'
-import { Mission } from './types'
+import { AvailableStep, Mission, Step } from './types'
 
 export const mapMissions = <T>(
   missions: NumDictionary<Mission> | undefined,
@@ -80,4 +80,52 @@ export const getMissionBounds = (mission: Mission) => {
     [minLatitude, minLongitude],
     [maxLatitude, maxLongitude],
   ]
+}
+
+export const hasLatLng = (step: Step) =>
+  step.poi &&
+  step.poi.type !== 'unavailable' &&
+  step.poi.latitude &&
+  step.poi.longitude
+
+export const getFirstAvailableStep: (
+  mission: Mission
+) => AvailableStep | null = (mission: Mission) => {
+  const firstStep = mission?.steps?.find(hasLatLng)
+
+  if (firstStep && firstStep.poi && firstStep.poi.type !== 'unavailable') {
+    return firstStep as AvailableStep
+  }
+
+  return null
+}
+
+export const getLastAvailableStep: (
+  mission: Mission
+) => AvailableStep | null = (mission: Mission) => {
+  if (mission.steps) {
+    const lastStep = _([...mission.steps])
+      .chain()
+      .filter(hasLatLng)
+      .last()
+      .value()
+
+    if (lastStep && lastStep.poi && lastStep.poi.type !== 'unavailable') {
+      return lastStep as AvailableStep
+    }
+  }
+
+  return null
+}
+
+export const getAvailableSteps: (mission: Mission) => AvailableStep[] = (
+  mission: Mission
+) => {
+  if (mission.steps) {
+    const availableSteps = mission.steps.filter(hasLatLng)
+
+    return availableSteps as AvailableStep[]
+  }
+
+  return []
 }

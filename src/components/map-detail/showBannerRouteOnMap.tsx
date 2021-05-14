@@ -4,7 +4,12 @@ import { Polyline, Tooltip } from 'react-leaflet'
 import _ from 'underscore'
 
 import { Banner } from '../../features/banner'
-import { mapMissions, Step } from '../../features/mission'
+import {
+  mapMissions,
+  Step,
+  getFirstAvailableStep,
+  getLastAvailableStep,
+} from '../../features/mission'
 import SquareMarker from './SquareMarker'
 
 export const hasLatLng = (step: Step) =>
@@ -25,18 +30,14 @@ export const showBannerRouteOnMap = (
     if (mission) {
       const { steps } = mission
       if (steps) {
-        const firstPOI = steps.find(hasLatLng)?.poi
-        const lastPOI = _([...steps])
-          .chain()
-          .filter(hasLatLng)
-          .last()
-          .value()?.poi
-        if (firstPOI && firstPOI.type !== 'unavailable') {
+        const firstPOI = getFirstAvailableStep(mission)?.poi
+        const lastPOI = getLastAvailableStep(mission)?.poi
+        if (firstPOI) {
           missionMultiPolylines[missionMultiPolylines.length - 1].push(
             new LatLng(firstPOI.latitude, firstPOI.longitude)
           )
         }
-        if (lastPOI && lastPOI.type !== 'unavailable') {
+        if (lastPOI) {
           lastMissionCoords = new LatLng(lastPOI.latitude, lastPOI.longitude)
           if (openedMissionIndexes.includes(index)) {
             lastMissionTitle = lastPOI.title

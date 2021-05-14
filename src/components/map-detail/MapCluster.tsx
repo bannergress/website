@@ -1,80 +1,98 @@
-import { divIcon } from 'leaflet'
 import React, { FC } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { divIcon, MarkerCluster } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
+import {
+  MarkerData,
+  getMarkerData,
+  isFirstMissionInSequence,
+} from './MarkerData'
+import { getMarkerDataLabel } from './MarkerLabels'
 
-const createClusterLabel = (
-  labels: string[],
-  ordered: boolean
-): [string, boolean] => {
-  let hasFirstMission = false
-  let hasFinish = false
-  let otherMissions: string[]
+const createClusterLabel = (markerData: MarkerData[]) => {
+  let firstSequentialMissionMarker: MarkerData | null = null
+  let endMarker: MarkerData | null = null
+  let otherMarkers: MarkerData[] = []
+
+  const ordered =
+    markerData.find((m) => m.markerType === 'mission' && m.isSequential) !==
+    undefined
+
   if (ordered) {
-    otherMissions = []
-    labels.reverse().forEach((label) => {
-      switch (label) {
-        case '1':
-          hasFirstMission = true
-          break
-        case '🏁':
-          hasFinish = true
-          break
-        default:
-          otherMissions.push(label)
-          break
+    markerData.reverse().forEach((marker) => {
+      if (marker.markerType === 'end') {
+        endMarker = marker
+      } else if (isFirstMissionInSequence(marker)) {
+        firstSequentialMissionMarker = marker
+      } else {
+        otherMarkers.push(marker)
       }
     })
   } else {
-    hasFirstMission = false
-    hasFinish = false
-    otherMissions = labels
+    otherMarkers = markerData
   }
-  const labelComponents = [
-    ...(hasFirstMission ? ['1'] : []),
-    ...(labels.length > 2 ? [`×${otherMissions.length}`] : otherMissions),
-    ...(hasFinish ? ['🏁'] : []),
+
+  const firstSequentialMissionLabel = firstSequentialMissionMarker
+    ? [getMarkerDataLabel(firstSequentialMissionMarker)]
+    : []
+  const endLabel = endMarker ? [getMarkerDataLabel(endMarker)] : []
+
+  let otherLabels: JSX.Element[] = []
+  if (markerData.length > 2) {
+    otherLabels = [
+      <div className="marker-pin-row">{`×${otherMarkers.length}`}</div>,
+    ]
+  } else {
+    otherLabels = otherMarkers.map((m) => getMarkerDataLabel(m))
+  }
+
+  const resultingLabels = [
+    ...firstSequentialMissionLabel,
+    ...otherLabels,
+    ...endLabel,
   ]
-  const result = labelComponents.join('<br>')
-  return [result, hasFirstMission || hasFinish]
-}
-
-const getChildOptions = (marker: any) => {
-  let { options } = marker
-  while (options.icon) {
-    options = options.icon.options
+  return {
+    labels: resultingLabels,
+    hasStartOrFinish:
+      firstSequentialMissionMarker !== null || endMarker !== null,
   }
-  return options
 }
-
-const createClusterCustomIcon = (cluster: any) => {
+const createClusterCustomIcon = (cluster: MarkerCluster) => {
   const numberMarkers = cluster.getChildCount()
   if (numberMarkers > 1) {
-    const innerLabels: Array<any> = cluster
+    const markerData = cluster
       .getAllChildMarkers()
-      .map((m: any) => {
-        const options = getChildOptions(m)
-        if (options.className.includes('custom-div-icon')) {
-          return options.html.match(/>(.+)<\/div>$/)[1]
-        }
-        return undefined
-      })
-      .filter((m: any) => m !== undefined)
-    const [label, hasStartOrFinish] = createClusterLabel(innerLabels, true)
+      .map((marker) => getMarkerData(marker))
+      .filter((m) => m !== undefined && m !== null) as MarkerData[]
+
+    const { labels, hasStartOrFinish } = createClusterLabel(markerData)
+
+    const content = (
+      <div className={`marker-pin-${hasStartOrFinish}`}>
+        {labels.map((l) => (
+          <>
+            {l}
+            <br />
+          </>
+        ))}
+      </div>
+    )
+    const contentAsString = renderToStaticMarkup(content)
+
     return divIcon({
       className: `custom-div-icon-${hasStartOrFinish}`,
-      html: `<div class='marker-pin-${hasStartOrFinish}'>${label}</div>`,
+      html: contentAsString,
       iconAnchor: [0, 0],
     })
   }
-  const options = getChildOptions(cluster.getAllChildMarkers()[0])
-  return divIcon({
-    ...options,
-  })
+
+  const singularMarker = cluster.getAllChildMarkers()[0]
+  return singularMarker.getIcon()
 }
 
-const POIMarker: FC = ({ children }) => (
+const MapCluster: FC = ({ children }) => (
   <MarkerClusterGroup
-    maxClusterRadius="10"
+    maxClusterRadius={10}
     singleMarkerMode
     iconCreateFunction={createClusterCustomIcon}
   >
@@ -82,4 +100,4 @@ const POIMarker: FC = ({ children }) => (
   </MarkerClusterGroup>
 )
 
-export default POIMarker
+export default MapCluster

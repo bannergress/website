@@ -10,10 +10,18 @@ import {
   NamedAgent,
   PortalPOI,
   UnavailablePOI,
+  AvailablePOI,
   FieldTripWaypointPOI,
   MissionType,
 } from './types'
-import { mapMissions, mapMissionsInverse, getMissionBounds } from './helpers'
+import {
+  mapMissions,
+  mapMissionsInverse,
+  getMissionBounds,
+  getFirstAvailableStep,
+  getLastAvailableStep,
+  getAvailableSteps,
+} from './helpers'
 
 export { default as MissionReducer } from './reducer'
 export { actionTypes }
@@ -26,6 +34,7 @@ export type {
   Mission,
   Step,
   POI,
+  AvailablePOI,
   MissionState,
   Objective,
   NamedAgent,
@@ -34,4 +43,11 @@ export type {
   FieldTripWaypointPOI,
   MissionType,
 }
-export { mapMissions, mapMissionsInverse, getMissionBounds }
+export {
+  mapMissions,
+  mapMissionsInverse,
+  getMissionBounds,
+  getFirstAvailableStep,
+  getLastAvailableStep,
+  getAvailableSteps,
+}
