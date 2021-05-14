@@ -43,7 +43,7 @@ export const AllQuestions: React.FC = () => {
             <li>Open <b>Missions in view</b><br />
               <i>You can find this link at the end of the right sidebar</i></li>
             <li>A new window with Bannergress utilities on the top and a mission list including status (Only Top 25!) should be opened. <br />
-              Now you can the missions in different ways: <br />
+              Now you can scan the missions in different ways: <br />
               <ul>
                 <li>The fastest way to get many missions uploaded is to <b>Process all!</b> </li>
                 <li>If you explicitly want to upload one banner: use the <b>Filter by mission name</b></li>
