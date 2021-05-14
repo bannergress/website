@@ -190,13 +190,16 @@ const getActions = (banner: Banner) => {
     .reduce((prev, next) => prev + next, 0)
     .value()
 
+  const mainActionLabel =
+    keys.length === 1 ? `Action: ${getObjectiveName(keys[0])}` : 'Actions'
+
   return (
     <>
       <div className="info-row">
         <div className="info-icon">
           <SVGHand />
         </div>
-        <div className="info-title">Actions</div>
+        <div className="info-title">{mainActionLabel}</div>
         <div className="info-content">{totalCount}</div>
       </div>
       {keys.length > 1 &&
