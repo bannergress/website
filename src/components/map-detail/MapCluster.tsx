@@ -69,12 +69,7 @@ const createClusterCustomIcon = (cluster: MarkerCluster) => {
 
     const content = (
       <div className={`marker-pin-${hasStartOrFinish}`}>
-        {labels.map((l) => (
-          <>
-            {l}
-            <br />
-          </>
-        ))}
+        {labels}
       </div>
     )
     const contentAsString = renderToStaticMarkup(content)
