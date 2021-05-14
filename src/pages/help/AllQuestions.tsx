@@ -18,7 +18,7 @@ export const AllQuestions: React.FC = () => {
       <FaqQuestion key="2" title="How do I get Ingress missions to bannergress.com? (Part 1: setup)">
         <ol>
             <li>Install <a href="https://iitc.app/download_desktop.html">IITC-CE</a> (<b>Recommendation:</b> IITC Button browser add-on)</li>
-            <li>Install the <a href="https://github.com/bannergress/iitc-plugin/raw/main/iitc-plugin-bannergress.user.js">bannergress plugin</a> <br />
+            <li>Install the <a href="/iitc-plugin-bannergress.user.js">bannergress plugin</a> <br />
               <i><b>Caution:</b> If you use a userscript manager parallel to the IITC browser add-on, you’re getting two tabs with installations; Install the plugin in the IITC Button view tab</i></li>
             <li>Click on the <b>IITC icon</b> in your browser and make sure the following <b>two plugins are active</b>:
               <ul>
@@ -59,7 +59,7 @@ export const AllQuestions: React.FC = () => {
         <p>... a <a href="https://www.giacintogarcea.com/ingress/tools/missionset/">tool to slice</a> a banner picture?</p>
         <p><br /></p>
         <p>... the <a href="https://iitc.app/">IITC-CE</a>?</p>
-        <p>... the <a href="https://github.com/bannergress/iitc-plugin/raw/main/iitc-plugin-bannergress.user.js">bannergress plugin</a>?</p>
+        <p>... the <a href="/iitc-plugin-bannergress.user.js">bannergress plugin</a>?</p>
         <p>... an <a href="https://softspot.nl/ingress/plugins/iitc-plugin-missions-addon.user.js">IITC plugin</a> which shows <b>more</b> than the Top 25 missions?</p>
       </FaqQuestion>
 
