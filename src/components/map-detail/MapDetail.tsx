@@ -22,12 +22,10 @@ export const MapDetail: React.FC<MapDetailProps> = ({
   <Fragment>
     <MapContainer bounds={bounds}>
       {getAttributionLayer()}
-      <MapCluster>
-        {banner.missions &&
-          openedMissionIndexes &&
-          openedMissionIndexes.length > 0 &&
-          showMissionPortalsAndRoutes(banner.missions, openedMissionIndexes)}
-      </MapCluster>
+      {banner.missions &&
+        openedMissionIndexes &&
+        openedMissionIndexes.length > 0 &&
+        showMissionPortalsAndRoutes(banner.missions, openedMissionIndexes)}
       <MapCluster>
         {banner.missions &&
           showMissionStartPointsOnMap(
