@@ -111,7 +111,7 @@ const getTotalDistance = (banner: Banner) => {
         <div className="info-icon">
           <SVGExplorer />
         </div>
-        <div className="info-title">Total distance</div>
+        <div className="info-title">Total Distance</div>
         <div className="info-content">
           {banner.lengthMeters && getDistance(banner.lengthMeters)}
         </div>
@@ -126,6 +126,18 @@ const getTotalDistance = (banner: Banner) => {
   )
 }
 
+const getTotalTime = (banner: Banner) => {
+  if (banner.missions) {
+    const totalTimeInMS = mapMissions(
+      banner.missions,
+      (mission) => mission?.averageDurationMilliseconds ?? 0
+    ).reduce((t, sum) => sum + t)
+    return totalTimeInMS
+  }
+
+  return 0
+}
+
 const formatTime = (time: number) => {
   let s = time
   const ms = s % 1000
@@ -133,42 +145,45 @@ const formatTime = (time: number) => {
   const secs = s % 60
   s = (s - secs) / 60
   const mins = s % 60
-  let hrs = (s - mins) / 60
-  const days = hrs / 24
-  hrs -= days * 24
+  s = (s - mins) / 60
+  const hrs = s % 24
+  s = (s - hrs) / 24
+  const days = s
 
   return `${days ? `${days} d ` : ''}${hrs ? `${hrs} h ` : ''}${mins} min`
 }
 
-const getInGameTime = (banner: Banner) => (
-  <div className="info-row">
-    <div className="info-icon">
-      <SVGTimer />
+const getInGameTime = (banner: Banner) => {
+  const totalTimeInMS =
+    banner.averageDurationMilliseconds ?? getTotalTime(banner)
+
+  return (
+    <div className="info-row">
+      <div className="info-icon">
+        <SVGTimer />
+      </div>
+      <div className="info-title">In-game Time</div>
+      <div className="info-content">{formatTime(totalTimeInMS)}</div>
     </div>
-    <div className="info-title">In-game time</div>
-    <div className="info-content">
-      {banner.averageDurationMilliseconds &&
-        formatTime(banner.averageDurationMilliseconds)}
-    </div>
-  </div>
-)
+  )
+}
 
 const getObjectiveName = (objective: Objective) => {
   switch (objective) {
     case 'captureOrUpgrade':
-      return 'Capture or upgrade'
+      return 'Capture or Upgrade'
     case 'createField':
-      return 'Create field'
+      return 'Create Field'
     case 'createLink':
-      return 'Create link'
+      return 'Create Link'
     case 'enterPassphrase':
-      return 'Enter passphrase'
+      return 'Enter Passphrase'
     case 'hack':
       return 'Hack'
     case 'installMod':
-      return 'Install mod'
+      return 'Install Mod'
     case 'takePhoto':
-      return 'Take photo'
+      return 'Take Photo'
     case 'viewWaypoint':
       return 'View Waypoint'
     default:
@@ -229,7 +244,7 @@ const getUniqueVisits = (banner: Banner) => {
       <div className="info-icon">
         <SVGCompass />
       </div>
-      <div className="info-title">Unique visits</div>
+      <div className="info-title">Unique Visits</div>
       <div className="info-content">{count}</div>
     </div>
   )
