@@ -20,8 +20,7 @@ import { hasLatLng } from '../map-detail/showBannerRouteOnMap'
 
 import './banner-info-card.less'
 import IfUserLoggedIn from '../login/if-user-logged-in'
-
-const getDistance = (distance: number) => `${(distance / 1000).toFixed(1)} km`
+import { Distance } from '../distance/Distance'
 
 const getAgents = (banner: Banner) =>
   _(mapMissions(banner.missions, (mission) => mission?.author))
@@ -113,13 +112,17 @@ const getTotalDistance = (banner: Banner) => {
         </div>
         <div className="info-title">Total Distance</div>
         <div className="info-content">
-          {banner.lengthMeters && getDistance(banner.lengthMeters)}
+          {banner.lengthMeters && (
+            <Distance distanceMeters={banner.lengthMeters} />
+          )}
         </div>
       </div>
       {length !== undefined && length > 100 && (
         <div className="info-subrow">
           <div className="info-subtitle">Last to first waypoint</div>
-          <div className="info-subcontent">{getDistance(length)}</div>
+          <div className="info-subcontent">
+            <Distance distanceMeters={length} />
+          </div>
         </div>
       )}
     </>

@@ -54,7 +54,28 @@ export const AllQuestions: React.FC = () => {
                 <i>We do get only missions if you hit a button!</i></li>     
         </ol>
       </FaqQuestion>
-      <FaqQuestion key="4" title="Where can I find … (Useful links)">
+      <FaqQuestion key="4" title="How can I add a banner to bannergress?">
+          <ol>
+            <li>You have to be <b>logged in</b></li>
+            <li>You can find <b>Submit a new banner</b> on our landing page (Home)</li>
+            <li>New banner
+            <ol>
+            <li><div><b>Add Missions:</b></div>
+              <div>
+              search for the banner name or author. <br />
+              <i>Pro Tip: You can use % for a placeholder</i> <br />
+              You can add all or add specific missions with the &#10132; </div></li>
+            <li><div>Arrange:</div>
+              <div>The website tries to arrange the missions automatically. <br />
+              You can always edit the mission numbers manually. <br />
+              <i>If the banner is any order, check the advanced options in information</i> </div></li>
+            
+            </ol>
+            </li>
+            <li>never stop developing</li>
+        </ol>
+      </FaqQuestion>
+      <FaqQuestion key="5" title="Where can I find … (Useful links)">
         <p>... the <a href="https://missions.ingress.com/">mission creator</a>?</p>
         <p>... a <a href="https://www.giacintogarcea.com/ingress/tools/missionset/">tool to slice</a> a banner picture?</p>
         <p><br /></p>

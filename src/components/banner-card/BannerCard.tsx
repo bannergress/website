@@ -7,10 +7,9 @@ import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
 
 import './banner-card.less'
+import { Distance } from '../distance/Distance'
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL
-
-const getDistance = (distance: number) => `${(distance / 1000).toFixed(1)} km`
 
 const BannerCard: FC<BannerCardProps> = ({
   banner,
@@ -34,9 +33,9 @@ const BannerCard: FC<BannerCardProps> = ({
       <div className="banner-info-item">
         <SVGExplorer fill="#1DA57A" className="icon" />
         {banner?.numberOfMissions} Missions,{' '}
-        {banner && banner.lengthMeters
-          ? getDistance(banner?.lengthMeters)
-          : null}
+        {banner && banner.lengthMeters ? (
+          <Distance distanceMeters={banner?.lengthMeters} />
+        ) : null}
       </div>
       <div className="banner-info-item">
         <SVGPointer fill="#1DA57A" className="icon" />
