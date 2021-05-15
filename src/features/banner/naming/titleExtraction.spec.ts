@@ -651,4 +651,13 @@ describe('features > banner > naming > titleExtraction', () => {
     const result = extract(input)
     expect(result.title).toEqual('Treuchtlingen')
   })
+  it(`handles MD 2019: Nuremberg`, () => {
+    const input = [
+      'MD 2019: Nuremberg, Haller Castle',
+      'MD 2019: Nuremberg, Imperial Castle',
+      'MD 2019: Nuremberg, Inn Brewery Altstadthof'
+    ]
+    const result = extract(input)
+    expect(result.title).toEqual('MD 2019: Nuremberg')
+  })
 })

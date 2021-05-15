@@ -269,6 +269,25 @@ function extractCandidateTitles(
         if (secondCandidate) {
           candidateTitles.push(secondCandidate)
         }
+      } else {
+        // Consider all prefixes of the title ending at word boundaries
+        const regexp = /\b./g
+        let match
+        let lastRaw;
+        while ((match = regexp.exec(prevER.title)) !== null) {
+          const candidate = toTitleCandidate(
+            prevER.title,
+            false,
+            true,
+            0,
+            match.index
+          )
+          if (candidate && candidate.raw !== lastRaw) {
+            lastRaw = candidate.raw
+            candidateTitles.push(candidate)
+          }
+        }
+        candidateTitles.reverse()
       }
       return {
         ...prevER,
@@ -296,7 +315,9 @@ function extractBestTitle(
   let bestCount = 0
   counts.forEach((count, title) => {
     if (count === bestCount) {
-      bestTitles.push(title)
+      if (!bestTitles.length || bestTitles[0].indexOf(title) === -1) {
+        bestTitles.push(title)
+      }
     } else if (count > bestCount) {
       bestTitles = [title]
       bestCount = count
