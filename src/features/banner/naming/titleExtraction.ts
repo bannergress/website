@@ -148,15 +148,24 @@ function scoreAsTotal(
 
 function toTitleCandidate(
   title: String,
+  trimStart: boolean,
+  trimEnd: boolean,
   start: number,
   length?: number
 ): PositionMarker | undefined {
-  const raw = title
-    .substr(start, length)
-    .replace(
-      /^[\p{Separator}\p{Connector_Punctuation}\p{Dash_Punctuation}\p{Close_Punctuation}\p{Final_Punctuation}\p{Other_Punctuation}]+|[\p{Separator}\p{Connector_Punctuation}\p{Dash_Punctuation}\p{Open_Punctuation}\p{Initial_Punctuation}\p{Other_Punctuation}]+$/gu,
+  let raw = title.substr(start, length)
+  if (trimStart) {
+    raw = raw.replace(
+      /^[\p{Separator}\p{Connector_Punctuation}\p{Dash_Punctuation}\p{Close_Punctuation}\p{Final_Punctuation}\p{Other_Punctuation}]+/gu,
       ''
     )
+  }
+  if (trimEnd) {
+    raw = raw.replace(
+      /[\p{Separator}\p{Connector_Punctuation}\p{Dash_Punctuation}\p{Open_Punctuation}\p{Initial_Punctuation}\p{Other_Punctuation}]+$/gu,
+      ''
+    )
+  }
   return raw
     ? {
         start: title.indexOf(raw),
@@ -243,13 +252,20 @@ function extractCandidateTitles(
         )
         const firstCandidate = toTitleCandidate(
           prevER.title,
+          false,
+          true,
           0,
           firstMarkerStart
         )
         if (firstCandidate) {
           candidateTitles.push(firstCandidate)
         }
-        const secondCandidate = toTitleCandidate(prevER.title, lastMarkerEnd)
+        const secondCandidate = toTitleCandidate(
+          prevER.title,
+          true,
+          false,
+          lastMarkerEnd
+        )
         if (secondCandidate) {
           candidateTitles.push(secondCandidate)
         }
@@ -276,17 +292,19 @@ function extractBestTitle(
     const count = counts.get(candidate.raw) || 0
     counts.set(candidate.raw, count + 1)
   })
-  let bestTitle: string | undefined
+  let bestTitles: string[] = []
   let bestCount = 0
   counts.forEach((count, title) => {
-    if (!bestTitle || count * title.length > bestCount * bestTitle.length) {
-      bestTitle = title
+    if (count === bestCount) {
+      bestTitles.push(title)
+    } else if (count > bestCount) {
+      bestTitles = [title]
       bestCount = count
     }
   })
   return {
     ...prevExtractionResult,
-    title: bestTitle,
+    title: bestTitles.join(' / '),
   }
 }
 

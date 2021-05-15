@@ -640,4 +640,10 @@ describe('features > banner > naming > titleExtraction', () => {
     const result = extract(input)
     expect(result.title).toEqual('West 300 Tour')
   })
+  it(`handles #MP COVID-19 Theme Prague, Czech Republic`, () => {
+    const input = new Array(6).fill(0).map((unused, index) => `#MP COVID-19 Theme ${index + 1}/6 Prague, Czech Republic`)
+    const result = extract(input)
+    expect(result.total).toEqual(6)
+    expect(result.title).toEqual('#MP COVID-19 Theme / Prague, Czech Republic')
+  })
 })
