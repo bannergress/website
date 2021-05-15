@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
@@ -111,7 +111,10 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
         </div>
       )
     }
-    return <LoadingOverlay active spinner text="Loading..." fadeSpeed={500} />
+    if (status !== 'error') {
+      return <LoadingOverlay active spinner text="Loading..." fadeSpeed={500} />
+    }
+    return <Fragment>No banners found with that id</Fragment>
   }
 }
 

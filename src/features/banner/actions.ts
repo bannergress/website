@@ -4,7 +4,6 @@ import {
   BannerActionTypes,
   BROWSE_BANNERS,
   LOAD_BANNER,
-  LOAD_BANNER_ERROR,
   LOAD_RECENT_BANNERS,
   LOAD_RECENT_BANNERS_ERROR,
   RESET_BROWSED_BANNERS,
@@ -28,9 +27,7 @@ export const loadBannerAction = (id: string) => async (
       payload: response.data,
     })
   } else {
-    dispatch({
-      type: LOAD_BANNER_ERROR,
-    })
+    throw new Error('Error while loading banner')
   }
 }
 
