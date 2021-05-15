@@ -1,6 +1,7 @@
 import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { Marker, divIcon } from 'leaflet'
+
 import {
   MarkerData,
   MissionMarkerData,
@@ -87,7 +88,7 @@ function getEmptyIcon(additionalClassName: string) {
 }
 
 export const getMarkerDataIcon = (
-  markerData: MarkerData | null,
+  markerData: MarkerData | undefined,
   additionalClassName: string = ''
 ) => {
   if (markerData) {
@@ -96,10 +97,8 @@ export const getMarkerDataIcon = (
         return getEndMarkerIcon(markerData, additionalClassName)
       case 'poi':
         return getPoiMarkerIcon(markerData, additionalClassName)
-        break
       case 'mission':
         return getMissionMarkerIcon(markerData, additionalClassName)
-        break
       default:
         break
     }

@@ -1,4 +1,4 @@
-import { LatLngBounds } from 'leaflet'
+import { LatLngBounds, Map as LeafletMap } from 'leaflet'
 import React, { Fragment } from 'react'
 import { MapContainer } from 'react-leaflet'
 
@@ -9,9 +9,17 @@ import {
   showMissionStartPointsOnMap,
 } from './showMissionsOnMap'
 import { getAttributionLayer } from './getAttributionLayer'
+import MapCluster from './MapCluster'
 
 import './map.less'
-import MapCluster from './MapCluster'
+
+const onMapCreated = (map: LeafletMap) => {
+  map.createPane('poi')
+  const missionsPane = map.getPane('poi')
+  if (missionsPane) {
+    missionsPane.style.zIndex = '550'
+  }
+}
 
 export const MapDetail: React.FC<MapDetailProps> = ({
   banner,
@@ -20,12 +28,15 @@ export const MapDetail: React.FC<MapDetailProps> = ({
   onOpenMission,
 }) => (
   <Fragment>
-    <MapContainer bounds={bounds}>
+    <MapContainer bounds={bounds} whenCreated={onMapCreated}>
       {getAttributionLayer()}
       {banner.missions &&
         openedMissionIndexes &&
-        openedMissionIndexes.length > 0 &&
-        showMissionPortalsAndRoutes(banner.missions, openedMissionIndexes)}
+        openedMissionIndexes.length > 0 && (
+          <MapCluster pane="poi">
+            {showMissionPortalsAndRoutes(banner.missions, openedMissionIndexes)}
+          </MapCluster>
+        )}
       <MapCluster>
         {banner.missions &&
           showMissionStartPointsOnMap(
