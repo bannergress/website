@@ -206,7 +206,7 @@ function extractBestTotal(
   let bestTotal
   let bestCount = 0
   counts.forEach((count, total) => {
-    if (count > bestCount) {
+    if (count > bestCount || (count === bestCount && total === prevExtractionResult.results.length)) {
       bestTotal = total
       bestCount = count
     }

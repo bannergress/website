@@ -635,4 +635,9 @@ describe('features > banner > naming > titleExtraction', () => {
     const result = extract(input)
     expect(result.results[0].missionMarker?.parsed).toEqual(1151)
   })
+  it(`handles West 300 Tour`, () => {
+    const input = new Array(60).fill(0).map((unused, index) => `West 300 Tour ${String(index + 1).padStart(2, '0')}/60`)
+    const result = extract(input)
+    expect(result.title).toEqual('West 300 Tour')
+  })
 })
