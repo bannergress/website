@@ -34,6 +34,8 @@ import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
 
 import './create-banner.less'
 
+const MAX_MISSIONS = 3000
+
 class CreateBanner extends React.Component<
   CreateBannerProps,
   CreateBannerState
@@ -345,6 +347,7 @@ class CreateBanner extends React.Component<
 
     return (
       addedMissions.length >= 2 &&
+      addedMissions.length <= MAX_MISSIONS &&
       bannerTitle &&
       ((_(addedMissions).all((m) => m.index !== undefined && m.index > 0) &&
         !hasDuplicates) ||
