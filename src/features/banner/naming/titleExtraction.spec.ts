@@ -646,4 +646,9 @@ describe('features > banner > naming > titleExtraction', () => {
     expect(result.total).toEqual(6)
     expect(result.title).toEqual('#MP COVID-19 Theme / Prague, Czech Republic')
   })
+  it(`handles Treuchtlingen Nr. 1`, () => {
+    const input = new Array(6).fill(0).map((unused, index) => `Treuchtlingen Nr. ${index + 1}`)
+    const result = extract(input)
+    expect(result.title).toEqual('Treuchtlingen')
+  })
 })
