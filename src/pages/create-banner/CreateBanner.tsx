@@ -417,6 +417,7 @@ class CreateBanner extends React.Component<
             <Input
               placeholder="Enter at least 3 characters..."
               value={searchText || ''}
+              maxLength={200}
               onChange={(e) => this.onInputChange(e.target.value, 'searchText')}
               onKeyPress={(k) =>
                 k.key === 'Enter' ? this.onSearchForced() : null

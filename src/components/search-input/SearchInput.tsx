@@ -5,12 +5,12 @@ import './search-input.less'
 const SearchInput: FC<SearchInputProps> = ({ autoFocus, onSearch }) => {
   const textInput = useRef<HTMLInputElement>(null)
 
-  function handleClick(e: FormEvent) {
+  const handleClick = (e: FormEvent) => {
     e.preventDefault()
 
-    const term = textInput.current?.value || ''
+    const term = (textInput.current?.value || '').trim()
 
-    if (term.trim() !== '') {
+    if (term.length >= 3) {
       // When we set focus to the input automatically (i.e. on mobile),
       // also remove it automatically after executing search so that the
       // virtual keyboard closes
@@ -30,6 +30,7 @@ const SearchInput: FC<SearchInputProps> = ({ autoFocus, onSearch }) => {
           enterKeyHint="search"
           type="search"
           className="search-input"
+          maxLength={200}
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={autoFocus || false}
           ref={textInput}
