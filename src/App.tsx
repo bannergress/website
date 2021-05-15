@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet'
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import keycloak from './keycloak'
 
-import { authenticateApi, updateApiState } from './api'
+import { updateApiState } from './api'
 import { About } from './pages/About'
 import { Home } from './pages/Home'
 import { MapOverview } from './pages/map-overview'
@@ -28,7 +28,6 @@ const App: React.FC = () => (
       onLoad: 'check-sso',
       silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
     }}
-    onTokens={(tokens) => authenticateApi(tokens)}
     onEvent={(e) => e === 'onReady' && updateApiState()}
   >
     <Helmet defaultTitle="Bannergress" titleTemplate="Bannergress - %s" />

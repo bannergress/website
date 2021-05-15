@@ -1,10 +1,6 @@
-import { AuthClientTokens } from '@react-keycloak/core'
+import keycloak from './keycloak'
 
 class Api {
-  headers: { [key: string]: string } = {
-    Accept: 'application/json',
-  }
-
   resolve: (val: unknown) => void = () => {}
 
   readyPromise = new Promise((resolve) => {
@@ -42,10 +38,11 @@ class Api {
           fullUrl.searchParams.set(key, String(value))
         }
       })
+      const headers = await this.getHeaders()
       const response = await fetch(fullUrl.href, {
         body: data && JSON.stringify(data),
         headers: {
-          ...this.headers,
+          ...headers,
           ...(data && { 'Content-Type': 'application/json' }),
         },
         method,
@@ -62,15 +59,18 @@ class Api {
       }
     }
   }
+
+  getHeaders = async () => {
+    const headers: HeadersInit = { Accept: 'application/json' }
+    if (keycloak.token) {
+      await keycloak.updateToken(5)
+      headers.Authorization = `Bearer ${keycloak.token}`
+    }
+    return headers
+  }
 }
 
 export const api: Api = new Api()
-
-export const authenticateApi = (tokens: AuthClientTokens) => {
-  if (tokens.token) {
-    api.headers.Authorization = `Bearer ${tokens.token}`
-  }
-}
 
 export const updateApiState = () => {
   api.resolve(true)
