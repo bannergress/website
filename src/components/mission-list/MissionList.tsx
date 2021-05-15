@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useRef } from 'react'
 import { Row, Layout, Button } from 'antd'
 
 import { NumDictionary } from '../../features/banner'
@@ -11,9 +11,12 @@ const MissionList: React.FC<MissionListProps> = ({
   missions,
   expandedMissionIndexes = [],
   expanded,
+  scrollMissionIndex,
   onExpand,
   onExpandAll,
 }) => {
+  const itemsRef = useRef<Array<HTMLDivElement | null>>([])
+
   const renderMission = (mission: Mission | undefined, index: number) => {
     if (mission) {
       return (
@@ -22,11 +25,26 @@ const MissionList: React.FC<MissionListProps> = ({
           mission={mission}
           expanded={expandedMissionIndexes.includes(index)}
           onExpand={() => onExpand && onExpand(index)}
+          onRef={(el) => {
+            itemsRef.current[index] = el
+          }}
         />
       )
     }
     return undefined
   }
+
+  useEffect(() => {
+    if (
+      scrollMissionIndex !== undefined &&
+      itemsRef.current[scrollMissionIndex]
+    ) {
+      itemsRef.current[scrollMissionIndex]!.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      })
+    }
+  }, [scrollMissionIndex])
 
   if (missions) {
     return (
@@ -64,6 +82,7 @@ export interface MissionListProps {
   missions: NumDictionary<Mission>
   expandedMissionIndexes?: Array<number>
   expanded: boolean
+  scrollMissionIndex?: number
   onExpand?: (index: number) => void
   onExpandAll?: () => void
 }

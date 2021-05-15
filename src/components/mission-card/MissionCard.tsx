@@ -11,9 +11,10 @@ const MissionCard: React.FC<MissionCardProps> = ({
   mission,
   expanded,
   onExpand,
+  onRef,
 }) => {
   return (
-    <div className="mission-card" key={mission?.id}>
+    <div ref={onRef} className="mission-card" key={mission?.id}>
       <button className="mission-header" onClick={onExpand} type="button">
         {mission && <MissionImage mission={mission} />}
         <div className="mission-title">{mission?.title}</div>
@@ -36,6 +37,7 @@ export interface MissionCardProps {
   mission: Mission | undefined
   expanded: boolean
   onExpand?: () => void
+  onRef?: (e: HTMLDivElement) => void
 }
 
 export default MissionCard

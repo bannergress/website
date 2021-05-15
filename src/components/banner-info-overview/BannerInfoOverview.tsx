@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Tabs } from 'antd'
 
 import { Banner } from '../../features/banner'
@@ -13,16 +13,29 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   banner,
   expanded,
   expandedMissionIndexes,
+  scrollMissionIndex,
   onExpand,
   onExpandAll,
 }) => {
+  const [activeKey, setActiveKey] = useState('1')
+
+  useEffect(() => {
+    if (scrollMissionIndex !== undefined) {
+      setActiveKey('2')
+    }
+  }, [scrollMissionIndex])
+
   const { missions } = banner
   return (
     <div className="banner-info-overview">
       <BannerEditTools banner={banner} />
       <div className="banner-info-container">
         <BannerCard banner={banner} selected={false} showFullImage />
-        <Tabs defaultActiveKey="1">
+        <Tabs
+          defaultActiveKey="1"
+          activeKey={activeKey}
+          onTabClick={(key) => setActiveKey(key)}
+        >
           <Tabs.TabPane tab="Banner Info" key="1">
             <BannerInfoCard banner={banner} />
           </Tabs.TabPane>
@@ -32,6 +45,9 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
                 missions={missions}
                 expandedMissionIndexes={expandedMissionIndexes}
                 expanded={expanded}
+                scrollMissionIndex={
+                  activeKey === '2' ? scrollMissionIndex : undefined
+                }
                 onExpand={onExpand}
                 onExpandAll={onExpandAll}
               />
@@ -47,6 +63,7 @@ export interface BannerInfoOverviewProps {
   banner: Banner
   expanded: boolean
   expandedMissionIndexes?: Array<number>
+  scrollMissionIndex?: number
   onExpand?: (index: number) => void
   onExpandAll?: () => void
 }
