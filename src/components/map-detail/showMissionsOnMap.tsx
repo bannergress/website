@@ -96,7 +96,9 @@ export const showMissionPortalsAndRoutes = (
             (p) => new LatLng(p.poi.latitude, p.poi.longitude)
           )}
         >
-          <Tooltip sticky>{mission.title}</Tooltip>
+          <Tooltip sticky pane="tooltipPane">
+            {mission.title}
+          </Tooltip>
         </Polyline>
       )
     }

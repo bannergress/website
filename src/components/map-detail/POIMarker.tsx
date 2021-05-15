@@ -16,7 +16,9 @@ const POIMarker: FC<POIMarkerProps> = ({ poi }) => {
       ref={(el) => setMarkerData(el, markerData)}
       pane="poi"
     >
-      <Tooltip offset={[20, 0]}>{poi.title}</Tooltip>
+      <Tooltip offset={[20, 0]} pane="tooltipPane">
+        {poi.title}
+      </Tooltip>
     </Marker>
   )
 }
