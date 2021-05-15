@@ -5,6 +5,12 @@ class Api {
     Accept: 'application/json',
   }
 
+  resolve: (val: unknown) => void = () => {}
+
+  readyPromise = new Promise((resolve) => {
+    this.resolve = resolve
+  })
+
   get<T>(url: string, params: {} = {}): Promise<ApiResponse<T>> {
     return this.request('GET', url, params)
   }
@@ -28,6 +34,8 @@ class Api {
     data?: any
   ): Promise<ApiResponse<T>> {
     try {
+      await this.readyPromise
+
       const fullUrl = new URL(url, process.env.REACT_APP_API_BASE_URL)
       Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined) {
@@ -62,6 +70,10 @@ export const authenticateApi = (tokens: AuthClientTokens) => {
   if (tokens.token) {
     api.headers.Authorization = `Bearer ${tokens.token}`
   }
+}
+
+export const updateApiState = () => {
+  api.resolve(true)
 }
 
 export type ApiResponse<T> = ApiErrorResponse | ApiOkResponse<T>
