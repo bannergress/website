@@ -14,6 +14,7 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   expanded,
   expandedMissionIndexes,
   scrollMissionIndex,
+  hideControls,
   onExpand,
   onExpandAll,
 }) => {
@@ -28,7 +29,7 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   const { missions } = banner
   return (
     <div className="banner-info-overview">
-      <BannerEditTools banner={banner} />
+      {!hideControls && <BannerEditTools banner={banner} />}
       <div className="banner-info-container">
         <BannerCard banner={banner} selected={false} showFullImage />
         <Tabs
@@ -64,6 +65,7 @@ export interface BannerInfoOverviewProps {
   expanded: boolean
   expandedMissionIndexes?: Array<number>
   scrollMissionIndex?: number
+  hideControls?: boolean
   onExpand?: (index: number) => void
   onExpandAll?: () => void
 }
