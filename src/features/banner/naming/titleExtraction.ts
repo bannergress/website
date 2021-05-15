@@ -89,7 +89,7 @@ function scoreAsMission(
   let score = extractors[candidate.type].baseScoreFunction(candidate.raw)
   if (candidate.parsed > extractionResult.results.length) {
     // Reduce score a little bit because we don't have that many missions
-    score *= 1 - candidate.parsed * 0.001
+    score *= 1 - candidate.parsed * 0.0001
   }
   // Score with respect to the same number type in other missions
   const overallScore =
@@ -324,7 +324,6 @@ function cleanResult(
 }
 
 export function extract(titles: string[]): ExtractionResult {
-  // debugger
   // Extract all candidate numbers
   const resultStep1 = extractCandidateNumbers(titles)
   // Find best matches for mission number and remove them

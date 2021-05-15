@@ -627,4 +627,12 @@ describe('features > banner > naming > titleExtraction', () => {
     const result = extract(input)
     expect(result.title).toEqual('La Petite France (Strasbourg)')
   })
+  it(`handles 清院本清明上河圖`, () => {
+    const input = [
+      '清院本清明上河圖1151',
+      '清院本清明上河圖1152'
+    ]
+    const result = extract(input)
+    expect(result.results[0].missionMarker?.parsed).toEqual(1151)
+  })
 })
