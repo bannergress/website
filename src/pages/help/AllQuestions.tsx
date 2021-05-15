@@ -75,7 +75,7 @@ export const AllQuestions: React.FC = () => {
                 <div>
                   The website tries to arrange the missions automatically. <br />
                   You can always edit the mission numbers manually. <br />
-                  <i>If the banner is any order, check the advanced options in information</i>
+                  <i>If the missions can be finished in any order, check the advanced options in information</i>
                 </div>
               </li>
               <li className="faq-tab-10em">

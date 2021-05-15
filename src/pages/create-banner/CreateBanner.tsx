@@ -517,10 +517,10 @@ class CreateBanner extends React.Component<
                       defaultValue={bannerType}
                       onChange={(val) => this.onInputChange(val, 'bannerType')}
                     >
-                      <Select.Option value="sequential">
-                        Sequential
+                      <Select.Option value="sequential">Banner</Select.Option>
+                      <Select.Option value="anyOrder">
+                        Mission collection
                       </Select.Option>
-                      <Select.Option value="anyOrder">Any order</Select.Option>
                     </Select>
                   </Col>
                   <Col span={12}>
