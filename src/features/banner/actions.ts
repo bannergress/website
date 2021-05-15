@@ -26,8 +26,8 @@ export const loadBannerAction = (id: string) => async (
       type: LOAD_BANNER,
       payload: response.data,
     })
-  } else {
-    throw new Error('Error while loading banner')
+  } else if (response.status === 404) {
+    throw new Error('Banner not found')
   }
 }
 

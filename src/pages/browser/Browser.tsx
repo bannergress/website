@@ -30,6 +30,7 @@ import { PlaceAccordion } from '../../components/place-accordion/PlaceAccordion'
 import { ReactComponent as SVGMap } from '../../img/icons/map.svg'
 
 import './browser.less'
+import LoadingOverlay from '../../components/loading-overlay'
 
 class Browser extends React.Component<BrowserProps, BrowserState> {
   constructor(props: BrowserProps) {
@@ -104,11 +105,12 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
 
     const newPlaceId = place?.id
 
-    this.fetchChildren(newPlaceId)
+    await this.fetchChildren(newPlaceId)
 
     this.setState({
       selectedPlaceId: newPlaceId,
       page: 0,
+      status: 'success',
     })
     history.push(`/browse/${newPlaceId || ''}`)
   }
@@ -166,7 +168,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     } = this.state
 
     if (status === 'initial') {
-      return <Fragment>Loading content...</Fragment>
+      return <LoadingOverlay spinner text="Loading..." fadeSpeed={500} active />
     }
 
     let administrativeAreas: Array<Place> | null = null
@@ -220,28 +222,34 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
               onExpandPlace={this.onPlaceExpanded}
             />
             <div className="places-banners">
-              <h1 className="banner-count">
-                {selectedPlace?.numberOfBanners} Banners
-                {selectedPlace && (
-                  <span className="banner-count-place">
-                    {' '}
-                    in {selectedPlace.longName}
-                    <Link to={createMapUri(selectedPlace)}>
-                      <SVGMap className="browser-icon" title="Map" />
-                    </Link>
-                  </span>
-                )}
-              </h1>
-              <BannerOrderChooser
-                selectedOrder={selectedOrder}
-                selectedDirection={selectedDirection}
-                onOrderClicked={this.onOrderSelected}
-              />
-              <BannerList
-                banners={banners}
-                hasMoreBanners={hasMore}
-                loadMoreBanners={this.onLoadMoreBanners}
-              />
+              {status === 'error' ? (
+                <>Place not found</>
+              ) : (
+                <>
+                  <h1 className="banner-count">
+                    {selectedPlace?.numberOfBanners} Banners
+                    {selectedPlace && (
+                      <span className="banner-count-place">
+                        {' '}
+                        in {selectedPlace.longName}
+                        <Link to={createMapUri(selectedPlace)}>
+                          <SVGMap className="browser-icon" title="Map" />
+                        </Link>
+                      </span>
+                    )}
+                  </h1>
+                  <BannerOrderChooser
+                    selectedOrder={selectedOrder}
+                    selectedDirection={selectedDirection}
+                    onOrderClicked={this.onOrderSelected}
+                  />
+                  <BannerList
+                    banners={banners}
+                    hasMoreBanners={hasMore}
+                    loadMoreBanners={this.onLoadMoreBanners}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>

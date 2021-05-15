@@ -48,14 +48,22 @@ class Api {
         method,
         mode: 'cors',
       })
-      const json = await response.json()
+      if (response.ok) {
+        const json = await response.json()
+        return {
+          ok: true,
+          data: json,
+          status: response.status,
+        }
+      }
       return {
-        ok: response.ok,
-        data: json,
+        ok: false,
+        status: response.status,
       }
     } catch (e) {
       return {
         ok: false,
+        status: 500,
       }
     }
   }
@@ -81,8 +89,10 @@ export type ApiResponse<T> = ApiErrorResponse | ApiOkResponse<T>
 export interface ApiOkResponse<T> {
   ok: true
   data: T
+  status: number
 }
 
 export interface ApiErrorResponse {
   ok: false
+  status: number
 }
