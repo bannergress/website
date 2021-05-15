@@ -25,10 +25,11 @@ import {
 import PlaceList from '../../components/place-list'
 import BannerList from '../../components/banner-list'
 import BannerOrderChooser from '../../components/banner-order-chooser'
+import FooterMain from '../../components/footer-main'
+import { PlaceAccordion } from '../../components/place-accordion/PlaceAccordion'
 import { ReactComponent as SVGMap } from '../../img/icons/map.svg'
 
 import './browser.less'
-import { PlaceAccordion } from '../../components/place-accordion/PlaceAccordion'
 
 class Browser extends React.Component<BrowserProps, BrowserState> {
   constructor(props: BrowserProps) {
@@ -197,51 +198,54 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
       : 'Countries'
 
     return (
-      <div className="browser">
-        <Helmet>
-          <title>{pageTitle}</title>
-        </Helmet>
+      <div className="page-container">
+        <div className="browser">
+          <Helmet>
+            <title>{pageTitle}</title>
+          </Helmet>
 
-        <PlaceList
-          title={selectedPlace ? undefined : 'Countries'}
-          order="numberOfBanners"
-          places={administrativeAreas || countries}
-          selectedPlaces={selectedPlaces}
-          onSelectPlace={this.onPlaceSelected}
-        />
-
-        <div className="places-content">
-          <PlaceAccordion
-            selectedPlaces={selectedPlaces}
+          <PlaceList
+            title={selectedPlace ? undefined : 'Countries'}
             order="numberOfBanners"
+            places={administrativeAreas || countries}
+            selectedPlaces={selectedPlaces}
             onSelectPlace={this.onPlaceSelected}
-            onExpandPlace={this.onPlaceExpanded}
           />
-          <div className="places-banners">
-            <h1 className="banner-count">
-              {selectedPlace?.numberOfBanners} Banners
-              {selectedPlace && (
-                <span className="banner-count-place">
-                  {' '}
-                  in {selectedPlace.longName}
-                  <Link to={createMapUri(selectedPlace)}>
-                    <SVGMap className="browser-icon" title="Map" />
-                  </Link>
-                </span>
-              )}
-            </h1>
-            <BannerOrderChooser
-              selectedOrder={selectedOrder}
-              selectedDirection={selectedDirection}
-              onOrderClicked={this.onOrderSelected}
+
+          <div className="places-content">
+            <PlaceAccordion
+              selectedPlaces={selectedPlaces}
+              order="numberOfBanners"
+              onSelectPlace={this.onPlaceSelected}
+              onExpandPlace={this.onPlaceExpanded}
             />
-            <BannerList
-              banners={banners}
-              hasMoreBanners={hasMore}
-              loadMoreBanners={this.onLoadMoreBanners}
-            />
+            <div className="places-banners">
+              <h1 className="banner-count">
+                {selectedPlace?.numberOfBanners} Banners
+                {selectedPlace && (
+                  <span className="banner-count-place">
+                    {' '}
+                    in {selectedPlace.longName}
+                    <Link to={createMapUri(selectedPlace)}>
+                      <SVGMap className="browser-icon" title="Map" />
+                    </Link>
+                  </span>
+                )}
+              </h1>
+              <BannerOrderChooser
+                selectedOrder={selectedOrder}
+                selectedDirection={selectedDirection}
+                onOrderClicked={this.onOrderSelected}
+              />
+              <BannerList
+                banners={banners}
+                hasMoreBanners={hasMore}
+                loadMoreBanners={this.onLoadMoreBanners}
+              />
+            </div>
           </div>
         </div>
+        <FooterMain />
       </div>
     )
   }

@@ -16,6 +16,7 @@ code {
   padding-left: 1rem;
   padding-right: 1rem;
 }
+
 .p-1 {
   padding: 1rem;
 }
@@ -34,10 +35,19 @@ code {
   background-clip: content-box, border-box !important;
   box-shadow: 2px 1000px 1px #000 inset !important;
   transition: linear-gradient ease 0.6s;
- &.bg-button-default {
-   background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(180deg, #109393, #15D4B2) !important;
-   &:hover {
-     background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(0deg, #109393, #15D4B2) !important;
-   }
- }
+
+  &.bg-button-default {
+    background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(180deg, #109393, #15D4B2) !important;
+
+    &:hover {
+      background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(0deg, #109393, #15D4B2) !important;
+    }
+  }
+}
+
+.page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
