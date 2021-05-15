@@ -69,7 +69,7 @@ export const showBannerRouteOnMap = (
           pathOptions={lineStyle}
           positions={missionMultiPolylines}
         />
-        <SquareMarker coords={lastCoordinates!} color={color}>
+        <SquareMarker coords={lastCoordinates!} color={color} pane="finalPane">
           {lastMissionTitle && (
             <Tooltip offset={[20, 0]}>{lastMissionTitle}</Tooltip>
           )}

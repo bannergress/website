@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { divIcon, LatLng, LatLngBounds, Map as LeafletMap } from 'leaflet'
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { MapContainer, Pane, TileLayer } from 'react-leaflet'
 import 'leaflet-loading'
 import _ from 'underscore'
 import MarkerClusterGroup from 'react-leaflet-cluster'
@@ -173,6 +173,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
           minZoom={3}
         >
           {getAttributionLayer()}
+          <Pane name="finalPane" style={{ zIndex: 580 }} />
           <MarkerClusterGroup
             maxClusterRadius={10}
             singleMarkerMode
