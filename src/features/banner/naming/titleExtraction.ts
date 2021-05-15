@@ -215,7 +215,10 @@ function extractBestTotal(
   let bestTotal
   let bestCount = 0
   counts.forEach((count, total) => {
-    if (count > bestCount || (count === bestCount && total === prevExtractionResult.results.length)) {
+    if (
+      count > bestCount ||
+      (count === bestCount && total === prevExtractionResult.results.length)
+    ) {
       bestTotal = total
       bestCount = count
     }
@@ -272,9 +275,9 @@ function extractCandidateTitles(
       } else {
         // Consider all prefixes of the title ending at word boundaries
         const regexp = /\b./g
-        let match
-        let lastRaw;
-        while ((match = regexp.exec(prevER.title)) !== null) {
+        let match = regexp.exec(prevER.title)
+        let lastRaw
+        while (match !== null) {
           const candidate = toTitleCandidate(
             prevER.title,
             false,
@@ -286,6 +289,7 @@ function extractCandidateTitles(
             lastRaw = candidate.raw
             candidateTitles.push(candidate)
           }
+          match = regexp.exec(prevER.title)
         }
         candidateTitles.reverse()
       }

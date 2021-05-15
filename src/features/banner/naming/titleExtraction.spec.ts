@@ -628,26 +628,35 @@ describe('features > banner > naming > titleExtraction', () => {
     expect(result.title).toEqual('La Petite France (Strasbourg)')
   })
   it(`handles 清院本清明上河圖`, () => {
-    const input = [
-      '清院本清明上河圖1151',
-      '清院本清明上河圖1152'
-    ]
+    const input = ['清院本清明上河圖1151', '清院本清明上河圖1152']
     const result = extract(input)
     expect(result.results[0].missionMarker?.parsed).toEqual(1151)
   })
   it(`handles West 300 Tour`, () => {
-    const input = new Array(60).fill(0).map((unused, index) => `West 300 Tour ${String(index + 1).padStart(2, '0')}/60`)
+    const input = new Array(60)
+      .fill(0)
+      .map(
+        (unused, index) =>
+          `West 300 Tour ${String(index + 1).padStart(2, '0')}/60`
+      )
     const result = extract(input)
     expect(result.title).toEqual('West 300 Tour')
   })
   it(`handles #MP COVID-19 Theme Prague, Czech Republic`, () => {
-    const input = new Array(6).fill(0).map((unused, index) => `#MP COVID-19 Theme ${index + 1}/6 Prague, Czech Republic`)
+    const input = new Array(6)
+      .fill(0)
+      .map(
+        (unused, index) =>
+          `#MP COVID-19 Theme ${index + 1}/6 Prague, Czech Republic`
+      )
     const result = extract(input)
     expect(result.total).toEqual(6)
     expect(result.title).toEqual('#MP COVID-19 Theme / Prague, Czech Republic')
   })
   it(`handles Treuchtlingen Nr. 1`, () => {
-    const input = new Array(6).fill(0).map((unused, index) => `Treuchtlingen Nr. ${index + 1}`)
+    const input = new Array(6)
+      .fill(0)
+      .map((unused, index) => `Treuchtlingen Nr. ${index + 1}`)
     const result = extract(input)
     expect(result.title).toEqual('Treuchtlingen')
   })
@@ -655,7 +664,7 @@ describe('features > banner > naming > titleExtraction', () => {
     const input = [
       'MD 2019: Nuremberg, Haller Castle',
       'MD 2019: Nuremberg, Imperial Castle',
-      'MD 2019: Nuremberg, Inn Brewery Altstadthof'
+      'MD 2019: Nuremberg, Inn Brewery Altstadthof',
     ]
     const result = extract(input)
     expect(result.title).toEqual('MD 2019: Nuremberg')
