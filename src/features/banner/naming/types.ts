@@ -17,7 +17,7 @@ export interface IntermediateMissionExtractionResult {
   remainingNumberCandidates: NumberMarker[] | undefined
   remainingTitleCandidates: PositionMarker[] | undefined
   missionMarker: NumberMarker | undefined
-  totalMarker: PositionMarker | undefined
+  totalMarker: NumberMarker | undefined
   titleMarker: PositionMarker | undefined
 }
 export interface IntermediateExtractionResult {
@@ -27,7 +27,7 @@ export interface IntermediateExtractionResult {
 }
 export interface MissionExtractionResult {
   missionMarker: NumberMarker | undefined
-  totalMarker: PositionMarker | undefined
+  totalMarker: NumberMarker | undefined
   titleMarker: PositionMarker | undefined
 }
 export interface ExtractionResult {

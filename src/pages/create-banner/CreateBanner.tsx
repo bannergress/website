@@ -34,7 +34,10 @@ import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
 
 import './create-banner.less'
 
+const MIN_MISSIONS = 2
 const MAX_MISSIONS = 3000
+const MIN_TITLE_LENGTH = 3
+const MAX_TITLE_LENGTH = 200
 
 class CreateBanner extends React.Component<
   CreateBannerProps,
@@ -56,6 +59,7 @@ class CreateBanner extends React.Component<
       bannerDescriptionChanged: false,
       bannerType: 'sequential',
       bannerWidth: 6,
+      detectedLength: 0,
       showAdvancedOptions: false,
       status: 'initial',
     }
@@ -185,7 +189,12 @@ class CreateBanner extends React.Component<
       .sortBy((m) => m.missionMarker?.parsed)
       .map((m) => ({ ...m.mission, index: m.missionMarker?.parsed }))
       .value()
-    const newState: Pick<CreateBannerState, any> = { addedMissions }
+    const detectedLength =
+      result.results.find((r) => !!r.totalMarker)?.totalMarker?.parsed ?? 0
+    const newState: Pick<CreateBannerState, any> = {
+      addedMissions,
+      detectedLength,
+    }
     if (!bannerTitleChanged) {
       newState.bannerTitle = result.title
     }
@@ -340,19 +349,91 @@ class CreateBanner extends React.Component<
     return ''
   }
 
-  canSubmitBanner = () => {
-    const { addedMissions, bannerTitle, bannerType } = this.state
+  hasGaps = (indexes: Array<number | undefined>) => {
+    if (indexes.length > 0) {
+      const sorted = _([...indexes]).sortBy()
+      if (sorted[0] !== 1 || sorted[sorted.length - 1] !== sorted.length) {
+        return true
+      }
+    }
+    return false
+  }
+
+  getIssues = () => {
+    const {
+      addedMissions,
+      bannerTitle,
+      bannerType,
+      bannerWidth,
+      detectedLength,
+    } = this.state
+    const issues: Array<Issue> = []
+
     const indexes = addedMissions.map((mission) => mission.index)
     const hasDuplicates = _(indexes).uniq(false).length !== addedMissions.length
 
-    return (
-      addedMissions.length >= 2 &&
-      addedMissions.length <= MAX_MISSIONS &&
-      bannerTitle &&
-      ((_(addedMissions).all((m) => m.index !== undefined && m.index > 0) &&
-        !hasDuplicates) ||
-        bannerType === 'anyOrder')
-    )
+    if (
+      addedMissions.length < MIN_MISSIONS ||
+      addedMissions.length > MAX_MISSIONS
+    ) {
+      issues.push({
+        type: 'error',
+        field: 'missions',
+        message: `A banner must contain between ${MIN_MISSIONS} and ${MAX_MISSIONS} missions.`,
+      })
+    }
+    if (bannerType === 'sequential' && hasDuplicates) {
+      issues.push({
+        type: 'error',
+        field: 'missions',
+        message: 'There are 2 or more missions with the same index.',
+      })
+    }
+    if (
+      bannerType === 'sequential' &&
+      _(addedMissions).any((m) => m.index === undefined || m.index <= 0)
+    ) {
+      issues.push({
+        type: 'error',
+        field: 'missions',
+        message:
+          'There are at least a mission with an invalid index. Indexes must be positive integers.',
+      })
+    }
+    if (
+      !bannerTitle ||
+      bannerTitle.length < MIN_TITLE_LENGTH ||
+      bannerTitle.length > MAX_TITLE_LENGTH
+    ) {
+      issues.push({
+        type: 'error',
+        field: 'title',
+        message: `The title must be between ${MIN_TITLE_LENGTH} and ${MAX_TITLE_LENGTH} characters`,
+      })
+    }
+    if (this.hasGaps(indexes)) {
+      issues.push({
+        type: 'warning',
+        field: 'missions',
+        message: 'The banner could be incomplete, as it has gaps',
+      })
+    }
+    if (bannerType === 'sequential' && indexes.length % bannerWidth !== 0) {
+      issues.push({
+        type: 'warning',
+        field: 'missions',
+        message: `The banner could be incomplete, as the number of missions is not divisible by the selected width: ${bannerWidth}`,
+      })
+    }
+    if (detectedLength && detectedLength !== indexes.length) {
+      issues.push({
+        type: 'warning',
+        field: 'missions',
+        message: `The banner could be incomplete, as the length difers from the detected length in the title: ${detectedLength}`,
+      })
+    }
+
+    return issues
   }
 
   render() {
@@ -386,6 +467,7 @@ class CreateBanner extends React.Component<
     }
 
     const title = id ? 'Edit Banner' : 'New Banner'
+    const issues = this.getIssues()
 
     return (
       <div className="create-banner">
@@ -554,10 +636,15 @@ class CreateBanner extends React.Component<
               type="button"
               onClick={this.onCreateBanner}
               className="positive-action-button button-review"
-              disabled={!this.canSubmitBanner()}
+              disabled={issues.some((i) => i.type === 'error')}
             >
               Review
             </button>
+            <div>
+              {issues.map((i) => (
+                <p key={i.message}>{i.message}</p>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -594,7 +681,14 @@ interface CreateBannerState {
   bannerType: BannerType
   bannerWidth: number
   showAdvancedOptions: boolean
+  detectedLength: number
   status: 'initial' | 'searching' | 'ready' | 'loading' | 'error'
+}
+
+interface Issue {
+  field: 'title' | 'description' | 'missions'
+  type: 'error' | 'warning'
+  message: string
 }
 
 const mapStateToProps = (state: RootState) => ({
