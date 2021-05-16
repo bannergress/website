@@ -9,8 +9,9 @@ export const createMapUri = (place: Place) => {
   return generatePath('/map?bounds=:coords', { coords: coordinates })
 }
 
-export const createBrowseUri = (place: Place) => {
-  return generatePath('/browse/:id', { id: place.id })
+export const createBrowseUri = (place: Place | string) => {
+  const placeId = typeof place === 'string' ? place : place.id
+  return generatePath('/browse/:id', { id: placeId })
 }
 
 export const sortPlaces = (places: Place[], order: PlaceSortOrder) => {
