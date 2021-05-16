@@ -21,41 +21,55 @@ import Navbar from './components/navbar'
 
 import './App.less'
 
-const App: React.FC = () => (
-  <ReactKeycloakProvider
-    authClient={keycloak}
-    initOptions={{
-      onLoad: 'check-sso',
-      silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
-    }}
-    onTokens={(tokens) => authenticateApi(tokens)}
-  >
-    <Helmet defaultTitle="Bannergress" titleTemplate="Bannergress - %s" />
-    <Layout>
-      <BrowserRouter>
-        <Navbar />
-        <Layout className="main">
-          <div className="container">
-            <Switch>
-              <Route path="/" component={Home} exact />
-              <Route path="/about" component={About} />
-              <Route path="/map" component={MapOverview} />
-              <Route path="/browse/:placeId?" component={Browser} />
-              <Route path="/banner/:id" component={BannerInfo} />
-              <Route path="/search/:term" component={Search} />
-              <Route path="/help" component={Help} />
-              <PrivateRoute path="/new-banner" component={CreateBanner} />
-              <PrivateRoute path="/preview-banner" component={PreviewBanner} />
-              <Route component={Home} />
-            </Switch>
+const App: React.FC = () => {
+  return (
+    <ReactKeycloakProvider
+      authClient={keycloak}
+      initOptions={{
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
+      }}
+      onTokens={(tokens) => authenticateApi(tokens)}
+    >
+      <Helmet defaultTitle="Bannergress" titleTemplate="Bannergress - %s" />
+      <Layout>
+        <BrowserRouter>
+          {/* The Navbar should be hidden in mobile mode but only on some pages. */}
+          {/* So we add a class to it if we are on those pages */}
+          <Switch>
+            <Route path="/banner/:id">
+              <Navbar className="hide-on-mobile" />
+            </Route>
+            <Route>
+              <Navbar />
+            </Route>
+          </Switch>
+          <Layout className="main">
+            <div className="container">
+              <Switch>
+                <Route path="/" component={Home} exact />
+                <Route path="/about" component={About} />
+                <Route path="/map" component={MapOverview} />
+                <Route path="/browse/:placeId?" component={Browser} />
+                <Route path="/banner/:id" component={BannerInfo} />
+                <Route path="/search/:term" component={Search} />
+                <Route path="/help" component={Help} />
+                <PrivateRoute path="/new-banner" component={CreateBanner} />
+                <PrivateRoute
+                  path="/preview-banner"
+                  component={PreviewBanner}
+                />
+                <Route component={Home} />
+              </Switch>
+            </div>
+          </Layout>
+          <div className="bottom-menu">
+            <MenuMain />
           </div>
-        </Layout>
-        <div className="bottom-menu">
-          <MenuMain />
-        </div>
-      </BrowserRouter>
-    </Layout>
-  </ReactKeycloakProvider>
-)
+        </BrowserRouter>
+      </Layout>
+    </ReactKeycloakProvider>
+  )
+}
 
 export default App

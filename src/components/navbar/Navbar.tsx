@@ -11,8 +11,8 @@ import { ReactComponent as SVGSearch } from '../../img/icons/search.svg'
 
 import './Navbar.less'
 
-export class Navbar extends React.Component<RouteComponentProps, NavBarState> {
-  constructor(props: RouteComponentProps) {
+export class Navbar extends React.Component<NavBarProps, NavBarState> {
+  constructor(props: NavBarProps) {
     super(props)
 
     this.state = {
@@ -40,7 +40,7 @@ export class Navbar extends React.Component<RouteComponentProps, NavBarState> {
   }
 
   render() {
-    const { history } = this.props
+    const { history, className } = this.props
 
     const callSearch = (value: string) => {
       const trimmedValue = value.trim()
@@ -56,7 +56,7 @@ export class Navbar extends React.Component<RouteComponentProps, NavBarState> {
 
     return (
       <>
-        <div className="top-menu">
+        <div className={`top-menu ${className}`}>
           <NavLink to="/" className="brand-menu">
             <div
               className="brand-logo"
@@ -68,7 +68,7 @@ export class Navbar extends React.Component<RouteComponentProps, NavBarState> {
           <MenuMain />
           <div className="right-menu">
             <div
-              className={`mobile-search-button-container ${mobileSearchBarActiveClassName}`}
+              className={`hide-on-desktop mobile-search-button-container ${mobileSearchBarActiveClassName}`}
               title="Search"
             >
               <button
@@ -79,20 +79,24 @@ export class Navbar extends React.Component<RouteComponentProps, NavBarState> {
                 <SVGSearch className="search-button-icon" />
               </button>
             </div>
-            <div className="search-bar">
+            <div className="search-bar hide-on-mobile">
               <SearchInput onSearch={callSearch} />
             </div>
             <LoginInNavbar />
           </div>
         </div>
         {mobileSearchBarActive && (
-          <div className="mobile-search-bar">
+          <div className="mobile-search-bar hide-on-desktop">
             <SearchInput autoFocus onSearch={callSearch} />
           </div>
         )}
       </>
     )
   }
+}
+
+export interface NavBarProps extends RouteComponentProps {
+  className?: string
 }
 
 export interface NavBarState {
