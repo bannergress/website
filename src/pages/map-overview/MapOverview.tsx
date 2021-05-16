@@ -26,6 +26,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     this.state = {
       bounds: undefined,
       selectedBannerId: undefined,
+      selectedBounds: undefined,
       status: 'initial',
     }
   }
@@ -37,13 +38,17 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
 
   onSelectBanner = async (banner: Banner) => {
     const { fetchPreviewBanner } = this.props
-    const { selectedBannerId } = this.state
+    const { selectedBannerId, bounds } = this.state
     if (selectedBannerId !== banner.id) {
       this.setState({ status: 'loading' })
       await fetchPreviewBanner(banner.id)
-      this.setState({ selectedBannerId: banner.id, status: 'ready' })
+      this.setState({
+        selectedBannerId: banner.id,
+        status: 'ready',
+        selectedBounds: bounds,
+      })
     } else {
-      this.setState({ selectedBannerId: undefined })
+      this.setState({ selectedBannerId: undefined, selectedBounds: undefined })
     }
   }
 
@@ -67,14 +72,18 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
 
   render() {
     const { getBanners, getBanner } = this.props
-    const { bounds, selectedBannerId, status } = this.state
+    const { bounds, selectedBannerId, status, selectedBounds } = this.state
     let banners: Array<Banner> = []
-    if (bounds) {
-      banners = getBanners(
-        bounds.getNorth(),
-        bounds.getEast(),
-        bounds.getSouth(),
-        bounds.getWest()
+    const boundsToUse = selectedBounds ?? bounds
+    if (boundsToUse) {
+      banners = extendSorted(
+        getBanners(
+          boundsToUse.getNorth(),
+          boundsToUse.getEast(),
+          boundsToUse.getSouth(),
+          boundsToUse.getWest()
+        ),
+        []
       )
     }
     if (selectedBannerId) {
@@ -134,6 +143,7 @@ export interface MapOverviewProps extends RouteComponentProps {
 interface MapOverviewState {
   bounds: LatLngBounds | undefined
   selectedBannerId: string | undefined
+  selectedBounds: LatLngBounds | undefined
   status: 'initial' | 'loading' | 'ready' | 'error'
 }
 
