@@ -60,7 +60,6 @@ class CreateBanner extends React.Component<
       bannerType: 'sequential',
       bannerWidth: 6,
       detectedLength: 0,
-      showAdvancedOptions: false,
       status: 'initial',
     }
   }
@@ -328,12 +327,6 @@ class CreateBanner extends React.Component<
     return undefined
   }
 
-  toogleAdvancedOptions = () => {
-    this.setState((state) => ({
-      showAdvancedOptions: !state.showAdvancedOptions,
-    }))
-  }
-
   getMissionClass = (mission: Mission & { index?: number }) => {
     const { addedMissions, bannerType } = this.state
     if (
@@ -445,7 +438,6 @@ class CreateBanner extends React.Component<
       bannerDescription,
       bannerType,
       bannerWidth,
-      showAdvancedOptions,
       status,
       id,
     } = this.state
@@ -575,52 +567,37 @@ class CreateBanner extends React.Component<
                 this.onInputChange(e.target.value, 'bannerDescription')
               }
             />
-            <div className="advanced-options">
-              <h3>
-                Advanced Options{' '}
-                <button
-                  type="button"
-                  onClick={this.toogleAdvancedOptions}
-                  className={showAdvancedOptions ? 'open' : 'closed'}
-                >
-                  ▸
-                </button>
-              </h3>
-              <div
-                className={`adv-options-container ${
-                  showAdvancedOptions && 'open'
-                }`}
-              >
-                <Row>
-                  <Col span={12}>
-                    <h4>Banner type</h4>
-                  </Col>
-                  <Col span={12}>
-                    <Select
-                      defaultValue={bannerType}
-                      onChange={(val) => this.onInputChange(val, 'bannerType')}
-                    >
-                      <Select.Option value="sequential">Banner</Select.Option>
-                      <Select.Option value="anyOrder">
-                        Mission collection
-                      </Select.Option>
-                    </Select>
-                  </Col>
-                  <Col span={12}>
-                    <h4>Banner width</h4>
-                  </Col>
-                  <Col span={12}>
-                    <Slider
-                      min={1}
-                      max={6}
-                      onChange={(val: number) =>
-                        this.onInputChange(val, 'bannerWidth')
-                      }
-                      value={bannerWidth}
-                    />
-                  </Col>
-                </Row>
-              </div>
+            <h3>Options</h3>
+            <div className="adv-options-container open">
+              <Row>
+                <Col span={12}>
+                  <h4>Banner type</h4>
+                </Col>
+                <Col span={12}>
+                  <Select
+                    defaultValue={bannerType}
+                    onChange={(val) => this.onInputChange(val, 'bannerType')}
+                  >
+                    <Select.Option value="sequential">Banner</Select.Option>
+                    <Select.Option value="anyOrder">
+                      Mission collection
+                    </Select.Option>
+                  </Select>
+                </Col>
+                <Col span={12}>
+                  <h4>Banner width</h4>
+                </Col>
+                <Col span={12}>
+                  <Slider
+                    min={1}
+                    max={6}
+                    onChange={(val: number) =>
+                      this.onInputChange(val, 'bannerWidth')
+                    }
+                    value={bannerWidth}
+                  />
+                </Col>
+              </Row>
             </div>
             <h3>Preview</h3>
             <div className="create-banner-preview">
@@ -680,7 +657,6 @@ interface CreateBannerState {
   bannerDescriptionChanged: boolean
   bannerType: BannerType
   bannerWidth: number
-  showAdvancedOptions: boolean
   detectedLength: number
   status: 'initial' | 'searching' | 'ready' | 'loading' | 'error'
 }
