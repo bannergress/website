@@ -16,7 +16,6 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   expanded,
   expandedMissionIndexes,
   scrollMissionIndex,
-  disableShowMissionsOnScroll,
   hideControls,
   view,
   onChangeView,
@@ -34,12 +33,20 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
 
   const refElement = useRef<HTMLDivElement>(null)
 
+  const areTabsVisible = () => {
+    const tabsBar = refElement.current
+      ?.getElementsByClassName('ant-tabs-nav')
+      ?.item(0) as HTMLElement
+
+    return tabsBar && tabsBar.offsetParent !== null
+  }
+
   useEffect(() => {
-    if (!disableShowMissionsOnScroll && scrollMissionIndex !== undefined) {
+    if (scrollMissionIndex !== undefined && areTabsVisible()) {
       setActiveView('missions')
       if (onChangeView) onChangeView('missions')
     }
-  }, [disableShowMissionsOnScroll, onChangeView, scrollMissionIndex])
+  }, [onChangeView, scrollMissionIndex])
 
   // When showing the missions view, scroll the outer container to the top
   useEffect(() => {
@@ -95,7 +102,6 @@ export interface BannerInfoOverviewProps {
   expanded: boolean
   expandedMissionIndexes?: Array<number>
   scrollMissionIndex?: number
-  disableShowMissionsOnScroll?: boolean
   hideControls?: boolean
   view?: BannerInfoView
   onChangeView?: (view: BannerInfoView) => void

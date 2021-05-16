@@ -158,10 +158,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
                   banner={banner}
                   expanded={expanded}
                   expandedMissionIndexes={expandedMissionIndexes}
-                  scrollMissionIndex={
-                    desktopView === 'missions' ? scrollMissionIndex : undefined
-                  }
-                  disableShowMissionsOnScroll={mobileView === 'map'}
+                  scrollMissionIndex={scrollMissionIndex}
                   view={desktopView}
                   onChangeView={this.onDesktopViewChanged}
                   onExpand={this.onExpand}
