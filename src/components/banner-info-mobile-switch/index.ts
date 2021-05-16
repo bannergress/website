@@ -1,2 +1,2 @@
 export { default as BannerInfoMobileSwitch } from './BannerInfoMobileSwitch'
-export type { BannerInfoView } from './BannerInfoMobileSwitch'
+export type { BannerInfoMobileView } from './BannerInfoMobileSwitch'

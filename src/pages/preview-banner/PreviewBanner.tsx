@@ -17,7 +17,7 @@ import {
 import { mapMissions } from '../../features/mission'
 import LoadingOverlay from '../../components/loading-overlay'
 import { MapDetail } from '../../components/map-detail'
-import BannerInfoOverview from '../../components/banner-info-overview'
+import { BannerInfoOverview } from '../../components/banner-info-overview'
 import { ReactComponent as SVGBackArrow } from '../../img/icons/back-arrow.svg'
 
 import './preview-banner.less'

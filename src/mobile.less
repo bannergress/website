@@ -17,7 +17,8 @@
     .banner-info {
       margin: 0 !important;
       justify-content: center !important;
-      height: inherit !important;
+      height: 100% !important;
+      overflow-y: auto !important;
 
       .banner-info-left-pane {
           min-height: 0 !important;
@@ -26,6 +27,19 @@
           max-width: 600px !important;
           height: auto !important;
           overflow-y: unset !important;
+      }
+
+      .banner-info-left-pane-missions {
+
+        .banner-card {
+          display: none !important;
+        }
+
+      }
+
+      .mission-card {
+        max-width: none !important;
+
       }
 
       .banner-info-additional {
@@ -38,7 +52,23 @@
         min-height: 0 !important;
       }
     }
-  
+
+    .banner-info-card {
+      margin-top: 0 !important;
+    } 
+
+    .banner-card-title {
+      display: none !important;
+    }
+    
+    .ant-tabs-nav {
+      display: none !important;
+      margin: none  !important;
+    }
+
+    .ant-tabs-tabpane {
+      margin-top: 0;
+    }
   }
 
   .banner-count-place {

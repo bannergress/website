@@ -17,10 +17,13 @@ import { MapDetail } from '../../components/map-detail'
 
 import './banner-info.less'
 import { mapMissions } from '../../features/mission'
-import BannerInfoOverview from '../../components/banner-info-overview'
+import {
+  BannerInfoOverview,
+  BannerInfoView,
+} from '../../components/banner-info-overview'
 import {
   BannerInfoMobileSwitch,
-  BannerInfoView,
+  BannerInfoMobileView,
 } from '../../components/banner-info-mobile-switch'
 
 class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
@@ -38,7 +41,8 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
       expandedMissionIndexes: [],
       scrollMissionIndex: undefined,
       status: 'initial',
-      view: 'info',
+      mobileView: 'info',
+      desktopView: 'info',
     }
   }
 
@@ -86,8 +90,15 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
     }
   }
 
-  onViewChanged = (view: BannerInfoView) => {
-    this.setState({ view })
+  onMobileViewChanged = (view: BannerInfoMobileView) => {
+    let newState: object = { mobileView: view }
+
+    // Changing mobile view also changes desktop view if compatible
+    if (view !== 'map') {
+      newState = { ...newState, desktopView: view }
+    }
+
+    this.setState(newState)
 
     // The used leaflet map behaves irregularly when it is created while
     // invisible. It it then becomes visible, we need to tell it to recalculate
@@ -102,6 +113,11 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
     }
   }
 
+  onDesktopViewChanged = (view: BannerInfoView) => {
+    // Changing desktop view also changes mobile view
+    this.setState({ desktopView: view, mobileView: view })
+  }
+
   render() {
     const { getBanner, match } = this.props
     const {
@@ -109,14 +125,16 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
       expandedMissionIndexes,
       status,
       scrollMissionIndex,
-      view,
+      mobileView,
+      desktopView,
     } = this.state
     const banner = getBanner(match.params.id)
 
-    const infoPaneClassName = view === 'info' ? '' : 'hide-on-mobile'
-    const mapPaneClassName = view === 'map' ? '' : 'hide-on-mobile'
+    const infoPaneClassName = mobileView !== 'map' ? '' : 'hide-on-mobile'
+    const infoPaneViewClassName = `banner-info-left-pane-${mobileView}`
+    const mapPaneClassName = mobileView === 'map' ? '' : 'hide-on-mobile'
 
-    this.viewWasMapBefore = this.viewWasMapBefore || view === 'map'
+    this.viewWasMapBefore = this.viewWasMapBefore || mobileView === 'map'
 
     if (banner) {
       return (
@@ -127,17 +145,25 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
           <div className="banner-info-container">
             <div className="hide-on-desktop">
               <BannerInfoMobileSwitch
-                selectedView={view}
-                onChanged={this.onViewChanged}
+                banner={banner}
+                selectedView={mobileView}
+                onChanged={this.onMobileViewChanged}
               />
             </div>
             <div className="banner-info">
-              <div className={`banner-info-left-pane ${infoPaneClassName}`}>
+              <div
+                className={`banner-info-left-pane ${infoPaneClassName} ${infoPaneViewClassName}`}
+              >
                 <BannerInfoOverview
                   banner={banner}
                   expanded={expanded}
                   expandedMissionIndexes={expandedMissionIndexes}
-                  scrollMissionIndex={scrollMissionIndex}
+                  scrollMissionIndex={
+                    desktopView === 'missions' ? scrollMissionIndex : undefined
+                  }
+                  disableShowMissionsOnScroll={mobileView === 'map'}
+                  view={desktopView}
+                  onChangeView={this.onDesktopViewChanged}
                   onExpand={this.onExpand}
                   onExpandAll={this.onExpandAll}
                 />
@@ -175,7 +201,8 @@ interface BannerInfoState {
   expandedMissionIndexes: Array<number>
   scrollMissionIndex: number | undefined
   status: 'initial' | 'loading' | 'ready' | 'error'
-  view: BannerInfoView
+  mobileView: BannerInfoMobileView
+  desktopView: BannerInfoView
 }
 
 const mapStateToProps = (state: RootState) => ({
