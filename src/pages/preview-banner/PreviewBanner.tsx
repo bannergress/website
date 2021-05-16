@@ -32,6 +32,7 @@ class PreviewBanner extends React.Component<
       status: 'initial',
       expanded: false,
       expandedMissionIndexes: [],
+      scrollMissionIndex: undefined,
     }
   }
 
@@ -60,17 +61,22 @@ class PreviewBanner extends React.Component<
       .catch(() => this.setState({ status: 'error' }))
   }
 
-  onExpand = (index: number) => {
+  onExpandFromMap = (index: number) => this.onExpand(index, true)
+
+  onExpand = (index: number, scrollTo: boolean = false) => {
     const { expandedMissionIndexes } = this.state
+
     if (expandedMissionIndexes.indexOf(index) >= 0) {
       const indexes = _(expandedMissionIndexes).without(index)
       this.setState({
         expandedMissionIndexes: indexes,
         expanded: indexes.length > 0,
+        scrollMissionIndex: undefined,
       })
     } else {
       this.setState({
         expandedMissionIndexes: [...expandedMissionIndexes, index],
+        scrollMissionIndex: scrollTo ? index : undefined,
       })
     }
   }
@@ -107,7 +113,12 @@ class PreviewBanner extends React.Component<
 
   render() {
     const { banner } = this.props
-    const { status, expanded, expandedMissionIndexes } = this.state
+    const {
+      status,
+      expanded,
+      expandedMissionIndexes,
+      scrollMissionIndex,
+    } = this.state
     if (!banner) {
       return <Fragment />
     }
@@ -133,15 +144,17 @@ class PreviewBanner extends React.Component<
             banner={banner}
             expanded={expanded}
             expandedMissionIndexes={expandedMissionIndexes}
+            scrollMissionIndex={scrollMissionIndex}
             onExpand={this.onExpand}
             onExpandAll={this.onExpandAll}
+            hideControls
           />
           <div className="banner-preview-additional">
             <MapDetail
               banner={banner}
               bounds={new LatLngBounds(getBannerBounds(banner))}
               openedMissionIndexes={expandedMissionIndexes}
-              onOpenMission={this.onExpand}
+              onOpenMission={this.onExpandFromMap}
             />
             <button
               type="button"
@@ -166,6 +179,7 @@ export interface PreviewBannerProps extends RouteComponentProps {
 interface PreviewBannerState {
   expanded: boolean
   expandedMissionIndexes: Array<number>
+  scrollMissionIndex: number | undefined
   status: 'initial' | 'loading' | 'regress' | 'error'
 }
 

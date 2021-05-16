@@ -2,11 +2,8 @@ import { Dispatch } from 'redux'
 import {
   PlaceActionTypes,
   LOAD_COUNTRIES,
-  LOAD_COUNTRIES_ERROR,
   LOAD_ADMINISTRATIVE_AREAS,
-  LOAD_ADMINISTRATIVE_AREAS_ERROR,
   LOAD_PLACE,
-  LOAD_PLACE_ERROR,
   SEARCH_PLACES,
   RESET_SEARCH_PLACES,
 } from './actionTypes'
@@ -22,10 +19,8 @@ export const loadCountriesAction = () => async (
       type: LOAD_COUNTRIES,
       payload: response.data,
     })
-  } else {
-    dispatch({
-      type: LOAD_COUNTRIES_ERROR,
-    })
+  } else if (response.status === 404) {
+    throw new Error('Place not found')
   }
 }
 
@@ -44,10 +39,8 @@ export const loadAdministrativeAreasAction = (parentPlaceId: string) => async (
       type: LOAD_ADMINISTRATIVE_AREAS,
       payload: { placeId: parentPlaceId, administrativeAreas: ammendedData },
     })
-  } else {
-    dispatch({
-      type: LOAD_ADMINISTRATIVE_AREAS_ERROR,
-    })
+  } else if (response.status === 404) {
+    throw new Error('Place not found')
   }
 }
 
@@ -60,10 +53,8 @@ export const loadPlaceAction = (placeId: string) => async (
       type: LOAD_PLACE,
       payload: response.data,
     })
-  } else {
-    dispatch({
-      type: LOAD_PLACE_ERROR,
-    })
+  } else if (response.status === 404) {
+    throw new Error('Place not found')
   }
 }
 

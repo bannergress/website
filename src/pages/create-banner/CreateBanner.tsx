@@ -34,6 +34,8 @@ import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
 
 import './create-banner.less'
 
+const MAX_MISSIONS = 3000
+
 class CreateBanner extends React.Component<
   CreateBannerProps,
   CreateBannerState
@@ -345,6 +347,7 @@ class CreateBanner extends React.Component<
 
     return (
       addedMissions.length >= 2 &&
+      addedMissions.length <= MAX_MISSIONS &&
       bannerTitle &&
       ((_(addedMissions).all((m) => m.index !== undefined && m.index > 0) &&
         !hasDuplicates) ||
@@ -414,6 +417,7 @@ class CreateBanner extends React.Component<
             <Input
               placeholder="Enter at least 3 characters..."
               value={searchText || ''}
+              maxLength={200}
               onChange={(e) => this.onInputChange(e.target.value, 'searchText')}
               onKeyPress={(k) =>
                 k.key === 'Enter' ? this.onSearchForced() : null
@@ -514,10 +518,10 @@ class CreateBanner extends React.Component<
                       defaultValue={bannerType}
                       onChange={(val) => this.onInputChange(val, 'bannerType')}
                     >
-                      <Select.Option value="sequential">
-                        Sequential
+                      <Select.Option value="sequential">Banner</Select.Option>
+                      <Select.Option value="anyOrder">
+                        Mission collection
                       </Select.Option>
-                      <Select.Option value="anyOrder">Any order</Select.Option>
                     </Select>
                   </Col>
                   <Col span={12}>

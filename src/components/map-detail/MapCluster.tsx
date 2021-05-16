@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { divIcon, MarkerCluster } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
+
 import {
   MarkerData,
   getMarkerData,
@@ -37,10 +38,13 @@ const createClusterLabel = (markerData: MarkerData[]) => {
     : []
   const endLabel = endMarker ? [getMarkerDataLabel(endMarker)] : []
 
-  let otherLabels: JSX.Element[] = []
+  let otherLabels: Array<JSX.Element | undefined> = []
   if (markerData.length > 2) {
     otherLabels = [
-      <div className="marker-pin-row">{`×${otherMarkers.length}`}</div>,
+      <div
+        key="generic-label"
+        className="marker-pin-row"
+      >{`×${otherMarkers.length}`}</div>,
     ]
   } else {
     otherLabels = otherMarkers.map((m) => getMarkerDataLabel(m))
@@ -52,18 +56,19 @@ const createClusterLabel = (markerData: MarkerData[]) => {
     ...endLabel,
   ]
   return {
-    labels: resultingLabels,
+    labels: resultingLabels.filter((l) => !!l),
     hasStartOrFinish:
       firstSequentialMissionMarker !== null || endMarker !== null,
   }
 }
+
 const createClusterCustomIcon = (cluster: MarkerCluster) => {
   const numberMarkers = cluster.getChildCount()
   if (numberMarkers > 1) {
     const markerData = cluster
       .getAllChildMarkers()
       .map((marker) => getMarkerData(marker))
-      .filter((m) => m !== undefined && m !== null) as MarkerData[]
+      .filter((m) => !!m) as MarkerData[]
 
     const { labels, hasStartOrFinish } = createClusterLabel(markerData)
 
@@ -83,14 +88,21 @@ const createClusterCustomIcon = (cluster: MarkerCluster) => {
   return singularMarker.getIcon()
 }
 
-const MapCluster: FC = ({ children }) => (
-  <MarkerClusterGroup
-    maxClusterRadius={10}
-    singleMarkerMode
-    iconCreateFunction={createClusterCustomIcon}
-  >
-    {children}
-  </MarkerClusterGroup>
-)
+const MapCluster: FC<MapClusterProps> = ({ pane, children }) => {
+  const options: any = {
+    maxClusterRadius: 10,
+    singleMarkerMode: true,
+    iconCreateFunction: createClusterCustomIcon,
+  }
+  if (pane) {
+    options.clusterPane = pane
+    options.pane = pane
+  }
+  return <MarkerClusterGroup {...options}>{children}</MarkerClusterGroup>
+}
+
+export interface MapClusterProps {
+  pane?: string
+}
 
 export default MapCluster

@@ -2,17 +2,18 @@ import React from 'react'
 import { LatLng } from 'leaflet'
 import { Marker, Polyline, Tooltip } from 'react-leaflet'
 import _ from 'underscore'
+
 import { NumDictionary } from '../../features/banner'
 import {
   mapMissions,
   Mission,
   getFirstAvailableStep,
   getAvailableSteps,
+  AvailableStep,
 } from '../../features/mission'
 import POIMarker from './POIMarker'
 import { MissionMarkerData, setMarkerData } from './MarkerData'
 import { getMarkerDataIcon } from './MarkerIcons'
-import { AvailableStep } from '../../features/mission/types'
 
 export const showMissionStartPointsOnMap = (
   missions: NumDictionary<Mission>,
@@ -95,7 +96,9 @@ export const showMissionPortalsAndRoutes = (
             (p) => new LatLng(p.poi.latitude, p.poi.longitude)
           )}
         >
-          <Tooltip sticky>{mission.title}</Tooltip>
+          <Tooltip sticky pane="tooltipPane">
+            {mission.title}
+          </Tooltip>
         </Polyline>
       )
     }

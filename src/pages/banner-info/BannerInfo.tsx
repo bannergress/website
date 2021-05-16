@@ -1,4 +1,4 @@
-import React, { createRef } from 'react'
+import React, { createRef, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
@@ -36,6 +36,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
     this.state = {
       expanded: false,
       expandedMissionIndexes: [],
+      scrollMissionIndex: undefined,
       status: 'initial',
       view: 'info',
     }
@@ -48,18 +49,21 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
       .catch(() => this.setState({ status: 'error' }))
   }
 
-  onExpand = (index: number) => {
+  onExpandFromMap = (index: number) => this.onExpand(index, true)
+
+  onExpand = (index: number, scrollTo: boolean = false) => {
     const { expandedMissionIndexes } = this.state
-    // console.log('EMI', expandedMissionIndexes)
     if (expandedMissionIndexes.indexOf(index) >= 0) {
       const indexes = _(expandedMissionIndexes).without(index)
       this.setState({
         expandedMissionIndexes: indexes,
         expanded: indexes.length > 0,
+        scrollMissionIndex: undefined,
       })
     } else {
       this.setState({
         expandedMissionIndexes: [...expandedMissionIndexes, index],
+        scrollMissionIndex: scrollTo ? index : undefined,
       })
     }
   }
@@ -100,7 +104,13 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
 
   render() {
     const { getBanner, match } = this.props
-    const { expanded, expandedMissionIndexes, status, view } = this.state
+    const {
+      expanded,
+      expandedMissionIndexes,
+      status,
+      scrollMissionIndex,
+      view,
+    } = this.state
     const banner = getBanner(match.params.id)
 
     const infoPaneClassName = view === 'info' ? '' : 'hide-on-mobile'
@@ -127,6 +137,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
                   banner={banner}
                   expanded={expanded}
                   expandedMissionIndexes={expandedMissionIndexes}
+                  scrollMissionIndex={scrollMissionIndex}
                   onExpand={this.onExpand}
                   onExpandAll={this.onExpandAll}
                 />
@@ -137,7 +148,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
                     banner={banner}
                     bounds={new LatLngBounds(getBannerBounds(banner))}
                     openedMissionIndexes={expandedMissionIndexes}
-                    onOpenMission={this.onExpand}
+                    onOpenMission={this.onExpandFromMap}
                     ref={this.mapRef}
                   />
                 )}
@@ -147,7 +158,10 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
         </>
       )
     }
-    return <LoadingOverlay active spinner text="Loading..." fadeSpeed={500} />
+    if (status !== 'error') {
+      return <LoadingOverlay active spinner text="Loading..." fadeSpeed={500} />
+    }
+    return <Fragment>No banners found with that id</Fragment>
   }
 }
 
@@ -159,6 +173,7 @@ export interface BannerInfoProps extends RouteComponentProps<{ id: string }> {
 interface BannerInfoState {
   expanded: boolean
   expandedMissionIndexes: Array<number>
+  scrollMissionIndex: number | undefined
   status: 'initial' | 'loading' | 'ready' | 'error'
   view: BannerInfoView
 }

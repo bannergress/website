@@ -89,7 +89,7 @@ function scoreAsMission(
   let score = extractors[candidate.type].baseScoreFunction(candidate.raw)
   if (candidate.parsed > extractionResult.results.length) {
     // Reduce score a little bit because we don't have that many missions
-    score *= 1 - candidate.parsed * 0.001
+    score *= 1 - candidate.parsed * 0.0001
   }
   // Score with respect to the same number type in other missions
   const overallScore =
@@ -148,15 +148,24 @@ function scoreAsTotal(
 
 function toTitleCandidate(
   title: String,
+  trimStart: boolean,
+  trimEnd: boolean,
   start: number,
   length?: number
 ): PositionMarker | undefined {
-  const raw = title
-    .substr(start, length)
-    .replace(
-      /^[\p{Separator}\p{Connector_Punctuation}\p{Dash_Punctuation}\p{Close_Punctuation}\p{Final_Punctuation}\p{Other_Punctuation}]+|[\p{Separator}\p{Connector_Punctuation}\p{Dash_Punctuation}\p{Open_Punctuation}\p{Initial_Punctuation}\p{Other_Punctuation}]+$/gu,
+  let raw = title.substr(start, length)
+  if (trimStart) {
+    raw = raw.replace(
+      /^[\p{Separator}\p{Connector_Punctuation}\p{Dash_Punctuation}\p{Close_Punctuation}\p{Final_Punctuation}\p{Other_Punctuation}]+/gu,
       ''
     )
+  }
+  if (trimEnd) {
+    raw = raw.replace(
+      /[\p{Separator}\p{Connector_Punctuation}\p{Dash_Punctuation}\p{Open_Punctuation}\p{Initial_Punctuation}\p{Other_Punctuation}]+$/gu,
+      ''
+    )
+  }
   return raw
     ? {
         start: title.indexOf(raw),
@@ -206,7 +215,10 @@ function extractBestTotal(
   let bestTotal
   let bestCount = 0
   counts.forEach((count, total) => {
-    if (count > bestCount) {
+    if (
+      count > bestCount ||
+      (count === bestCount && total === prevExtractionResult.results.length)
+    ) {
       bestTotal = total
       bestCount = count
     }
@@ -243,16 +255,43 @@ function extractCandidateTitles(
         )
         const firstCandidate = toTitleCandidate(
           prevER.title,
+          false,
+          true,
           0,
           firstMarkerStart
         )
         if (firstCandidate) {
           candidateTitles.push(firstCandidate)
         }
-        const secondCandidate = toTitleCandidate(prevER.title, lastMarkerEnd)
+        const secondCandidate = toTitleCandidate(
+          prevER.title,
+          true,
+          false,
+          lastMarkerEnd
+        )
         if (secondCandidate) {
           candidateTitles.push(secondCandidate)
         }
+      } else {
+        // Consider all prefixes of the title ending at word boundaries
+        const regexp = /\b./g
+        let match = regexp.exec(prevER.title)
+        let lastRaw
+        while (match !== null) {
+          const candidate = toTitleCandidate(
+            prevER.title,
+            false,
+            true,
+            0,
+            match.index
+          )
+          if (candidate && candidate.raw !== lastRaw) {
+            lastRaw = candidate.raw
+            candidateTitles.push(candidate)
+          }
+          match = regexp.exec(prevER.title)
+        }
+        candidateTitles.reverse()
       }
       return {
         ...prevER,
@@ -276,17 +315,21 @@ function extractBestTitle(
     const count = counts.get(candidate.raw) || 0
     counts.set(candidate.raw, count + 1)
   })
-  let bestTitle: string | undefined
+  let bestTitles: string[] = []
   let bestCount = 0
   counts.forEach((count, title) => {
-    if (!bestTitle || count * title.length > bestCount * bestTitle.length) {
-      bestTitle = title
+    if (count === bestCount) {
+      if (!bestTitles.length || bestTitles[0].indexOf(title) === -1) {
+        bestTitles.push(title)
+      }
+    } else if (count > bestCount) {
+      bestTitles = [title]
       bestCount = count
     }
   })
   return {
     ...prevExtractionResult,
-    title: bestTitle,
+    title: bestTitles.join(' / '),
   }
 }
 
@@ -324,7 +367,6 @@ function cleanResult(
 }
 
 export function extract(titles: string[]): ExtractionResult {
-  // debugger
   // Extract all candidate numbers
   const resultStep1 = extractCandidateNumbers(titles)
   // Find best matches for mission number and remove them

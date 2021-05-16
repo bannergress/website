@@ -2,7 +2,6 @@ import {
   BannerActionTypes,
   BROWSE_BANNERS,
   LOAD_BANNER,
-  LOAD_BANNER_ERROR,
   LOAD_RECENT_BANNERS,
   LOAD_RECENT_BANNERS_ERROR,
   RESET_BROWSED_BANNERS,
@@ -54,8 +53,6 @@ export default (state = initialState, action: BannerActionTypes) => {
       }
     case RESET_SEARCH_BANNERS:
       return { ...state, searchBanners: [] }
-    case LOAD_BANNER_ERROR:
-      return {}
     case LOAD_RECENT_BANNERS_ERROR:
       return state
     case CREATE_BANNER:

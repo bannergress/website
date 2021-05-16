@@ -13,6 +13,7 @@ import {
   AvailablePOI,
   FieldTripWaypointPOI,
   MissionType,
+  AvailableStep,
 } from './types'
 import {
   mapMissions,
@@ -42,6 +43,7 @@ export type {
   UnavailablePOI,
   FieldTripWaypointPOI,
   MissionType,
+  AvailableStep,
 }
 export {
   mapMissions,

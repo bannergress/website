@@ -1,9 +1,11 @@
-import { AuthClientTokens } from '@react-keycloak/core'
+import keycloak from './keycloak'
 
 class Api {
-  headers: { [key: string]: string } = {
-    Accept: 'application/json',
-  }
+  resolve: (val: unknown) => void = () => {}
+
+  readyPromise = new Promise((resolve) => {
+    this.resolve = resolve
+  })
 
   get<T>(url: string, params: {} = {}): Promise<ApiResponse<T>> {
     return this.request('GET', url, params)
@@ -28,40 +30,58 @@ class Api {
     data?: any
   ): Promise<ApiResponse<T>> {
     try {
+      await this.readyPromise
+
       const fullUrl = new URL(url, process.env.REACT_APP_API_BASE_URL)
       Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined) {
           fullUrl.searchParams.set(key, String(value))
         }
       })
+      const headers = await this.getHeaders()
       const response = await fetch(fullUrl.href, {
         body: data && JSON.stringify(data),
         headers: {
-          ...this.headers,
+          ...headers,
           ...(data && { 'Content-Type': 'application/json' }),
         },
         method,
         mode: 'cors',
       })
-      const json = await response.json()
+      if (response.ok) {
+        const json = await response.json()
+        return {
+          ok: true,
+          data: json,
+          status: response.status,
+        }
+      }
       return {
-        ok: response.ok,
-        data: json,
+        ok: false,
+        status: response.status,
       }
     } catch (e) {
       return {
         ok: false,
+        status: 500,
       }
     }
+  }
+
+  getHeaders = async () => {
+    const headers: HeadersInit = { Accept: 'application/json' }
+    if (keycloak.token) {
+      await keycloak.updateToken(5)
+      headers.Authorization = `Bearer ${keycloak.token}`
+    }
+    return headers
   }
 }
 
 export const api: Api = new Api()
 
-export const authenticateApi = (tokens: AuthClientTokens) => {
-  if (tokens.token) {
-    api.headers.Authorization = `Bearer ${tokens.token}`
-  }
+export const updateApiState = () => {
+  api.resolve(true)
 }
 
 export type ApiResponse<T> = ApiErrorResponse | ApiOkResponse<T>
@@ -69,8 +89,10 @@ export type ApiResponse<T> = ApiErrorResponse | ApiOkResponse<T>
 export interface ApiOkResponse<T> {
   ok: true
   data: T
+  status: number
 }
 
 export interface ApiErrorResponse {
   ok: false
+  status: number
 }
