@@ -5,7 +5,13 @@ import { Place, PlaceSortOrder } from './types'
 
 export const createMapUri = (place: Place) => {
   // syntax bounds=latLowerLeft,lngLowerLeft,latUpperRight,lngUpperRight
-  const coordinates = `${place.boundaryMinLatitude},${place.boundaryMinLongitude},${place.boundaryMaxLatitude},${place.boundaryMaxLongitude}`
+  let coordinates = `${place.boundaryMinLatitude},${place.boundaryMinLongitude},${place.boundaryMaxLatitude},${place.boundaryMaxLongitude}`
+  // If longitude crosses 180th meridian, apply correction
+  if (place.boundaryMaxLongitude < place.boundaryMinLongitude) {
+    coordinates = `${place.boundaryMinLatitude},${place.boundaryMinLongitude},${
+      place.boundaryMaxLatitude
+    },${place.boundaryMaxLongitude + 360}`
+  }
   return generatePath('/map?bounds=:coords', { coords: coordinates })
 }
 
