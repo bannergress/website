@@ -21,6 +21,7 @@ import { hasLatLng } from '../map-detail/showBannerRouteOnMap'
 import './banner-info-card.less'
 import IfUserLoggedIn from '../login/if-user-logged-in'
 import { Distance } from '../distance/Distance'
+import { Duration } from '../duration/Duration'
 
 const getAgents = (banner: Banner) =>
   _(mapMissions(banner.missions, (mission) => mission?.author))
@@ -141,21 +142,6 @@ const getTotalTime = (banner: Banner) => {
   return 0
 }
 
-const formatTime = (time: number) => {
-  let s = time
-  const ms = s % 1000
-  s = (s - ms) / 1000
-  const secs = s % 60
-  s = (s - secs) / 60
-  const mins = s % 60
-  s = (s - mins) / 60
-  const hrs = s % 24
-  s = (s - hrs) / 24
-  const days = s
-
-  return `${days ? `${days} d ` : ''}${hrs ? `${hrs} h ` : ''}${mins} min`
-}
-
 const getInGameTime = (banner: Banner) => {
   const totalTimeInMS =
     banner.averageDurationMilliseconds ?? getTotalTime(banner)
@@ -166,7 +152,9 @@ const getInGameTime = (banner: Banner) => {
         <SVGTimer />
       </div>
       <div className="info-title">In-game Time</div>
-      <div className="info-content">{formatTime(totalTimeInMS)}</div>
+      <div className="info-content">
+        <Duration durationMilliseconds={totalTimeInMS} />
+      </div>
     </div>
   )
 }
