@@ -9,6 +9,7 @@
     "@react-leaflet/core": "^1.0.2",
     "@types/enzyme": "~3.10.8",
     "@types/jest": "~26.0.23",
+    "@types/leaflet-loading": "^0.1.0",
     "@types/leaflet.markercluster": "^1.4.4",
     "@types/node": "~14.14.44",
     "@types/react": "~17.0.5",

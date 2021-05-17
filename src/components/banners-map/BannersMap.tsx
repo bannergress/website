@@ -2,7 +2,6 @@ import React, { Fragment } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { divIcon, LatLng, LatLngBounds, Map as LeafletMap } from 'leaflet'
 import { MapContainer, Pane, TileLayer } from 'react-leaflet'
-import 'leaflet-loading'
 import _ from 'underscore'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 
@@ -11,6 +10,7 @@ import BannerMarker from './BannerMarker'
 import { showBannerRouteOnMap } from '../map-detail/showBannerRouteOnMap'
 import { getAttributionLayer } from '../map-detail/getAttributionLayer'
 import { LocateControl } from '../locate'
+import { MapLoadingControl } from '../map-loading-control'
 
 import './banners-map.less'
 import 'leaflet/dist/leaflet.css'
@@ -174,12 +174,11 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
         <MapContainer
           {...startParams}
           whenCreated={this.onMapCreated}
-          // @ts-ignore
-          loadingControl
           minZoom={3}
           worldCopyJump
         >
           <LocateControl />
+          <MapLoadingControl />
           {getAttributionLayer()}
           <Pane name="finalPane" style={{ zIndex: 580 }} />
           <MarkerClusterGroup
