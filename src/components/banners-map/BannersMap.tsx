@@ -171,6 +171,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
           // @ts-ignore
           loadingControl
           minZoom={3}
+          worldCopyJump
         >
           {getAttributionLayer()}
           <Pane name="finalPane" style={{ zIndex: 580 }} />

@@ -57,11 +57,29 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     if (bounds) {
       this.setState({ status: 'loading' })
       try {
+        const norhtEast = bounds.getNorthEast()
+        const southWest = bounds.getSouthWest()
+        if (norhtEast.lng > 180) {
+          await fetchBanners(
+            norhtEast.lat,
+            norhtEast.lng - 360,
+            southWest.lat,
+            -180
+          )
+        }
+        if (southWest.lng < -180) {
+          await fetchBanners(
+            norhtEast.lat,
+            180,
+            southWest.lat,
+            southWest.lng + 360
+          )
+        }
         await fetchBanners(
-          bounds.getNorth(),
-          bounds.getEast(),
-          bounds.getSouth(),
-          bounds.getWest()
+          norhtEast.lat,
+          norhtEast.lng,
+          southWest.lat,
+          southWest.lng
         )
         this.setState({ status: 'ready' })
       } catch {
@@ -76,14 +94,42 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     let banners: Array<Banner> = []
     const boundsToUse = selectedBounds ?? bounds
     if (boundsToUse) {
+      const norhtEast = boundsToUse.getNorthEast()
+      const southWest = boundsToUse.getSouthWest()
+      // If there are banners on the other side of the new day line, show them with modified coordinates
+      if (norhtEast.lng > 180) {
+        const bannersAux = getBanners(
+          norhtEast.lat,
+          norhtEast.lng - 360,
+          southWest.lat,
+          -180
+        )
+        banners = extendSorted(
+          bannersAux.map((b) => ({
+            ...b,
+            startLongitude: b.startLongitude + 360,
+          })),
+          banners
+        )
+      }
+      if (southWest.lng < -180) {
+        const bannersAux = getBanners(
+          norhtEast.lat,
+          180,
+          southWest.lat,
+          southWest.lng + 360
+        )
+        banners = extendSorted(
+          bannersAux.map((b) => ({
+            ...b,
+            startLongitude: b.startLongitude - 360,
+          })),
+          banners
+        )
+      }
       banners = extendSorted(
-        getBanners(
-          boundsToUse.getNorth(),
-          boundsToUse.getEast(),
-          boundsToUse.getSouth(),
-          boundsToUse.getWest()
-        ),
-        []
+        getBanners(norhtEast.lat, norhtEast.lng, southWest.lat, southWest.lng),
+        banners
       )
     }
     if (selectedBannerId) {
