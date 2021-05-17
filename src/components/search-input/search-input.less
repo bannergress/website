@@ -45,7 +45,13 @@
         padding-right: 12px;
         fill: #1B1B1B;
 
-        &:hover, &:focus {
+        @media (hover: hover) and (pointer: fine) {
+            &:hover {
+                .search-input-button-highlighted()
+            }
+        }
+        
+        &:focus {
             .search-input-button-highlighted()
         }
     }

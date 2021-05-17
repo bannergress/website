@@ -24,12 +24,14 @@
     }
   }
 
-  & a:hover {
-    background: rgba(29,165,122,.3);
-    color: white;
-  
-    & > .icon {
-      fill: white;
+  @media (hover: hover) and (pointer: fine) {
+    & a:hover {
+      background: rgba(29,165,122,.3);
+      color: white;
+    
+      & > .icon {
+        fill: white;
+      }
     }
   }
 
@@ -37,6 +39,7 @@
     width: 24px;
     height: 24px;
   }
+
 }
 
 .bottom-menu .menu-main > a {
