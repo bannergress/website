@@ -28,7 +28,7 @@ const FooterMain: React.FC = () => {
         <a href="https://t.me/bannergressnews" target="_blank" rel="noreferrer">
           <SVGTelegram />
         </a>
-        <a href="https://inte.ingress.com" target="_blank" rel="noreferrer">
+        <a href="https://intel.ingress.com" target="_blank" rel="noreferrer">
           <SVGIntel />
         </a>
       </div>
