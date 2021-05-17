@@ -563,6 +563,10 @@ class CreateBanner extends React.Component<
             <Input.TextArea
               placeholder="Start typing..."
               value={bannerDescription}
+              /* Note: The antd minRows seems to have a -1 bug on Firefox. Shows always one fewer row than specified.
+              Works well on other browser https://github.com/ant-design/ant-design/issues/30559  */
+              autoSize={{ minRows: 2 }}
+              maxLength={2000}
               onChange={(e) =>
                 this.onInputChange(e.target.value, 'bannerDescription')
               }
