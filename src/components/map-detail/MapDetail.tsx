@@ -91,13 +91,10 @@ export class MapDetail extends React.Component<MapDetailProps> {
           <Pane name="poi" style={{ zIndex: 550 }}>
             {banner.missions &&
               openedMissionIndexes &&
-              openedMissionIndexes.length > 0 && (
-                <MapCluster pane="poi">
-                  {showMissionPortalsAndRoutes(
-                    banner.missions,
-                    openedMissionIndexes
-                  )}
-                </MapCluster>
+              openedMissionIndexes.length > 0 &&
+              showMissionPortalsAndRoutes(
+                banner.missions,
+                openedMissionIndexes
               )}
           </Pane>
           <Pane name="finalPane" style={{ zIndex: 580 }} />
