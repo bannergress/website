@@ -68,15 +68,21 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
         const initialBoundArray = bounds.split(',')
 
         if (initialBoundArray.length === 4) {
+          const minLat = Number(initialBoundArray[0])
+          let minLng = Number(initialBoundArray[1])
+          const maxLat = Number(initialBoundArray[2])
+          let maxLng = Number(initialBoundArray[3])
+          // If longitude crosses 180th meridian, apply correction
+          if (maxLng < minLng) {
+            if (Math.abs(maxLng) < Math.abs(minLng)) {
+              minLng -= 360
+            } else {
+              maxLng += 360
+            }
+          }
           result = new LatLngBounds(
-            new LatLng(
-              Number(initialBoundArray[0]),
-              Number(initialBoundArray[1])
-            ),
-            new LatLng(
-              Number(initialBoundArray[2]),
-              Number(initialBoundArray[3])
-            )
+            new LatLng(minLat, minLng),
+            new LatLng(maxLat, maxLng)
           )
         }
       } catch (error) {

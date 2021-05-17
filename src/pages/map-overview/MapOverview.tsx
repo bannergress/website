@@ -59,27 +59,14 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
       try {
         const norhtEast = bounds.getNorthEast()
         const southWest = bounds.getSouthWest()
-        if (norhtEast.lng > 180) {
-          await fetchBanners(
-            norhtEast.lat,
-            norhtEast.lng - 360,
-            southWest.lat,
-            -180
-          )
-        }
-        if (southWest.lng < -180) {
-          await fetchBanners(
-            norhtEast.lat,
-            180,
-            southWest.lat,
-            southWest.lng + 360
-          )
+        if (Math.abs(norhtEast.lng - southWest.lng) >= 360) {
+          await fetchBanners(norhtEast.lat, 180, southWest.lat, -180)
         }
         await fetchBanners(
           norhtEast.lat,
-          norhtEast.lng,
+          norhtEast.wrap().lng,
           southWest.lat,
-          southWest.lng
+          southWest.wrap().lng
         )
         this.setState({ status: 'ready' })
       } catch {
