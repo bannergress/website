@@ -8,12 +8,12 @@ import MarkerClusterGroup from 'react-leaflet-cluster'
 
 import { Banner, getBannerBounds } from '../../features/banner'
 import BannerMarker from './BannerMarker'
-
-import './banners-map.less'
-
-import 'leaflet/dist/leaflet.css'
 import { showBannerRouteOnMap } from '../map-detail/showBannerRouteOnMap'
 import { getAttributionLayer } from '../map-detail/getAttributionLayer'
+import { LocateControl } from '../locate'
+
+import './banners-map.less'
+import 'leaflet/dist/leaflet.css'
 
 class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   private map: LeafletMap | undefined = undefined
@@ -179,6 +179,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
           minZoom={3}
           worldCopyJump
         >
+          <LocateControl />
           {getAttributionLayer()}
           <Pane name="finalPane" style={{ zIndex: 580 }} />
           <MarkerClusterGroup
