@@ -92,26 +92,28 @@ function scoreAsMission(
     score *= 1 - candidate.parsed * 0.0001
   }
   // Score with respect to the same number type in other missions
-  const overallScore =
-    extractionResult.results
-      .map((missionExtractionResult) => {
-        return missionExtractionResult
-          .remainingNumberCandidates!.map((otherCandidates) => {
-            if (
-              otherCandidates.parsed !== candidate.parsed &&
-              otherCandidates.type === candidate.type
-            ) {
-              return Math.max(
-                0,
-                1 - 0.01 * Math.abs(candidate.start - otherCandidates.start)
-              )
-            }
-            return 0
-          })
-          .reduce((a, b) => Math.max(a, b), 0)
-      })
-      .reduce((a, b) => a + b, 0) / extractionResult.results.length
-  score *= overallScore
+  if (extractionResult.results.length >= 2) {
+    const overallScore =
+      extractionResult.results
+        .map((missionExtractionResult) => {
+          return missionExtractionResult
+            .remainingNumberCandidates!.map((otherCandidates) => {
+              if (
+                otherCandidates.parsed !== candidate.parsed &&
+                otherCandidates.type === candidate.type
+              ) {
+                return Math.max(
+                  0,
+                  1 - 0.01 * Math.abs(candidate.start - otherCandidates.start)
+                )
+              }
+              return 0
+            })
+            .reduce((a, b) => Math.max(a, b), 0)
+        })
+        .reduce((a, b) => a + b) / extractionResult.results.length
+    score *= overallScore
+  }
   return score
 }
 
@@ -123,26 +125,28 @@ function scoreAsTotal(
     return 0
   }
   let score = extractors[candidate.type].baseScoreFunction(candidate.raw)
-  const overallScore =
-    extractionResult.results
-      .map((missionExtractionResult) => {
-        return missionExtractionResult
-          .remainingNumberCandidates!.map((otherCandidates) => {
-            if (
-              otherCandidates.parsed === candidate.parsed &&
-              otherCandidates.type === candidate.type
-            ) {
-              return Math.max(
-                0,
-                1 - 0.01 * Math.abs(candidate.start - otherCandidates.start)
-              )
-            }
-            return 0
-          })
-          .reduce((a, b) => Math.max(a, b), 0)
-      })
-      .reduce((a, b) => a + b, 0) / extractionResult.results.length
-  score *= overallScore
+  if (extractionResult.results.length >= 2) {
+    const overallScore =
+      extractionResult.results
+        .map((missionExtractionResult) => {
+          return missionExtractionResult
+            .remainingNumberCandidates!.map((otherCandidates) => {
+              if (
+                otherCandidates.parsed === candidate.parsed &&
+                otherCandidates.type === candidate.type
+              ) {
+                return Math.max(
+                  0,
+                  1 - 0.01 * Math.abs(candidate.start - otherCandidates.start)
+                )
+              }
+              return 0
+            })
+            .reduce((a, b) => Math.max(a, b), 0)
+        })
+        .reduce((a, b) => a + b, 0) / extractionResult.results.length
+    score *= overallScore
+  }
   return score
 }
 
@@ -272,26 +276,21 @@ function extractCandidateTitles(
         if (secondCandidate) {
           candidateTitles.push(secondCandidate)
         }
-      } else {
-        // Consider all prefixes of the title ending at word boundaries
-        const regexp = /\b./g
-        let match = regexp.exec(prevER.title)
-        let lastRaw
-        while (match !== null) {
-          const candidate = toTitleCandidate(
-            prevER.title,
-            false,
-            true,
-            0,
-            match.index
-          )
-          if (candidate && candidate.raw !== lastRaw) {
-            lastRaw = candidate.raw
+      } else if (prevExtractionResult.results.length >= 2) {
+        // Consider all prefixes of the title
+        for (let i = prevER.title.length; i >= 1; i -= 1) {
+          const candidate = toTitleCandidate(prevER.title, false, true, 0, i)
+          if (candidate && candidate.raw.length === i) {
             candidateTitles.push(candidate)
           }
-          match = regexp.exec(prevER.title)
         }
-        candidateTitles.reverse()
+        // Consider all proper suffixes of the title
+        for (let i = 1; i < prevER.title.length; i += 1) {
+          const candidate = toTitleCandidate(prevER.title, true, false, i)
+          if (candidate && candidate.raw.length === prevER.title.length - i) {
+            candidateTitles.push(candidate)
+          }
+        }
       }
       return {
         ...prevER,
@@ -318,8 +317,12 @@ function extractBestTitle(
   let bestTitles: string[] = []
   let bestCount = 0
   counts.forEach((count, title) => {
-    if (count === bestCount) {
-      if (!bestTitles.length || bestTitles[0].indexOf(title) === -1) {
+    if (count === bestCount && count >= 2) {
+      if (
+        !bestTitles.length ||
+        bestTitles.findIndex((bestTitle) => bestTitle.indexOf(title) !== -1) ===
+          -1
+      ) {
         bestTitles.push(title)
       }
     } else if (count > bestCount) {
@@ -329,7 +332,7 @@ function extractBestTitle(
   })
   return {
     ...prevExtractionResult,
-    title: bestTitles.join(' / '),
+    title: bestTitles.length <= 2 ? bestTitles.join(' / ') : undefined,
   }
 }
 
