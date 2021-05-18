@@ -177,6 +177,8 @@ const getObjectiveName = (objective: Objective) => {
       return 'Take Photo'
     case 'viewWaypoint':
       return 'View Waypoint'
+    case 'hidden':
+      return 'Hidden'
     default:
       return ''
   }
@@ -186,7 +188,7 @@ const getActions = (banner: Banner) => {
   const types = _(mapMissions(banner.missions, (mission) => mission?.steps))
     .chain()
     .flatten()
-    .map((step) => step.objective)
+    .map((step) => step.objective || 'hidden')
     .countBy()
     .value()
   const keys = Object.keys(types) as Array<Objective>
@@ -230,13 +232,20 @@ const getUniqueVisits = (banner: Banner) => {
     .uniq(false, (poi) => poi!.id)
     .value().length
 
+  const hasHidden = _(
+    mapMissions(banner.missions, (mission) => mission?.type === 'hidden')
+  ).any((t) => t)
+
   return (
     <div className="info-row">
       <div className="info-icon">
         <SVGCompass />
       </div>
       <div className="info-title">Unique Visits</div>
-      <div className="info-content">{count}</div>
+      <div className="info-content">
+        {count}
+        {hasHidden && '+'}
+      </div>
     </div>
   )
 }

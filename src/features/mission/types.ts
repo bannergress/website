@@ -42,6 +42,7 @@ export type Objective =
   | 'takePhoto'
   | 'viewWaypoint'
   | 'enterPassphrase'
+  | 'hidden'
 
 export type MissionType = 'hidden' | 'anyOrder' | 'sequential'
 
