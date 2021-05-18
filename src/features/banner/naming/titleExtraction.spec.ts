@@ -669,4 +669,19 @@ describe('features > banner > naming > titleExtraction', () => {
     const result = extract(input)
     expect(result.title).toEqual('MD 2019: Nuremberg')
   })
+  it(`handles Source des Célestins`, () => {
+    const input = new Array(60)
+      .fill(0)
+      .map(
+        (unused, index) =>
+          `${String(index + 1).padStart(2, '0')} - Source des Célestins`
+      )
+    const result = extract(input)
+    expect(result.title).toEqual('Source des Célestins')
+  })
+  it(`handles Breda de Vesting`, () => {
+    const input = ['1 Breda de Vesting']
+    const result = extract(input)
+    expect(result.title).toEqual('Breda de Vesting')
+  })
 })

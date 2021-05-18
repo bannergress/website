@@ -65,7 +65,7 @@ function parsePart(part: string | undefined) {
 }
 
 const extractor: NumberCandidateExtractor = {
-  regexp: /\b(?:(I[VX]|VI{0,3}|I{1,3})|(?:(X[LC]|LX{0,3}|X{1,3})(I[VX]|V?I{0,3}))|(?:(C[DM]|DC{0,3}|C{1,3})(X[LC]|L?X{0,3})(I[VX]|V?I{0,3}))|(?:(M+)(C[DM]|D?C{0,3})(X[LC]|L?X{0,3})(I[VX]|V?I{0,3})))\b/gi,
+  regexp: /(?<!\p{L})(?:(I[VX]|VI{0,3}|I{1,3})|(?:(X[LC]|LX{0,3}|X{1,3})(I[VX]|V?I{0,3}))|(?:(C[DM]|DC{0,3}|C{1,3})(X[LC]|L?X{0,3})(I[VX]|V?I{0,3}))|(?:(M+)(C[DM]|D?C{0,3})(X[LC]|L?X{0,3})(I[VX]|V?I{0,3})))(?!\p{L})/giu,
   parseFunction: (match) => {
     let result = 0
     match.slice(1).forEach((p) => {
