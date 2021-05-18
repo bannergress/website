@@ -1,6 +1,10 @@
 import React, { FC } from 'react'
 
-import { Step, Objective } from '../../features/mission'
+import { POI, Step, Objective } from '../../features/mission'
+import {
+  createExternalNavigationUri,
+  getExternalLinkAttributes,
+} from '../../features/utils'
 
 import './step-card.less'
 
@@ -27,6 +31,21 @@ const toObjective = (objective: Objective) => {
   }
 }
 
+const getStepNameLink = (title: string, poi?: POI) => {
+  if (poi && poi.type !== 'unavailable') {
+    return (
+      <a
+        {...getExternalLinkAttributes()}
+        href={createExternalNavigationUri(poi.latitude, poi.longitude)}
+      >
+        {title}
+      </a>
+    )
+  }
+
+  return title
+}
+
 const StepCard: FC<StepProps> = ({ step }) => {
   let className
   let title
@@ -44,7 +63,7 @@ const StepCard: FC<StepProps> = ({ step }) => {
   }
   return (
     <div className={`step-card ${className}`}>
-      <div className="step-card-title">{title}</div>
+      <div className="step-card-title">{getStepNameLink(title, step.poi)}</div>
       <div className="step-card-objective">
         {step.objective && toObjective(step.objective)}
       </div>

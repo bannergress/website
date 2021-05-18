@@ -1,0 +1,51 @@
+.mission-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  svg {
+    display: flex;
+    height: 1.2em;
+    min-width: 2em;
+  }
+  
+  .mission-info-markedoffline {
+    color: #FF2F2F;
+  }
+  
+  .mission-info-intel {
+    display: flex;
+    flex-direction: row;
+    color: #15D4B2;
+
+    align-content: center;
+
+    a:any-link {
+      color: #15D4B2;
+      text-decoration: underline;
+    }
+
+    svg {
+      fill-opacity: initial;
+    }
+
+  }
+
+  .mission-info-stats {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .mission-info-logo-and-text {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+
+    &  div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+}
+

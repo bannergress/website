@@ -129,3 +129,7 @@ export const getAvailableSteps: (mission: Mission) => AvailableStep[] = (
 
   return []
 }
+
+export const createMissionIntelLink = (missionId: string) => {
+  return `https://intel.ingress.com/mission/${missionId}`
+}

@@ -2,6 +2,9 @@ import React from 'react'
 
 import FooterMain from '../../components/footer-main'
 import { AllQuestions } from './AllQuestions'
+
+import { getExternalLinkAttributes } from '../../features/utils'
+
 import { ReactComponent as SVGTimer } from '../../img/icons/telegram.svg'
 
 import './help.less'
@@ -18,8 +21,7 @@ const Help: React.FC = () => {
           <div className="faq-question">
             <a
               className="faq-question-title faq-question-link"
-              target="_blank"
-              rel="noreferrer"
+              {...getExternalLinkAttributes()}
               href="https://t.me/bannergressnews"
             >
               <SVGTimer />
@@ -29,8 +31,7 @@ const Help: React.FC = () => {
           <div className="faq-question">
             <a
               className="faq-question-title faq-question-link"
-              target="_blank"
-              rel="noreferrer"
+              {...getExternalLinkAttributes()}
               href="https://t.me/joinchat/_LDAw8VdJgFkMzI6"
             >
               <SVGTimer />

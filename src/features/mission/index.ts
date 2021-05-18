@@ -22,6 +22,7 @@ import {
   getFirstAvailableStep,
   getLastAvailableStep,
   getAvailableSteps,
+  createMissionIntelLink,
 } from './helpers'
 
 export { default as MissionReducer } from './reducer'
@@ -52,4 +53,5 @@ export {
   getFirstAvailableStep,
   getLastAvailableStep,
   getAvailableSteps,
+  createMissionIntelLink,
 }

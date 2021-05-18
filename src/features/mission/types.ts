@@ -58,6 +58,7 @@ export interface Mission {
   online?: Boolean
   author?: NamedAgent
   averageDurationMilliseconds?: number
+  lengthMeters?: number
 }
 
 export interface MissionState {

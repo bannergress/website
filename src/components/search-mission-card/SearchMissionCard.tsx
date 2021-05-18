@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
 import { Button } from 'antd'
 
-import { Mission } from '../../features/mission'
+import { Mission, createMissionIntelLink } from '../../features/mission'
+import { getExternalLinkAttributes } from '../../features/utils'
 import { Agent } from '../agent/Agent'
 import MissionImage from '../mission-image/MissionImage'
 import { ReactComponent as SVGIntel } from '../../img/icons/intel.svg'
@@ -12,9 +13,8 @@ const getMissionIntelLink = (mission: Mission) => {
   if (mission.id) {
     return (
       <a
-        href={`https://intel.ingress.com/mission/${mission.id}`}
-        target="_blank"
-        rel="noreferrer"
+        {...getExternalLinkAttributes()}
+        href={createMissionIntelLink(mission.id)}
       >
         <SVGIntel />
       </a>

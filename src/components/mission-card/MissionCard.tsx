@@ -3,6 +3,7 @@ import React from 'react'
 import { Mission } from '../../features/mission'
 import MissionImage from '../mission-image/MissionImage'
 import StepList from '../step-list'
+import MissionInfo from '../mission-info'
 import { ReactComponent as SVGChevron } from '../../img/icons/chevron.svg'
 
 import './mission-card.less'
@@ -28,7 +29,12 @@ const MissionCard: React.FC<MissionCardProps> = ({
           </div>
         )}
       </button>
-      {expanded && <StepList steps={mission?.steps} />}
+      {expanded && mission && (
+        <>
+          <MissionInfo mission={mission} />
+          <StepList steps={mission?.steps} />
+        </>
+      )}
     </div>
   )
 }

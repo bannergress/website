@@ -1,7 +1,6 @@
 import React, { FC, Fragment } from 'react'
 import _ from 'underscore'
 import { LatLng } from 'leaflet'
-
 import { Banner } from '../../features/banner'
 import {
   mapMissions,
@@ -10,6 +9,10 @@ import {
   POI,
   PortalPOI,
 } from '../../features/mission'
+import {
+  createExternalNavigationUri,
+  getExternalLinkAttributes,
+} from '../../features/utils'
 import { ReactComponent as SVGList } from '../../img/icons/list.svg'
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGTimer } from '../../img/icons/timer.svg'
@@ -263,16 +266,15 @@ const getStartPointButton = (banner: Banner) => {
     }
   }
   if (firstPOI && firstPOI.type !== 'unavailable') {
-    url = `https://www.google.com/maps/search/?api=1&query=${firstPOI.latitude},${firstPOI.longitude}`
+    url = createExternalNavigationUri(firstPOI.latitude, firstPOI.longitude)
   }
   return (
     <>
       {url && (
         <a
+          {...getExternalLinkAttributes()}
           className="banner-info-button"
           href={url}
-          target="_blank"
-          rel="noreferer noreferrer"
         >
           Go to Banner Starting Point
         </a>
