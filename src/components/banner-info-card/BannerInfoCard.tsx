@@ -60,7 +60,7 @@ const getMissionTypes = (banner: Banner) => {
           <SVGList />
         </div>
         <div className="info-title">
-          Mission Type{keys.length > 1 ? '(s)' : ''}
+          {keys.length > 1 ? 'Mission Types' : 'Mission Type'}
         </div>
         {keys.length === 1 && (
           <div className="info-content">{getTypeName(keys[0])}</div>
