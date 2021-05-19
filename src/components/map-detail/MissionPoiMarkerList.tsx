@@ -13,22 +13,29 @@ const MissionPoiMarkerList: FC<MissionPoiMarkerListProps> = ({
 }) => {
   const ctx = useLeafletContext()
   const { map } = ctx
+  const [bounds, setBounds] = useState(map.getBounds())
   const [zoom, setZoom] = useState(map.getZoom())
   const [lines, setLines] = useState<Array<Line>>([])
   const [pois, setPois] = useState<Array<AvailableStep>>([])
 
   useEffect(() => {
-    map.addEventListener('zoom', (e) => setZoom(e.target.getZoom()))
-    if (zoom >= 14) {
+    map.addEventListener('zoom', (e) => setBounds(e.target.getBounds()))
+    map.addEventListener('dragend', (e) => setBounds(e.target.getBounds()))
+  }, [map])
+
+  useEffect(() => {
+    const boundsZoom = map.getBoundsZoom(bounds)
+    setZoom(boundsZoom)
+    if (boundsZoom >= 14) {
       const [l, p] = getMissionPortalsAndRoutes(
         missions,
         openedMissionIndexes,
-        map.getBounds()
+        bounds
       )
       setLines(l)
       setPois(p)
     }
-  }, [map, zoom, missions, openedMissionIndexes])
+  }, [map, bounds, missions, openedMissionIndexes])
 
   return useMemo(() => {
     if (zoom < 14) {
