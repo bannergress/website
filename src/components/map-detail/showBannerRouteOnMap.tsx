@@ -4,12 +4,7 @@ import { Polyline, Tooltip } from 'react-leaflet'
 import _ from 'underscore'
 
 import { Banner } from '../../features/banner'
-import {
-  mapMissions,
-  Step,
-  getFirstAvailableStep,
-  getLastAvailableStep,
-} from '../../features/mission'
+import { mapMissions, Step, getAvailableSteps } from '../../features/mission'
 import SquareMarker from './SquareMarker'
 
 export const hasLatLng = (step: Step) =>
@@ -24,26 +19,28 @@ export const showBannerRouteOnMap = (
   color: 'green' | 'blue'
 ) => {
   const missionMultiPolylines: LatLng[][] = [[]]
-  let lastMissionCoords: LatLng | undefined
   let lastMissionTitle: string | undefined
+
   mapMissions(banner.missions, (mission, index) => {
     if (mission) {
-      const { steps } = mission
-      if (steps) {
-        const firstPOI = getFirstAvailableStep(mission)?.poi
-        const lastPOI = getLastAvailableStep(mission)?.poi
+      const availableSteps = getAvailableSteps(mission)
+
+      if (availableSteps && availableSteps.length) {
+        const firstPOI = availableSteps[0].poi
         if (firstPOI) {
           missionMultiPolylines[missionMultiPolylines.length - 1].push(
             new LatLng(firstPOI.latitude, firstPOI.longitude)
           )
         }
+
+        missionMultiPolylines.push(
+          availableSteps.map((p) => new LatLng(p.poi.latitude, p.poi.longitude))
+        )
+
+        const lastPOI = _.last(availableSteps)!.poi
         if (lastPOI) {
-          lastMissionCoords = new LatLng(lastPOI.latitude, lastPOI.longitude)
           if (openedMissionIndexes.includes(index)) {
             lastMissionTitle = lastPOI.title
-            missionMultiPolylines.push([
-              new LatLng(lastPOI.latitude, lastPOI.longitude),
-            ])
           } else {
             lastMissionTitle = undefined
           }
@@ -55,11 +52,7 @@ export const showBannerRouteOnMap = (
     color: 'rgba(0, 0, 0, 0.4)',
     weight: 4,
   }
-  if (lastMissionCoords) {
-    missionMultiPolylines[missionMultiPolylines.length - 1].push(
-      lastMissionCoords
-    )
-  }
+
   if (missionMultiPolylines && missionMultiPolylines.length) {
     const lastCoordinates = _.last(_.last(missionMultiPolylines) as LatLng[])
     return (
