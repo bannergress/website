@@ -1,6 +1,6 @@
 import React from 'react'
-import { LatLng, LatLngBounds } from 'leaflet'
-import { Marker, Polyline, Tooltip } from 'react-leaflet'
+import { LatLng, LatLngBounds, PathOptions } from 'leaflet'
+import { Marker, Tooltip } from 'react-leaflet'
 import _ from 'underscore'
 
 import { NumDictionary } from '../../features/banner'
@@ -11,7 +11,6 @@ import {
   getAvailableSteps,
   AvailableStep,
 } from '../../features/mission'
-import POIMarker from './POIMarker'
 import { MissionMarkerData, setMarkerData } from './MarkerData'
 import { getMarkerDataIcon } from './MarkerIcons'
 
@@ -70,13 +69,20 @@ export const showMissionStartPointsOnMap = (
   })
 }
 
-export const showMissionPortalsAndRoutes = (
+interface Line {
+  key: string
+  options: PathOptions
+  route: Array<LatLng>
+  title: string
+}
+
+export const getMissionPortalsAndRoutes = (
   missions: NumDictionary<Mission>,
   indexes: Array<number>,
   bounds: LatLngBounds
-) => {
-  let pois: AvailableStep[] = []
-  const lines: Array<JSX.Element> = []
+): [Array<Line>, Array<AvailableStep>] => {
+  let pois: Array<AvailableStep> = []
+  const lines: Array<Line> = []
   const lineStyle = {
     color: 'rgba(27, 27, 27, 0.8)',
     weight: 6,
@@ -97,17 +103,13 @@ export const showMissionPortalsAndRoutes = (
       )
       if (visibleSteps.length > 0) {
         lineStyle.dashArray = mission.type === 'sequential' ? '0' : '10'
-        lines.push(
-          <Polyline
-            key={`mission-route-${mission.id}`}
-            pathOptions={{ ...lineStyle }}
-            positions={missionRoute}
-          >
-            <Tooltip sticky pane="tooltipPane">
-              {mission.title}
-            </Tooltip>
-          </Polyline>
-        )
+        lines.push({
+          key: `mission-route-${mission.id}`,
+          options: { ...lineStyle },
+          route: missionRoute,
+          title: mission.title,
+        })
+
         pois = _(pois)
           .chain()
           .union(visibleSteps)
@@ -117,12 +119,5 @@ export const showMissionPortalsAndRoutes = (
     }
   })
 
-  return (
-    <>
-      {lines}
-      {pois.map((step) => (
-        <POIMarker key={step.poi.id} poi={step.poi} />
-      ))}
-    </>
-  )
+  return [lines, pois]
 }
