@@ -1,5 +1,5 @@
 import React from 'react'
-import { LatLng } from 'leaflet'
+import { LatLng, LatLngBounds } from 'leaflet'
 import { Marker, Polyline, Tooltip } from 'react-leaflet'
 import _ from 'underscore'
 
@@ -72,7 +72,8 @@ export const showMissionStartPointsOnMap = (
 
 export const showMissionPortalsAndRoutes = (
   missions: NumDictionary<Mission>,
-  indexes: Array<number>
+  indexes: Array<number>,
+  bounds: LatLngBounds
 ) => {
   let pois: AvailableStep[] = []
   const lines: Array<JSX.Element> = []
@@ -87,27 +88,33 @@ export const showMissionPortalsAndRoutes = (
     const availableSteps = getAvailableSteps(mission)
 
     if (availableSteps && availableSteps.length) {
-      lineStyle.dashArray = mission.type === 'sequential' ? '0' : '10'
-      lines.push(
-        <Polyline
-          key={`mission-route-${mission.id}`}
-          pathOptions={{ ...lineStyle }}
-          positions={availableSteps.map(
-            (p) => new LatLng(p.poi.latitude, p.poi.longitude)
-          )}
-        >
-          <Tooltip sticky pane="tooltipPane">
-            {mission.title}
-          </Tooltip>
-        </Polyline>
+      const missionRoute = availableSteps.map(
+        (p) => new LatLng(p.poi.latitude, p.poi.longitude)
       )
+      // Only show visible markers and lines in map
+      const visibleSteps = availableSteps.filter((s) =>
+        bounds.contains(new LatLng(s.poi.latitude, s.poi.longitude))
+      )
+      if (visibleSteps.length > 0) {
+        lineStyle.dashArray = mission.type === 'sequential' ? '0' : '10'
+        lines.push(
+          <Polyline
+            key={`mission-route-${mission.id}`}
+            pathOptions={{ ...lineStyle }}
+            positions={missionRoute}
+          >
+            <Tooltip sticky pane="tooltipPane">
+              {mission.title}
+            </Tooltip>
+          </Polyline>
+        )
+        pois = _(pois)
+          .chain()
+          .union(visibleSteps)
+          .uniq(false, (p) => p.poi.id)
+          .value()
+      }
     }
-
-    pois = _(pois)
-      .chain()
-      .union(availableSteps)
-      .uniq(false, (p) => p.poi.id)
-      .value()
   })
 
   return (

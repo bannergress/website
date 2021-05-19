@@ -3,13 +3,9 @@ import React, { Fragment } from 'react'
 import { MapContainer, Pane } from 'react-leaflet'
 
 import { Banner } from '../../features/banner'
-import { showBannerRouteOnMap } from './showBannerRouteOnMap'
-import {
-  showMissionPortalsAndRoutes,
-  showMissionStartPointsOnMap,
-} from './showMissionsOnMap'
 import { getAttributionLayer } from './getAttributionLayer'
-import MapCluster from './MapCluster'
+import MissionStartMarkerList from './MissionStartMarkerList'
+import MissionPoiMarkerList from './MissionPoiMarkerList'
 
 import './map.less'
 
@@ -91,25 +87,21 @@ export class MapDetail extends React.Component<MapDetailProps> {
           <Pane name="poi" style={{ zIndex: 550 }}>
             {banner.missions &&
               openedMissionIndexes &&
-              openedMissionIndexes.length > 0 &&
-              showMissionPortalsAndRoutes(
-                banner.missions,
-                openedMissionIndexes
+              openedMissionIndexes.length > 0 && (
+                <MissionPoiMarkerList
+                  missions={banner.missions}
+                  openedMissionIndexes={openedMissionIndexes}
+                />
               )}
           </Pane>
           <Pane name="finalPane" style={{ zIndex: 580 }} />
-          <MapCluster>
-            {banner.missions &&
-              showMissionStartPointsOnMap(
-                banner.missions,
-                openedMissionIndexes,
-                banner.type === 'sequential',
-                onOpenMission
-              )}
-            {banner.missions &&
-              banner.type !== 'anyOrder' &&
-              showBannerRouteOnMap(banner, openedMissionIndexes, 'green')}
-          </MapCluster>
+          {banner.missions && (
+            <MissionStartMarkerList
+              banner={banner}
+              openedMissionIndexes={openedMissionIndexes}
+              onOpenMission={onOpenMission}
+            />
+          )}
         </MapContainer>
       </Fragment>
     )
