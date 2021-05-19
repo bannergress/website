@@ -69,7 +69,7 @@ export const showMissionStartPointsOnMap = (
   })
 }
 
-interface Line {
+export interface Line {
   key: string
   options: PathOptions
   route: Array<LatLng>
