@@ -9,6 +9,8 @@ import { store, persistor } from './store'
 import './index.less'
 import './mobile.less'
 
+import '@fontsource/roboto/index.css'
+
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
