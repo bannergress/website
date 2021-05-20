@@ -9,7 +9,9 @@ import { store, persistor } from './store'
 import './index.less'
 import './mobile.less'
 
-import '@fontsource/roboto/index.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/400-italic.css'
+import '@fontsource/roboto/700.css'
 
 ReactDOM.render(
   <Provider store={store}>
