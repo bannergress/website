@@ -31,15 +31,21 @@ const BannerCard: FC<BannerCardProps> = ({
         />
       )}
       <div className="banner-info-item">
-        <SVGExplorer fill="#1DA57A" className="icon" />
-        {banner?.numberOfMissions} Missions,{' '}
-        {banner && banner.lengthMeters ? (
-          <Distance distanceMeters={banner?.lengthMeters} />
-        ) : null}
+        <div className="banner-info-item-icon">
+          <SVGExplorer className="icon" />
+        </div>
+        <div>
+          {banner?.numberOfMissions} Missions,{' '}
+          {banner && banner.lengthMeters ? (
+            <Distance distanceMeters={banner?.lengthMeters} />
+          ) : null}
+        </div>
       </div>
       <div className="banner-info-item">
-        <SVGPointer fill="#1DA57A" className="icon" />
-        {banner?.formattedAddress}
+        <div className="banner-info-item-icon">
+          <SVGPointer className="icon" />
+        </div>
+        <div>{banner?.formattedAddress}</div>
       </div>
       {selected && detailsUrl && (
         <div className="banner-info-details">

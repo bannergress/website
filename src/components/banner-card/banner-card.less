@@ -19,7 +19,7 @@
   background: #2e2e2e;
   border-radius: 5px;
   border: #2e2e2e 2px solid;
-  padding: 15px;
+  padding: 18px;
   color: white;
 
   &.selected {
@@ -93,15 +93,28 @@
 }
 
 .banner-card-title {
-  font-weight: bold;
+  font-size: 20px;
+  line-height: 21px;
 }
 
 .banner-info-item {
   font-size: 14px;
+  line-height: 18px;
+  color: #DDDDDD;
+  margin-top: 4px;
+  display: flex;
+
+  .banner-info-item-icon {
+    width: 20px;
+
+    .icon {
+      fill: rgb(221, 221, 221);
+    }
+  }
 }
 
 .banner-card-picture {
-  margin: 10px 0;
+  margin: 20px 0;
   display: flex;
   max-width: 100%;
   align-items: center;
@@ -154,5 +167,5 @@
 .banner-card-title, .banner-info-item {
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow-x: hidden;
+  overflow: hidden;
 }
