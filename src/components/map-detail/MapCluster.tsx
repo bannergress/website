@@ -87,17 +87,14 @@ const createClusterTooltip = (cluster: MarkerCluster) => {
       }
     })
     if (hasFinish && ordered) {
-      console.log('finishTooltip')
       tooltip = `Banner ends here`
     }
     if (numMissions) {
-      console.log('xMissionsTooltip')
       tooltip = `${numMissions} mission${
         numMissions > 1 ? 's' : ''
       } starting here${tooltip ? `<br />${tooltip}` : ''}`
     }
     if (hasStart && ordered) {
-      console.log('startTooltip')
       tooltip = `Banner starts here${tooltip ? `<br />${tooltip}` : ''}`
     }
   }
