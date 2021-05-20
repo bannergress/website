@@ -684,4 +684,345 @@ describe('features > banner > naming > titleExtraction', () => {
     const result = extract(input)
     expect(result.title).toEqual('Breda de Vesting')
   })
+  it(`handles Bamberger Dom`, () => {
+    const input = [
+      'Bamberger Dom - I Altes Rathaus',
+      'Bamberger Dom - II Klosterbräu',
+      'Bamberger Dom - III St. Stephan',
+      'Bamberger Dom - IV Kaulberg',
+      'Bamberger Dom - V Domgrund',
+      'Bamberger Dom - VI Dom',
+      'Bamberger Dom - VII Alte Hofhaltung',
+      'Bamberger Dom - VIII Elisabethenkirche',
+      'Bamberger Dom - IX Der Sand',
+      'Bamberger Dom - X Corner Madonna',
+      'Bamberger Dom - XI Die schöne Rubina',
+      'Bamberger Dom - XII Die Häuser',
+      'Bamberger Dom - XIII Well in Concordia',
+      'Bamberger Dom - XIV Portalquelle',
+      'Bamberger Dom - XV Domverwaltung',
+      'Bamberger Dom - XVI Tattermannsäule',
+      'Bamberger Dom - XVII Domplatz',
+      'Bamberger Dom - XVIII Elisabethenkirche',
+      'Bamberger Dom - XIX Schlenkerla',
+      'Bamberger Dom - XX Karolinenstr.',
+      'Bamberger Dom - XXI Schranne',
+      'Bamberger Dom - XXII Böttingerhaus',
+      'Bamberger Dom - XXIII Concordia',
+      'Bamberger Dom - XXIV Portalquelle',
+      'Bamberger Dom - XXV Domverwaltung',
+      'Bamberger Dom - XXVI Bamberger Reiter',
+      'Bamberger Dom - XXVII Domdämon',
+      'Bamberger Dom - XXVIII Ottoplatz',
+      'Bamberger Dom - XXIX Sandstraße',
+      'Bamberger Dom - XXX Madonna',
+    ]
+    const result = extract(input)
+    expect(result).toEqual({
+      results: [
+        {
+          missionMarker: {
+            parsed: 1,
+            raw: 'I',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 2,
+            raw: 'II',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 3,
+            raw: 'III',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 4,
+            raw: 'IV',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 5,
+            raw: 'V',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 6,
+            raw: 'VI',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 7,
+            raw: 'VII',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 8,
+            raw: 'VIII',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 9,
+            raw: 'IX',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 10,
+            raw: 'X',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 11,
+            raw: 'XI',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 12,
+            raw: 'XII',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 13,
+            raw: 'XIII',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 14,
+            raw: 'XIV',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 15,
+            raw: 'XV',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 16,
+            raw: 'XVI',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 17,
+            raw: 'XVII',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 18,
+            raw: 'XVIII',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 19,
+            raw: 'XIX',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 20,
+            raw: 'XX',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 21,
+            raw: 'XXI',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 22,
+            raw: 'XXII',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 23,
+            raw: 'XXIII',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 24,
+            raw: 'XXIV',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 25,
+            raw: 'XXV',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 26,
+            raw: 'XXVI',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 27,
+            raw: 'XXVII',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 28,
+            raw: 'XXVIII',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 29,
+            raw: 'XXIX',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+        {
+          missionMarker: {
+            parsed: 30,
+            raw: 'XXX',
+            start: 16,
+            type: 'romanNumerals',
+          },
+          titleMarker: { raw: 'Bamberger Dom', start: 0 },
+          totalMarker: undefined,
+        },
+      ],
+      title: 'Bamberger Dom',
+      total: undefined,
+    })
+  })
 })

@@ -1,6 +1,6 @@
 export interface NumberCandidateExtractor {
   regexp: RegExp
-  parseFunction: (m: RegExpMatchArray) => number
+  parseFunction: (m: RegExpMatchArray) => number | undefined
   baseScoreFunction: (s: string) => number
 }
 export interface NumberMarker extends PositionMarker {

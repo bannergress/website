@@ -64,9 +64,20 @@ function parsePart(part: string | undefined) {
   }
 }
 
+const letter = /\p{L}/u
+
 const extractor: NumberCandidateExtractor = {
-  regexp: /(?<!\p{L})(?:(I[VX]|VI{0,3}|I{1,3})|(?:(X[LC]|LX{0,3}|X{1,3})(I[VX]|V?I{0,3}))|(?:(C[DM]|DC{0,3}|C{1,3})(X[LC]|L?X{0,3})(I[VX]|V?I{0,3}))|(?:(M+)(C[DM]|D?C{0,3})(X[LC]|L?X{0,3})(I[VX]|V?I{0,3})))(?!\p{L})/giu,
+  regexp: /\b(?:(I[VX]|VI{0,3}|I{1,3})|(?:(X[LC]|LX{0,3}|X{1,3})(I[VX]|V?I{0,3}))|(?:(C[DM]|DC{0,3}|C{1,3})(X[LC]|L?X{0,3})(I[VX]|V?I{0,3}))|(?:(M+)(C[DM]|D?C{0,3})(X[LC]|L?X{0,3})(I[VX]|V?I{0,3})))\b/gi,
   parseFunction: (match) => {
+    // Since \b also matches between latin and non-latin letters,
+    // we need to check whether the roman numeral is preceeded / followed by a non-latin letter.
+    // Not using lookahead / lookbehind since safari does not support them
+    if (
+      letter.test(match.input!.substr(match.index! - 1, 1)) ||
+      letter.test(match.input!.substr(match.index! + match[0].length, 1))
+    ) {
+      return undefined
+    }
     let result = 0
     match.slice(1).forEach((p) => {
       result += parsePart(p)

@@ -25,12 +25,15 @@ function extractCandidateNumbersWithExtractor(
   regexp.lastIndex = 0
   let match = regexp.exec(input)
   while (match !== null) {
-    result.push({
-      type,
-      start: match.index!,
-      raw: match[0],
-      parsed: extractor.parseFunction(match),
-    })
+    const parsed = extractor.parseFunction(match)
+    if (parsed !== undefined) {
+      result.push({
+        type,
+        start: match.index!,
+        raw: match[0],
+        parsed,
+      })
+    }
     match = regexp.exec(input)
   }
   return result
