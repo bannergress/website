@@ -53,6 +53,7 @@ const getImageAnimation = (
 const BannerPicture: FC<BannerPictureProps> = ({
   title,
   url,
+  size,
   showFullImage = false,
 }) => {
   const { ref, inView } = useInView({ threshold: 1 })
@@ -114,7 +115,10 @@ const BannerPicture: FC<BannerPictureProps> = ({
         role="button"
         tabIndex={0}
       >
-        <div ref={innerRef} className="banner-card-picture-inner">
+        <div
+          ref={innerRef}
+          className={`banner-card-picture-inner picture-size-${size}`}
+        >
           <img ref={imgRef} alt={title} src={url} />
         </div>
       </div>
@@ -124,6 +128,7 @@ const BannerPicture: FC<BannerPictureProps> = ({
 
 export interface BannerPictureProps {
   url: string
+  size: number
   title?: string
   showFullImage?: boolean
 }

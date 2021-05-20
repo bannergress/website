@@ -30,7 +30,7 @@
 
 .banner-card-modal {
   height: 95%;
-  
+
   .ant-modal-content {
     height: 100%;
     width: 100%;
@@ -53,7 +53,7 @@
       border: none;
       margin: 0 !important;
       padding: 0 !important;
-      
+
       div {
         margin: 0 !important;
         display: flex;
@@ -64,6 +64,7 @@
         max-height: 100%;
         margin: auto;
       }
+
       &.full-size {
         img {
           max-height: initial;
@@ -80,7 +81,8 @@
       line-height: 1em;
       color: white !important;
 
-      svg, span {
+      svg,
+      span {
         vertical-align: middle;
         display: inline-block;
       }
@@ -118,6 +120,7 @@
   display: flex;
   max-width: 100%;
   align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
@@ -125,9 +128,29 @@
   max-height: 100%;
   max-width: 100%;
 
-  & > img {
+  &>img {
     max-height: 100%;
-    max-width: 100%;  
+    max-width: 100%;
+  }
+
+  &.picture-size-1 {
+    max-width: 17%;
+  }
+
+  &.picture-size-2 {
+    max-width: 33%;
+  }
+
+  &.picture-size-3 {
+    max-width: 50%;
+  }
+
+  &.picture-size-4 {
+    max-width: 67%;
+  }
+
+  &.picture-size-5 {
+    max-width: 85%;
   }
 }
 
@@ -154,17 +177,18 @@
 
 @supports (aspect-ratio: 1/1) {
   .banner-card-picture {
-      aspect-ratio: 2 / 1;
+    aspect-ratio: 2 / 1;
   }
 }
 
 @supports not (aspect-ratio: 1/1) {
   .banner-card-picture {
-      height: 160px; // 160 Pixel is half of width of .banner-card minus padding
+    height: 160px; // 160 Pixel is half of width of .banner-card minus padding
   }
 }
 
-.banner-card-title, .banner-info-item {
+.banner-card-title,
+.banner-info-item {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

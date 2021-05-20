@@ -27,6 +27,7 @@ const BannerCard: FC<BannerCardProps> = ({
         <BannerPicture
           url={url}
           title={banner.title}
+          size={banner.width ?? 6}
           showFullImage={showFullImage}
         />
       )}
