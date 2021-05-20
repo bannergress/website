@@ -17,10 +17,15 @@ const MissionPoiMarkerList: FC<MissionPoiMarkerListProps> = ({
   const [zoom, setZoom] = useState(map.getZoom())
   const [lines, setLines] = useState<Array<Line>>([])
   const [pois, setPois] = useState<Array<AvailableStep>>([])
+  const setBoundsFunc = (e: any) => setBounds(e.target.getBounds())
 
   useEffect(() => {
-    map.addEventListener('zoom', (e) => setBounds(e.target.getBounds()))
-    map.addEventListener('dragend', (e) => setBounds(e.target.getBounds()))
+    map.addEventListener('zoom', setBoundsFunc)
+    map.addEventListener('dragend', setBoundsFunc)
+    return () => {
+      map.removeEventListener('zoom', setBoundsFunc)
+      map.removeEventListener('dragend', setBoundsFunc)
+    }
   }, [map])
 
   useEffect(() => {

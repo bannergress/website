@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { divIcon, LeafletMouseEvent, MarkerCluster } from 'leaflet'
+import { divIcon, MarkerCluster, Tooltip } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 
 import {
@@ -62,34 +62,8 @@ const createClusterLabel = (markerData: MarkerData[]) => {
   }
 }
 
-const createClusterCustomIcon = (cluster: MarkerCluster) => {
-  const numberMarkers = cluster.getChildCount()
-  if (numberMarkers > 1) {
-    const markerData = cluster
-      .getAllChildMarkers()
-      .map((marker) => getMarkerData(marker))
-      .filter((m) => !!m) as MarkerData[]
-
-    const { labels, hasStartOrFinish } = createClusterLabel(markerData)
-
-    const content = (
-      <div className={`marker-pin-${hasStartOrFinish}`}>{labels}</div>
-    )
-    const contentAsString = renderToStaticMarkup(content)
-
-    return divIcon({
-      className: `custom-div-icon-${hasStartOrFinish}`,
-      html: contentAsString,
-      iconAnchor: [0, 0],
-    })
-  }
-
-  const singularMarker = cluster.getAllChildMarkers()[0]
-  return singularMarker.getIcon()
-}
-
 const createClusterTooltip = (cluster: MarkerCluster) => {
-  let tooltip
+  let tooltip = ''
   const numberMarkers = cluster.getChildCount()
   if (numberMarkers > 1) {
     const markerData = cluster
@@ -127,26 +101,46 @@ const createClusterTooltip = (cluster: MarkerCluster) => {
   return tooltip
 }
 
-const MapCluster: FC<MapClusterProps> = ({ pane, children }) => {
-  const handleOnMouseOver = (c: LeafletMouseEvent) => {
-    c.propagatedFrom
-      .bindTooltip(createClusterTooltip(c.propagatedFrom), {
+const createClusterCustomIcon = (cluster: MarkerCluster) => {
+  const numberMarkers = cluster.getChildCount()
+  if (numberMarkers > 1) {
+    const markerData = cluster
+      .getAllChildMarkers()
+      .map((marker) => getMarkerData(marker))
+      .filter((m) => !!m) as MarkerData[]
+
+    const { labels, hasStartOrFinish } = createClusterLabel(markerData)
+
+    const content = (
+      <div className={`marker-pin-${hasStartOrFinish}`}>{labels}</div>
+    )
+    const contentAsString = renderToStaticMarkup(content)
+
+    cluster.bindTooltip(
+      new Tooltip().setContent(createClusterTooltip(cluster)),
+      {
         sticky: false,
         direction: 'right',
-      })
-      .openTooltip()
-  }
-  const handleOnMouseOut = (c: LeafletMouseEvent) => {
-    c.propagatedFrom.unbindTooltip()
+      }
+    )
+
+    return divIcon({
+      className: `custom-div-icon-${hasStartOrFinish}`,
+      html: contentAsString,
+      iconAnchor: [0, 0],
+    })
   }
 
+  const singularMarker = cluster.getAllChildMarkers()[0]
+  return singularMarker.getIcon()
+}
+
+const MapCluster: FC<MapClusterProps> = ({ pane, children }) => {
   const options: any = {
     maxClusterRadius: 25,
     singleMarkerMode: true,
+    showCoverageOnHover: false,
     iconCreateFunction: createClusterCustomIcon,
-    onMouseOver: handleOnMouseOver,
-    onMouseOut: handleOnMouseOut,
-    onMouseClick: handleOnMouseOut,
   }
   if (pane) {
     options.clusterPane = pane
