@@ -90,7 +90,7 @@ const createClusterCustomIcon = (cluster: MarkerCluster) => {
 
 const MapCluster: FC<MapClusterProps> = ({ pane, children }) => {
   const options: any = {
-    maxClusterRadius: 10,
+    maxClusterRadius: 25,
     singleMarkerMode: true,
     iconCreateFunction: createClusterCustomIcon,
   }

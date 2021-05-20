@@ -182,7 +182,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
           {getAttributionLayer()}
           <Pane name="finalPane" style={{ zIndex: 580 }} />
           <MarkerClusterGroup
-            maxClusterRadius={10}
+            maxClusterRadius={25}
             singleMarkerMode
             iconCreateFunction={this.createClusterCustomIcon}
           >
