@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { divIcon, MarkerCluster } from 'leaflet'
+import { divIcon, LeafletMouseEvent, MarkerCluster } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 
 import {
@@ -88,11 +88,65 @@ const createClusterCustomIcon = (cluster: MarkerCluster) => {
   return singularMarker.getIcon()
 }
 
+const createClusterTooltip = (cluster: MarkerCluster) => {
+  let tooltip
+  const numberMarkers = cluster.getChildCount()
+  if (numberMarkers > 1) {
+    const markerData = cluster
+      .getAllChildMarkers()
+      .map((marker) => getMarkerData(marker))
+      .filter((m) => !!m) as MarkerData[]
+
+    const ordered =
+      markerData.find((m) => m.markerType === 'mission' && m.isSequential) !==
+      undefined
+    let numMissions = 0
+    let hasStart = false
+    let hasFinish = false
+    markerData.reverse().forEach((marker) => {
+      if (marker.markerType === 'end') {
+        hasFinish = true
+      } else if (isFirstMissionInSequence(marker)) {
+        hasStart = true
+      } else if (marker.markerType === 'mission') {
+        numMissions += 1
+      }
+    })
+    if (hasFinish && ordered) {
+      tooltip = `Banner ends here`
+    }
+    if (numMissions) {
+      tooltip = `${numMissions} mission${
+        numMissions > 1 ? 's' : ''
+      } starting here${tooltip ? `<br />${tooltip}` : ''}`
+    }
+    if (hasStart && ordered) {
+      tooltip = `Banner starts here${tooltip ? `<br />${tooltip}` : ''}`
+    }
+  }
+  return tooltip
+}
+
 const MapCluster: FC<MapClusterProps> = ({ pane, children }) => {
+  const handleOnMouseOver = (c: LeafletMouseEvent) => {
+    c.propagatedFrom
+      .bindTooltip(createClusterTooltip(c.propagatedFrom), {
+        sticky: false,
+        direction: 'right',
+      })
+      .openTooltip()
+  }
+  const handleOnMouseOut = (c: LeafletMouseEvent) => {
+    c.propagatedFrom.unbindTooltip()
+  }
+
   const options: any = {
     maxClusterRadius: 25,
     singleMarkerMode: true,
     iconCreateFunction: createClusterCustomIcon,
+    onMouseOver: handleOnMouseOver,
+    onMouseOut: handleOnMouseOut,
+    onMouseClick: handleOnMouseOut,
   }
   if (pane) {
     options.clusterPane = pane
