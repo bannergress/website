@@ -1,0 +1,29 @@
+.banner-info-with-map {
+  display: flex;
+  flex-direction: row;
+  margin: 40px;
+  column-gap: 40px;
+
+  .banner-info {
+    height: calc(100vh - 152px);
+    min-height: 320px;
+    overflow-y: auto;
+    min-width: 370px;
+    max-width: 50vw;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+  }
+
+  .banner-info-additional {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+  }
+
+  .leaflet-container {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+  }
+}

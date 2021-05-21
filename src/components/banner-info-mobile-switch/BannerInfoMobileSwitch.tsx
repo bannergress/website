@@ -2,18 +2,20 @@ import { HTMLAttributes } from 'enzyme'
 import React, { FC } from 'react'
 import { useHistory } from 'react-router'
 
-import { Banner } from '../../features/banner'
-
 import { ReactComponent as SVGBackArrow } from '../../img/icons/back-arrow.svg'
 
 import './banner-info-mobile-switch.less'
 
 export type BannerInfoMobileView = 'info' | 'map' | 'missions'
 
+export interface BannerInfoMobileContainer {}
+
 const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
-  banner,
+  title,
+  submitButton,
   selectedView,
   onChanged,
+  onSubmitButtonClicked,
 }) => {
   const history = useHistory()
 
@@ -27,11 +29,36 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
     history?.goBack()
   }
 
-  const createButton = (view: BannerInfoMobileView, label: string) => {
-    const attributes: HTMLAttributes = {}
+  const createSubmitButton = () => {
+    if (submitButton && onSubmitButtonClicked) {
+      const attributes: HTMLAttributes = {
+        className: 'positive-action-button mobile-switch-submit-button',
+      }
+
+      return (
+        <button
+          {...attributes}
+          type="button"
+          onClick={() => onSubmitButtonClicked()}
+        >
+          {submitButton}
+        </button>
+      )
+    }
+
+    return null
+  }
+
+  const createModeSwitchButton = (
+    view: BannerInfoMobileView,
+    label: string
+  ) => {
+    const attributes: HTMLAttributes = {
+      className: 'mobile-switch-switch-button',
+    }
 
     if (selectedView === view) {
-      attributes.className = 'active'
+      attributes.className = `${attributes.className} active`
     }
 
     return (
@@ -57,23 +84,26 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
             <SVGBackArrow title="Back" />
           </button>
         )}
-        <span className="mobile-switch-title" title={banner.title}>
-          {banner.title}
+        <span className="mobile-switch-title" title={title}>
+          {title}
         </span>
+        {createSubmitButton()}
       </div>
       <div className="mobile-switch-tabs-row" role="tablist">
-        {createButton('info', 'Info')}
-        {createButton('missions', 'Missions')}
-        {createButton('map', 'Map')}
+        {createModeSwitchButton('info', 'Info')}
+        {createModeSwitchButton('missions', 'Missions')}
+        {createModeSwitchButton('map', 'Map')}
       </div>
     </div>
   )
 }
 
 export interface BannerInfoMobileSwitchProps {
-  banner: Banner
+  title: string
+  submitButton?: string
   selectedView: BannerInfoMobileView
   onChanged: (view: BannerInfoMobileView) => void
+  onSubmitButtonClicked?: () => void
 }
 
 export default BannerInfoMobileSwitch

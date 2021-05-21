@@ -37,7 +37,7 @@ const App: React.FC = () => {
           {/* The Navbar should be hidden in mobile mode but only on some pages. */}
           {/* So we add a class to it if we are on those pages */}
           <Switch>
-            <Route path="/banner/:id">
+            <Route path={['/banner/:id', '/preview-banner']}>
               <Navbar className="hide-on-mobile" />
             </Route>
             <Route>
