@@ -13,6 +13,8 @@ import {
   BannerInfoMobileView,
 } from '../banner-info-mobile-switch'
 
+import { ReactComponent as SVGBackArrow } from '../../img/icons/back-arrow.svg'
+
 class BannerInfoWithMap extends React.Component<
   BannerInfoWithMapProps,
   BannerInfoWithMapState
@@ -100,7 +102,13 @@ class BannerInfoWithMap extends React.Component<
   }
 
   render() {
-    const { banner } = this.props
+    const {
+      banner,
+      submitButton,
+      onSubmitButtonClicked,
+      goBackLabel,
+      onGoBack,
+    } = this.props
     const {
       expanded,
       expandedMissionIndexes,
@@ -120,10 +128,26 @@ class BannerInfoWithMap extends React.Component<
         <div className="banner-info-with-map-container">
           <div className="hide-on-desktop">
             <BannerInfoMobileSwitch
-              title={banner.title}
+              title={goBackLabel || banner.title}
               selectedView={mobileView}
               onChanged={this.onMobileViewChanged}
+              submitButton={submitButton}
+              onSubmitButtonClicked={onSubmitButtonClicked}
             />
+          </div>
+          <div className="banner-info-with-map-goback hide-on-mobile">
+            {goBackLabel && onGoBack && (
+              <>
+                <button
+                  type="button"
+                  className="back-button"
+                  onClick={onGoBack}
+                >
+                  <SVGBackArrow />
+                </button>
+                <h1>{goBackLabel}</h1>
+              </>
+            )}
           </div>
           <div className="banner-info-with-map">
             <div
@@ -148,6 +172,16 @@ class BannerInfoWithMap extends React.Component<
                 onOpenMission={this.onExpandFromMap}
                 ref={this.mapRef}
               />
+
+              {submitButton && onSubmitButtonClicked && (
+                <button
+                  type="button"
+                  className="positive-action-button hide-on-mobile"
+                  onClick={onSubmitButtonClicked}
+                >
+                  {submitButton}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -160,6 +194,10 @@ class BannerInfoWithMap extends React.Component<
 
 export interface BannerInfoWithMapProps {
   banner: Banner
+  submitButton?: string
+  onSubmitButtonClicked?: () => void
+  goBackLabel?: string
+  onGoBack?: () => void
 }
 
 interface BannerInfoWithMapState {

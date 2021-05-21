@@ -16,8 +16,11 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
   selectedView,
   onChanged,
   onSubmitButtonClicked,
+  onGoBack,
 }) => {
   const history = useHistory()
+
+  const showGoBack = onGoBack || history.length > 1
 
   const toggleBannerInfo = (newView: BannerInfoMobileView) => {
     if (newView !== selectedView) {
@@ -26,7 +29,11 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
   }
 
   const goBack = () => {
-    history?.goBack()
+    if (onGoBack) {
+      onGoBack()
+    } else {
+      history?.goBack()
+    }
   }
 
   const createSubmitButton = () => {
@@ -75,7 +82,7 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
   return (
     <div className="banner-info-mobile-switch">
       <div className="mobile-switch-title-row">
-        {history.length > 1 && (
+        {showGoBack && (
           <button
             className="banner-info-mobile-switch-back"
             type="button"
@@ -104,6 +111,7 @@ export interface BannerInfoMobileSwitchProps {
   selectedView: BannerInfoMobileView
   onChanged: (view: BannerInfoMobileView) => void
   onSubmitButtonClicked?: () => void
+  onGoBack?: () => void
 }
 
 export default BannerInfoMobileSwitch

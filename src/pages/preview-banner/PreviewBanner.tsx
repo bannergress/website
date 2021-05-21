@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import { Prompt, RouteComponentProps, withRouter } from 'react-router'
 import { Location } from 'history'
 import { Helmet } from 'react-helmet'
-import { LatLngBounds } from 'leaflet'
-import _ from 'underscore'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -12,18 +10,9 @@ import {
   getCreatedBanner,
   submitBanner as submitBannerAction,
   removePendingBanner as removePendingBannerAction,
-  getBannerBounds,
 } from '../../features/banner'
-import { mapMissions } from '../../features/mission'
 import LoadingOverlay from '../../components/loading-overlay'
-import { MapDetail } from '../../components/map-detail'
-import { BannerInfoOverview } from '../../components/banner-info-overview'
-import {
-  BannerInfoMobileSwitch,
-  BannerInfoMobileView,
-} from '../../components/banner-info-mobile-switch'
-
-import { ReactComponent as SVGBackArrow } from '../../img/icons/back-arrow.svg'
+import { BannerInfoWithMap } from '../../components/banner-info-with-map'
 
 import './preview-banner.less'
 
@@ -35,9 +24,6 @@ class PreviewBanner extends React.Component<
     super(props)
     this.state = {
       status: 'initial',
-      expanded: false,
-      expandedMissionIndexes: [],
-      scrollMissionIndex: undefined,
     }
   }
 
@@ -66,67 +52,6 @@ class PreviewBanner extends React.Component<
       .catch(() => this.setState({ status: 'error' }))
   }
 
-  onMobileViewChanged = (view: BannerInfoMobileView) => {
-    let newState: object = { mobileView: view }
-
-    // Changing mobile view also changes desktop view if compatible
-    if (view !== 'map') {
-      newState = { ...newState, desktopView: view }
-    }
-
-    this.setState(newState)
-
-    /*
-    // The used leaflet map behaves irregularly when it is created while
-    // invisible. It it then becomes visible, we need to tell it to recalculate
-    // its size. And when this is the first time we show the map, we need to set
-    // the bounds again afterwards.
-    if (view === 'map') {
-      this.mapRef.current?.invalidateMapSize()
-
-      if (!this.viewWasMapBefore) {
-        this.mapRef.current?.applyBounds()
-      }
-    } */
-  }
-
-  onExpandFromMap = (index: number) => this.onExpand(index, true)
-
-  onExpand = (index: number, scrollTo: boolean = false) => {
-    const { expandedMissionIndexes } = this.state
-
-    if (expandedMissionIndexes.indexOf(index) >= 0) {
-      const indexes = _(expandedMissionIndexes).without(index)
-      this.setState({
-        expandedMissionIndexes: indexes,
-        expanded: indexes.length > 0,
-        scrollMissionIndex: undefined,
-      })
-    } else {
-      this.setState({
-        expandedMissionIndexes: [...expandedMissionIndexes, index],
-        scrollMissionIndex: scrollTo ? index : undefined,
-      })
-    }
-  }
-
-  onExpandAll = () => {
-    const { banner } = this.props
-    const { expanded } = this.state
-    if (expanded) {
-      this.setState({ expanded: false, expandedMissionIndexes: [] })
-    } else {
-      let missionIndexes: Array<number> = []
-      if (banner && banner.missions) {
-        missionIndexes = mapMissions(
-          banner.missions,
-          (mission, index) => mission && index
-        )
-      }
-      this.setState({ expanded: true, expandedMissionIndexes: missionIndexes })
-    }
-  }
-
   getPromptMessage = (location: Location<unknown>) => {
     const { status } = this.state
     if (status !== 'initial' || location.pathname.includes('new-banner')) {
@@ -142,74 +67,61 @@ class PreviewBanner extends React.Component<
 
   render() {
     const { banner } = this.props
-    const {
-      status,
-      expanded,
-      expandedMissionIndexes,
-      scrollMissionIndex,
-    } = this.state
+    const { status } = this.state
     if (!banner) {
       return <Fragment />
     }
 
     return (
       <>
-        <Helmet>Create Banner</Helmet>
-        <div className="hide-on-desktop">
-          <BannerInfoMobileSwitch
-            title={`Preview: ${banner.title}`}
-            submitButton="Submit"
-            selectedView="info"
-            onChanged={this.onMobileViewChanged}
-            onSubmitButtonClicked={this.onSubmitBanner}
-          />
-        </div>
+        <Helmet>
+          <title>Review Banner</title>
+        </Helmet>
+        <Prompt message={this.getPromptMessage} />
 
-        <div className="banner-preview">
-          <Prompt message={this.getPromptMessage} />
+        <div className="banner-preview-page">
           <LoadingOverlay
             active={status === 'loading'}
             text="Saving..."
             spinner
             fadeSpeed={500}
           />
+          <BannerInfoWithMap
+            banner={banner}
+            submitButton="Submit Banner"
+            onSubmitButtonClicked={this.onSubmitBanner}
+            goBackLabel="Review"
+            onGoBack={this.onBack}
+          />
+        </div>
+      </>
+    )
+  }
+}
+
+/* 
+
+import { ReactComponent as SVGBackArrow } from '../../img/icons/back-arrow.svg'
+
           <div className="banner-preview-header">
             <button type="button" className="back-button" onClick={this.onBack}>
               <SVGBackArrow />
             </button>
             <h1>Review</h1>
           </div>
-          <div className="banner-preview-content">
-            <BannerInfoOverview
-              banner={banner}
-              expanded={expanded}
-              expandedMissionIndexes={expandedMissionIndexes}
-              scrollMissionIndex={scrollMissionIndex}
-              onExpand={this.onExpand}
-              onExpandAll={this.onExpandAll}
-              hideControls
-            />
-            <div className="banner-preview-additional">
-              <MapDetail
-                banner={banner}
-                bounds={new LatLngBounds(getBannerBounds(banner))}
-                openedMissionIndexes={expandedMissionIndexes}
-                onOpenMission={this.onExpandFromMap}
-              />
-              <button
-                type="button"
-                className="positive-action-button"
-                onClick={this.onSubmitBanner}
-              >
-                Submit Banner
-              </button>
-            </div>
-          </div>
-        </div>
-      </>
-    )
-  }
-}
+
+
+          <button
+              type="button"
+              className="positive-action-button"
+              onClick={this.onSubmitBanner}
+            >
+              Submit Banner
+            </button>
+
+
+
+*/
 
 export interface PreviewBannerProps extends RouteComponentProps {
   banner: Banner | undefined
@@ -218,9 +130,6 @@ export interface PreviewBannerProps extends RouteComponentProps {
 }
 
 interface PreviewBannerState {
-  expanded: boolean
-  expandedMissionIndexes: Array<number>
-  scrollMissionIndex: number | undefined
   status: 'initial' | 'loading' | 'regress' | 'error'
 }
 

@@ -463,7 +463,9 @@ class CreateBanner extends React.Component<
 
     return (
       <div className="create-banner">
-        <Helmet>{title}</Helmet>
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
         <Prompt message={this.getPromptMessage} />
         <LoadingOverlay
           active={status === 'loading'}
