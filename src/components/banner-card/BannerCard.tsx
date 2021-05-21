@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
+import { Button } from 'antd'
 
 import { Banner } from '../../features/banner'
 import BannerPicture from './BannerPicture'
@@ -15,7 +16,9 @@ const BannerCard: FC<BannerCardProps> = ({
   banner,
   selected,
   showFullImage,
+  showZoomButton,
   detailsUrl,
+  onZoom,
 }) => {
   const url = banner && banner.picture && new URL(banner.picture, baseUrl).href
   const className = selected ? 'banner-card selected' : 'banner-card'
@@ -51,6 +54,16 @@ const BannerCard: FC<BannerCardProps> = ({
       {selected && detailsUrl && (
         <div className="banner-info-details">
           <Link to={detailsUrl}>Details</Link>
+          {showZoomButton && onZoom && (
+            <Button
+              onClick={(e) => {
+                e.stopPropagation()
+                onZoom()
+              }}
+            >
+              Zoom
+            </Button>
+          )}
         </div>
       )}
     </div>
@@ -61,7 +74,9 @@ export interface BannerCardProps {
   banner: Banner | undefined
   selected: boolean
   showFullImage?: boolean
+  showZoomButton?: boolean
   detailsUrl?: string
+  onZoom?: () => void
 }
 
 export default BannerCard

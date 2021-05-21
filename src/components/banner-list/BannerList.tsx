@@ -11,9 +11,10 @@ import './banner-list.less'
 const BannerList: FC<BannerListProps> = ({
   banners,
   hasMoreBanners,
-  loadMoreBanners,
   selectedBannerId,
+  loadMoreBanners,
   onSelectBanner,
+  onZoomToBanner,
 }) => {
   const itemsRef = useRef<Array<HTMLDivElement | null>>([])
   const [ref] = useInfiniteScroll({
@@ -68,7 +69,11 @@ const BannerList: FC<BannerListProps> = ({
                 key={banner.id}
                 banner={banner}
                 selected={banner.id === selectedBannerId}
+                showZoomButton={
+                  banner.id === selectedBannerId && !!onZoomToBanner
+                }
                 detailsUrl={generatePath('/banner/:id', { id: banner.id })}
+                onZoom={() => onZoomToBanner && onZoomToBanner(banner)}
               />
             )
             return (
@@ -101,6 +106,7 @@ export interface BannerListProps {
   selectedBannerId?: string
   loadMoreBanners?: () => Promise<void>
   onSelectBanner?: (banner: Banner) => void
+  onZoomToBanner?: (banner: Banner) => void
 }
 
 export default BannerList

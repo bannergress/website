@@ -15,6 +15,7 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
   selectedBannerId,
   loadMoreBanners,
   onSelectBanner,
+  onZoomToBanner,
 }) => {
   const [expanded, setExpanded] = useState(false)
   const onSelectBannerCallback = (banner: Banner) => {
@@ -60,6 +61,7 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
           hasMoreBanners={hasMoreBanners}
           onSelectBanner={onSelectBannerCallback}
           loadMoreBanners={loadMoreBanners}
+          onZoomToBanner={onZoomToBanner}
         />
       )}
     </div>
@@ -72,6 +74,7 @@ export interface BannerAccordionProps {
   selectedBannerId?: string
   loadMoreBanners?: () => Promise<void>
   onSelectBanner: (banner: Banner) => void
+  onZoomToBanner: (banner: Banner) => void
 }
 
 export default BannerAccordion

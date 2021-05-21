@@ -35,14 +35,14 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   }
 
   shouldComponentUpdate(nextProps: Readonly<BannersMapProps>) {
-    const { banners, loading, selectedBannerId } = this.props
+    const { banners, loading, zoomedBannerId, selectedBannerId } = this.props
 
     if (this.map && loading !== nextProps.loading) {
       this.map.fireEvent(nextProps.loading ? 'dataloading' : 'dataload')
     }
 
-    if (selectedBannerId !== nextProps.selectedBannerId) {
-      const banner = banners.find((b) => b.id === nextProps.selectedBannerId)
+    if (zoomedBannerId !== nextProps.zoomedBannerId) {
+      const banner = banners.find((b) => b.id === nextProps.zoomedBannerId)
       if (banner) {
         setTimeout(() => {
           this.map!.invalidateSize()
@@ -56,6 +56,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     }
     if (
       nextProps.banners.length !== banners.length ||
+      nextProps.selectedBannerId !== selectedBannerId ||
       !_.isEqual(nextProps.banners, banners)
     ) {
       return true
@@ -206,6 +207,7 @@ export interface BannersMapProps extends RouteComponentProps {
   banners: Array<Banner>
   loading: boolean
   selectedBannerId?: string
+  zoomedBannerId?: string
   onMapChanged: (bounds: LatLngBounds) => void
   onSelectBanner: (banner: Banner) => void
 }

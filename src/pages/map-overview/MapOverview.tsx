@@ -27,31 +27,36 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     this.state = {
       bounds: undefined,
       selectedBannerId: undefined,
-      selectedBounds: undefined,
+      zoomedBannerId: undefined,
       status: 'initial',
     }
   }
 
   onMapChanged = (bounds: LatLngBounds) => {
-    this.setState({ bounds })
+    this.setState({ bounds, zoomedBannerId: undefined })
     this.onLoadBanners(bounds)
   }
 
   onSelectBanner = async (banner: Banner) => {
     const { fetchPreviewBanner } = this.props
-    const { selectedBannerId, bounds } = this.state
+    const { selectedBannerId } = this.state
     if (selectedBannerId !== banner.id) {
       this.setState({ status: 'loading' })
       await fetchPreviewBanner(banner.id)
       this.setState({
         selectedBannerId: banner.id,
         status: 'ready',
-        selectedBounds: bounds,
       })
     } else {
-      this.setState({ selectedBannerId: undefined, selectedBounds: undefined })
+      this.setState({
+        selectedBannerId: undefined,
+        zoomedBannerId: undefined,
+      })
     }
   }
+
+  onZoomToBanner = (banner: Banner) =>
+    this.setState({ zoomedBannerId: banner.id })
 
   onLoadBanners = async (bounds: LatLngBounds) => {
     const { fetchBanners } = this.props
@@ -78,12 +83,11 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
 
   render() {
     const { getBanners, getBanner } = this.props
-    const { bounds, selectedBannerId, status, selectedBounds } = this.state
+    const { bounds, selectedBannerId, zoomedBannerId, status } = this.state
     let banners: Array<Banner> = []
-    const boundsToUse = selectedBounds ?? bounds
-    if (boundsToUse) {
-      const norhtEast = boundsToUse.getNorthEast()
-      const southWest = boundsToUse.getSouthWest()
+    if (bounds) {
+      const norhtEast = bounds.getNorthEast()
+      const southWest = bounds.getSouthWest()
       // If there are banners on the other side of the new day line, show them with modified coordinates
       if (norhtEast.lng > 180) {
         const bannersAux = getBanners(
@@ -140,6 +144,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
                 hasMoreBanners={false}
                 selectedBannerId={selectedBannerId}
                 onSelectBanner={this.onSelectBanner}
+                onZoomToBanner={this.onZoomToBanner}
               />
             </Scrollbars>
           </Col>
@@ -148,6 +153,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
               banners={banners}
               onMapChanged={this.onMapChanged}
               selectedBannerId={selectedBannerId}
+              zoomedBannerId={zoomedBannerId}
               onSelectBanner={this.onSelectBanner}
               loading={status === 'loading'}
             />
@@ -156,6 +162,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
               hasMoreBanners={false}
               selectedBannerId={selectedBannerId}
               onSelectBanner={this.onSelectBanner}
+              onZoomToBanner={this.onZoomToBanner}
             />
           </Col>
         </Row>
@@ -183,7 +190,7 @@ export interface MapOverviewProps extends RouteComponentProps {
 interface MapOverviewState {
   bounds: LatLngBounds | undefined
   selectedBannerId: string | undefined
-  selectedBounds: LatLngBounds | undefined
+  zoomedBannerId: string | undefined
   status: 'initial' | 'loading' | 'ready' | 'error'
 }
 
