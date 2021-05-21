@@ -12,6 +12,8 @@ import {
   CREATE_BANNER,
   REMOVE_CREATED_BANNER,
   SEARCH_MAP_BANNERS,
+  EDIT_BANNER,
+  DELETE_BANNER,
 } from './actionTypes'
 import * as api from './api'
 import { getCreatedBanner } from './selectors'
@@ -179,4 +181,25 @@ export const removePendingBannerAction = () => (
   dispatch({
     type: REMOVE_CREATED_BANNER,
   })
+}
+
+export const editBannerAction = (banner: Banner) => (
+  dispatch: Dispatch<BannerActionTypes>
+) => {
+  dispatch({
+    type: EDIT_BANNER,
+    payload: banner,
+  })
+}
+
+export const deleteBannerAction = (banner: Banner) => async (
+  dispatch: Dispatch<BannerActionTypes>
+) => {
+  const response = await api.deleteBanner(banner)
+  if (response.ok) {
+    dispatch({
+      type: DELETE_BANNER,
+      payload: banner,
+    })
+  }
 }

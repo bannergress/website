@@ -10,9 +10,10 @@ import LoadingOverlay from '../../loading-overlay'
 
 export const PrivateRoute: React.FC<PrivateRouteProps> = ({
   component: Component,
+  roles,
   ...rest
 }) => {
-  const { authenticated, initialized } = useUserLoggedIn()
+  const { authenticated, initialized } = useUserLoggedIn(roles)
 
   return (
     <Route
@@ -41,4 +42,5 @@ export interface PrivateRouteProps extends RouteProps {
   component:
     | React.ComponentType<RouteComponentProps<any>>
     | React.ComponentType<any>
+  roles?: string
 }

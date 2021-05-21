@@ -1,8 +1,21 @@
-.negative-action-button {
-  background: red;
-  color: white;
-  padding: 0.5em 2em;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.banner-edit-tools {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  column-gap: 5px;
+
+  > button {
+    width: 100%;
+    color: white !important;
+
+    &.positive-action-button {
+      border-color: #15D5B2;
+      background-color: rgba(92, 204, 183, 0.5);
+    }
+
+    &.negative-action-button {
+      border-color: #FF715B;
+      background-color: rgba(241, 156, 143, 0.5);
+    }
+  }
 }

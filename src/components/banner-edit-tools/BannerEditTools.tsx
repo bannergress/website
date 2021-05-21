@@ -1,54 +1,40 @@
-import { useKeycloak } from '@react-keycloak/web'
 import React, { FC } from 'react'
+import { generatePath, useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router'
-import { Banner } from '../../features/banner'
-import { EDIT_BANNER } from '../../features/banner/actionTypes'
-import { deleteBanner } from '../../features/banner/api'
+import { Button } from 'antd'
+
+import { Banner, deleteBanner, editBanner } from '../../features/banner'
 
 import './banner-edit-tools.less'
+import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
 
 export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
   const history = useHistory()
-  const keycloak = useKeycloak()
+  const { authenticated } = useUserLoggedIn('manage-banners')
   const dispatch = useDispatch()
 
   const onEditBanner = () => {
-    dispatch({
-      type: EDIT_BANNER,
-      payload: banner,
-    })
-    history.push('/new-banner')
+    dispatch(editBanner(banner))
+    history.push(generatePath('/edit-banner/:id', { id: banner.id }))
   }
 
   const onDeleteBanner = async () => {
     // eslint-disable-next-line no-alert
     if (window.confirm('Do you really want to delete that banner?')) {
-      await deleteBanner(banner)
+      dispatch(deleteBanner(banner))
       history.push('/')
     }
   }
 
-  if (
-    keycloak.initialized &&
-    keycloak.keycloak.hasRealmRole('manage-banners')
-  ) {
+  if (authenticated) {
     return (
-      <div>
-        <button
-          type="button"
-          className="positive-action-button"
-          onClick={onEditBanner}
-        >
+      <div className="banner-edit-tools">
+        <Button className="positive-action-button" onClick={onEditBanner}>
           Edit
-        </button>
-        <button
-          type="button"
-          className="negative-action-button"
-          onClick={onDeleteBanner}
-        >
+        </Button>
+        <Button className="negative-action-button" onClick={onDeleteBanner}>
           Delete
-        </button>
+        </Button>
       </div>
     )
   }
