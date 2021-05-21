@@ -35,7 +35,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
     const { status } = this.state
     const banner = getBanner(match.params.id)
 
-    if (banner) {
+    if (banner && banner.missions) {
       return (
         <>
           <Helmet>
