@@ -124,7 +124,7 @@ class BannerInfoWithMap extends React.Component<
 
     this.viewWasMapBefore = this.viewWasMapBefore || mobileView === 'map'
 
-    if (banner) {
+    if (banner && banner.missions) {
       return (
         <div className="banner-info-with-map-container">
           <div className="hide-on-desktop">
