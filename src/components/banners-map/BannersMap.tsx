@@ -44,10 +44,13 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     if (selectedBannerId !== nextProps.selectedBannerId) {
       const banner = banners.find((b) => b.id === nextProps.selectedBannerId)
       if (banner) {
-        this.map!.fitBounds(new LatLngBounds(getBannerBounds(banner)), {
-          animate: true,
-          maxZoom: 15,
-        })
+        setTimeout(() => {
+          this.map!.invalidateSize()
+          this.map!.fitBounds(new LatLngBounds(getBannerBounds(banner)), {
+            animate: true,
+            maxZoom: 15,
+          })
+        }, 100)
       }
       return true
     }

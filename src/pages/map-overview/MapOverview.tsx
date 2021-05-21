@@ -17,6 +17,7 @@ import {
 } from '../../features/banner'
 import BannerList from '../../components/banner-list'
 import BannersMap from '../../components/banners-map'
+import BannersAccordion from '../../components/banners-accordion'
 
 import './map.less'
 
@@ -131,7 +132,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
           <title>Map</title>
         </Helmet>
         <Row className="map-overview">
-          <Col className="map-banners">
+          <Col className="map-banners hide-on-mobile">
             <h2>Banners in This Area</h2>
             <Scrollbars className="banners-scroll">
               <BannerList
@@ -149,6 +150,12 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
               selectedBannerId={selectedBannerId}
               onSelectBanner={this.onSelectBanner}
               loading={status === 'loading'}
+            />
+            <BannersAccordion
+              banners={banners}
+              hasMoreBanners={false}
+              selectedBannerId={selectedBannerId}
+              onSelectBanner={this.onSelectBanner}
             />
           </Col>
         </Row>

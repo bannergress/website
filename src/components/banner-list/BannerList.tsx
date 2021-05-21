@@ -3,10 +3,10 @@ import { Row } from 'antd'
 import { Link, generatePath } from 'react-router-dom'
 
 import { Banner } from '../../features/banner'
+import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
 import BannerCard from '../banner-card'
 
 import './banner-list.less'
-import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
 
 const BannerList: FC<BannerListProps> = ({
   banners,
