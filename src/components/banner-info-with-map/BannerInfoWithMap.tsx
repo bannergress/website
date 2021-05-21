@@ -147,6 +147,15 @@ class BannerInfoWithMap extends React.Component<
                   <SVGBackArrow />
                 </button>
                 <h1>{goBackLabel}</h1>
+                {submitButton && onSubmitButtonClicked && (
+                  <button
+                    type="button"
+                    className="banner-info-with-map-submit positive-action-button hide-on-mobile"
+                    onClick={onSubmitButtonClicked}
+                  >
+                    {submitButton}
+                  </button>
+                )}
               </>
             )}
           </div>
@@ -174,16 +183,6 @@ class BannerInfoWithMap extends React.Component<
                 onOpenMission={this.onExpandFromMap}
                 ref={this.mapRef}
               />
-
-              {submitButton && onSubmitButtonClicked && (
-                <button
-                  type="button"
-                  className="positive-action-button hide-on-mobile"
-                  onClick={onSubmitButtonClicked}
-                >
-                  {submitButton}
-                </button>
-              )}
             </div>
           </div>
         </div>
