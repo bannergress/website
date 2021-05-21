@@ -104,6 +104,7 @@ class BannerInfoWithMap extends React.Component<
   render() {
     const {
       banner,
+      hideControls,
       submitButton,
       onSubmitButtonClicked,
       goBackLabel,
@@ -162,6 +163,7 @@ class BannerInfoWithMap extends React.Component<
                 onChangeView={this.onDesktopViewChanged}
                 onExpand={this.onExpand}
                 onExpandAll={this.onExpandAll}
+                hideControls={hideControls}
               />
             </div>
             <div className={`banner-info-additional ${mapPaneClassName} `}>
@@ -194,6 +196,7 @@ class BannerInfoWithMap extends React.Component<
 
 export interface BannerInfoWithMapProps {
   banner: Banner
+  hideControls?: boolean
   submitButton?: string
   onSubmitButtonClicked?: () => void
   goBackLabel?: string

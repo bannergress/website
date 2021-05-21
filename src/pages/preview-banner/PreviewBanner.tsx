@@ -88,6 +88,7 @@ class PreviewBanner extends React.Component<
           />
           <BannerInfoWithMap
             banner={banner}
+            hideControls
             submitButton="Submit Banner"
             onSubmitButtonClicked={this.onSubmitBanner}
             goBackLabel="Review"
