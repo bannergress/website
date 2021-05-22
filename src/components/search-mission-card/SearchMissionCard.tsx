@@ -15,6 +15,7 @@ const getMissionIntelLink = (mission: Mission) => {
       <a
         {...getExternalLinkAttributes()}
         href={createMissionIntelLink(mission.id)}
+        tabIndex={-1}
       >
         <SVGIntel />
       </a>
@@ -42,6 +43,7 @@ const SearchMissionCard: FC<SearchMissionCardProps> = ({
             onClick={() =>
               onMissionAuthorClick && onMissionAuthorClick(mission.author!.name)
             }
+            tabIndex={-1}
           >
             <Agent agent={mission.author} />
           </Button>
@@ -52,6 +54,7 @@ const SearchMissionCard: FC<SearchMissionCardProps> = ({
       <Button
         onClick={() => onSelectMission(mission)}
         className="mission-button"
+        tabIndex={-1}
       >
         {icon}
       </Button>
