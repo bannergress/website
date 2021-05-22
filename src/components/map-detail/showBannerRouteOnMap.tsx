@@ -20,6 +20,7 @@ export const showBannerRouteOnMap = (
 ) => {
   const missionMultiPolylines: LatLng[][] = [[]]
   let lastMissionTitle: string | undefined
+  let prevMission = 0
 
   mapMissions(banner.missions, (mission, index) => {
     if (mission) {
@@ -27,11 +28,12 @@ export const showBannerRouteOnMap = (
 
       if (availableSteps && availableSteps.length) {
         const firstPOI = availableSteps[0].poi
-        if (firstPOI) {
+        if (firstPOI && prevMission + 1 === index) {
           missionMultiPolylines[missionMultiPolylines.length - 1].push(
             new LatLng(firstPOI.latitude, firstPOI.longitude)
           )
         }
+        prevMission = index
 
         missionMultiPolylines.push(
           availableSteps.map((p) => new LatLng(p.poi.latitude, p.poi.longitude))
