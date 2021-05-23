@@ -117,10 +117,20 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     onMapChanged(this.map!.getBounds())
   }
 
+  /** unselects an banner overview route, when clicked outside the starting point */
+  onMapClicked = () => {
+    const { selectedBannerId, banners } = this.props
+    const selectedBanner = banners.find((b) => b.id === selectedBannerId)
+    if (selectedBanner) {
+      this.onSelectBanner(selectedBanner)
+    }
+  }
+
   onMapCreated = (map: LeafletMap) => {
     this.map = map
     map.addEventListener('dragend', this.onMapDraggedOrZoomed)
     map.addEventListener('zoomend', this.onMapDraggedOrZoomed)
+    map.addEventListener('click', this.onMapClicked)
     this.onMapDraggedOrZoomed()
   }
 
