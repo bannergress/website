@@ -5,7 +5,7 @@ import { AllQuestions } from './AllQuestions'
 
 import { getExternalLinkAttributes } from '../../features/utils'
 
-import { ReactComponent as SVGTimer } from '../../img/icons/telegram.svg'
+import { ReactComponent as SVGTelegram } from '../../img/icons/telegram.svg'
 
 import './help.less'
 
@@ -24,7 +24,7 @@ const Help: React.FC = () => {
               {...getExternalLinkAttributes()}
               href="https://t.me/bannergressnews"
             >
-              <SVGTimer />
+              <SVGTelegram />
               Telegram News Channel
             </a>
           </div>
@@ -34,8 +34,18 @@ const Help: React.FC = () => {
               {...getExternalLinkAttributes()}
               href="https://t.me/joinchat/_LDAw8VdJgFkMzI6"
             >
-              <SVGTimer />
+              <SVGTelegram />
               Telegram Group Chat
+            </a>
+          </div>
+          <div className="faq-question">
+            <a
+              className="faq-question-title faq-question-link"
+              {...getExternalLinkAttributes()}
+              href="https://t.me/joinchat/rc0DVCAUQ4NkZmY8"
+            >
+              <SVGTelegram />
+              Telegram Support Chat
             </a>
           </div>
         </div>
