@@ -12,6 +12,15 @@ export const loadNewsAction = () => async (
       payload: response.data,
     })
   } else if (!response.ok) {
-    throw new Error('Error loading missions')
+    try {
+      throw new Error('Error loading missions')
+    } catch (e) {
+      if (e instanceof Error) {
+        // eslint-disable-next-line no-alert
+        alert(e)
+      } else {
+        throw e
+      }
+    }
   }
 }
