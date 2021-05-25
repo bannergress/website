@@ -35,3 +35,9 @@ export interface ExtractionResult {
   title: string | undefined
   results: MissionExtractionResult[]
 }
+
+export interface Title {
+  val: string
+  missions: Array<string>
+  pos: Array<number>
+}

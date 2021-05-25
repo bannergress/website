@@ -1,4 +1,4 @@
-import { extract } from './titleExtraction'
+import { extract, newExtraction } from './titleExtraction'
 import {
   MissionExtractionResult,
   NumberCandidateExtractor,
@@ -8,8 +8,9 @@ import {
   IntermediateMissionExtractionResult,
   ExtractionResult,
 } from './types'
+import { TitleExtractor } from './titleExtractor'
 
-export { extract }
+export { extract, newExtraction }
 export type {
   MissionExtractionResult,
   NumberCandidateExtractor,
@@ -19,3 +20,4 @@ export type {
   IntermediateMissionExtractionResult,
   ExtractionResult,
 }
+export { TitleExtractor }

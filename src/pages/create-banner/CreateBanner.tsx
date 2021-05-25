@@ -25,7 +25,7 @@ import {
   ApiOrder,
   ApiOrderDirection,
 } from '../../features/banner'
-import { extract } from '../../features/banner/naming'
+// import { extract } from '../../features/banner/naming'
 import SearchMissionList from '../../components/search-mission-list'
 import BannerImage from '../../components/banner-image'
 import LoadingOverlay from '../../components/loading-overlay'
@@ -33,6 +33,7 @@ import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg
 import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
 
 import './create-banner.less'
+import { newExtraction, TitleExtractor } from '../../features/banner/naming'
 
 const MIN_MISSIONS = 2
 const MAX_MISSIONS = 3000
@@ -44,6 +45,8 @@ class CreateBanner extends React.Component<
   CreateBannerState
 > {
   private timer: NodeJS.Timeout | null = null
+
+  private titleExtractor: TitleExtractor = new TitleExtractor()
 
   constructor(props: CreateBannerProps) {
     super(props)
@@ -78,6 +81,9 @@ class CreateBanner extends React.Component<
               }
             : undefined
       )
+      if (addedMissions && addedMissions.length) {
+        this.titleExtractor.fill(addedMissions)
+      }
       this.setState({
         id,
         bannerTitle: title,
@@ -179,17 +185,19 @@ class CreateBanner extends React.Component<
     return fetchMissions(location, searchText, 'title', 'ASC', page + 1)
   }
 
-  onMissionsChanged = (missions: Array<Mission>) => {
+  onMissionsChanged = (
+    missions: Array<Mission>,
+    newMissions: Array<Mission>
+  ) => {
     const { bannerTitleChanged, bannerDescriptionChanged } = this.state
-    const result = extract(missions.map((m) => m.title))
+    const result = newExtraction(missions, newMissions, this.titleExtractor)
     const addedMissions = _(result.results)
       .chain()
       .map((m, index) => ({ ...m, mission: missions[index] }))
-      .sortBy((m) => m.missionMarker?.parsed)
-      .map((m) => ({ ...m.mission, index: m.missionMarker?.parsed }))
+      .sortBy((m) => m.index)
+      .map((m) => ({ ...m.mission, index: m.index }))
       .value()
-    const detectedLength =
-      result.results.find((r) => !!r.totalMarker)?.totalMarker?.parsed ?? 0
+    const detectedLength = result.total
     const newState: Pick<CreateBannerState, any> = {
       addedMissions,
       detectedLength,
@@ -205,14 +213,17 @@ class CreateBanner extends React.Component<
 
   onAddMission = (mission: Mission) => {
     const { addedMissions } = this.state
-    this.onMissionsChanged([...addedMissions, mission])
+    this.onMissionsChanged([...addedMissions, mission], [mission])
   }
 
   onAddAllMissions = async (unusedMissions: Array<Mission>) => {
     const { hasMore } = this.props
     const { addedMissions } = this.state
     if (unusedMissions && unusedMissions.length) {
-      this.onMissionsChanged([...addedMissions, ...unusedMissions])
+      this.onMissionsChanged(
+        [...addedMissions, ...unusedMissions],
+        unusedMissions
+      )
       if (hasMore) {
         this.setState({ page: 0, status: 'searching' })
         await this.onLoadMoreMissions()
@@ -222,6 +233,7 @@ class CreateBanner extends React.Component<
   }
 
   onRemoveAllMissions = () => {
+    this.titleExtractor.reset()
     this.setState({
       addedMissions: [],
       bannerTitle: '',
@@ -233,7 +245,12 @@ class CreateBanner extends React.Component<
 
   onManageMission = (mission: Mission) => {
     const { addedMissions } = this.state
-    this.setState({ addedMissions: _(addedMissions).without(mission) })
+    if (addedMissions.length === 1) {
+      this.onRemoveAllMissions()
+    } else {
+      this.titleExtractor.remove(mission)
+      this.setState({ addedMissions: _(addedMissions).without(mission) })
+    }
   }
 
   onCreateBanner = async () => {
