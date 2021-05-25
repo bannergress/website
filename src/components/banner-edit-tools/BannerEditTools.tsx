@@ -3,7 +3,7 @@ import { generatePath, useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { Button } from 'antd'
 
-import { Banner, deleteBanner, editBanner } from '../../features/banner'
+import { Banner, deleteBanner } from '../../features/banner'
 
 import './banner-edit-tools.less'
 import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
@@ -14,7 +14,6 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
   const dispatch = useDispatch()
 
   const onEditBanner = () => {
-    dispatch(editBanner(banner))
     history.push(generatePath('/edit-banner/:id', { id: banner.id }))
   }
 
