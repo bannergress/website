@@ -22,8 +22,10 @@ import {
   NumDictionary,
   createBanner as createBannerAction,
   removePendingBanner as removePendingBannerAction,
+  loadBanner as fetchBannerAction,
   ApiOrder,
   ApiOrderDirection,
+  getBanner as getBannerSelector,
 } from '../../features/banner'
 // import { extract } from '../../features/banner/naming'
 import SearchMissionList from '../../components/search-mission-list'
@@ -52,6 +54,7 @@ class CreateBanner extends React.Component<
     super(props)
     this.state = {
       id: undefined,
+      startMissions: [],
       addedMissions: [],
       page: 0,
       searchText: null,
@@ -68,30 +71,24 @@ class CreateBanner extends React.Component<
   }
 
   componentDidMount() {
-    const { previousBanner } = this.props
+    const {
+      previousBanner,
+      match,
+      getBanner,
+      fetchBanner,
+      history,
+    } = this.props
+    let banner: Banner | undefined
     if (previousBanner) {
-      const { title, description, missions, type, width, id } = previousBanner
-      const addedMissions = mapMissions<Mission & { index?: number }>(
-        missions,
-        (m, index) =>
-          m
-            ? {
-                ...m,
-                index: index + 1,
-              }
-            : undefined
-      )
-      if (addedMissions && addedMissions.length) {
-        this.titleExtractor.fill(addedMissions)
+      banner = previousBanner
+    } else if (match.params.id) {
+      banner = getBanner(match.params.id)
+      if (!banner) {
+        fetchBanner(match.params.id).catch(() => history.push('/'))
       }
-      this.setState({
-        id,
-        bannerTitle: title,
-        bannerDescription: description,
-        addedMissions,
-        bannerType: type!,
-        bannerWidth: width!,
-      })
+    }
+    if (banner) {
+      this.initialize(banner)
     }
   }
 
@@ -99,9 +96,16 @@ class CreateBanner extends React.Component<
     _prevProps: CreateBannerProps,
     prevState: CreateBannerState
   ) {
+    const { match, getBanner } = this.props
     const { searchText } = this.state
     if (searchText !== prevState.searchText) {
       this.handleSearch()
+    }
+    if (match.params.id && prevState.id !== match.params.id) {
+      const banner = getBanner(match.params.id)
+      if (banner) {
+        this.initialize(banner)
+      }
     }
   }
 
@@ -112,6 +116,35 @@ class CreateBanner extends React.Component<
     if (status !== 'loading') {
       removePendingBanner()
     }
+  }
+
+  initialize = (banner: Banner) => {
+    const { title, description, missions, type, width, id } = banner
+    const addedMissions = mapMissions<Mission & { index?: number }>(
+      missions,
+      (m, index) =>
+        m
+          ? {
+              ...m,
+              index: index + 1,
+            }
+          : undefined
+    )
+    if (addedMissions && addedMissions.length) {
+      this.titleExtractor.reset()
+      this.titleExtractor.fill(addedMissions)
+    }
+    this.setState({
+      id,
+      startMissions: id ? addedMissions : [],
+      bannerTitle: title,
+      bannerTitleChanged: id !== undefined,
+      bannerDescription: description,
+      bannerDescriptionChanged: id !== undefined,
+      addedMissions,
+      bannerType: type!,
+      bannerWidth: width!,
+    })
   }
 
   handleSearch = () => {
@@ -457,12 +490,39 @@ class CreateBanner extends React.Component<
       bannerWidth,
       status,
       id,
+      startMissions,
     } = this.state
 
-    const unusedMissions = _.filter(
+    let unusedMissions = _.filter(
       missions,
       (m) => !_.some(addedMissions, (a) => a.id === m.id)
     )
+    if (
+      status === 'ready' &&
+      startMissions.length &&
+      searchText &&
+      searchText.length > 2
+    ) {
+      const removed = _.filter(
+        startMissions,
+        (m) => !_.some(addedMissions, (a) => a.id === m.id)
+      )
+      unusedMissions = _(unusedMissions)
+        .chain()
+        .union(
+          removed.filter(
+            (mission) =>
+              mission.title
+                .toLocaleLowerCase()
+                .includes(searchText.toLocaleLowerCase()) ||
+              (mission.author &&
+                mission.author.name.toLocaleLowerCase() ===
+                  searchText.toLocaleLowerCase())
+          )
+        )
+        .sortBy((mission) => mission.title)
+        .value()
+    }
 
     let unusedMissionsCount
     if (unusedMissions.length) {
@@ -652,7 +712,7 @@ class CreateBanner extends React.Component<
   }
 }
 
-export interface CreateBannerProps extends RouteComponentProps {
+export interface CreateBannerProps extends RouteComponentProps<{ id: string }> {
   previousBanner: Banner | undefined
   missions: Array<Mission>
   hasMore: Boolean
@@ -666,10 +726,13 @@ export interface CreateBannerProps extends RouteComponentProps {
   createBanner: (banner: Partial<Banner>) => Promise<void>
   resetSearchMissions: () => void
   removePendingBanner: () => void
+  getBanner: (id: string) => Banner | undefined
+  fetchBanner: (id: string) => Promise<void>
 }
 
 interface CreateBannerState {
   id: string | undefined
+  startMissions: Array<Mission>
   addedMissions: Array<Mission & { index?: number }>
   page: number
   searchText: string | null
@@ -694,6 +757,7 @@ const mapStateToProps = (state: RootState) => ({
   previousBanner: getCreatedBanner(state),
   missions: getMissions(state),
   hasMore: getHasMoreSearchedMissions(state),
+  getBanner: (id: string) => getBannerSelector(state, id),
 })
 
 const mapDispatchToProps = {
@@ -701,6 +765,7 @@ const mapDispatchToProps = {
   createBanner: createBannerAction,
   resetSearchMissions: resetSearchMissionsAction,
   removePendingBanner: removePendingBannerAction,
+  fetchBanner: fetchBannerAction,
 }
 
 export default connect(
