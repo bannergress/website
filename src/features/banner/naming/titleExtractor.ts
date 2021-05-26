@@ -91,4 +91,43 @@ export class TitleExtractor {
     const title = this.bestTitle()
     return title?.val.replace(/^[\s\-/\])]+|[\s\-/[(,]+$/gi, '')
   }
+
+  bestCombinedTitle = (): [string, string] => {
+    const scored = _(this.titles)
+      .chain()
+      .map((t) => {
+        const m = _(t.missions).uniq().length
+        return { ...t, score: m * t.val.length ** 2 - (m - this.total) ** 2 }
+      })
+      .sortBy((t) => t.score)
+      .reverse()
+      .value()
+    const best = _(scored).first()
+    let part1 = best?.val ?? ''
+    let part2 = ''
+    if (best) {
+      const findMatch = _(scored).find(
+        (t) =>
+          t.val.length > 3 &&
+          _(t.missions).uniq().length === _(best.missions).uniq().length &&
+          ((t.pos[0] < best.pos[0] &&
+            t.pos[0] < best.pos[0] - best.val.length) ||
+            (t.pos[0] > best.pos[0] &&
+              t.pos[0] > best.pos[0] - best.val.length))
+      )
+      if (findMatch) {
+        if (best.pos[0] < findMatch.pos[0]) {
+          part2 = findMatch.val
+        }
+        if (best.pos[0] > findMatch.pos[0]) {
+          part1 = findMatch.val
+          part2 = best.val
+        }
+      }
+    }
+    return [
+      part1.replace(/^[\s\-/\])]+|[\s\-/[(,]+$/gi, ''),
+      part2.replace(/^[\s\-/\])]+|[\s\-/[(,]+$/gi, ''),
+    ]
+  }
 }

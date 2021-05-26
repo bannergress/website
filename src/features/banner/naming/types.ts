@@ -41,3 +41,10 @@ export interface Title {
   missions: Array<string>
   pos: Array<number>
 }
+
+export interface IntermediateMissionNumber {
+  index: number | undefined
+  total: number | undefined
+  markersClean: Array<NumberMarker>
+  markers: Array<NumberMarker>
+}

@@ -1,5 +1,3 @@
-import _, { isObject } from 'underscore'
-
 import {
   IntermediateExtractionResult,
   NumberMarker,
@@ -10,8 +8,6 @@ import {
 import arabicNumerals from './arabicNumerals'
 import romanNumerals from './romanNumerals'
 import latinLettersArabicNumeralsBase6 from './latinLettersArabicNumeralsBase6'
-import { Mission } from '../../mission'
-import { TitleExtractor } from './titleExtractor'
 
 const extractors: { [key: string]: NumberCandidateExtractor } = {
   arabicNumerals,
@@ -374,74 +370,6 @@ function cleanResult(
       titleMarker: prevER.titleMarker,
     })),
   }
-}
-
-export const extractNumbers2 = (
-  missions: Array<Mission>,
-  dic: TitleExtractor
-) => {
-  const bestTitle = dic.bestTitle()
-  const extractedNumbers = missions.map((mission) => {
-    let index: number | undefined
-    let total: number | undefined
-    let maybeTotal: number | undefined
-    const { title } = mission
-    const extractClean = extractCandidateNumbersForTitle(
-      title.replace(bestTitle?.val ?? '', '')
-    )
-    const extractDirty = extractCandidateNumbersForTitle(title)
-    if (extractClean && extractClean.length > 0) {
-      const min = _(extractClean).min((e) => e.parsed)
-      const max = _(extractClean).max((e) => e.parsed)
-      if (isObject(min)) {
-        index = min.parsed
-      }
-      if (isObject(max) && max !== min) {
-        total = max.parsed
-      }
-    }
-    if (extractDirty && extractDirty.length) {
-      const min = _(extractDirty).min((e) => e.parsed)
-      const max = _(extractDirty).max((e) => e.parsed)
-      if (!index && isObject(min)) {
-        index = min.parsed
-      }
-      if (isObject(max) && max !== min) {
-        maybeTotal = max.parsed
-      }
-    }
-    return {
-      index,
-      total: total ?? maybeTotal,
-    }
-  })
-  return extractedNumbers
-}
-
-export const newExtraction = (
-  missions: Array<Mission>,
-  addedMissions: Array<Mission>,
-  extractor: TitleExtractor
-) => {
-  extractor.fill(addedMissions)
-  const bestTitle = extractor.bestTitleClean()
-  // console.log(dic.bestTitleClean())
-  const extractedNumbers = extractNumbers2(missions, extractor)
-  const totals = extractedNumbers
-    .map((e) => e.total)
-    .filter((e) => !!e) as Array<number>
-  let total: number | undefined
-  if (totals.length) {
-    const res = _(totals)
-      .chain()
-      .countBy()
-      .pairs()
-      .sortBy((a) => a[0])
-      .first()
-      .value()
-    total = Number(res![0])
-  }
-  return { title: bestTitle, results: extractedNumbers, total }
 }
 
 export function extract(titles: string[]): ExtractionResult {

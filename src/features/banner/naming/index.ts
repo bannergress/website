@@ -1,4 +1,5 @@
-import { extract, newExtraction } from './titleExtraction'
+import { extract } from './titleExtraction'
+import { newExtraction } from './extraction'
 import {
   MissionExtractionResult,
   NumberCandidateExtractor,
