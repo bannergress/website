@@ -1,9 +1,11 @@
 import _ from 'underscore'
 import { Mission } from '../../mission'
-import { Title } from './types'
+import { Title, TitleDictionary } from './types'
 
 export class TitleExtractor {
   private titles: Array<Title> = []
+
+  private dictionary: TitleDictionary = {}
 
   public total: number = 0
 
@@ -13,53 +15,48 @@ export class TitleExtractor {
     }
   }
 
-  add = (pos: number, val: string, mission: string) => {
-    const prev = this.titles.filter(
-      (t) =>
-        t.missions.includes(mission) &&
-        t.pos[t.missions.indexOf(mission)] === pos - 1
-    )
-    const curr = this.titles.find(
-      (t) => t.val.toLowerCase() === val.toLowerCase()
-    )
-    if (curr) {
-      curr.missions.push(mission)
-      curr.pos.push(pos)
-    } else {
-      this.titles.push({ val, missions: [mission], pos: [pos] })
-    }
-    if (prev && prev.length) {
-      prev.forEach((p) => {
-        const newVal = `${p.val}${val}`
-        const added = this.titles.find(
-          (t) => t.val.toLowerCase() === newVal.toLowerCase()
-        )
-        if (added) {
-          added.missions.push(mission)
-          added.pos.push(pos)
-        } else {
-          this.titles.push({ val: newVal, missions: [mission], pos: [pos] })
-        }
-      })
+  add = (id: string, title: string) => {
+    let next: Array<Title> = []
+    for (let i = 0; i < title.length; i += 1) {
+      const prev = [...next]
+      next = []
+      const val = title[i]
+      const curr = this.dictionary[val.toLowerCase()]
+      if (curr) {
+        curr.missions.push(id)
+        curr.pos.push(i)
+        next.push(curr)
+      } else {
+        const newItem = { val, missions: [id], pos: [i] }
+        this.titles.push(newItem)
+        this.dictionary[val.toLowerCase()] = newItem
+        next.push(newItem)
+      }
+      if (prev && prev.length) {
+        // eslint-disable-next-line @typescript-eslint/no-loop-func
+        prev.forEach((p) => {
+          const newVal = `${p.val}${val}`
+          const added = this.dictionary[newVal.toLowerCase()]
+          if (added) {
+            added.missions.push(id)
+            added.pos.push(i)
+            next.push(added)
+          } else {
+            const newItem = { val: newVal, missions: [id], pos: [i] }
+            this.titles.push(newItem)
+            this.dictionary[newVal.toLowerCase()] = newItem
+            next.push(newItem)
+          }
+        })
+      }
     }
   }
 
-  fill = (titles: Array<Mission>) => {
-    let i = 0
-    let finished = 0
-    while (finished < titles.length) {
-      for (let j = 0; j < titles.length; j += 1) {
-        const { id, title } = titles[j]
-        if (title.length > i) {
-          const c = title[i]
-          this.add(i, c, id)
-        } else if (title.length === i) {
-          finished += 1
-        }
-      }
-      i += 1
-    }
-    this.total += titles.length
+  fill = (missions: Array<Mission>) => {
+    missions.forEach((mission) => {
+      const { id, title } = mission
+      this.add(id, title)
+    })
   }
 
   remove = (mission: Mission) => {
@@ -77,6 +74,7 @@ export class TitleExtractor {
   reset = () => {
     this.total = 0
     this.titles = []
+    this.dictionary = {}
   }
 
   bestTitle = (): Title | undefined => {

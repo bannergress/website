@@ -44,7 +44,12 @@ export interface Title {
 
 export interface IntermediateMissionNumber {
   index: number | undefined
+  raw: string | undefined
   total: number | undefined
   markersClean: Array<NumberMarker>
   markers: Array<NumberMarker>
+}
+
+export interface TitleDictionary {
+  [val: string]: Title
 }

@@ -71,6 +71,7 @@ const extractCandidateNumbers2 = (
 ) =>
   missions.map((mission) => {
     let index: number | undefined
+    let raw: string | undefined
     let total: number | undefined
     let maybeTotal: number | undefined
     const { title } = mission
@@ -86,6 +87,7 @@ const extractCandidateNumbers2 = (
         const max = _(extractClean).max((e) => e.parsed)
         if (isObject(min)) {
           index = min.parsed
+          raw = min.raw
         }
         if (isObject(max)) {
           total = max.parsed
@@ -97,6 +99,7 @@ const extractCandidateNumbers2 = (
       const max = _(extractDirty).max((e) => e.parsed)
       if (!index && isObject(min)) {
         index = min.parsed
+        raw = min.raw
       }
       if (isObject(max) && max !== min) {
         maybeTotal = max.parsed
@@ -104,6 +107,7 @@ const extractCandidateNumbers2 = (
     }
     return {
       index,
+      raw,
       total: total ?? maybeTotal,
       markersClean: extractClean,
       markers: [...extractClean, ...extractDirty],
@@ -139,11 +143,19 @@ const refineExtractedNumbers = (
     .filter((p) => !!p.parsed)
     .countBy((p) => p.raw)
     .value()
+  const allNumbersCountExtended = _(numbers)
+    .chain()
+    .map((n) => n.markers)
+    .flatten()
+    .filter((p) => !!p.parsed)
+    .countBy((p) => p.raw)
+    .value()
   return numbers.map((number) => {
     let { index } = number
-    const { markersClean } = number
-    if (index) {
-      const matches = allNumbersCount[index]
+    const { markersClean, raw } = number
+    if (index && raw) {
+      const matches = allNumbersCount[raw]
+      const matchesExtended = allNumbersCountExtended[raw]
       if (matches > 1) {
         const withUses = _(markersClean)
           .chain()
@@ -184,6 +196,9 @@ const refineExtractedNumbers = (
             index = lesserUsed.parsed
           }
         }
+      } else if (matchesExtended > numbers.length - numbers.length / 5) {
+        // Number is used in almost all missions, probably not an index
+        index = undefined
       }
     }
     return {
