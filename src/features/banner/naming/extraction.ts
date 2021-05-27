@@ -8,6 +8,7 @@ import {
 import arabicNumerals from './arabicNumerals'
 import romanNumerals from './romanNumerals'
 import latinLettersArabicNumeralsBase6 from './latinLettersArabicNumeralsBase6'
+import natoNumerals from './natoNumerals'
 import { Mission } from '../../mission'
 import { TitleExtractor } from './titleExtractor'
 
@@ -15,6 +16,7 @@ const extractors: { [key: string]: NumberCandidateExtractor } = {
   arabicNumerals,
   romanNumerals,
   latinLettersArabicNumeralsBase6,
+  natoNumerals,
 }
 
 function extractCandidateNumbersWithExtractor(
@@ -174,12 +176,23 @@ const refineExtractedNumbers = (
           }))
           .sortBy((marker) => marker.uses)
           .value()
+        const maybeSection = withUses.find(
+          (marker) => marker.uses % 6 === 0 && marker.parsed < 6
+        )
 
-        let lesserUsed = _(withUses).first()
+        let lesserUsed = _(withUses)
+          .chain()
+          .filter((marker) => marker !== maybeSection)
+          .first()
+          .value()
         if (_.isObject(lesserUsed)) {
           const best = _(withUses)
             .chain()
-            .filter((marker) => marker.uses === lesserUsed!.uses)
+            .filter(
+              (marker) =>
+                marker.uses === lesserUsed!.uses &&
+                (!maybeSection || marker !== maybeSection)
+            )
             .countBy((marker) => marker.raw)
             .pairs()
             .sortBy((marker) => marker[1])
@@ -199,9 +212,13 @@ const refineExtractedNumbers = (
             index = undefined
           } else if (
             lesserUsed.parsed !== index &&
-            (!total || lesserUsed.parsed <= total)
+            (!total || lesserUsed.parsed <= total) &&
+            (!maybeSection || maybeSection !== lesserUsed)
           ) {
             index = lesserUsed.parsed
+          }
+          if (index && maybeSection) {
+            index += (maybeSection.parsed - 1) * maybeSection.uses
           }
         }
       } else if (matchesExtended > numbers.length - numbers.length / 5) {

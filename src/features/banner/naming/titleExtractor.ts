@@ -80,7 +80,7 @@ export class TitleExtractor {
   bestTitle = (): Title | undefined => {
     const best = _(this.titles).max((t) => {
       const m = _(t.missions).uniq().length
-      return m * t.val.length ** 2 - (m - this.total) ** 2
+      return m * t.val.length ** 2 + 2 ** (m - this.total + 1)
     })
     return _.isObject(best) ? best : undefined
   }
