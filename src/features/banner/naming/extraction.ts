@@ -76,7 +76,14 @@ const extractCandidateNumbers2 = (
     let maybeTotal: number | undefined
     const { title } = mission
     const extractClean = extractCandidateNumbersForTitle(
-      removeDates(title.replace(bestTitle ?? '', ''))
+      removeDates(
+        title
+          .replace(bestTitle ?? '', '')
+          // Replace Full-width digits
+          .replace(/[\uFF10-\uFF19]/g, (m) =>
+            String.fromCharCode(m.charCodeAt(0) - 0xfee0)
+          )
+      )
     )
     const extractDirty = extractCandidateNumbersForTitle(removeDates(title))
     if (extractClean && extractClean.length > 0) {
