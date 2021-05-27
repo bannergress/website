@@ -95,7 +95,10 @@ export class TitleExtractor {
       .chain()
       .map((t) => {
         const m = _(t.missions).uniq().length
-        return { ...t, score: m * t.val.length ** 2 - (m - this.total) ** 2 }
+        return {
+          ...t,
+          score: m * t.val.length ** 2 + 2 ** (m - this.total + 1),
+        }
       })
       .sortBy((t) => t.score)
       .reverse()

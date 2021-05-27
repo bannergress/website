@@ -82,6 +82,7 @@ const extractCandidateNumbers2 = (
     if (extractClean && extractClean.length > 0) {
       if (extractClean.length === 1) {
         index = extractClean[0].parsed
+        raw = extractClean[0].raw
       } else if (extractClean.length === 2) {
         const min = _(extractClean).min((e) => e.parsed)
         const max = _(extractClean).max((e) => e.parsed)
@@ -199,6 +200,20 @@ const refineExtractedNumbers = (
       } else if (matchesExtended > numbers.length - numbers.length / 5) {
         // Number is used in almost all missions, probably not an index
         index = undefined
+      }
+      if (
+        index &&
+        ((total && index > total * 2) ||
+          (index > numbers.length * 2 && numbers.length > 5))
+      ) {
+        // It seems the number has the total joined with the mission number, try to remove
+        const tot = (total ?? numbers.length).toString()
+        const indexStr = index.toString()
+        if (indexStr.endsWith(tot)) {
+          index = Number(indexStr.substr(0, indexStr.length - tot.length))
+        } else if (indexStr.startsWith(tot)) {
+          index = Number(indexStr.substr(tot.length))
+        }
       }
     }
     return {
