@@ -12,7 +12,7 @@ const roundDuration = (durationSeconds: number) => {
     const precision = durationSeconds < 86_400 ? 2 : 1
     return Number((durationSeconds / 3_600).toPrecision(precision)) * 3_600
   }
-  return Number((durationSeconds / 3_600).toPrecision(2)) * 86_400
+  return Number((durationSeconds / 86_400).toPrecision(2)) * 86_400
 }
 
 const formatDuration = (durationMilliseconds: number) => {
