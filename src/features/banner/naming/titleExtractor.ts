@@ -90,7 +90,7 @@ export class TitleExtractor {
     return title?.val.replace(/^[\s\-/\])]+|[\s\-/[(,]+$/gi, '')
   }
 
-  bestCombinedTitle = (): [string, string] => {
+  bestCombinedTitle = (total: number | undefined): [string, string] => {
     const scored = _(this.titles)
       .chain()
       .map((t) => {
@@ -109,14 +109,14 @@ export class TitleExtractor {
     if (best) {
       const findMatch = _(scored).find(
         (t) =>
-          t.val.length > 3 &&
+          t.val.trim().length > 3 &&
           _(t.missions).uniq().length === _(best.missions).uniq().length &&
           ((t.pos[0] < best.pos[0] &&
             t.pos[0] < best.pos[0] - best.val.length) ||
             (t.pos[0] > best.pos[0] &&
               t.pos[0] > best.pos[0] - best.val.length))
       )
-      if (findMatch) {
+      if (findMatch && (!total || !findMatch.val.includes(total.toString()))) {
         if (best.pos[0] < findMatch.pos[0]) {
           part2 = findMatch.val
         }

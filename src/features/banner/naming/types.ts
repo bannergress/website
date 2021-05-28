@@ -35,10 +35,15 @@ export interface MissionExtractionResult {
   titleMarker: PositionMarker | undefined
 }
 
+export interface NumberExtractionResult {
+  index: number | undefined
+  total: number | undefined
+}
+
 export interface ExtractionResult {
   total: number | undefined
   title: string | undefined
-  results: MissionExtractionResult[]
+  results: Array<MissionExtractionResult>
 }
 
 export interface Title {

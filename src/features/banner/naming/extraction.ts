@@ -310,7 +310,7 @@ const extractNumbers = (missions: Array<Mission>, dic: TitleExtractor) => {
   return { results: refinedNumbers, total }
 }
 
-const cleanTitle = (title1: string, title2: string, total?: number) => {
+export const cleanTitle = (title1: string, title2: string, total?: number) => {
   let part1 = title1
   let part2 = title2
   if (total) {
@@ -324,12 +324,12 @@ const cleanTitle = (title1: string, title2: string, total?: number) => {
 
 export const titleAndNumberingExtraction = (
   missions: Array<Mission>,
-  addedMissions: Array<Mission>,
   extractor: TitleExtractor
 ) => {
-  extractor.fill(addedMissions)
-  const [bestTitle1, bestTitle2] = extractor.bestCombinedTitle()
   const extractedNumbers = extractNumbers(missions, extractor)
+  const [bestTitle1, bestTitle2] = extractor.bestCombinedTitle(
+    extractedNumbers.total
+  )
   const title = cleanTitle(bestTitle1, bestTitle2, extractedNumbers.total)
   return {
     title,
