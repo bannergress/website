@@ -27,7 +27,10 @@ import {
   ApiOrderDirection,
   getBanner as getBannerSelector,
 } from '../../features/banner'
-// import { extract } from '../../features/banner/naming'
+import {
+  titleAndNumberingExtraction,
+  TitleExtractor,
+} from '../../features/banner/naming'
 import SearchMissionList from '../../components/search-mission-list'
 import BannerImage from '../../components/banner-image'
 import LoadingOverlay from '../../components/loading-overlay'
@@ -35,7 +38,6 @@ import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg
 import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
 
 import './create-banner.less'
-import { newExtraction, TitleExtractor } from '../../features/banner/naming'
 
 const MIN_MISSIONS = 2
 const MAX_MISSIONS = 3000
@@ -223,7 +225,11 @@ class CreateBanner extends React.Component<
     newMissions: Array<Mission>
   ) => {
     const { bannerTitleChanged, bannerDescriptionChanged } = this.state
-    const result = newExtraction(missions, newMissions, this.titleExtractor)
+    const result = titleAndNumberingExtraction(
+      missions,
+      newMissions,
+      this.titleExtractor
+    )
     const addedMissions = _(result.results)
       .chain()
       .map((m, index) => ({ ...m, mission: missions[index] }))

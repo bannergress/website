@@ -1,24 +1,7 @@
-import { extract } from './titleExtraction'
-import { newExtraction } from './extraction'
-import {
-  MissionExtractionResult,
-  NumberCandidateExtractor,
-  NumberMarker,
-  PositionMarker,
-  IntermediateExtractionResult,
-  IntermediateMissionExtractionResult,
-  ExtractionResult,
-} from './types'
+import { titleAndNumberingExtraction } from './extraction'
+import { NumberCandidateExtractor, NumberMarker, PositionMarker } from './types'
 import { TitleExtractor } from './titleExtractor'
 
-export { extract, newExtraction }
-export type {
-  MissionExtractionResult,
-  NumberCandidateExtractor,
-  NumberMarker,
-  PositionMarker,
-  IntermediateExtractionResult,
-  IntermediateMissionExtractionResult,
-  ExtractionResult,
-}
+export { titleAndNumberingExtraction }
+export type { NumberCandidateExtractor, NumberMarker, PositionMarker }
 export { TitleExtractor }
