@@ -1,28 +1,29 @@
-import React, { FC, useEffect } from 'react'
-import { connect } from 'react-redux'
-import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom'
+import React, { FC, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { ThunkDispatch } from 'redux-thunk'
 
-import { RootState } from '../../storeTypes'
-import {
-  getRecentBanners,
-  loadRecentBanners,
-  Banner,
-} from '../../features/banner'
+import { getRecentBanners, loadRecentBanners } from '../../features/banner'
+import { BannerActionTypes } from '../../features/banner/actionTypes'
 import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
+import { RootState } from '../../storeTypes'
 import BannerList from '../banner-list'
+import LoadingOverlay from '../loading-overlay'
 
 import './recent-banners.less'
 
-export const RecentBanners: FC<RecentBannersProps> = ({
-  titleList,
-  banners,
-  fetchRecentBanners,
-}) => {
+type AppDispatch = ThunkDispatch<RootState, any, BannerActionTypes>
+
+export const RecentBanners: FC<RecentBannersProps> = ({ titleList }) => {
   const history = useHistory()
+  const dispatch: AppDispatch = useDispatch()
+  const banners = useSelector(getRecentBanners)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    fetchRecentBanners()
-  }, [fetchRecentBanners])
+    setLoading(true)
+    dispatch(loadRecentBanners()).finally(() => setLoading(false))
+  }, [dispatch, history.location])
 
   const onCreateBanner = () => {
     history.push('/new-banner')
@@ -33,6 +34,12 @@ export const RecentBanners: FC<RecentBannersProps> = ({
 
   return (
     <div className="recent-banners">
+      <LoadingOverlay
+        active={loading}
+        spinner
+        fadeSpeed={500}
+        text="Loading recent banners..."
+      />
       <div className="recent-banners-title">
         <h1>{titleList}</h1>
         <button
@@ -49,20 +56,8 @@ export const RecentBanners: FC<RecentBannersProps> = ({
   )
 }
 
-export interface RecentBannersProps extends RouteComponentProps {
+export interface RecentBannersProps {
   titleList: string
-  banners: Array<Banner>
-  fetchRecentBanners: Function
 }
 
-const mapStateToProps = (state: RootState) => ({
-  banners: getRecentBanners(state),
-})
-
-const mapDispatchToProps = {
-  fetchRecentBanners: loadRecentBanners,
-}
-
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(RecentBanners)
-)
+export default RecentBanners
