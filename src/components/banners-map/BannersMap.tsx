@@ -51,6 +51,10 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
             maxZoom: 15,
           })
         }, 100)
+      } else {
+        setTimeout(() => {
+          this.map!.invalidateSize()
+        }, 100)
       }
       return true
     }
