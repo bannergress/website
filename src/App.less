@@ -1,12 +1,24 @@
 @import '~antd/dist/antd.compact';
 @import '~antd/dist/antd.dark';
 
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #969696;
+}
+
 .mt-1 {
   margin-top: 1rem;
 }
+
 .pl-1 {
   padding-left: 1rem;
 }
+
 .pr-1 {
   padding-right: 1rem;
 }
@@ -17,31 +29,40 @@
   padding: 1.5rem 0;
   width: 100%;
 }
+
 .leaflet-container {
   margin: unset;
 }
+
 .leaflet-container {
   height: 100%;
 }
 
-body, .ant-layout {
+body,
+.ant-layout {
   background: #1B1B1B;
 }
 
-body, .ant-menu, .ant-input, .ant-card, .ant-card-head-title {
+body,
+.ant-menu,
+.ant-input,
+.ant-card,
+.ant-card-head-title {
   font-size: 16px;
 }
 
 #root {
   height: 100%;
-  & > .ant-layout {
+
+  &>.ant-layout {
     height: 100%;
   }
 }
 
 .main {
   height: 100%;
-  & > .container {
+
+  &>.container {
     height: 100%;
     overflow: auto;
   }
@@ -66,7 +87,8 @@ h3 {
   margin: 1em 0 0.05em;
 }
 
-.top-menu, .bottom-menu {
+.top-menu,
+.bottom-menu {
   background: black;
   padding: 5px 10px;
 

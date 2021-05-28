@@ -5,16 +5,18 @@
   padding: 1px;
   display: flex;
   cursor: pointer;
+
   &.selected {
     background-image: linear-gradient(180deg, #109393, #15D4B2);
     padding: 2px;
 
     &.inverse {
       .arrow {
-        transform:rotate(180deg);
+        transform: rotate(180deg);
       }
     }
   }
+
   .arrow {
     height: 0.625em;
     fill: white;
@@ -29,10 +31,16 @@
 }
 
 .order-chooser {
-  margin-bottom: 0.5em;
-  column-gap: 15px;
-  row-gap: 15px;
   display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
+  overflow-x: scroll;
+
+  &>div {
+    margin-bottom: 0.5em;
+    column-gap: 15px;
+    row-gap: 15px;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: baseline;
+    flex-wrap: nowrap;
+  }
 }

@@ -35,11 +35,13 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
 
   return (
     <div className="order-chooser">
-      <h4>Sort by</h4>
-      {getButton('Date Created', 'created')}
-      {getButton('A-Z', 'title')}
-      {getButton('Distance', 'lengthMeters')}
-      {getButton('Total Missions', 'numberOfMissions')}
+      <div>
+        <h4>Sort by</h4>
+        {getButton('Date Created', 'created')}
+        {getButton('A-Z', 'title')}
+        {getButton('Distance', 'lengthMeters')}
+        {getButton('Total Missions', 'numberOfMissions')}
+      </div>
     </div>
   )
 }
