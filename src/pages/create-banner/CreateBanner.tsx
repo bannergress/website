@@ -1,16 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
-import {
-  Input,
-  Select,
-  InputNumber,
-  Row,
-  Col,
-  Slider,
-  Button,
-  Tooltip,
-} from 'antd'
+import { Input, Select, InputNumber, Row, Col, Slider, Button } from 'antd'
 import { Helmet } from 'react-helmet'
 import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars'
@@ -45,9 +36,12 @@ import {
 import SearchMissionList from '../../components/search-mission-list'
 import BannerImage from '../../components/banner-image'
 import LoadingOverlay from '../../components/loading-overlay'
+import {
+  AlgorithmDetectionChooser,
+  Algorithm,
+} from '../../components/algorithm-detection-chooser'
 import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg'
 import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
-import { ReactComponent as SVGHelp } from '../../img/icons/help-round.svg'
 
 import './create-banner.less'
 
@@ -55,31 +49,6 @@ const MIN_MISSIONS = 2
 const MAX_MISSIONS = 3000
 const MIN_TITLE_LENGTH = 3
 const MAX_TITLE_LENGTH = 200
-
-const extractionHelp = (
-  <>
-    <p>
-      <b>None:</b> No title/numbering detection will be applied. Numbering will
-      be assigned sequentially.
-    </p>
-    <p>
-      <b>Title:</b> Title will be detected with the advanced algorithm. No
-      numbering detection will be applied. Numbering will be assigned
-      sequentially.
-    </p>
-    <p>
-      <b>Simple*:</b> Basic title/numbering detection.
-    </p>
-    <p>
-      <b>Advanced*:</b> Advanced title/numbering detection that handles more
-      sofisticated cases. With long banners could be slower.
-    </p>
-    <p>
-      * if detection is changed to simple/advanced, title and numbering will
-      change as it will be reevaluated.
-    </p>
-  </>
-)
 
 class CreateBanner extends React.Component<
   CreateBannerProps,
@@ -740,21 +709,10 @@ class CreateBanner extends React.Component<
               <span className="ellipse">2</span> Arrange
             </h1>
             <div className="algorithm">
-              <h3>
-                Detection{' '}
-                <Tooltip placement="right" title={extractionHelp}>
-                  <SVGHelp />
-                </Tooltip>
-              </h3>
-              <Select
-                value={extraction}
+              <AlgorithmDetectionChooser
+                selected={extraction}
                 onChange={(val) => this.onInputChange(val, 'extraction')}
-              >
-                <Select.Option value="none">None</Select.Option>
-                <Select.Option value="title">Title</Select.Option>
-                <Select.Option value="simple">Simple</Select.Option>
-                <Select.Option value="advanced">Advanced</Select.Option>
-              </Select>
+              />
             </div>
             <div className="results-title">
               <h3>{addedMissions.length} Missions in Total</h3>
@@ -897,7 +855,7 @@ interface CreateBannerState {
   bannerWidth: number
   detectedLength: number
   status: 'initial' | 'searching' | 'ready' | 'loading' | 'error'
-  extraction: 'none' | 'title' | 'simple' | 'advanced'
+  extraction: Algorithm
 }
 
 interface Issue {
