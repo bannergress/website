@@ -219,7 +219,7 @@ class CreateBanner extends React.Component<
     if (inputName === 'extraction') {
       const { addedMissions, extraction } = this.state
       if (extraction !== val) {
-        if (val === 'advanced') {
+        if (val === 'advanced' || val === 'title') {
           this.titleExtractor.fill(addedMissions)
         } else {
           this.titleExtractor.reset()
