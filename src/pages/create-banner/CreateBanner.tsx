@@ -363,6 +363,7 @@ class CreateBanner extends React.Component<
         this.titleExtraction(newMissions, newExtraction)
       })
     } else {
+      this.titleExtractor.reset()
       const lastIndex = (_(addedMissions).last()?.index ?? 0) + 1
       let missions: Array<Mission>
       if (newExtraction) {
