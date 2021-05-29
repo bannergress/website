@@ -346,22 +346,37 @@ class CreateBanner extends React.Component<
     const { addedMissions, extraction } = this.state
     const extr = newExtraction ?? extraction
     if (extr === 'advanced') {
-      this.setState({ status: 'detecting' }, () => {
-        if (extraction !== 'advanced' && extraction !== 'title') {
-          this.titleExtractor.fill(addedMissions)
+      this.setState(
+        {
+          status:
+            addedMissions.length || newMissions.length ? 'detecting' : 'ready',
+        },
+        () => {
+          if (extraction !== 'advanced' && extraction !== 'title') {
+            this.titleExtractor.fill(addedMissions)
+          }
+          this.advancedExtraction(
+            [...addedMissions, ...newMissions],
+            newMissions
+          )
         }
-        this.advancedExtraction([...addedMissions, ...newMissions], newMissions)
-      })
+      )
     } else if (extr === 'simple') {
       this.titleExtractor.reset()
       this.simpleExtraction([...addedMissions, ...newMissions])
     } else if (extr === 'title') {
-      this.setState({ status: 'detecting' }, () => {
-        if (extraction !== 'advanced' && extraction !== 'title') {
-          this.titleExtractor.fill(addedMissions)
+      this.setState(
+        {
+          status:
+            addedMissions.length || newMissions.length ? 'detecting' : 'ready',
+        },
+        () => {
+          if (extraction !== 'advanced' && extraction !== 'title') {
+            this.titleExtractor.fill(addedMissions)
+          }
+          this.titleExtraction(newMissions, newExtraction)
         }
-        this.titleExtraction(newMissions, newExtraction)
-      })
+      )
     } else {
       this.titleExtractor.reset()
       const lastIndex = (_(addedMissions).last()?.index ?? 0) + 1
