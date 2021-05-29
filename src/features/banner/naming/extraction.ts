@@ -5,7 +5,7 @@ import {
   NumberCandidateExtractor,
   IntermediateMissionNumber,
 } from './types'
-import arabicNumerals from './arabicNumerals'
+import arabicNumerals from './arabicNumeralsNoBounds'
 import romanNumerals from './romanNumerals'
 import latinLettersArabicNumeralsBase6 from './latinLettersArabicNumeralsBase6'
 import natoNumerals from './natoNumerals'
