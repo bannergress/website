@@ -217,13 +217,8 @@ class CreateBanner extends React.Component<
       }
     }
     if (inputName === 'extraction') {
-      const { addedMissions, extraction } = this.state
+      const { extraction } = this.state
       if (extraction !== val) {
-        if (val === 'advanced' || val === 'title') {
-          this.titleExtractor.fill(addedMissions)
-        } else {
-          this.titleExtractor.reset()
-        }
         this.onMissionsChanged([], val.toString())
       }
     }
@@ -246,34 +241,29 @@ class CreateBanner extends React.Component<
   ) => {
     const { bannerTitleChanged, bannerDescriptionChanged } = this.state
     if (missions.length || newMissions.length) {
-      this.setState({ status: 'detecting' }, () => {
-        if (newMissions.length) {
-          this.titleExtractor.fill(newMissions)
-        }
-        const result = titleAndNumberingExtraction(
-          missions,
-          this.titleExtractor
-        )
-        const addedMissions = _(result.results)
-          .chain()
-          .map((m, index) => ({ ...m, mission: missions[index] }))
-          .sortBy((m) => m.index)
-          .map((m) => ({ ...m.mission, index: m.index }))
-          .value()
-        const detectedLength = result.total
-        const newState: Pick<CreateBannerState, any> = {
-          addedMissions,
-          detectedLength,
-          status: 'ready',
-        }
-        if (!bannerTitleChanged) {
-          newState.bannerTitle = result.title
-        }
-        if (!bannerDescriptionChanged) {
-          newState.bannerDescription = addedMissions[0].description
-        }
-        this.setState(newState)
-      })
+      if (newMissions.length) {
+        this.titleExtractor.fill(newMissions)
+      }
+      const result = titleAndNumberingExtraction(missions, this.titleExtractor)
+      const addedMissions = _(result.results)
+        .chain()
+        .map((m, index) => ({ ...m, mission: missions[index] }))
+        .sortBy((m) => m.index)
+        .map((m) => ({ ...m.mission, index: m.index }))
+        .value()
+      const detectedLength = result.total
+      const newState: Pick<CreateBannerState, any> = {
+        addedMissions,
+        detectedLength,
+        status: 'ready',
+      }
+      if (!bannerTitleChanged) {
+        newState.bannerTitle = result.title
+      }
+      if (!bannerDescriptionChanged) {
+        newState.bannerDescription = addedMissions[0].description
+      }
+      this.setState(newState)
     }
   }
 
@@ -303,38 +293,79 @@ class CreateBanner extends React.Component<
     }
   }
 
-  onMissionsChanged = (newMissions: Array<Mission>, newExtraction?: string) => {
+  titleExtraction = (newMissions: Array<Mission>, newExtraction?: string) => {
     const {
       addedMissions,
-      extraction,
       bannerTitle,
-      bannerDescription,
       bannerTitleChanged,
+      bannerDescription,
       bannerDescriptionChanged,
     } = this.state
+    const lastIndex = (_(addedMissions).last()?.index ?? 0) + 1
+    this.titleExtractor.fill(newMissions)
+    let title = bannerTitle
+    let description = bannerDescription
+    if (!bannerTitleChanged) {
+      const [part1, part2] = this.titleExtractor.bestCombinedTitle(
+        addedMissions.length + newMissions.length
+      )
+      title = cleanTitle(
+        part1,
+        part2,
+        addedMissions.length + newMissions.length
+      )
+    }
+    if (!bannerDescriptionChanged && addedMissions.length) {
+      description = addedMissions[0].description
+    }
+
+    let missions: Array<Mission>
+    if (newExtraction) {
+      missions = [...addedMissions, ...newMissions].map((mission, index) => ({
+        ...mission,
+        index: index + 1,
+      }))
+    } else {
+      missions = [
+        ...addedMissions,
+        ...newMissions.map((mission, index) => ({
+          ...mission,
+          index: lastIndex + index,
+        })),
+      ]
+    }
+    this.setState({
+      bannerTitle: title,
+      bannerDescription: description,
+      addedMissions: missions,
+      status: 'ready',
+    })
+  }
+
+  onMissionsChanged = (newMissions: Array<Mission>, newExtraction?: string) => {
+    const { addedMissions, extraction } = this.state
     const extr = newExtraction ?? extraction
     if (extr === 'advanced') {
-      this.advancedExtraction([...addedMissions, ...newMissions], newMissions)
+      this.setState({ status: 'detecting' }, () => {
+        if (extraction !== 'advanced' && extraction !== 'title') {
+          this.titleExtractor.fill(addedMissions)
+        }
+        this.advancedExtraction([...addedMissions, ...newMissions], newMissions)
+      })
     } else if (extr === 'simple') {
+      this.titleExtractor.reset()
       this.simpleExtraction([...addedMissions, ...newMissions])
+    } else if (extr === 'title') {
+      this.setState({ status: 'detecting' }, () => {
+        if (extraction !== 'advanced' && extraction !== 'title') {
+          this.titleExtractor.fill(addedMissions)
+        }
+        this.titleExtraction(newMissions, newExtraction)
+      })
     } else {
       const lastIndex = (_(addedMissions).last()?.index ?? 0) + 1
-      let title = bannerTitle
-      let description = bannerDescription
-      if (extr === 'title') {
-        this.titleExtractor.fill(newMissions)
-        if (!bannerTitleChanged) {
-          const [part1, part2] = this.titleExtractor.bestCombinedTitle(
-            undefined
-          )
-          title = cleanTitle(part1, part2)
-        }
-        if (!bannerDescriptionChanged && addedMissions.length) {
-          description = addedMissions[0].description
-        }
-      }
       let missions: Array<Mission>
-      if (newExtraction && extraction !== 'none' && extraction !== 'title') {
+      if (newExtraction) {
         missions = [...addedMissions, ...newMissions].map((mission, index) => ({
           ...mission,
           index: index + 1,
@@ -349,8 +380,6 @@ class CreateBanner extends React.Component<
         ]
       }
       this.setState({
-        bannerTitle: title,
-        bannerDescription: description,
         addedMissions: missions,
       })
     }
