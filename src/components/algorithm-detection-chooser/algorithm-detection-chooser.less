@@ -1,15 +1,16 @@
 .algo-detection-chooser {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap-reverse;
 
   .ant-radio-group {
-    width: 100%;
     color: white;
     display: flex;
     column-gap: 5px;
 
     label {
       color: white !important;
-      width: 100%;
       text-align: center;
       border: none;
       border-radius: 5px;
@@ -17,6 +18,7 @@
       padding: 1px;
       display: flex;
       cursor: pointer;
+      
 
       &.ant-radio-button-wrapper-checked {
         background-image: linear-gradient(180deg, #109393, #15D4B2);
@@ -30,6 +32,7 @@
       >span:nth-child(2) {
         background-color: #1B1B1B;
         border-radius: 4px;
+        padding: 0 10px;
         flex: 1;
       }
     }

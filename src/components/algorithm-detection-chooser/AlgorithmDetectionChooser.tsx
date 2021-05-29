@@ -8,24 +8,21 @@ import './algorithm-detection-chooser.less'
 const extractionHelp = (
   <>
     <p>
-      <b>None:</b> No title/numbering detection will be applied. Numbering will
-      be assigned sequentially.
+      <b>Manual:</b> Title will be detected automatically from missions. Mission
+      numbering will be sequential starting from 1.
     </p>
     <p>
-      <b>Title:</b> Title will be detected with the advanced algorithm. No
-      numbering detection will be applied. Numbering will be assigned
-      sequentially.
+      <b>Automatic:</b> Automatic title/numbering detection. With long banners
+      could be slower.
     </p>
     <p>
-      <b>Simple*:</b> Basic title/numbering detection.
-    </p>
-    <p>
-      <b>Advanced*:</b> Advanced title/numbering detection that handles more
-      sofisticated cases. With long banners could be slower.
-    </p>
-    <p>
-      * if detection is changed, title and numbering may change as it will be
-      reevaluated.
+      * If detection is changed to advanced, title and numbering may change as
+      it will be reevaluated.
+      <br />
+      * If title is changed manually, it won&apos;t be changed automatically
+      when new missions are added.
+      <br />* If a mission number is changed manually, Manual detection will be
+      activated.
     </p>
   </>
 )
@@ -47,10 +44,8 @@ const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
         </Tooltip>
       </h3>
       <Radio.Group value={selected} onChange={(e) => onChange(e.target.value)}>
-        {getOption('none', 'None')}
-        {getOption('title', 'Title')}
-        {getOption('simple', 'Simple')}
-        {getOption('advanced', 'Advanced')}
+        {getOption('none', 'Manual')}
+        {getOption('advanced', 'Automatic')}
       </Radio.Group>
     </div>
   )

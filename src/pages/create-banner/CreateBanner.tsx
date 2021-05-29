@@ -28,7 +28,6 @@ import {
   getBanner as getBannerSelector,
 } from '../../features/banner'
 import {
-  cleanTitle,
   extract,
   titleAndNumberingExtraction,
   TitleExtractor,
@@ -267,79 +266,36 @@ class CreateBanner extends React.Component<
     }
   }
 
-  simpleExtraction = (missions: Array<Mission>) => {
-    const { bannerTitleChanged, bannerDescriptionChanged } = this.state
+  simpleExtraction = (newMissions: Array<Mission>) => {
+    const {
+      addedMissions,
+      bannerTitleChanged,
+      bannerDescriptionChanged,
+    } = this.state
+    const lastIndex = (_(addedMissions).last()?.index ?? 0) + 1
+    const missions = [
+      ...addedMissions,
+      ...newMissions.map((mission, index) => ({
+        ...mission,
+        index: lastIndex + index,
+      })),
+    ]
     if (missions.length) {
       const result = extract(missions.map((m) => m.title))
-      const addedMissions = _(result.results)
-        .chain()
-        .map((m, index) => ({ ...m, mission: missions[index] }))
-        .sortBy((m) => m.missionMarker?.parsed)
-        .map((m) => ({ ...m.mission, index: m.missionMarker?.parsed }))
-        .value()
       const detectedLength =
         result.results.find((r) => !!r.totalMarker)?.totalMarker?.parsed ?? 0
       const newState: Pick<CreateBannerState, any> = {
-        addedMissions,
+        addedMissions: missions,
         detectedLength,
       }
       if (!bannerTitleChanged) {
         newState.bannerTitle = result.title
       }
       if (!bannerDescriptionChanged) {
-        newState.bannerDescription = addedMissions[0].description
+        newState.bannerDescription = missions[0].description
       }
       this.setState(newState)
     }
-  }
-
-  titleExtraction = (newMissions: Array<Mission>, newExtraction?: string) => {
-    const {
-      addedMissions,
-      bannerTitle,
-      bannerTitleChanged,
-      bannerDescription,
-      bannerDescriptionChanged,
-    } = this.state
-    const lastIndex = (_(addedMissions).last()?.index ?? 0) + 1
-    this.titleExtractor.fill(newMissions)
-    let title = bannerTitle
-    let description = bannerDescription
-    if (!bannerTitleChanged) {
-      const [part1, part2] = this.titleExtractor.bestCombinedTitle(
-        addedMissions.length + newMissions.length
-      )
-      title = cleanTitle(
-        part1,
-        part2,
-        addedMissions.length + newMissions.length
-      )
-    }
-    if (!bannerDescriptionChanged && addedMissions.length) {
-      description = addedMissions[0].description
-    }
-
-    let missions: Array<Mission>
-    if (newExtraction) {
-      missions = [...addedMissions, ...newMissions].map((mission, index) => ({
-        ...mission,
-        index: index + 1,
-      }))
-    } else {
-      missions = [
-        ...addedMissions,
-        ...newMissions.map((mission, index) => ({
-          ...mission,
-          index: lastIndex + index,
-        })),
-      ]
-    }
-    this.setState({
-      bannerTitle: title,
-      bannerDescription: description,
-      addedMissions: missions,
-      status: 'ready',
-    })
   }
 
   onMissionsChanged = (newMissions: Array<Mission>, newExtraction?: string) => {
@@ -361,43 +317,9 @@ class CreateBanner extends React.Component<
           )
         }
       )
-    } else if (extr === 'simple') {
-      this.titleExtractor.reset()
-      this.simpleExtraction([...addedMissions, ...newMissions])
-    } else if (extr === 'title') {
-      this.setState(
-        {
-          status:
-            addedMissions.length || newMissions.length ? 'detecting' : 'ready',
-        },
-        () => {
-          if (extraction !== 'advanced' && extraction !== 'title') {
-            this.titleExtractor.fill(addedMissions)
-          }
-          this.titleExtraction(newMissions, newExtraction)
-        }
-      )
     } else {
       this.titleExtractor.reset()
-      const lastIndex = (_(addedMissions).last()?.index ?? 0) + 1
-      let missions: Array<Mission>
-      if (newExtraction) {
-        missions = [...addedMissions, ...newMissions].map((mission, index) => ({
-          ...mission,
-          index: index + 1,
-        }))
-      } else {
-        missions = [
-          ...addedMissions,
-          ...newMissions.map((mission, index) => ({
-            ...mission,
-            index: lastIndex + index,
-          })),
-        ]
-      }
-      this.setState({
-        addedMissions: missions,
-      })
+      this.simpleExtraction(newMissions)
     }
   }
 
@@ -493,7 +415,11 @@ class CreateBanner extends React.Component<
     const { addedMissions } = this.state
     const updatedMissions = [...addedMissions]
     updatedMissions.splice(pos, 1, { ...mission, index })
-    this.setState({ addedMissions: updatedMissions })
+    this.setState({
+      addedMissions: updatedMissions,
+      extraction: 'none',
+      bannerTitleChanged: true,
+    })
   }
 
   onOrderMissions = () => {
