@@ -358,16 +358,25 @@ class CreateBanner extends React.Component<
           description = addedMissions[0].description
         }
       }
-      this.setState({
-        bannerTitle: title,
-        bannerDescription: description,
-        addedMissions: [
+      let missions: Array<Mission>
+      if (newExtraction && extraction !== 'none' && extraction !== 'title') {
+        missions = [...addedMissions, ...newMissions].map((mission, index) => ({
+          ...mission,
+          index: index + 1,
+        }))
+      } else {
+        missions = [
           ...addedMissions,
           ...newMissions.map((mission, index) => ({
             ...mission,
             index: lastIndex + index,
           })),
-        ],
+        ]
+      }
+      this.setState({
+        bannerTitle: title,
+        bannerDescription: description,
+        addedMissions: missions,
       })
     }
   }
