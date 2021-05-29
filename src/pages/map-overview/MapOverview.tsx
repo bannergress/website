@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
+import { StaticContext } from 'react-router'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { Col, Row } from 'antd'
@@ -37,18 +38,34 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     this.onLoadBanners(bounds)
   }
 
-  onSelectBanner = async (banner: Banner) => {
-    const { fetchPreviewBanner } = this.props
+  onSelectBanner = async (banner: Banner | undefined) => {
+    const { fetchPreviewBanner, location, history } = this.props
     const { selectedBannerId, bounds } = this.state
-    if (selectedBannerId !== banner.id) {
+    if (banner && selectedBannerId !== banner.id) {
       this.setState({ status: 'loading' })
       await fetchPreviewBanner(banner.id)
+      // const selectedId = location.state.selectedBannerId
+      // if (selectedId !== banner.id) {
+      //   history.push({
+      //     pathname: location.pathname,
+      //     search: location.search,
+      //     state: { selectedBannerId: banner.id },
+      //   })
+      // }
       this.setState({
         selectedBannerId: banner.id,
         status: 'ready',
         selectedBounds: bounds,
       })
     } else {
+      const selectedId = location.state.selectedBannerId
+      if (selectedId !== undefined) {
+        history.push({
+          pathname: location.pathname,
+          search: location.search,
+          state: { selectedBannerId: undefined },
+        })
+      }
       this.setState({ selectedBannerId: undefined, selectedBounds: undefined })
     }
   }
@@ -163,7 +180,12 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     )
   }
 }
-export interface MapOverviewProps extends RouteComponentProps {
+export interface MapOverviewProps
+  extends RouteComponentProps<
+    {},
+    StaticContext,
+    { selectedBannerId?: string }
+  > {
   getBanners: (
     topRightLat: number,
     topRightLng: number,

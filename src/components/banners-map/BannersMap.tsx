@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import { StaticContext } from 'react-router'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { divIcon, LatLng, LatLngBounds, Map as LeafletMap } from 'leaflet'
 import { MapContainer, Pane, TileLayer } from 'react-leaflet'
@@ -35,7 +36,13 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   }
 
   shouldComponentUpdate(nextProps: Readonly<BannersMapProps>) {
-    const { banners, loading, selectedBannerId } = this.props
+    const {
+      banners,
+      loading,
+      selectedBannerId,
+      location,
+      onMapChanged,
+    } = this.props
 
     if (this.map && loading !== nextProps.loading) {
       this.map.fireEvent(nextProps.loading ? 'dataloading' : 'dataload')
@@ -57,7 +64,18 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     ) {
       this.map!.off('zoomend dragend')
       this.map!.on('zoomend dragend', this.onFlyToEnded)
-      this.map!.flyTo(new LatLng(lat, lng), newZoom, { noMoveStart: true })
+      this.map!.invalidateSize()
+      this.map!.flyTo(new LatLng(lat, lng), newZoom, {
+        noMoveStart: true,
+        animate: false,
+      })
+      onMapChanged(this.map!.getBounds())
+    }
+    const nextId = nextProps.history.location.state?.selectedBannerId
+    const prevId = location.state?.selectedBannerId
+    if (nextId !== prevId && nextId !== nextProps.selectedBannerId) {
+      const selectedBanner = banners.find((b) => b.id === nextId)
+      this.onSelectBanner(selectedBanner)
     }
 
     if (selectedBannerId !== nextProps.selectedBannerId) {
@@ -65,8 +83,8 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
       if (banner) {
         setTimeout(() => {
           this.map!.invalidateSize()
-          this.map!.fitBounds(new LatLngBounds(getBannerBounds(banner)), {
-            animate: true,
+          this.map!.flyToBounds(new LatLngBounds(getBannerBounds(banner)), {
+            animate: false,
             maxZoom: 15,
           })
         }, 100)
@@ -132,7 +150,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   }
 
   onMapDraggedOrZoomed = () => {
-    const { location, history, onMapChanged } = this.props
+    const { location, history, onMapChanged, selectedBannerId } = this.props
     const urlParams = new URLSearchParams(location.search)
     const [lat, lng, oldZoom] = BannersMap.getCenterAndZoomFromUrlParameters(
       urlParams
@@ -149,6 +167,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
       history.push({
         pathname: location.pathname,
         search: urlParams.toString(),
+        state: { selectedBannerId },
       })
       this.setState({
         center,
@@ -175,7 +194,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     this.onMapDraggedOrZoomed()
   }
 
-  onSelectBanner = (banner: Banner) => {
+  onSelectBanner = (banner: Banner | undefined) => {
     const { onSelectBanner } = this.props
     onSelectBanner(banner)
   }
@@ -253,12 +272,17 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     )
   }
 }
-export interface BannersMapProps extends RouteComponentProps {
+export interface BannersMapProps
+  extends RouteComponentProps<
+    {},
+    StaticContext,
+    { selectedBannerId?: string }
+  > {
   banners: Array<Banner>
   loading: boolean
   selectedBannerId?: string
   onMapChanged: (bounds: LatLngBounds) => void
-  onSelectBanner: (banner: Banner) => void
+  onSelectBanner: (banner: Banner | undefined) => void
 }
 
 interface BannersMapState {
