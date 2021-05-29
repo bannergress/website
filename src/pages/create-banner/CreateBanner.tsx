@@ -246,28 +246,34 @@ class CreateBanner extends React.Component<
   ) => {
     const { bannerTitleChanged, bannerDescriptionChanged } = this.state
     if (missions.length || newMissions.length) {
-      if (newMissions.length) {
-        this.titleExtractor.fill(newMissions)
-      }
-      const result = titleAndNumberingExtraction(missions, this.titleExtractor)
-      const addedMissions = _(result.results)
-        .chain()
-        .map((m, index) => ({ ...m, mission: missions[index] }))
-        .sortBy((m) => m.index)
-        .map((m) => ({ ...m.mission, index: m.index }))
-        .value()
-      const detectedLength = result.total
-      const newState: Pick<CreateBannerState, any> = {
-        addedMissions,
-        detectedLength,
-      }
-      if (!bannerTitleChanged) {
-        newState.bannerTitle = result.title
-      }
-      if (!bannerDescriptionChanged) {
-        newState.bannerDescription = addedMissions[0].description
-      }
-      this.setState(newState)
+      this.setState({ status: 'detecting' }, () => {
+        if (newMissions.length) {
+          this.titleExtractor.fill(newMissions)
+        }
+        const result = titleAndNumberingExtraction(
+          missions,
+          this.titleExtractor
+        )
+        const addedMissions = _(result.results)
+          .chain()
+          .map((m, index) => ({ ...m, mission: missions[index] }))
+          .sortBy((m) => m.index)
+          .map((m) => ({ ...m.mission, index: m.index }))
+          .value()
+        const detectedLength = result.total
+        const newState: Pick<CreateBannerState, any> = {
+          addedMissions,
+          detectedLength,
+          status: 'ready',
+        }
+        if (!bannerTitleChanged) {
+          newState.bannerTitle = result.title
+        }
+        if (!bannerDescriptionChanged) {
+          newState.bannerDescription = addedMissions[0].description
+        }
+        this.setState(newState)
+      })
     }
   }
 
@@ -654,6 +660,12 @@ class CreateBanner extends React.Component<
           spinner
           fadeSpeed={500}
         />
+        <LoadingOverlay
+          active={status === 'detecting'}
+          text="Detecting title and numbering..."
+          spinner
+          fadeSpeed={500}
+        />
         <h1>{title}</h1>
         <div className="create-banner-steps">
           <div className="missions-search">
@@ -854,7 +866,7 @@ interface CreateBannerState {
   bannerType: BannerType
   bannerWidth: number
   detectedLength: number
-  status: 'initial' | 'searching' | 'ready' | 'loading' | 'error'
+  status: 'initial' | 'searching' | 'ready' | 'loading' | 'error' | 'detecting'
   extraction: Algorithm
 }
 
