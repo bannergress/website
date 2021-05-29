@@ -19,6 +19,10 @@ const BannerCard: FC<BannerCardProps> = ({
 }) => {
   const url = banner && banner.picture && new URL(banner.picture, baseUrl).href
   const className = selected ? 'banner-card selected' : 'banner-card'
+  let lines: number | undefined
+  if (banner?.numberOfMissions && banner.width) {
+    lines = Math.ceil(banner.numberOfMissions / banner.width)
+  }
 
   return (
     <div className={className}>
@@ -29,6 +33,7 @@ const BannerCard: FC<BannerCardProps> = ({
           title={banner.title}
           size={banner.width ?? 6}
           showFullImage={showFullImage}
+          lines={lines}
         />
       )}
       <div className="banner-info-item">

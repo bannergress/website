@@ -102,6 +102,20 @@
     display: flex;
     flex-direction: column;
   }
+
+  .banner-card-picture {
+    max-height: 160px;
+    height: auto;
+    aspect-ratio: 2;
+
+    &.banner-lines-1 {
+      aspect-ratio: 6;
+    }
+
+    &.banner-lines-2 {
+      aspect-ratio: 3;
+    }
+  }
 }
 
 @media not @mobile-detection {

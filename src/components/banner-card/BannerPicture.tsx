@@ -55,6 +55,7 @@ const BannerPicture: FC<BannerPictureProps> = ({
   url,
   size,
   showFullImage = false,
+  lines = 3,
 }) => {
   const { ref, inView } = useInView({ threshold: 1 })
   const [modalOpened, setModalOpened] = useState(false)
@@ -107,7 +108,7 @@ const BannerPicture: FC<BannerPictureProps> = ({
       </Modal>
       <div
         ref={ref}
-        className="banner-card-picture"
+        className={`banner-card-picture banner-lines-${lines}`}
         onClick={() => setModalOpened(showFullImage)}
         onKeyPress={(e) =>
           e.key === 'Enter' ? setModalOpened(showFullImage) : null
@@ -131,6 +132,7 @@ export interface BannerPictureProps {
   size: number
   title?: string
   showFullImage?: boolean
+  lines?: number
 }
 
 export default BannerPicture
