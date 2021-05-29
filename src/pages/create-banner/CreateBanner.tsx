@@ -308,13 +308,15 @@ class CreateBanner extends React.Component<
             addedMissions.length || newMissions.length ? 'detecting' : 'ready',
         },
         () => {
-          if (extraction !== 'advanced' && extraction !== 'title') {
-            this.titleExtractor.fill(addedMissions)
-          }
-          this.advancedExtraction(
-            [...addedMissions, ...newMissions],
-            newMissions
-          )
+          setTimeout(() => {
+            if (extraction !== 'advanced' && extraction !== 'title') {
+              this.titleExtractor.fill(addedMissions)
+            }
+            this.advancedExtraction(
+              [...addedMissions, ...newMissions],
+              newMissions
+            )
+          }, 100)
         }
       )
     } else {
@@ -631,12 +633,6 @@ class CreateBanner extends React.Component<
           spinner
           fadeSpeed={500}
         />
-        <LoadingOverlay
-          active={status === 'detecting'}
-          text="Detecting title and numbering..."
-          spinner
-          fadeSpeed={500}
-        />
         <h1>{title}</h1>
         <div className="create-banner-steps">
           <div className="missions-search">
@@ -695,6 +691,7 @@ class CreateBanner extends React.Component<
               <AlgorithmDetectionChooser
                 selected={extraction}
                 onChange={(val) => this.onInputChange(val, 'extraction')}
+                loading={status === 'detecting'}
               />
             </div>
             <div className="results-title">

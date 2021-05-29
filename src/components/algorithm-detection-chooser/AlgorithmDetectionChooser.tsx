@@ -29,6 +29,7 @@ const extractionHelp = (
 
 const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
   selected,
+  loading,
   onChange,
 }) => {
   const getOption = (algorithm: Algorithm, title: string) => (
@@ -43,6 +44,12 @@ const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
           <SVGHelp />
         </Tooltip>
       </h3>
+      <div className={`lds-ellipsis display-${loading}`}>
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
       <Radio.Group value={selected} onChange={(e) => onChange(e.target.value)}>
         {getOption('none', 'Manual')}
         {getOption('advanced', 'Automatic')}
@@ -55,6 +62,7 @@ export type Algorithm = 'none' | 'title' | 'simple' | 'advanced'
 
 export interface AlgorithmDetectionChooserProps {
   selected: Algorithm
+  loading: boolean
   onChange: (val: Algorithm) => void
 }
 
