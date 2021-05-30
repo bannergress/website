@@ -38,6 +38,10 @@
       }
     }
 
+    h3 {
+      margin-top: 10px;
+    }
+
     &>div {
       flex-grow: 1;
       flex-basis: 10%;
@@ -47,14 +51,17 @@
     .missions-search,
     .missions-arrange {
       min-height: 750px;
+      display: flex;
+      flex-direction: column;
+
     }
 
     .missions-search .search-mission-list {
-      height: calc(100% - 220px) !important;
+      height: 100% !important;
     }
 
     .missions-arrange .search-mission-list {
-      height: calc(100% - 155px) !important;
+      height: 100% !important;
     }
 
     .create-banner-preview {

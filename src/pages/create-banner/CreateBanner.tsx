@@ -40,15 +40,12 @@ import {
   Algorithm,
 } from '../../components/algorithm-detection-chooser'
 import AdvancedOptions from '../../components/advanced-options'
+import { IssuesList } from '../../components/Issues-list'
 import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg'
 import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
 
+import { getBannerIssues } from './getBannerIssues'
 import './create-banner.less'
-
-const MIN_MISSIONS = 2
-const MAX_MISSIONS = 3000
-const MIN_TITLE_LENGTH = 3
-const MAX_TITLE_LENGTH = 200
 
 class CreateBanner extends React.Component<
   CreateBannerProps,
@@ -350,6 +347,7 @@ class CreateBanner extends React.Component<
       bannerDescription: '',
       bannerTitleChanged: false,
       bannerDescriptionChanged: false,
+      detectedLength: 0,
     })
   }
 
@@ -486,93 +484,6 @@ class CreateBanner extends React.Component<
     return ''
   }
 
-  hasGaps = (indexes: Array<number | undefined>) => {
-    if (indexes.length > 0) {
-      const sorted = _([...indexes]).sortBy()
-      if (sorted[0] !== 1 || sorted[sorted.length - 1] !== sorted.length) {
-        return true
-      }
-    }
-    return false
-  }
-
-  getIssues = () => {
-    const {
-      addedMissions,
-      bannerTitle,
-      bannerType,
-      bannerWidth,
-      detectedLength,
-    } = this.state
-    const issues: Array<Issue> = []
-
-    const indexes = addedMissions.map((mission) => mission.index)
-    const hasDuplicates = _(indexes).uniq(false).length !== addedMissions.length
-
-    if (
-      addedMissions.length < MIN_MISSIONS ||
-      addedMissions.length > MAX_MISSIONS
-    ) {
-      issues.push({
-        type: 'error',
-        field: 'missions',
-        message: `A banner must contain between ${MIN_MISSIONS} and ${MAX_MISSIONS} missions.`,
-      })
-    }
-    if (bannerType === 'sequential' && hasDuplicates) {
-      issues.push({
-        type: 'error',
-        field: 'missions',
-        message: 'There are 2 or more missions with the same index.',
-      })
-    }
-    if (
-      bannerType === 'sequential' &&
-      _(addedMissions).any((m) => m.index === undefined || m.index <= 0)
-    ) {
-      issues.push({
-        type: 'error',
-        field: 'missions',
-        message:
-          'There are at least a mission with an invalid index. Indexes must be positive integers.',
-      })
-    }
-    if (
-      !bannerTitle ||
-      bannerTitle.length < MIN_TITLE_LENGTH ||
-      bannerTitle.length > MAX_TITLE_LENGTH
-    ) {
-      issues.push({
-        type: 'error',
-        field: 'title',
-        message: `The title must be between ${MIN_TITLE_LENGTH} and ${MAX_TITLE_LENGTH} characters`,
-      })
-    }
-    if (this.hasGaps(indexes)) {
-      issues.push({
-        type: 'warning',
-        field: 'missions',
-        message: 'The banner could be incomplete, as it has gaps',
-      })
-    }
-    if (bannerType === 'sequential' && indexes.length % bannerWidth !== 0) {
-      issues.push({
-        type: 'warning',
-        field: 'missions',
-        message: `The banner could be incomplete, as the number of missions is not divisible by the selected width: ${bannerWidth}`,
-      })
-    }
-    if (detectedLength && detectedLength !== indexes.length) {
-      issues.push({
-        type: 'warning',
-        field: 'missions',
-        message: `The banner could be incomplete, as the length difers from the detected length in the title: ${detectedLength}`,
-      })
-    }
-
-    return issues
-  }
-
   render() {
     const { missions, hasMore } = this.props
     const {
@@ -586,6 +497,7 @@ class CreateBanner extends React.Component<
       id,
       startMissions,
       extraction,
+      detectedLength,
     } = this.state
 
     let unusedMissions = _.filter(
@@ -631,7 +543,13 @@ class CreateBanner extends React.Component<
     }
 
     const title = id ? 'Edit Banner' : 'New Banner'
-    const issues = this.getIssues()
+    const issues = getBannerIssues(
+      addedMissions,
+      bannerType,
+      bannerWidth,
+      bannerTitle,
+      detectedLength
+    )
 
     return (
       <div className="create-banner">
@@ -699,6 +617,9 @@ class CreateBanner extends React.Component<
             <h1>
               <span className="ellipse">2</span> Arrange
             </h1>
+            <IssuesList
+              issues={issues.filter((issue) => issue.field === 'missions')}
+            />
             <div className="algorithm">
               <AlgorithmDetectionChooser
                 selected={extraction}
@@ -732,6 +653,9 @@ class CreateBanner extends React.Component<
             <h1>
               <span className="ellipse">3</span> Information
             </h1>
+            <IssuesList
+              issues={issues.filter((issue) => issue.field !== 'missions')}
+            />
             <h3>Banner Title</h3>
             <Input
               placeholder="Start typing..."
@@ -778,11 +702,6 @@ class CreateBanner extends React.Component<
             >
               Review
             </button>
-            <div>
-              {issues.map((i) => (
-                <p key={i.message}>{i.message}</p>
-              ))}
-            </div>
           </div>
         </div>
       </div>
@@ -824,12 +743,6 @@ interface CreateBannerState {
   detectedLength: number
   status: 'initial' | 'searching' | 'ready' | 'loading' | 'error' | 'detecting'
   extraction: Algorithm
-}
-
-interface Issue {
-  field: 'title' | 'description' | 'missions'
-  type: 'error' | 'warning'
-  message: string
 }
 
 const mapStateToProps = (state: RootState) => ({
