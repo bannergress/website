@@ -15,15 +15,13 @@ const extractionHelp = (
       <b>Automatic:</b> Automatic title/numbering detection. With long banners
       could be slower.
     </p>
-    <p>
-      * If detection is changed to advanced, title and numbering may change as
-      it will be reevaluated.
-      <br />
-      * If title is changed manually, it won&apos;t be changed automatically
-      when new missions are added.
-      <br />* If a mission number is changed manually, Manual detection will be
-      activated.
-    </p>
+    * If detection is changed to advanced, title and numbering may change as it
+    will be reevaluated.
+    <br />
+    * If title is changed manually, it won&apos;t be changed automatically when
+    new missions are added.
+    <br />* If a mission number is changed manually, Manual detection will be
+    activated.
   </>
 )
 
@@ -38,12 +36,11 @@ const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
 
   return (
     <div className="algo-detection-chooser">
-      <h3>
-        Detection{' '}
-        <Tooltip placement="right" title={extractionHelp}>
-          <SVGHelp />
-        </Tooltip>
-      </h3>
+      <Tooltip placement="right" title={extractionHelp}>
+        <h3>
+          Detection <SVGHelp />
+        </h3>
+      </Tooltip>
       <div className={`lds-ellipsis display-${loading}`}>
         <div />
         <div />

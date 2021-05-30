@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
-import { Input, Select, InputNumber, Row, Col, Slider, Button } from 'antd'
+import { Input, InputNumber, Button } from 'antd'
 import { Helmet } from 'react-helmet'
 import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars'
@@ -39,6 +39,7 @@ import {
   AlgorithmDetectionChooser,
   Algorithm,
 } from '../../components/algorithm-detection-chooser'
+import AdvancedOptions from '../../components/advanced-options'
 import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg'
 import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
 
@@ -753,35 +754,11 @@ class CreateBanner extends React.Component<
             />
             <h3>Options</h3>
             <div className="adv-options-container open">
-              <Row>
-                <Col span={12}>
-                  <h4>Banner type</h4>
-                </Col>
-                <Col span={12}>
-                  <Select
-                    value={bannerType}
-                    onChange={(val) => this.onInputChange(val, 'bannerType')}
-                  >
-                    <Select.Option value="sequential">Banner</Select.Option>
-                    <Select.Option value="anyOrder">
-                      Mission collection
-                    </Select.Option>
-                  </Select>
-                </Col>
-                <Col span={12}>
-                  <h4>Banner width</h4>
-                </Col>
-                <Col span={12}>
-                  <Slider
-                    min={1}
-                    max={6}
-                    onChange={(val: number) =>
-                      this.onInputChange(val, 'bannerWidth')
-                    }
-                    value={bannerWidth}
-                  />
-                </Col>
-              </Row>
+              <AdvancedOptions
+                type={bannerType}
+                width={bannerWidth}
+                onChange={this.onInputChange}
+              />
             </div>
             <h3>Preview</h3>
             <div className="create-banner-preview">

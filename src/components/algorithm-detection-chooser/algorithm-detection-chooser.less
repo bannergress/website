@@ -4,42 +4,17 @@
   justify-content: space-between;
   flex-wrap: wrap-reverse;
 
-  .ant-radio-group {
-    color: white;
+  h3 {
     display: flex;
     column-gap: 5px;
 
-    label {
-      color: white !important;
-      text-align: center;
-      border: none;
-      border-radius: 5px;
-      background-color: white;
-      padding: 1px;
-      display: flex;
-      cursor: pointer;
+    svg {
+      align-self: flex-start;
 
-
-      &.ant-radio-button-wrapper-checked {
-        background-image: linear-gradient(180deg, #109393, #15D4B2);
-        padding: 2px;
-
-        >span:nth-child(2) {
-          line-height: 24px;
-        }
-      }
-
-      >span:nth-child(2) {
-        background-color: #1B1B1B;
-        border-radius: 4px;
-        padding: 0 10px;
-        flex: 1;
+      path {
+        fill: white;
       }
     }
-  }
-
-  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
-    background: none !important;
   }
 
   .lds-ellipsis {
