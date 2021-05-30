@@ -384,6 +384,17 @@ class CreateBanner extends React.Component<
       },
       {}
     )
+    let width = bannerWidth
+    if (addedMissions.length < bannerWidth) {
+      if (bannerType === 'anyOrder') {
+        width = addedMissions.length
+      } else {
+        const lastIndex = _(addedMissions).last()!.index!
+        if (lastIndex < bannerWidth) {
+          width = lastIndex
+        }
+      }
+    }
     try {
       this.setState({ status: 'loading' })
       await createBanner({
@@ -392,7 +403,7 @@ class CreateBanner extends React.Component<
         description: bannerDescription,
         missions,
         numberOfMissions: addedMissions.length,
-        width: bannerWidth,
+        width,
         type: bannerType,
       })
       history.push('/preview-banner')
