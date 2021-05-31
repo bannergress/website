@@ -248,8 +248,11 @@ const getRefinedCandidateNumber = (
           index += (maybeSection.parsed - 1) * maybeSection.uses
         }
       }
-    } else if (matchesExtended > length - length / 5) {
-      // Number is used in almost all missions, probably not an index
+    } else if (
+      matchesExtended > length - length / 5 &&
+      ((total && index > total) || index > length)
+    ) {
+      // Number is used in almost all missions and it's large, probably not an index
       index = undefined
     }
     if (
