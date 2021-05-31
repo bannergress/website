@@ -1,0 +1,77 @@
+.banner-info-mobile-switch{
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    padding-bottom: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
+    font-weight: 400;
+
+    .banner-info-mobile-switch-back {
+        flex: 0;
+        
+        svg{
+            height: 1em;
+            margin-top: 5px;
+        }
+    }
+
+    .mobile-switch-title-row  { 
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        padding-top: 5px;
+        padding-bottom: 5px;
+
+    }
+
+    .mobile-switch-tabs-row {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .mobile-switch-title {
+        width: 100%;
+        font-size: 20px;
+        white-space:  nowrap;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+    }
+
+    button {
+        background-color: transparent;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        width: 33%;
+        font-size: 16px;
+
+
+        &.active {
+            border-radius: 4px;
+            border: 2px solid #0ca589 !important; 
+        }
+    }
+
+    .positive-action-button {
+        background: #077561;
+        color: white;
+        padding: 0.5em 2em;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      
+        &:disabled {
+          background: gray;
+          color: lightgray;
+          cursor: not-allowed;
+        }
+      }
+
+    .mobile-switch-submit-button {
+        flex-grow: 0;
+        white-space:nowrap;
+        width: auto;
+    }
+}

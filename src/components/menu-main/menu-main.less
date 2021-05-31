@@ -1,0 +1,47 @@
+.menu-main {
+  display: flex;
+
+  & > a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #eaeaea;
+    padding: 5px;
+    min-width: 70px;
+    transition: background-color .3s;
+  
+    & > .icon {
+      fill: #eaeaea;
+    }
+  }
+
+  & > a.active {
+    color: #0ca589;
+  
+    & > .icon {
+      fill: #0ca589;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    & a:hover {
+      background: rgba(29,165,122,.3);
+      color: white;
+    
+      & > .icon {
+        fill: white;
+      }
+    }
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
+
+}
+
+.bottom-menu .menu-main > a {
+    flex-grow: 1;
+}

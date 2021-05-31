@@ -1,0 +1,196 @@
+.banner-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: grey;
+  margin-right: 8px;
+  margin-top: 8px;
+}
+
+.icon {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.banner-card {
+  background: #2e2e2e;
+  border-radius: 5px;
+  border: #2e2e2e 2px solid;
+  padding: 18px;
+  color: white;
+
+  &.selected {
+    border-color: #16d4b2;
+  }
+
+}
+
+.banner-card-modal {
+  height: 95%;
+
+  .ant-modal-content {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    background-color: #2e2e2e;
+
+    .ant-modal-body {
+      width: 100%;
+    }
+
+    .ant-modal-close {
+      display: none;
+    }
+
+    .modal-image {
+      height: 100%;
+      width: 100%;
+      cursor: default;
+      background: none !important;
+      border: none;
+      margin: 0 !important;
+      padding: 0 !important;
+
+      div {
+        margin: 0 !important;
+        display: flex;
+      }
+
+      img {
+        max-height: 100%;
+        max-width: 100%;
+        margin: auto;
+      }
+
+      &.full-size {
+        img {
+          max-height: initial;
+          max-width: initial;
+        }
+      }
+    }
+
+    .close-button {
+      position: absolute;
+      bottom: 15px;
+      background-color: #2e2e2e;
+      right: 15px;
+      border: none;
+      line-height: 1em;
+      color: white !important;
+
+      svg,
+      span {
+        vertical-align: middle;
+        display: inline-block;
+      }
+
+      svg {
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+.banner-card-title {
+  font-size: 20px;
+  line-height: 21px;
+}
+
+.banner-info-item {
+  font-size: 14px;
+  line-height: 18px;
+  color: #DDDDDD;
+  margin-top: 4px;
+  display: flex;
+
+  .banner-info-item-icon {
+    width: 20px;
+
+    .icon {
+      fill: rgb(221, 221, 221);
+    }
+  }
+}
+
+.banner-card-picture {
+  margin: 20px 0;
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.banner-card-picture-inner {
+  max-height: 100%;
+  max-width: 100%;
+
+  &>img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+
+  &.picture-size-1 {
+    max-width: 17%;
+  }
+
+  &.picture-size-2 {
+    max-width: 33%;
+  }
+
+  &.picture-size-3 {
+    max-width: 50%;
+  }
+
+  &.picture-size-4 {
+    max-width: 67%;
+  }
+
+  &.picture-size-5 {
+    max-width: 85%;
+  }
+}
+
+.banner-info-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0px;
+  margin-top: 10px;
+
+  a {
+    border: 1px solid white;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 14px;
+    color: white;
+  }
+}
+
+
+// Support for browsers that don't support aspect-ratio yet. 
+// Can be removed once this feature is implemented in all major browsers
+
+@supports (aspect-ratio: 1/1) {
+  .banner-card-picture {
+    aspect-ratio: 2 / 1;
+  }
+}
+
+@supports not (aspect-ratio: 1/1) {
+  .banner-card-picture {
+    height: 160px; // 160 Pixel is half of width of .banner-card minus padding
+  }
+}
+
+.banner-card-title,
+.banner-info-item {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

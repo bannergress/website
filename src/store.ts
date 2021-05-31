@@ -1,17 +1,34 @@
-import { combineReducers, createStore } from 'redux'
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
+import { persistStore, persistReducer } from 'redux-persist'
+import storageSession from 'redux-persist/lib/storage/session'
 import { devToolsEnhancer } from 'redux-devtools-extension'
-import { CounterReducer } from './features/counter'
+import thunk from 'redux-thunk'
+
 import { BannerReducer } from './features/banner'
+import { PlaceReducer } from './features/place'
+import { MissionReducer } from './features/mission'
+import { NewsReducer } from './features/news'
+
+const persistConfig = {
+  key: 'root',
+  storage: storageSession,
+  blacklist: ['banner', 'mission'],
+}
 
 /* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({
-  count: CounterReducer,
   banner: BannerReducer,
+  place: PlaceReducer,
+  mission: MissionReducer,
+  news: NewsReducer,
 })
 
-const store = createStore(
-  rootReducer,
-  /* preloadedState, */ devToolsEnhancer({})
-)
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-export default store
+// export default store
+export const store = createStore(
+  persistedReducer,
+  {},
+  compose(applyMiddleware(thunk), devToolsEnhancer({}))
+)
+export const persistor = persistStore(store)

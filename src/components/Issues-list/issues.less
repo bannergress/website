@@ -1,0 +1,20 @@
+.issues-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.issue-card {
+  background: rgba(46, 46, 46, 0.9);
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 14px;
+  
+  &.issue-error {
+    color: #FF2F2F;
+  }
+
+  &.issue-warning {
+    color: #FFB21D;
+  }
+}

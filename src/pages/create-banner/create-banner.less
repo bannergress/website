@@ -1,0 +1,218 @@
+.create-banner {
+  margin: 0 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100% - 5px);
+
+  &>h1 {
+    width: 100%;
+  }
+
+  .create-banner-steps {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 50px;
+    row-gap: 20px;
+    width: 100%;
+    height: 100%;
+
+    h1 {
+      vertical-align: middle;
+      display: flex;
+      column-gap: 10px;
+      font-size: 36px;
+      line-height: 40px;
+
+      .ellipse {
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 2px solid white;
+        text-align: center;
+        display: block;
+        line-height: 30px;
+        font-size: 24px;
+        margin-top: 3px;
+      }
+    }
+
+    h3 {
+      margin-top: 10px;
+    }
+
+    &>div {
+      flex-grow: 1;
+      flex-basis: 10%;
+      min-width: 300px;
+    }
+
+    .missions-search,
+    .missions-arrange {
+      min-height: 750px;
+      display: flex;
+      flex-direction: column;
+
+    }
+
+    .missions-search .search-mission-list {
+      height: 100% !important;
+    }
+
+    .missions-arrange .search-mission-list {
+      height: 100% !important;
+    }
+
+    .create-banner-preview {
+      background: #2e2e2e;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 10px 0 30px;
+      border: 1px solid white;
+
+      & .banner-image {
+        margin: auto;
+      }
+    }
+
+    .adv-options-container {
+      max-height: 130px;
+      border: 1px solid white;
+      border-radius: 4px;
+      padding: 5px 20px;
+      margin-top: 10px;
+
+      h4 {
+        margin-top: 10px;
+      }
+
+      .ant-select,
+      .ant-input-number {
+        width: 100%;
+        margin-top: 10px;
+      }
+    }
+
+    .positive-action-button {
+      margin-bottom: 10px;
+    }
+
+    .search-mission-card {
+      .ant-input-number {
+        width: 65px;
+      }
+    }
+
+    input,
+    textarea {
+      background-color: #B9B9B9;
+      border-radius: 4px;
+      border: none;
+      color: #000;
+      font-size: 14px;
+      padding: 8px 10px;
+
+      &::placeholder {
+        color: #555;
+      }
+    }
+
+    .missions-search,
+    .create-banner-info {
+
+      input,
+      textarea {
+        margin-top: 5px;
+      }
+    }
+
+    .missions-search {
+      .search-mission-subtitle {
+        color: #888888;
+      }
+    }
+
+    .results-title,
+    .algorithm {
+      display: flex;
+      flex-wrap: wrap-reverse;
+      justify-content: space-between;
+      margin: 10px 0;
+
+      h3 {
+        margin: 0;
+      }
+
+      button {
+        border-color: white;
+        border-radius: 4px;
+        color: white;
+        width: 100px;
+      }
+    }
+
+    .algorithm {
+      margin-top: 20px;
+
+      svg {
+        path {
+          fill: white;
+        }
+      }
+
+      .ant-select {
+        width: 100px;
+      }
+    }
+
+    .mission-error {
+      input {
+        background-color: tomato;
+      }
+    }
+  }
+
+  .button-review {
+    width: 100%;
+    color: white;
+  }
+
+  .ant-radio-group {
+    color: white;
+    display: flex;
+    column-gap: 5px;
+
+    label {
+      color: white !important;
+      text-align: center;
+      border: none;
+      border-radius: 5px;
+      background-color: white;
+      padding: 1px;
+      display: flex;
+      cursor: pointer;
+
+
+      &.ant-radio-button-wrapper-checked {
+        background-image: linear-gradient(180deg, #109393, #15D4B2);
+        padding: 2px;
+
+        >span:nth-child(2) {
+          line-height: 24px;
+        }
+      }
+
+      >span:nth-child(2) {
+        background-color: #1B1B1B;
+        border-radius: 4px;
+        padding: 0 10px;
+        flex: 1;
+      }
+    }
+  }
+
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+    background: none !important;
+  }
+}

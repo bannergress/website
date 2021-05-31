@@ -1,0 +1,46 @@
+.order-button {
+  border: none;
+  border-radius: 5px;
+  background-color: white;
+  padding: 1px;
+  display: flex;
+  cursor: pointer;
+
+  &.selected {
+    background-image: linear-gradient(180deg, #109393, #15D4B2);
+    padding: 2px;
+
+    &.inverse {
+      .arrow {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .arrow {
+    height: 0.625em;
+    fill: white;
+  }
+
+  .order-button-inner {
+    background-color: #1B1B1B;
+    border-radius: 4px;
+    flex: 1;
+    padding: 5px 10px;
+  }
+}
+
+.order-chooser {
+  display: flex;
+  overflow-x: scroll;
+
+  &>div {
+    margin-bottom: 0.5em;
+    column-gap: 15px;
+    row-gap: 15px;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: baseline;
+    flex-wrap: nowrap;
+  }
+}

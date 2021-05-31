@@ -1,0 +1,62 @@
+@import "../../index";
+
+.search-mission-card {
+  margin-top: 1rem;
+  background-color: @color-panel-bg;
+  margin-top: 1rem;
+  background-color: #404040;
+  border-radius: 5px;
+  display: flex;
+  column-gap: 15px;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
+
+  .mission-image {
+    flex-shrink: 0;
+  }
+
+  .mission-title-and-author {
+    flex: 1;
+  }
+
+  .mission-title {
+    line-height: 130%;
+    word-break: break-word;
+  }
+
+  .mission-agent {
+    font-size: 14px;
+  }
+
+  .icon {
+    cursor: pointer;
+    height: 1.5rem;
+    width: 1.5rem;
+    transition: transform ease 0.3s;
+    &.open {
+      transform:rotate(180deg);
+    }
+  }
+
+  .ant-card-body {
+    padding: 1rem;
+    transition: height ease 0.3s;
+  }
+
+  .mission-button {
+    height: 50px;
+    width: 40px;
+    background: none;
+    border: none;
+    fill: white;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .mission-agent {
+    border: none;
+    text-align: left;
+    padding: 0;
+  }
+}
