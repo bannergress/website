@@ -177,7 +177,7 @@ const findLessUsed = (
 ) =>
   _(markers)
     .chain()
-    .filter((marker) => marker !== maybeSection)
+    .filter((marker) => !_.isEqual(marker, maybeSection))
     .first()
     .value()
 
@@ -191,7 +191,7 @@ const findBestCandidate = (
     .filter(
       (marker) =>
         marker.uses === lesserUsed.uses &&
-        (!maybeSection || marker !== maybeSection)
+        (!maybeSection || !_.isEqual(marker, maybeSection))
     )
     .countBy((marker) => marker.raw)
     .pairs()
@@ -200,14 +200,51 @@ const findBestCandidate = (
     .first()
     .value()
 
-const getRefinedCandidateNumber = (
+const extractSections = (
   number: IntermediateMissionNumber,
+  allNumbersCount: _.Dictionary<number>,
+  total: number | undefined
+) => {
+  const { index } = number
+  const { markersClean, raw } = number
+  let maybeSection: (NumberMarker & { uses: number }) | undefined
+  if (index && raw) {
+    const matches = allNumbersCount[raw]
+    if (matches > 1) {
+      const withUses = fillMarkersWithUses(markersClean, allNumbersCount)
+
+      // Try to find if one of the numbers if from the section (alpha, bravo...)
+      // Only works if all the missions from the section are added and they all have that number
+      maybeSection = withUses.find(
+        (marker) =>
+          marker.uses % 6 === 0 &&
+          marker.parsed < 12 &&
+          (!total ||
+            marker.parsed !== total ||
+            markersClean.filter((m) => m.parsed === total).length > 1)
+      )
+    }
+  }
+  return {
+    ...number,
+    index,
+    total,
+    maybeSection,
+  }
+}
+
+const getRefinedCandidateNumber = (
+  number: IntermediateMissionNumber & {
+    maybeSection: (NumberMarker & { uses: number }) | undefined
+  },
   allNumbersCount: _.Dictionary<number>,
   allNumbersCountExtended: _.Dictionary<number>,
   total: number | undefined,
-  length: number
+  length: number,
+  usesPerSection: number | undefined,
+  sectionType: string | undefined
 ) => {
-  let { index } = number
+  let { index, maybeSection } = number
   const { markersClean, raw } = number
   if (index && raw) {
     const matches = allNumbersCount[raw]
@@ -215,11 +252,13 @@ const getRefinedCandidateNumber = (
     if (matches > 1) {
       const withUses = fillMarkersWithUses(markersClean, allNumbersCount)
 
-      // Try to find if one of the numbers if from the section (alpha, bravo...)
-      // Only works if all the missions from the section are added and they all have that number
-      const maybeSection = withUses.find(
-        (marker) => marker.uses % 6 === 0 && marker.parsed < 6
-      )
+      // Remove non matching section
+      if (
+        maybeSection?.uses !== usesPerSection ||
+        maybeSection?.type !== sectionType
+      ) {
+        maybeSection = undefined
+      }
 
       let lesserUsed = findLessUsed(withUses, maybeSection)
       if (_.isObject(lesserUsed)) {
@@ -257,7 +296,8 @@ const getRefinedCandidateNumber = (
     }
     if (
       index &&
-      ((total && index > total * 2) || (index > length * 2 && length > 5))
+      ((total && index > total * 2 && length <= total) ||
+        (index > length * 2 && length > 5))
     ) {
       // It seems the number has the total joined with the mission number, try to remove
       const tot = (total ?? length).toString()
@@ -294,13 +334,47 @@ const refineExtractedNumbers = (
   const allNumbersCount = countBy(numbers, (n) => n.markersClean)
   const allNumbersCountExtended = countBy(numbers, (n) => n.markers)
 
-  return numbers.map((number) =>
+  const withSections = numbers.map((number) =>
+    extractSections(number, allNumbersCount, total)
+  )
+  const sections = _(withSections)
+    .chain()
+    .map((n) => n?.maybeSection)
+    .filter((s) => !!s)
+    .uniq(false, (s) => s!.raw)
+    .value()
+  let usesPerSection = 0
+  let sectionType: string | undefined
+  if (sections && sections.length) {
+    sectionType = _(sections)
+      .chain()
+      .map((s) => s?.type)
+      .countBy()
+      .pairs()
+      .sortBy((s) => s[1])
+      .first()
+      .value()?.[0]
+    usesPerSection = Number(
+      _(sections)
+        .chain()
+        .filter((s) => s?.type === sectionType)
+        .map((s) => s!.uses)
+        .countBy()
+        .pairs()
+        .sortBy((s) => s[1])
+        .first()
+        .value()?.[0]
+    )
+  }
+  return withSections.map((number) =>
     getRefinedCandidateNumber(
-      number,
+      number!,
       allNumbersCount,
       allNumbersCountExtended,
       total,
-      numbers.length
+      numbers.length,
+      usesPerSection,
+      sectionType
     )
   )
 }
