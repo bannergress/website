@@ -1,8 +1,8 @@
 import _ from 'underscore'
 
-import { Issue } from '../../components/Issues-list/Issue'
 import { BannerType } from '../../features/banner'
 import { Mission } from '../../features/mission'
+import { Issue } from '../../components/Issues-list'
 
 const MIN_MISSIONS = 2
 const MAX_MISSIONS = 3000

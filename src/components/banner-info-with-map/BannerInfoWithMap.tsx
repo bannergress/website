@@ -12,6 +12,7 @@ import {
   BannerInfoMobileSwitch,
   BannerInfoMobileView,
 } from '../banner-info-mobile-switch'
+import { IssuesList, Issue } from '../Issues-list'
 
 import { ReactComponent as SVGBackArrow } from '../../img/icons/back-arrow.svg'
 
@@ -125,6 +126,16 @@ class BannerInfoWithMap extends React.Component<
     this.viewWasMapBefore = this.viewWasMapBefore || mobileView === 'map'
 
     if (banner && banner.missions) {
+      const bounds = getBannerBounds(banner)
+      const issues: Array<Issue> = []
+      if (!bounds) {
+        issues.push({
+          key: 'banner-no-bounds',
+          type: 'error',
+          message: 'Banner has no POIs currently available',
+          field: 'bounds',
+        })
+      }
       return (
         <div className="banner-info-with-map-container">
           <div className="hide-on-desktop">
@@ -176,13 +187,16 @@ class BannerInfoWithMap extends React.Component<
               />
             </div>
             <div className={`banner-info-additional ${mapPaneClassName} `}>
-              <MapDetail
-                banner={banner}
-                bounds={new LatLngBounds(getBannerBounds(banner))}
-                openedMissionIndexes={expandedMissionIndexes}
-                onOpenMission={this.onExpandFromMap}
-                ref={this.mapRef}
-              />
+              {bounds && (
+                <MapDetail
+                  banner={banner}
+                  bounds={new LatLngBounds(bounds)}
+                  openedMissionIndexes={expandedMissionIndexes}
+                  onOpenMission={this.onExpandFromMap}
+                  ref={this.mapRef}
+                />
+              )}
+              {issues.length && <IssuesList issues={issues} />}
             </div>
           </div>
         </div>

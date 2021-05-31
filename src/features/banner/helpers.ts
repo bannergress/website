@@ -21,7 +21,7 @@ export const containsBanner = (
 
 export const getBannerBounds = (
   banner: Banner
-): [[number, number], [number, number]] => {
+): [[number, number], [number, number]] | undefined => {
   let maxLatitude = banner.startLatitude
   let maxLongitude = banner.startLongitude
   let minLatitude = banner.startLatitude
@@ -45,6 +45,9 @@ export const getBannerBounds = (
       }
       return undefined
     })
+  }
+  if (!maxLatitude || !minLatitude || !maxLongitude || !minLongitude) {
+    return undefined
   }
   return [
     [maxLatitude + BOUNDS_MARGIN, maxLongitude + BOUNDS_MARGIN],

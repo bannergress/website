@@ -56,7 +56,7 @@ export const showBannerRouteOnMap = (
   }
 
   if (missionMultiPolylines && missionMultiPolylines.length) {
-    const lastCoordinates = _.last(_.last(missionMultiPolylines) as LatLng[])
+    const lastCoordinates = _.last(_.last(missionMultiPolylines)!)
     return (
       <>
         <Polyline
