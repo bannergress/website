@@ -19,6 +19,8 @@ import 'leaflet/dist/leaflet.css'
 class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   private map: LeafletMap | undefined = undefined
 
+  private programaticChange: boolean = false
+
   constructor(props: BannersMapProps) {
     super(props)
     const { location } = this.props
@@ -49,27 +51,35 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     }
 
     const urlParams = new URLSearchParams(nextProps.location.search)
-    const [lat, lng, newZoom] = BannersMap.getCenterAndZoomFromUrlParameters(
+    const [lat, lng, zoom] = BannersMap.getCenterAndZoomFromUrlParameters(
       urlParams
     )
-    const center = this.map?.getCenter()
-    const zoom = this.map?.getZoom()
+    const oldUrlParams = new URLSearchParams(location.search)
+    const [
+      oldLat,
+      oldLng,
+      oldZoom,
+    ] = BannersMap.getCenterAndZoomFromUrlParameters(oldUrlParams)
     if (
-      center &&
       zoom &&
+      !Number.isNaN(oldLat) &&
       !Number.isNaN(lat) &&
+      !Number.isNaN(oldLng) &&
       !Number.isNaN(lng) &&
-      newZoom &&
-      (lat !== center.lat || lng !== center.lng || newZoom !== zoom)
+      oldZoom &&
+      (lat !== oldLat || lng !== oldLng || oldZoom !== zoom)
     ) {
-      this.map!.off('zoomend dragend')
-      this.map!.on('zoomend dragend', this.onFlyToEnded)
-      this.map!.invalidateSize()
-      this.map!.flyTo(new LatLng(lat, lng), newZoom, {
-        noMoveStart: true,
-        animate: false,
-      })
-      onMapChanged(this.map!.getBounds())
+      if (this.programaticChange) {
+        this.programaticChange = false
+      } else {
+        this.map!.off('zoomend dragend')
+        this.map!.on('zoomend dragend', this.onFlyToEnded)
+        this.map!.invalidateSize()
+        this.map!.flyTo(new LatLng(lat, lng), zoom, {
+          animate: false,
+        })
+        onMapChanged(this.map!.getBounds())
+      }
     }
     const nextId = nextProps.history.location.state?.selectedBannerId
     const prevId = location.state?.selectedBannerId
@@ -155,33 +165,28 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   onMapDraggedOrZoomed = () => {
     const { location, history, onMapChanged, selectedBannerId } = this.props
     const urlParams = new URLSearchParams(location.search)
-    const [lat, lng, oldZoom] = BannersMap.getCenterAndZoomFromUrlParameters(
-      urlParams
-    )
     const center = this.map!.getCenter()
     const zoom = this.map!.getZoom()
 
-    // Check if change to bounds is from history change, if it is, do nothing
-    if (lat !== center.lat || lng !== center.lng || oldZoom !== zoom) {
-      urlParams.set('lat', center.lat.toString())
-      urlParams.set('lng', center.lng.toString())
-      urlParams.set('zoom', zoom.toString())
-      urlParams.delete('bounds')
-      history.push({
-        pathname: location.pathname,
-        search: urlParams.toString(),
-        state: { selectedBannerId },
-      })
-      this.setState({
-        center,
-        zoom,
-        initialBounds: null,
-      })
-      onMapChanged(this.map!.getBounds())
-    }
+    urlParams.set('lat', center.lat.toString())
+    urlParams.set('lng', center.lng.toString())
+    urlParams.set('zoom', zoom.toString())
+    urlParams.delete('bounds')
+    this.programaticChange = true
+    history.push({
+      pathname: location.pathname,
+      search: urlParams.toString(),
+      state: { selectedBannerId },
+    })
+    this.setState({
+      center,
+      zoom,
+      initialBounds: null,
+    })
+    onMapChanged(this.map!.getBounds())
   }
 
-  /** unselects an banner overview route, when clicked outside the starting point */
+  // unselects banner overview route, when clicked outside the starting point
   onMapClicked = () => {
     const { selectedBannerId, banners } = this.props
     const selectedBanner = banners.find((b) => b.id === selectedBannerId)
