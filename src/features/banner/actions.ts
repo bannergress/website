@@ -5,7 +5,6 @@ import {
   BROWSE_BANNERS,
   LOAD_BANNER,
   LOAD_RECENT_BANNERS,
-  LOAD_RECENT_BANNERS_ERROR,
   RESET_BROWSED_BANNERS,
   SEARCH_BANNERS,
   RESET_SEARCH_BANNERS,
@@ -43,9 +42,7 @@ export const loadRecentBannersAction = () => async (
       payload: response.data,
     })
   } else {
-    dispatch({
-      type: LOAD_RECENT_BANNERS_ERROR,
-    })
+    throw new Error('Error loading banners')
   }
 }
 

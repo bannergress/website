@@ -1,18 +1,33 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { ThunkDispatch } from 'redux-thunk'
 
 import { getNews, loadNews } from '../../features/news'
+import { NewsActionTypes } from '../../features/news/actionTypes'
+import { RootState } from '../../storeTypes'
 import Announcement from '../announcement'
+import { Issue } from '../Issues-list'
 
 import './news-list.less'
 
-const NewsList: React.FC = () => {
-  const dispatch = useDispatch()
+type AppDispatch = ThunkDispatch<RootState, any, NewsActionTypes>
+
+const NewsList: React.FC<NewsListProps> = ({ setIssues }) => {
+  const dispatch: AppDispatch = useDispatch()
   const news = useSelector(getNews)
 
   useEffect(() => {
-    dispatch(loadNews())
-  }, [dispatch])
+    dispatch(loadNews()).catch(() => {
+      setIssues([
+        {
+          key: 'news-fetch-error',
+          type: 'error',
+          message: 'Error loading announcements, please try again later',
+          field: 'news',
+        },
+      ])
+    })
+  }, [dispatch, setIssues])
 
   if (news && news.length) {
     return (
@@ -25,6 +40,10 @@ const NewsList: React.FC = () => {
     )
   }
   return <></>
+}
+
+export interface NewsListProps {
+  setIssues: (issues: Array<Issue>) => void
 }
 
 export default NewsList

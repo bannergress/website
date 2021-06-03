@@ -8,13 +8,18 @@ import { BannerActionTypes } from '../../features/banner/actionTypes'
 import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
 import { RootState } from '../../storeTypes'
 import BannerList from '../banner-list'
+import { Issue } from '../Issues-list'
 import LoadingOverlay from '../loading-overlay'
 
 import './recent-banners.less'
 
 type AppDispatch = ThunkDispatch<RootState, any, BannerActionTypes>
 
-export const RecentBanners: FC<RecentBannersProps> = ({ titleList }) => {
+export const RecentBanners: FC<RecentBannersProps> = ({
+  titleList,
+  setIssues,
+  resetIssue,
+}) => {
   const history = useHistory()
   const dispatch: AppDispatch = useDispatch()
   const banners = useSelector(getRecentBanners)
@@ -22,8 +27,20 @@ export const RecentBanners: FC<RecentBannersProps> = ({ titleList }) => {
 
   useEffect(() => {
     setLoading(true)
-    dispatch(loadRecentBanners()).finally(() => setLoading(false))
-  }, [dispatch, history.location])
+    resetIssue('recent-fetch-error')
+    dispatch(loadRecentBanners())
+      .catch(() =>
+        setIssues([
+          {
+            key: 'recent-fetch-error',
+            type: 'error',
+            message: 'Error loading recent banners, please try again later',
+            field: 'recentBanners',
+          },
+        ])
+      )
+      .finally(() => setLoading(false))
+  }, [dispatch, setIssues, resetIssue, history.location])
 
   const onCreateBanner = () => {
     history.push('/new-banner')
@@ -58,6 +75,8 @@ export const RecentBanners: FC<RecentBannersProps> = ({ titleList }) => {
 
 export interface RecentBannersProps {
   titleList: string
+  setIssues: (issues: Array<Issue>) => void
+  resetIssue: (key: string) => void
 }
 
 export default RecentBanners
