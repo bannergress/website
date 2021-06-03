@@ -83,10 +83,13 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
       if (banner) {
         setTimeout(() => {
           this.map!.invalidateSize()
-          this.map!.flyToBounds(new LatLngBounds(getBannerBounds(banner)), {
-            animate: false,
-            maxZoom: 15,
-          })
+          const bounds = getBannerBounds(banner)
+          if (bounds) {
+            this.map!.flyToBounds(new LatLngBounds(bounds), {
+              animate: false,
+              maxZoom: 15,
+            })
+          }
         }, 100)
       } else {
         setTimeout(() => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
-import { Input, Select, InputNumber, Row, Col, Slider, Button } from 'antd'
+import { Input, InputNumber, Button } from 'antd'
 import { Helmet } from 'react-helmet'
 import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars'
@@ -27,25 +27,33 @@ import {
   ApiOrderDirection,
   getBanner as getBannerSelector,
 } from '../../features/banner'
-import { extract } from '../../features/banner/naming'
+import {
+  extract,
+  titleAndNumberingExtraction,
+  TitleExtractor,
+} from '../../features/banner/naming'
 import SearchMissionList from '../../components/search-mission-list'
 import BannerImage from '../../components/banner-image'
 import LoadingOverlay from '../../components/loading-overlay'
+import {
+  AlgorithmDetectionChooser,
+  Algorithm,
+} from '../../components/algorithm-detection-chooser'
+import AdvancedOptions from '../../components/advanced-options'
+import { IssuesList } from '../../components/Issues-list'
 import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg'
 import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
 
+import { getBannerIssues } from './getBannerIssues'
 import './create-banner.less'
-
-const MIN_MISSIONS = 2
-const MAX_MISSIONS = 3000
-const MIN_TITLE_LENGTH = 3
-const MAX_TITLE_LENGTH = 200
 
 class CreateBanner extends React.Component<
   CreateBannerProps,
   CreateBannerState
 > {
   private timer: NodeJS.Timeout | null = null
+
+  private titleExtractor: TitleExtractor = new TitleExtractor()
 
   constructor(props: CreateBannerProps) {
     super(props)
@@ -64,6 +72,7 @@ class CreateBanner extends React.Component<
       bannerWidth: 6,
       detectedLength: 0,
       status: 'initial',
+      extraction: props.match.params.id ? 'none' : 'advanced',
     }
   }
 
@@ -116,6 +125,7 @@ class CreateBanner extends React.Component<
   }
 
   initialize = (banner: Banner) => {
+    const { extraction } = this.state
     const { title, description, missions, type, width, id } = banner
     const addedMissions = mapMissions<Mission & { index?: number }>(
       missions,
@@ -127,6 +137,10 @@ class CreateBanner extends React.Component<
             }
           : undefined
     )
+    if (extraction === 'advanced' && addedMissions && addedMissions.length) {
+      this.titleExtractor.reset()
+      this.titleExtractor.fill(addedMissions)
+    }
     this.setState({
       id,
       startMissions: id ? addedMissions : [],
@@ -182,6 +196,7 @@ class CreateBanner extends React.Component<
       | 'bannerDescription'
       | 'bannerType'
       | 'bannerWidth'
+      | 'extraction'
   ) => {
     const newState: Pick<CreateBannerState, any> = { [inputName]: val }
     if (inputName === 'bannerTitle') {
@@ -198,6 +213,12 @@ class CreateBanner extends React.Component<
         newState.bannerDescriptionChanged = false
       }
     }
+    if (inputName === 'extraction') {
+      const { extraction } = this.state
+      if (extraction !== val) {
+        this.onMissionsChanged([], val.toString())
+      }
+    }
     this.setState(newState)
   }
 
@@ -211,40 +232,105 @@ class CreateBanner extends React.Component<
     return fetchMissions(location, searchText, 'title', 'ASC', page + 1)
   }
 
-  onMissionsChanged = (missions: Array<Mission>) => {
+  advancedExtraction = (
+    missions: Array<Mission>,
+    newMissions: Array<Mission>
+  ) => {
     const { bannerTitleChanged, bannerDescriptionChanged } = this.state
-    const result = extract(missions.map((m) => m.title))
-    const addedMissions = _(result.results)
-      .chain()
-      .map((m, index) => ({ ...m, mission: missions[index] }))
-      .sortBy((m) => m.missionMarker?.parsed)
-      .map((m) => ({ ...m.mission, index: m.missionMarker?.parsed }))
-      .value()
-    const detectedLength =
-      result.results.find((r) => !!r.totalMarker)?.totalMarker?.parsed ?? 0
-    const newState: Pick<CreateBannerState, any> = {
+    if (missions.length || newMissions.length) {
+      if (newMissions.length) {
+        this.titleExtractor.fill(newMissions)
+      }
+      const result = titleAndNumberingExtraction(missions, this.titleExtractor)
+      const addedMissions = _(result.results)
+        .chain()
+        .map((m, index) => ({ ...m, mission: missions[index] }))
+        .sortBy((m) => m.index)
+        .map((m) => ({ ...m.mission, index: m.index }))
+        .value()
+      const detectedLength = result.total
+      const newState: Pick<CreateBannerState, any> = {
+        addedMissions,
+        detectedLength,
+        status: 'ready',
+      }
+      if (!bannerTitleChanged) {
+        newState.bannerTitle = result.title
+      }
+      if (!bannerDescriptionChanged) {
+        newState.bannerDescription = addedMissions[0].description
+      }
+      this.setState(newState)
+    }
+  }
+
+  simpleExtraction = (newMissions: Array<Mission>) => {
+    const {
       addedMissions,
-      detectedLength,
+      bannerTitleChanged,
+      bannerDescriptionChanged,
+    } = this.state
+    const lastIndex = (_(addedMissions).last()?.index ?? 0) + 1
+    const missions = [
+      ...addedMissions,
+      ...newMissions.map((mission, index) => ({
+        ...mission,
+        index: lastIndex + index,
+      })),
+    ]
+    if (missions.length) {
+      const result = extract(missions.map((m) => m.title))
+      const detectedLength =
+        result.results.find((r) => !!r.totalMarker)?.totalMarker?.parsed ?? 0
+      const newState: Pick<CreateBannerState, any> = {
+        addedMissions: missions,
+        detectedLength,
+      }
+      if (!bannerTitleChanged) {
+        newState.bannerTitle = result.title
+      }
+      if (!bannerDescriptionChanged) {
+        newState.bannerDescription = missions[0].description
+      }
+      this.setState(newState)
     }
-    if (!bannerTitleChanged) {
-      newState.bannerTitle = result.title
+  }
+
+  onMissionsChanged = (newMissions: Array<Mission>, newExtraction?: string) => {
+    const { addedMissions, extraction } = this.state
+    const extr = newExtraction ?? extraction
+    if (extr === 'advanced') {
+      this.setState(
+        {
+          status:
+            addedMissions.length || newMissions.length ? 'detecting' : 'ready',
+        },
+        () => {
+          setTimeout(() => {
+            if (extraction !== 'advanced' && extraction !== 'title') {
+              this.titleExtractor.fill(addedMissions)
+            }
+            this.advancedExtraction(
+              [...addedMissions, ...newMissions],
+              newMissions
+            )
+          }, 100)
+        }
+      )
+    } else {
+      this.titleExtractor.reset()
+      this.simpleExtraction(newMissions)
     }
-    if (!bannerDescriptionChanged) {
-      newState.bannerDescription = addedMissions[0].description
-    }
-    this.setState(newState)
   }
 
   onAddMission = (mission: Mission) => {
-    const { addedMissions } = this.state
-    this.onMissionsChanged([...addedMissions, mission])
+    this.onMissionsChanged([mission])
   }
 
   onAddAllMissions = async (unusedMissions: Array<Mission>) => {
     const { hasMore } = this.props
-    const { addedMissions } = this.state
     if (unusedMissions && unusedMissions.length) {
-      this.onMissionsChanged([...addedMissions, ...unusedMissions])
+      this.onMissionsChanged(unusedMissions)
       if (hasMore) {
         this.setState({ page: 0, status: 'searching' })
         await this.onLoadMoreMissions()
@@ -254,18 +340,27 @@ class CreateBanner extends React.Component<
   }
 
   onRemoveAllMissions = () => {
+    this.titleExtractor.reset()
     this.setState({
       addedMissions: [],
       bannerTitle: '',
       bannerDescription: '',
       bannerTitleChanged: false,
       bannerDescriptionChanged: false,
+      detectedLength: 0,
     })
   }
 
   onManageMission = (mission: Mission) => {
-    const { addedMissions } = this.state
-    this.setState({ addedMissions: _(addedMissions).without(mission) })
+    const { addedMissions, extraction } = this.state
+    if (addedMissions.length === 1) {
+      this.onRemoveAllMissions()
+    } else {
+      if (extraction === 'advanced' || extraction === 'title') {
+        this.titleExtractor.remove(mission)
+      }
+      this.setState({ addedMissions: _(addedMissions).without(mission) })
+    }
   }
 
   onCreateBanner = async () => {
@@ -288,6 +383,17 @@ class CreateBanner extends React.Component<
       },
       {}
     )
+    let width = bannerWidth
+    if (addedMissions.length < bannerWidth) {
+      if (bannerType === 'anyOrder') {
+        width = addedMissions.length
+      } else {
+        const lastIndex = _(addedMissions).last()!.index!
+        if (lastIndex < bannerWidth) {
+          width = lastIndex
+        }
+      }
+    }
     try {
       this.setState({ status: 'loading' })
       await createBanner({
@@ -296,7 +402,7 @@ class CreateBanner extends React.Component<
         description: bannerDescription,
         missions,
         numberOfMissions: addedMissions.length,
-        width: bannerWidth,
+        width,
         type: bannerType,
       })
       history.push('/preview-banner')
@@ -321,7 +427,11 @@ class CreateBanner extends React.Component<
     const { addedMissions } = this.state
     const updatedMissions = [...addedMissions]
     updatedMissions.splice(pos, 1, { ...mission, index })
-    this.setState({ addedMissions: updatedMissions })
+    this.setState({
+      addedMissions: updatedMissions,
+      extraction: 'none',
+      bannerTitleChanged: true,
+    })
   }
 
   onOrderMissions = () => {
@@ -374,93 +484,6 @@ class CreateBanner extends React.Component<
     return ''
   }
 
-  hasGaps = (indexes: Array<number | undefined>) => {
-    if (indexes.length > 0) {
-      const sorted = _([...indexes]).sortBy()
-      if (sorted[0] !== 1 || sorted[sorted.length - 1] !== sorted.length) {
-        return true
-      }
-    }
-    return false
-  }
-
-  getIssues = () => {
-    const {
-      addedMissions,
-      bannerTitle,
-      bannerType,
-      bannerWidth,
-      detectedLength,
-    } = this.state
-    const issues: Array<Issue> = []
-
-    const indexes = addedMissions.map((mission) => mission.index)
-    const hasDuplicates = _(indexes).uniq(false).length !== addedMissions.length
-
-    if (
-      addedMissions.length < MIN_MISSIONS ||
-      addedMissions.length > MAX_MISSIONS
-    ) {
-      issues.push({
-        type: 'error',
-        field: 'missions',
-        message: `A banner must contain between ${MIN_MISSIONS} and ${MAX_MISSIONS} missions.`,
-      })
-    }
-    if (bannerType === 'sequential' && hasDuplicates) {
-      issues.push({
-        type: 'error',
-        field: 'missions',
-        message: 'There are 2 or more missions with the same index.',
-      })
-    }
-    if (
-      bannerType === 'sequential' &&
-      _(addedMissions).any((m) => m.index === undefined || m.index <= 0)
-    ) {
-      issues.push({
-        type: 'error',
-        field: 'missions',
-        message:
-          'There are at least a mission with an invalid index. Indexes must be positive integers.',
-      })
-    }
-    if (
-      !bannerTitle ||
-      bannerTitle.length < MIN_TITLE_LENGTH ||
-      bannerTitle.length > MAX_TITLE_LENGTH
-    ) {
-      issues.push({
-        type: 'error',
-        field: 'title',
-        message: `The title must be between ${MIN_TITLE_LENGTH} and ${MAX_TITLE_LENGTH} characters`,
-      })
-    }
-    if (this.hasGaps(indexes)) {
-      issues.push({
-        type: 'warning',
-        field: 'missions',
-        message: 'The banner could be incomplete, as it has gaps',
-      })
-    }
-    if (bannerType === 'sequential' && indexes.length % bannerWidth !== 0) {
-      issues.push({
-        type: 'warning',
-        field: 'missions',
-        message: `The banner could be incomplete, as the number of missions is not divisible by the selected width: ${bannerWidth}`,
-      })
-    }
-    if (detectedLength && detectedLength !== indexes.length) {
-      issues.push({
-        type: 'warning',
-        field: 'missions',
-        message: `The banner could be incomplete, as the length difers from the detected length in the title: ${detectedLength}`,
-      })
-    }
-
-    return issues
-  }
-
   render() {
     const { missions, hasMore } = this.props
     const {
@@ -473,6 +496,8 @@ class CreateBanner extends React.Component<
       status,
       id,
       startMissions,
+      extraction,
+      detectedLength,
     } = this.state
 
     let unusedMissions = _.filter(
@@ -518,7 +543,13 @@ class CreateBanner extends React.Component<
     }
 
     const title = id ? 'Edit Banner' : 'New Banner'
-    const issues = this.getIssues()
+    const issues = getBannerIssues(
+      addedMissions,
+      bannerType,
+      bannerWidth,
+      bannerTitle,
+      detectedLength
+    )
 
     return (
       <div className="create-banner">
@@ -586,6 +617,16 @@ class CreateBanner extends React.Component<
             <h1>
               <span className="ellipse">2</span> Arrange
             </h1>
+            <IssuesList
+              issues={issues.filter((issue) => issue.field === 'missions')}
+            />
+            <div className="algorithm">
+              <AlgorithmDetectionChooser
+                selected={extraction}
+                onChange={(val) => this.onInputChange(val, 'extraction')}
+                loading={status === 'detecting'}
+              />
+            </div>
             <div className="results-title">
               <h3>{addedMissions.length} Missions in Total</h3>
               {addedMissions.length > 0 && (
@@ -612,6 +653,9 @@ class CreateBanner extends React.Component<
             <h1>
               <span className="ellipse">3</span> Information
             </h1>
+            <IssuesList
+              issues={issues.filter((issue) => issue.field !== 'missions')}
+            />
             <h3>Banner Title</h3>
             <Input
               placeholder="Start typing..."
@@ -634,35 +678,11 @@ class CreateBanner extends React.Component<
             />
             <h3>Options</h3>
             <div className="adv-options-container open">
-              <Row>
-                <Col span={12}>
-                  <h4>Banner type</h4>
-                </Col>
-                <Col span={12}>
-                  <Select
-                    value={bannerType}
-                    onChange={(val) => this.onInputChange(val, 'bannerType')}
-                  >
-                    <Select.Option value="sequential">Banner</Select.Option>
-                    <Select.Option value="anyOrder">
-                      Mission collection
-                    </Select.Option>
-                  </Select>
-                </Col>
-                <Col span={12}>
-                  <h4>Banner width</h4>
-                </Col>
-                <Col span={12}>
-                  <Slider
-                    min={1}
-                    max={6}
-                    onChange={(val: number) =>
-                      this.onInputChange(val, 'bannerWidth')
-                    }
-                    value={bannerWidth}
-                  />
-                </Col>
-              </Row>
+              <AdvancedOptions
+                type={bannerType}
+                width={bannerWidth}
+                onChange={this.onInputChange}
+              />
             </div>
             <h3>Preview</h3>
             <div className="create-banner-preview">
@@ -682,11 +702,6 @@ class CreateBanner extends React.Component<
             >
               Review
             </button>
-            <div>
-              {issues.map((i) => (
-                <p key={i.message}>{i.message}</p>
-              ))}
-            </div>
           </div>
         </div>
       </div>
@@ -726,13 +741,8 @@ interface CreateBannerState {
   bannerType: BannerType
   bannerWidth: number
   detectedLength: number
-  status: 'initial' | 'searching' | 'ready' | 'loading' | 'error'
-}
-
-interface Issue {
-  field: 'title' | 'description' | 'missions'
-  type: 'error' | 'warning'
-  message: string
+  status: 'initial' | 'searching' | 'ready' | 'loading' | 'error' | 'detecting'
+  extraction: Algorithm
 }
 
 const mapStateToProps = (state: RootState) => ({
