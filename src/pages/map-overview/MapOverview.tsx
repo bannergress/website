@@ -44,14 +44,6 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     if (banner && selectedBannerId !== banner.id) {
       this.setState({ status: 'loading' })
       await fetchPreviewBanner(banner.id)
-      // const selectedId = location.state.selectedBannerId
-      // if (selectedId !== banner.id) {
-      //   history.push({
-      //     pathname: location.pathname,
-      //     search: location.search,
-      //     state: { selectedBannerId: banner.id },
-      //   })
-      // }
       this.setState({
         selectedBannerId: banner.id,
         status: 'ready',
