@@ -196,7 +196,7 @@ class BannerInfoWithMap extends React.Component<
                   ref={this.mapRef}
                 />
               )}
-              {issues.length && <IssuesList issues={issues} />}
+              {issues.length > 0 && <IssuesList issues={issues} />}
             </div>
           </div>
         </div>
