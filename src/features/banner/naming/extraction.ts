@@ -25,7 +25,7 @@ const totalRegex = (total: number) =>
     'gi'
   )
 
-const numberingRegex = /^(nr?o?|part|ч)\.?\s+|\s+(nr?o?|part|ч)\.?$/gi
+const numberingRegex = /\s+(nr?o?|part|ч)\.?$/gi
 
 const removeDates = (val: string) =>
   val.replace(
