@@ -283,7 +283,7 @@ const getRefinedCandidateNumber = (
           // We want to discard total or other numbers
           index = lesserUsed.parsed
         }
-        if (index && maybeSection) {
+        if (index && maybeSection && maybeSection.parsed <= length / 6) {
           index += (maybeSection.parsed - 1) * maybeSection.uses
         }
       }
