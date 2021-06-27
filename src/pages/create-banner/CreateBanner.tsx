@@ -44,7 +44,7 @@ import { IssuesList } from '../../components/Issues-list'
 import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg'
 import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
 
-import { getBannerIssues } from './getBannerIssues'
+import { getBannerIssues, MAX_MISSIONS } from './getBannerIssues'
 import './create-banner.less'
 
 class CreateBanner extends React.Component<
@@ -246,7 +246,10 @@ class CreateBanner extends React.Component<
         .chain()
         .map((m, index) => ({ ...m, mission: missions[index] }))
         .sortBy((m) => m.index)
-        .map((m) => ({ ...m.mission, index: m.index }))
+        .map((m) => ({
+          ...m.mission,
+          index: m.index && m.index <= MAX_MISSIONS ? m.index : undefined,
+        }))
         .value()
       const detectedLength = result.total
       const newState: Pick<CreateBannerState, any> = {

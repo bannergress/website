@@ -4,10 +4,10 @@ import { BannerType } from '../../features/banner'
 import { Mission } from '../../features/mission'
 import { Issue } from '../../components/Issues-list'
 
-const MIN_MISSIONS = 2
-const MAX_MISSIONS = 3000
-const MIN_TITLE_LENGTH = 3
-const MAX_TITLE_LENGTH = 200
+export const MIN_MISSIONS = 2
+export const MAX_MISSIONS = 3000
+export const MIN_TITLE_LENGTH = 3
+export const MAX_TITLE_LENGTH = 200
 
 const hasGaps = (indexes: Array<number | undefined>) => {
   if (indexes.length > 0) {
