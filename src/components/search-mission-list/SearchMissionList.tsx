@@ -5,6 +5,7 @@ import { Scrollbars } from 'react-custom-scrollbars'
 import { Mission } from '../../features/mission'
 import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
 import SearchMissionCard from '../search-mission-card'
+import LoadingOverlay from '../loading-overlay'
 
 import './search-mission-list.less'
 
@@ -53,7 +54,18 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
     )
   }
   return (
-    <Fragment>{hasMoreMissions && !initial && <Col>Loading...</Col>}</Fragment>
+    <Fragment>
+      {hasMoreMissions && !initial && (
+        <Col>
+          <LoadingOverlay
+            active
+            spinner
+            fadeSpeed={500}
+            text="Searching missions..."
+          />
+        </Col>
+      )}
+    </Fragment>
   )
 }
 
