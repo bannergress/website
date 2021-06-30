@@ -30,9 +30,20 @@
     -->
     <link rel="manifest" href="/manifest.json" crossorigin="use-credentials"/>
     <title>Bannergress</title>
+    <script>
+      // When promises are not supported, show the legacy notice
+      function showLegacyNotice(){
+        elem = document.getElementById('legacy_browser');
+        if(elem) elem.style.display = 'block';
+      }
+      if(!window.Promise){
+        setTimeout(showLegacyNotice, 500)
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="legacy_browser" style="display:none;">Internet Explorer and other legacy browsers are not supported.</div>
     <div id="root"></div>
   </body>
 </html>
