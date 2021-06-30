@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
+import { Beforeunload } from 'react-beforeunload'
 import { Input, InputNumber, Button } from 'antd'
 import { Helmet } from 'react-helmet'
 import _ from 'underscore'
@@ -560,6 +561,7 @@ class CreateBanner extends React.Component<
           <title>{title}</title>
         </Helmet>
         <Prompt message={this.getPromptMessage} />
+        <Beforeunload onBeforeunload={this.getPromptMessage} />
         <LoadingOverlay
           active={status === 'loading'}
           text="Generating preview..."

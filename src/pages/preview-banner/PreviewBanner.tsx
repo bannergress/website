@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Prompt, RouteComponentProps, withRouter } from 'react-router'
+import { Beforeunload } from 'react-beforeunload'
 import { Location } from 'history'
 import { Helmet } from 'react-helmet'
 
@@ -52,9 +53,13 @@ class PreviewBanner extends React.Component<
       .catch(() => this.setState({ status: 'error' }))
   }
 
-  getPromptMessage = (location: Location<unknown>) => {
+  getPromptMessage = (location?: Location<unknown>) => {
     const { status } = this.state
-    if (status !== 'initial' || location.pathname.includes('new-banner')) {
+    if (
+      status !== 'initial' ||
+      location?.pathname.includes('new-banner') ||
+      location?.pathname.includes('edit-banner')
+    ) {
       return true
     }
     return 'Are you sure you want to leave and discard this banner?'
@@ -78,6 +83,7 @@ class PreviewBanner extends React.Component<
           <title>Review Banner</title>
         </Helmet>
         <Prompt message={this.getPromptMessage} />
+        <Beforeunload onBeforeunload={() => this.getPromptMessage()} />
 
         <div className="banner-preview-page">
           <LoadingOverlay
