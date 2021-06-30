@@ -3,6 +3,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Layout } from 'antd'
 import { Helmet } from 'react-helmet'
 import { ReactKeycloakProvider } from '@react-keycloak/web'
+
+import { useHotkeys } from 'react-hotkeys-hook'
 import keycloak from './keycloak'
 
 import { updateApiState } from './api'
@@ -22,6 +24,11 @@ import Navbar from './components/navbar'
 import './App.less'
 
 const App: React.FC = () => {
+  // register global Hotkeys
+  useHotkeys('shift+n', () => {
+    window.location.href = '/new-banner'
+  })
+
   return (
     <ReactKeycloakProvider
       authClient={keycloak}
