@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Banner } from '../../features/banner'
+import { createBrowseUri } from '../../features/place'
 import BannerPicture from './BannerPicture'
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
@@ -16,6 +17,7 @@ const BannerCard: FC<BannerCardProps> = ({
   selected,
   showFullImage,
   detailsUrl,
+  linkStartPlace,
 }) => {
   const url = banner && banner.picture && new URL(banner.picture, baseUrl).href
   const className = selected ? 'banner-card selected' : 'banner-card'
@@ -51,7 +53,15 @@ const BannerCard: FC<BannerCardProps> = ({
         <div className="banner-info-item-icon">
           <SVGPointer className="icon" />
         </div>
-        <div>{banner?.formattedAddress}</div>
+        {linkStartPlace && banner?.startPlaceId ? (
+          <div>
+            <a href={createBrowseUri(banner.startPlaceId)}>
+              {banner?.formattedAddress}
+            </a>
+          </div>
+        ) : (
+          <div>{banner?.formattedAddress}</div>
+        )}
       </div>
       {selected && detailsUrl && (
         <div className="banner-info-details">
@@ -67,6 +77,7 @@ export interface BannerCardProps {
   selected: boolean
   showFullImage?: boolean
   detailsUrl?: string
+  linkStartPlace: boolean
 }
 
 export default BannerCard

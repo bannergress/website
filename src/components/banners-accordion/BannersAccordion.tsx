@@ -50,6 +50,7 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
             banner={selectedBanner}
             selected
             detailsUrl={generatePath('/banner/:id', { id: selectedBanner.id })}
+            linkStartPlace={false}
           />
         </div>
       )}

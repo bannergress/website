@@ -69,6 +69,7 @@ const BannerList: FC<BannerListProps> = ({
                 banner={banner}
                 selected={banner.id === selectedBannerId}
                 detailsUrl={generatePath('/banner/:id', { id: banner.id })}
+                linkStartPlace={false}
               />
             )
             return (

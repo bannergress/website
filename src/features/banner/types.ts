@@ -18,6 +18,7 @@ export interface Banner {
   type?: BannerType
   width?: number
   averageDurationMilliseconds?: number
+  startPlaceId?: string
 }
 
 export interface BannerState {

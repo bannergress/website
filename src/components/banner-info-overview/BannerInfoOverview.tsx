@@ -68,7 +68,12 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
     <div className="banner-info-overview" ref={refElement}>
       {!hideControls && <BannerEditTools banner={banner} />}
       <div className="banner-info-container">
-        <BannerCard banner={banner} selected={false} showFullImage />
+        <BannerCard
+          banner={banner}
+          selected={false}
+          showFullImage
+          linkStartPlace
+        />
         <Tabs
           defaultActiveKey="info"
           activeKey={activeView}
