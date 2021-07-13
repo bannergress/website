@@ -6,6 +6,8 @@ import {
   getHasMoreBrowsedBanners,
   getSearchBanners,
   getHasMoreSearchBanners,
+  getAgentBanners,
+  getHasMoreAgentBanners,
   getCreatedBanner,
   getMapBanners,
 } from './selectors'
@@ -14,6 +16,7 @@ import {
   loadRecentBannersAction,
   loadBrowsedBannersAction,
   loadSearchBannersAction,
+  loadAgentBannersAction,
   createBannerAction,
   submitBannerAction,
   loadMapBannersAction,
@@ -40,6 +43,8 @@ export {
   getHasMoreBrowsedBanners,
   getSearchBanners,
   getHasMoreSearchBanners,
+  getAgentBanners,
+  getHasMoreAgentBanners,
   getCreatedBanner,
   getMapBanners,
 }
@@ -48,6 +53,7 @@ export {
   loadRecentBannersAction as loadRecentBanners,
   loadBrowsedBannersAction as loadBrowsedBanners,
   loadSearchBannersAction as loadSearchBanners,
+  loadAgentBannersAction as loadAgentBanners,
   createBannerAction as createBanner,
   submitBannerAction as submitBanner,
   loadMapBannersAction as loadMapBanners,

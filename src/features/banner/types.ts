@@ -26,8 +26,10 @@ export interface BannerState {
   recentBanners: Array<Banner>
   browsedBanners: Array<Banner>
   searchBanners: Array<Banner>
+  agentBanners: Array<Banner>
   canBrowseMore: Boolean
   canSearchMore: Boolean
+  hasMoreAgentBanners: Boolean
   createdBanner: Banner | undefined
 }
 

@@ -171,6 +171,22 @@ export const searchBanners = (
         offset: page * PAGE_SIZE,
       })
 
+export const listAgentBanners = (
+  agentName: string,
+  order: string,
+  orderDirection: string,
+  page: number
+) =>
+  isMock
+    ? { data: createBanners(page), ok: true, status: 200 }
+    : api.get<Array<Banner>>('bnrs', {
+        orderBy: order,
+        orderDirection,
+        author: agentName,
+        limit: PAGE_SIZE,
+        offset: page * PAGE_SIZE,
+      })
+
 export const postBanner = (banner: Partial<Banner>) =>
   api.post<Banner>('bnrs', banner)
 

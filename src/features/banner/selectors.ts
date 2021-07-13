@@ -18,6 +18,11 @@ export const getSearchBanners = (state: RootState) => state.banner.searchBanners
 export const getHasMoreSearchBanners = (state: RootState) =>
   state.banner.canSearchMore
 
+export const getAgentBanners = (state: RootState) => state.banner.agentBanners
+
+export const getHasMoreAgentBanners = (state: RootState) =>
+  state.banner.hasMoreAgentBanners
+
 export const getCreatedBanner = (state: RootState) => state.banner.createdBanner
 
 export const getMapBanners = (

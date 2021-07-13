@@ -7,6 +7,8 @@ import {
   RESET_BROWSED_BANNERS,
   SEARCH_BANNERS,
   RESET_SEARCH_BANNERS,
+  AGENT_BANNERS,
+  RESET_AGENT_BANNERS,
   CREATE_BANNER,
   REMOVE_CREATED_BANNER,
   EDIT_BANNER,
@@ -20,8 +22,10 @@ const initialState: BannerState = {
   recentBanners: [],
   browsedBanners: [],
   searchBanners: [],
+  agentBanners: [],
   canBrowseMore: true,
   canSearchMore: true,
+  hasMoreAgentBanners: true,
   createdBanner: undefined,
 }
 
@@ -53,6 +57,15 @@ export default (state = initialState, action: BannerActionTypes) => {
       }
     case RESET_SEARCH_BANNERS:
       return { ...state, searchBanners: [] }
+    case AGENT_BANNERS:
+      return {
+        ...state,
+        banners: extendSorted(state.banners, action.payload.banners),
+        agentBanners: extend(state.agentBanners, action.payload.banners),
+        hasMoreAgentBanners: action.payload.hasMore,
+      }
+    case RESET_AGENT_BANNERS:
+      return { ...state, agentBanners: [] }
     case LOAD_RECENT_BANNERS_ERROR:
       return state
     case CREATE_BANNER:

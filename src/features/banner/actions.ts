@@ -8,6 +8,8 @@ import {
   RESET_BROWSED_BANNERS,
   SEARCH_BANNERS,
   RESET_SEARCH_BANNERS,
+  AGENT_BANNERS,
+  RESET_AGENT_BANNERS,
   CREATE_BANNER,
   REMOVE_CREATED_BANNER,
   SEARCH_MAP_BANNERS,
@@ -98,6 +100,38 @@ export const loadSearchBannersAction = (
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: SEARCH_BANNERS,
+      payload: {
+        banners: response.data,
+        hasMore: response.data && response.data.length === api.PAGE_SIZE,
+      },
+    })
+  } else {
+    // dispatch({
+    //   type: BROWSE_SEARCH_ERROR,
+    // })
+  }
+}
+
+export const loadAgentBannersAction = (
+  agentName: string,
+  order: ApiOrder,
+  orderDirection: ApiOrderDirection,
+  page: number
+) => async (dispatch: Dispatch<BannerActionTypes>) => {
+  if (page === 0) {
+    dispatch({
+      type: RESET_AGENT_BANNERS,
+    })
+  }
+  const response = await api.listAgentBanners(
+    agentName,
+    order,
+    orderDirection,
+    page
+  )
+  if (response.ok && response.data !== undefined) {
+    dispatch({
+      type: AGENT_BANNERS,
       payload: {
         banners: response.data,
         hasMore: response.data && response.data.length === api.PAGE_SIZE,

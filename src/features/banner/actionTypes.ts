@@ -8,6 +8,8 @@ export const RESET_BROWSED_BANNERS = 'RESET_BROWSED_BANNERS'
 export const BROWSE_BANNERS = 'BROWSE_BANNERS'
 export const RESET_SEARCH_BANNERS = 'RESET_SEARCH_BANNERS'
 export const SEARCH_BANNERS = 'SEARCH_BANNERS'
+export const RESET_AGENT_BANNERS = 'RESET_AGENT_BANNERS'
+export const AGENT_BANNERS = 'AGENT_BANNERS'
 export const SEARCH_MAP_BANNERS = 'SEARCH_MAP_BANNERS'
 export const CREATE_BANNER = 'CREATE_BANNER'
 export const REMOVE_CREATED_BANNER = 'REMOVE_CREATED_BANNER'
@@ -52,6 +54,18 @@ interface ResetSearchBannersAction {
   type: typeof RESET_SEARCH_BANNERS
 }
 
+interface AgentBannersAction {
+  type: typeof AGENT_BANNERS
+  payload: {
+    banners: Array<Partial<Banner>>
+    hasMore: Boolean
+  }
+}
+
+interface ResetAgentBannersAction {
+  type: typeof RESET_AGENT_BANNERS
+}
+
 interface CreateBannerAction {
   type: typeof CREATE_BANNER
   payload: Banner
@@ -85,6 +99,8 @@ export type BannerActionTypes =
   | RehydrateAction
   | SearchBannersAction
   | ResetSearchBannersAction
+  | AgentBannersAction
+  | ResetAgentBannersAction
   | CreateBannerAction
   | RemoveCreatedBannerAction
   | SearchMapBannersAction

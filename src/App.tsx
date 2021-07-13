@@ -13,6 +13,7 @@ import { Home } from './pages/Home'
 import { MapOverview } from './pages/map-overview'
 import { BannerInfo } from './pages/banner-info'
 import { Search } from './pages/search'
+import { Agent } from './pages/agent'
 import { Browser } from './pages/browser'
 import { CreateBanner } from './pages/create-banner'
 import { PreviewBanner } from './pages/preview-banner'
@@ -60,6 +61,7 @@ const App: React.FC = () => {
                 <Route path="/browse/:placeId?" component={Browser} />
                 <Route path="/banner/:id" component={BannerInfo} />
                 <Route path="/search/:term" component={Search} />
+                <Route path="/agent/:agentName" component={Agent} />
                 <Route path="/help" component={Help} />
                 <PrivateRoute path="/new-banner" component={CreateBanner} />
                 <PrivateRoute

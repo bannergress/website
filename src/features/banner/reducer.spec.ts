@@ -13,8 +13,10 @@ describe('features > banner > bannerReducer', () => {
       recentBanners: [],
       browsedBanners: [],
       searchBanners: [],
+      agentBanners: [],
       canBrowseMore: true,
       canSearchMore: true,
+      hasMoreAgentBanners: true,
       createdBanner: undefined,
     }
 
@@ -34,8 +36,10 @@ describe('features > banner > bannerReducer', () => {
       recentBanners: [],
       browsedBanners: [],
       searchBanners: [],
+      agentBanners: [],
       canBrowseMore: true,
       canSearchMore: true,
+      hasMoreAgentBanners: true,
       createdBanner: undefined,
     }
 
@@ -61,8 +65,10 @@ describe('features > banner > bannerReducer', () => {
       recentBanners: [],
       browsedBanners: [],
       searchBanners: [],
+      agentBanners: [],
       canBrowseMore: true,
       canSearchMore: true,
+      hasMoreAgentBanners: true,
       createdBanner: undefined,
     }
 
@@ -82,8 +88,10 @@ describe('features > banner > bannerReducer', () => {
       ],
       browsedBanners: [],
       searchBanners: [],
+      agentBanners: [],
       canBrowseMore: true,
       canSearchMore: true,
+      hasMoreAgentBanners: true,
       createdBanner: undefined,
     }
 
