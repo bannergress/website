@@ -13,6 +13,7 @@ import {
   REMOVE_CREATED_BANNER,
   EDIT_BANNER,
   SEARCH_MAP_BANNERS,
+  SEARCH_MAP_OFFICIAL_BANNERS,
 } from './actionTypes'
 import { extend, extendSorted } from './helpers'
 import { BannerState } from './types'
@@ -23,6 +24,7 @@ const initialState: BannerState = {
   browsedBanners: [],
   searchBanners: [],
   agentBanners: [],
+  officialBanners: [],
   canBrowseMore: true,
   canSearchMore: true,
   hasMoreAgentBanners: true,
@@ -76,6 +78,12 @@ export default (state = initialState, action: BannerActionTypes) => {
       return { ...state, createdBanner: action.payload }
     case SEARCH_MAP_BANNERS:
       return { ...state, banners: extendSorted(state.banners, action.payload) }
+    case SEARCH_MAP_OFFICIAL_BANNERS:
+      return {
+        ...state,
+        banners: extendSorted(state.banners, action.payload),
+        officialBanners: extendSorted(state.officialBanners, action.payload),
+      }
     default:
       return state
   }

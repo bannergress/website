@@ -203,12 +203,14 @@ export const searchMapBanners = (
   topRightLat: number,
   topRightLng: number,
   bottomLeftLat: number,
-  bottomLeftLng: number
+  bottomLeftLng: number,
+  onlyOfficial: boolean
 ) =>
   api.get<Array<Banner>>('bnrs', {
     minLatitude: bottomLeftLat,
     maxLatitude: topRightLat,
     minLongitude: bottomLeftLng,
     maxLongitude: topRightLng,
+    onlyOfficialMissions: onlyOfficial,
     limit: 50,
   })

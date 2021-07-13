@@ -1,7 +1,19 @@
 import React, { Fragment } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { divIcon, LatLng, LatLngBounds, Map as LeafletMap } from 'leaflet'
-import { MapContainer, Pane, TileLayer } from 'react-leaflet'
+import {
+  divIcon,
+  LatLng,
+  LatLngBounds,
+  Map as LeafletMap,
+  LayersControlEvent,
+} from 'leaflet'
+import {
+  MapContainer,
+  Pane,
+  TileLayer,
+  LayersControl,
+  Circle,
+} from 'react-leaflet'
 import _ from 'underscore'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 
@@ -17,6 +29,8 @@ import 'leaflet/dist/leaflet.css'
 
 class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   private map: LeafletMap | undefined = undefined
+
+  private onlyOfficialText = 'Show only official Niantic banners'
 
   constructor(props: BannersMapProps) {
     super(props)
@@ -133,11 +147,27 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     }
   }
 
+  onOverlayAdded = (e: LayersControlEvent) => {
+    if (e.name === this.onlyOfficialText) {
+      const { onChangeOnlyOfficial } = this.props
+      onChangeOnlyOfficial(true)
+    }
+  }
+
+  onOverlayRemoved = (e: LayersControlEvent) => {
+    if (e.name === this.onlyOfficialText) {
+      const { onChangeOnlyOfficial } = this.props
+      onChangeOnlyOfficial(false)
+    }
+  }
+
   onMapCreated = (map: LeafletMap) => {
     this.map = map
     map.addEventListener('dragend', this.onMapDraggedOrZoomed)
     map.addEventListener('zoomend', this.onMapDraggedOrZoomed)
     map.addEventListener('click', this.onMapClicked)
+    map.addEventListener('overlayadd', this.onOverlayAdded)
+    map.addEventListener('overlayremove', this.onOverlayRemoved)
     this.onMapDraggedOrZoomed()
   }
 
@@ -184,6 +214,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
 
   render() {
     const { initialBounds, center, zoom } = this.state
+    const { onlyOfficial } = this.props
 
     const startParams = initialBounds
       ? { bounds: initialBounds }
@@ -197,6 +228,15 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
           minZoom={3}
           worldCopyJump
         >
+          <LayersControl position="topright">
+            <LayersControl.Overlay
+              checked={onlyOfficial}
+              name={this.onlyOfficialText}
+            >
+              <Circle center={center} radius={0} />
+            </LayersControl.Overlay>
+          </LayersControl>
+
           <LocateControl />
           <MapLoadingControl />
           {getAttributionLayer()}
@@ -225,6 +265,8 @@ export interface BannersMapProps extends RouteComponentProps {
   selectedBannerId?: string
   onMapChanged: (bounds: LatLngBounds) => void
   onSelectBanner: (banner: Banner) => void
+  onlyOfficial: boolean
+  onChangeOnlyOfficial: (onlyOfficial: boolean) => void
 }
 
 interface BannersMapState {

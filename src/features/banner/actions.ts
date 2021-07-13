@@ -13,6 +13,7 @@ import {
   CREATE_BANNER,
   REMOVE_CREATED_BANNER,
   SEARCH_MAP_BANNERS,
+  SEARCH_MAP_OFFICIAL_BANNERS,
   EDIT_BANNER,
   DELETE_BANNER,
 } from './actionTypes'
@@ -192,11 +193,37 @@ export const loadMapBannersAction = (
     topRightLat,
     topRightLng,
     bottomLeftLat,
-    bottomLeftLng
+    bottomLeftLng,
+    false
   )
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: SEARCH_MAP_BANNERS,
+      payload: response.data,
+    })
+  } else {
+    // dispatch({
+    //   type: BROWSE_SEARCH_ERROR,
+    // })
+  }
+}
+
+export const loadMapOfficialBannersAction = (
+  topRightLat: number,
+  topRightLng: number,
+  bottomLeftLat: number,
+  bottomLeftLng: number
+) => async (dispatch: Dispatch<BannerActionTypes>) => {
+  const response = await api.searchMapBanners(
+    topRightLat,
+    topRightLng,
+    bottomLeftLat,
+    bottomLeftLng,
+    true
+  )
+  if (response.ok && response.data !== undefined) {
+    dispatch({
+      type: SEARCH_MAP_OFFICIAL_BANNERS,
       payload: response.data,
     })
   } else {

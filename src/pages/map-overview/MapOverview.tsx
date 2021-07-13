@@ -11,6 +11,7 @@ import {
   Banner,
   getMapBanners,
   loadMapBanners,
+  loadMapOffcialBanners,
   loadBanner,
   getBanner as getBannerSelector,
   extendSorted,
@@ -24,17 +25,43 @@ import './map.less'
 class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   constructor(props: MapOverviewProps) {
     super(props)
+
+    const { location } = this.props
+    const urlParams = new URLSearchParams(location.search)
+    const onlyOfficial = urlParams.get('onlyOfficial') !== null
+
     this.state = {
       bounds: undefined,
       selectedBannerId: undefined,
       selectedBounds: undefined,
       status: 'initial',
+      onlyOfficial,
     }
   }
 
   onMapChanged = (bounds: LatLngBounds) => {
     this.setState({ bounds })
     this.onLoadBanners(bounds)
+  }
+
+  onChangeOnlyOfficial = (onlyOfficial: boolean) => {
+    const { bounds } = this.state
+    const { location, history } = this.props
+    const urlParams = new URLSearchParams(location.search)
+
+    if (onlyOfficial) {
+      urlParams.set('onlyOfficial', '1')
+    } else {
+      urlParams.delete('onlyOfficial')
+    }
+
+    history.replace({
+      pathname: location.pathname,
+      search: urlParams.toString(),
+    })
+
+    this.setState({ onlyOfficial })
+    this.onLoadBanners(bounds!)
   }
 
   onSelectBanner = async (banner: Banner) => {
@@ -54,16 +81,19 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 
   onLoadBanners = async (bounds: LatLngBounds) => {
-    const { fetchBanners } = this.props
+    const { fetchBanners, fetchOfficialBanners } = this.props
+    const { onlyOfficial } = this.state
+
+    const fetch = onlyOfficial ? fetchOfficialBanners : fetchBanners
     if (bounds) {
       this.setState({ status: 'loading' })
       try {
         const norhtEast = bounds.getNorthEast()
         const southWest = bounds.getSouthWest()
         if (Math.abs(norhtEast.lng - southWest.lng) >= 360) {
-          await fetchBanners(norhtEast.lat, 180, southWest.lat, -180)
+          await fetch(norhtEast.lat, 180, southWest.lat, -180)
         }
-        await fetchBanners(
+        await fetch(
           norhtEast.lat,
           norhtEast.wrap().lng,
           southWest.lat,
@@ -78,7 +108,13 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
 
   render() {
     const { getBanners, getBanner } = this.props
-    const { bounds, selectedBannerId, status, selectedBounds } = this.state
+    const {
+      bounds,
+      selectedBannerId,
+      status,
+      selectedBounds,
+      onlyOfficial,
+    } = this.state
     let banners: Array<Banner> = []
     const boundsToUse = selectedBounds ?? bounds
     if (boundsToUse) {
@@ -90,7 +126,8 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
           norhtEast.lat,
           norhtEast.lng - 360,
           southWest.lat,
-          -180
+          -180,
+          onlyOfficial
         )
         banners = extendSorted(
           bannersAux.map((b) => ({
@@ -105,7 +142,8 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
           norhtEast.lat,
           180,
           southWest.lat,
-          southWest.lng + 360
+          southWest.lng + 360,
+          onlyOfficial
         )
         banners = extendSorted(
           bannersAux.map((b) => ({
@@ -116,7 +154,13 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
         )
       }
       banners = extendSorted(
-        getBanners(norhtEast.lat, norhtEast.lng, southWest.lat, southWest.lng),
+        getBanners(
+          norhtEast.lat,
+          norhtEast.lng,
+          southWest.lat,
+          southWest.lng,
+          onlyOfficial
+        ),
         banners
       )
     }
@@ -150,6 +194,8 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
               selectedBannerId={selectedBannerId}
               onSelectBanner={this.onSelectBanner}
               loading={status === 'loading'}
+              onlyOfficial={onlyOfficial}
+              onChangeOnlyOfficial={this.onChangeOnlyOfficial}
             />
             <BannersAccordion
               banners={banners}
@@ -168,9 +214,16 @@ export interface MapOverviewProps extends RouteComponentProps {
     topRightLat: number,
     topRightLng: number,
     bottomLeftLat: number,
-    bottomLeftLng: number
+    bottomLeftLng: number,
+    onlyOfficial: boolean
   ) => Array<Banner>
   fetchBanners: (
+    topRightLat: number,
+    topRightLng: number,
+    bottomLeftLat: number,
+    bottomLeftLng: number
+  ) => Promise<void>
+  fetchOfficialBanners: (
     topRightLat: number,
     topRightLng: number,
     bottomLeftLat: number,
@@ -184,6 +237,7 @@ interface MapOverviewState {
   bounds: LatLngBounds | undefined
   selectedBannerId: string | undefined
   selectedBounds: LatLngBounds | undefined
+  onlyOfficial: boolean
   status: 'initial' | 'loading' | 'ready' | 'error'
 }
 
@@ -192,20 +246,23 @@ const mapStateToProps = (state: RootState) => ({
     topRightLat: number,
     topRightLng: number,
     bottomLeftLat: number,
-    bottomLeftLng: number
+    bottomLeftLng: number,
+    onlyOfficial: boolean
   ) =>
     getMapBanners(
       state,
       topRightLat,
       topRightLng,
       bottomLeftLat,
-      bottomLeftLng
+      bottomLeftLng,
+      onlyOfficial
     ),
   getBanner: (bannerId: string) => getBannerSelector(state, bannerId),
 })
 
 const mapDispatchToProps = {
   fetchBanners: loadMapBanners,
+  fetchOfficialBanners: loadMapOffcialBanners,
   fetchPreviewBanner: loadBanner,
 }
 

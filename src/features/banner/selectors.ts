@@ -30,12 +30,18 @@ export const getMapBanners = (
   topRightLat: number,
   topRightLng: number,
   bottomLeftLat: number,
-  bottomLeftLng: number
-) =>
-  _(state.banner.banners)
+  bottomLeftLng: number,
+  onlyOfficial: boolean
+) => {
+  const banners = onlyOfficial
+    ? state.banner.officialBanners
+    : state.banner.banners
+
+  return _(banners)
     .chain()
     .filter((b) =>
       containsBanner(b, topRightLat, topRightLng, bottomLeftLat, bottomLeftLng)
     )
     .take(500)
     .value()
+}
