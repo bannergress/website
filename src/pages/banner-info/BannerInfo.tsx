@@ -38,7 +38,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
     if (banner && banner.missions) {
       return (
         <>
-          <Helmet>
+          <Helmet defer={false}>
             <title>{banner.title}</title>
           </Helmet>
           <div className="banner-info-page">

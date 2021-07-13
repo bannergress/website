@@ -202,7 +202,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     return (
       <div className="page-container">
         <div className="browser">
-          <Helmet>
+          <Helmet defer={false}>
             <title>{pageTitle}</title>
           </Helmet>
 

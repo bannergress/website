@@ -135,7 +135,7 @@ class Agent extends React.Component<AgentProps, AgentState> {
 
     return (
       <Fragment>
-        <Helmet>
+        <Helmet defer={false}>
           <title>{title}</title>
         </Helmet>
         <div className="agent-page page-container">

@@ -79,7 +79,7 @@ class PreviewBanner extends React.Component<
 
     return (
       <>
-        <Helmet>
+        <Helmet defer={false}>
           <title>Review Banner</title>
         </Helmet>
         <Prompt message={this.getPromptMessage} />

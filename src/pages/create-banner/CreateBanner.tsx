@@ -557,7 +557,7 @@ class CreateBanner extends React.Component<
 
     return (
       <div className="create-banner">
-        <Helmet>
+        <Helmet defer={false}>
           <title>{title}</title>
         </Helmet>
         <Prompt message={this.getPromptMessage} />

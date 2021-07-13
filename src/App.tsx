@@ -39,7 +39,11 @@ const App: React.FC = () => {
       }}
       onEvent={(e) => e === 'onReady' && updateApiState()}
     >
-      <Helmet defaultTitle="Bannergress" titleTemplate="Bannergress - %s" />
+      <Helmet
+        defer={false}
+        defaultTitle="Bannergress"
+        titleTemplate="Bannergress - %s"
+      />
       <Layout>
         <BrowserRouter>
           {/* The Navbar should be hidden in mobile mode but only on some pages. */}

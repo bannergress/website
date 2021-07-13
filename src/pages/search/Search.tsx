@@ -153,7 +153,7 @@ class Search extends React.Component<SearchProps, SearchState> {
 
     return (
       <Fragment>
-        <Helmet>
+        <Helmet defer={false}>
           <title>{title}</title>
         </Helmet>
         <div className="search-page page-container">

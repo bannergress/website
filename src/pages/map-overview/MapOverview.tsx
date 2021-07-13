@@ -128,7 +128,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     }
     return (
       <Fragment>
-        <Helmet>
+        <Helmet defer={false}>
           <title>Map</title>
         </Helmet>
         <Row className="map-overview">
