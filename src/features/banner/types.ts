@@ -16,6 +16,7 @@ export interface Banner {
   picture?: string
   missions?: NumDictionary<Mission>
   type?: BannerType
+  listType?: BannerListType
   width?: number
   averageDurationMilliseconds?: number
   startPlaceId?: string
@@ -35,6 +36,7 @@ export interface BannerState {
 }
 
 export type BannerType = 'sequential' | 'anyOrder'
+export type BannerListType = 'todo' | 'done' | 'blacklist' | 'none'
 
 export type ApiOrder = 'created' | 'lengthMeters' | 'title' | 'numberOfMissions'
 export type ApiOrderDirection = 'ASC' | 'DESC'
