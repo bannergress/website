@@ -3,8 +3,10 @@ import { Tabs } from 'antd'
 
 import { Banner } from '../../features/banner'
 import BannerCard from '../banner-card'
+import BannerListTypeControl from '../banner-list-type-control'
 import MissionList from '../mission-list'
 import BannerInfoCard from '../banner-info-card'
+import IfUserLoggedIn from '../login/if-user-logged-in'
 
 import './banner-info-overview.less'
 import { BannerEditTools } from '../banner-edit-tools/BannerEditTools'
@@ -74,6 +76,10 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
           showFullImage
           linkStartPlace
         />
+
+        <IfUserLoggedIn>
+          <BannerListTypeControl bannerListType={banner.listType} />
+        </IfUserLoggedIn>
         <Tabs
           defaultActiveKey="info"
           activeKey={activeView}

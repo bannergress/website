@@ -28,6 +28,7 @@ import {
 import {
   Banner,
   BannerType,
+  BannerListType,
   BannerState,
   NumDictionary,
   ApiOrder,
@@ -66,6 +67,7 @@ export {
 export type {
   Banner,
   BannerType,
+  BannerListType,
   BannerState,
   NumDictionary,
   ApiOrder as BannerOrder,
