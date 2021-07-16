@@ -6,6 +6,7 @@ import {
   LatLngBounds,
   Map as LeafletMap,
   LayersControlEvent,
+  MarkerCluster,
 } from 'leaflet'
 import {
   MapContainer,
@@ -18,7 +19,7 @@ import _ from 'underscore'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 
 import { Banner, getBannerBounds } from '../../features/banner'
-import BannerMarker from './BannerMarker'
+import { BannerMarker, getBannerFromMarker } from './BannerMarker'
 import { showBannerRouteOnMap } from '../map-detail/showBannerRouteOnMap'
 import { getAttributionLayer } from '../map-detail/getAttributionLayer'
 import { LocateControl } from '../locate'
@@ -197,14 +198,45 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     return undefined
   }
 
-  createClusterCustomIcon = (cluster: any) => {
+  createClusterCustomIcon = (cluster: MarkerCluster) => {
     const numberMarkers = cluster.getChildCount()
-    if (numberMarkers > 1)
+
+    if (numberMarkers > 1) {
+
+      // Currently used logic for clusters:
+      // When all banners done, show as done
+      // When at least one banner is todo, show as todo
+      // Else show as normal
+
+      const children = cluster.getAllChildMarkers()
+
+      let hasTodo = false
+      let hasAllDone = true
+
+      children.forEach((marker) => {
+        const banner = getBannerFromMarker(marker)
+        if (banner?.listType === 'todo') {
+          hasTodo = true
+        }
+        if (banner?.listType !== 'done') {
+          hasAllDone = false
+        }
+      })
+
+      let listTypeClassName = ''
+      if (hasAllDone) {
+        listTypeClassName = 'marker-pin-done'
+      } else if (hasTodo) {
+        listTypeClassName = 'marker-pin-todo'
+      }
+
       return divIcon({
         className: 'custom-div-icon',
-        html: `<div class='marker-pin-medium-false'>${numberMarkers}</div>`,
+        html: `<div class='marker-pin-medium-false ${listTypeClassName}'>${numberMarkers}</div>`,
         iconAnchor: [0, 0],
       })
+    }
+
     return divIcon({
       className: 'custom-div-icon',
       html: `<div class='marker-pin-medium-false'></div>`,
@@ -243,7 +275,6 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
           <Pane name="finalPane" style={{ zIndex: 580 }} />
           <MarkerClusterGroup
             maxClusterRadius={25}
-            singleMarkerMode
             iconCreateFunction={this.createClusterCustomIcon}
           >
             {this.showBannersOnMap()}
