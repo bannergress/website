@@ -1,7 +1,12 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Tabs } from 'antd'
 
-import { Banner } from '../../features/banner'
+import {
+  Banner,
+  BannerListType,
+  changeBannerSettings,
+} from '../../features/banner'
 import BannerCard from '../banner-card'
 import BannerListTypeControl from '../banner-list-type-control'
 import MissionList from '../mission-list'
@@ -24,6 +29,7 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   onExpand,
   onExpandAll,
 }) => {
+  const dispatch = useDispatch()
   const [activeViewFromState, setActiveView] = useState(view)
 
   const activeView = view || activeViewFromState
@@ -41,6 +47,10 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
       ?.item(0) as HTMLElement
 
     return tabsBar && tabsBar.offsetParent !== null
+  }
+
+  const onListTypeChanged = async (listType: BannerListType) => {
+    dispatch(changeBannerSettings(banner, { listType }))
   }
 
   useEffect(() => {
@@ -77,9 +87,14 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
           linkStartPlace
         />
 
-        <IfUserLoggedIn>
-          <BannerListTypeControl bannerListType={banner.listType} />
-        </IfUserLoggedIn>
+        {!hideControls && (
+          <IfUserLoggedIn>
+            <BannerListTypeControl
+              bannerListType={banner.listType}
+              onChangeListType={onListTypeChanged}
+            />
+          </IfUserLoggedIn>
+        )}
         <Tabs
           defaultActiveKey="info"
           activeKey={activeView}

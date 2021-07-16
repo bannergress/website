@@ -24,6 +24,7 @@ import {
   removePendingBannerAction,
   editBannerAction,
   deleteBannerAction,
+  changeBannerSettingsAction,
 } from './actions'
 import {
   Banner,
@@ -63,6 +64,7 @@ export {
   removePendingBannerAction as removePendingBanner,
   editBannerAction as editBanner,
   deleteBannerAction as deleteBanner,
+  changeBannerSettingsAction as changeBannerSettings,
 }
 export type {
   Banner,

@@ -14,6 +14,7 @@ import {
   EDIT_BANNER,
   SEARCH_MAP_BANNERS,
   SEARCH_MAP_OFFICIAL_BANNERS,
+  CHANGE_BANNER_SETTINS,
 } from './actionTypes'
 import { extend, extendSorted } from './helpers'
 import { BannerState } from './types'
@@ -84,6 +85,15 @@ export default (state = initialState, action: BannerActionTypes) => {
         banners: extendSorted(state.banners, action.payload),
         officialBanners: extendSorted(state.officialBanners, action.payload),
       }
+    case CHANGE_BANNER_SETTINS: {
+      const { banner, bannerSettings } = action.payload
+      const changedBanner = { ...banner, ...bannerSettings }
+      return {
+        ...state,
+        banners: extend([changedBanner], state.banners),
+        officialBanners: extendSorted(state.officialBanners, [changedBanner]),
+      }
+    }
     default:
       return state
   }

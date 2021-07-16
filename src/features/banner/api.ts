@@ -1,6 +1,6 @@
 import { api } from '../../api'
 import { Mission } from '../mission/types'
-import { Banner, NumDictionary } from './types'
+import { Banner, BannerSettings, NumDictionary } from './types'
 
 const isMock = process.env.REACT_APP_USE_MOCK === 'true'
 export const PAGE_SIZE = 9
@@ -198,6 +198,11 @@ export const deleteBanner = (banner: Partial<Banner>) =>
 
 export const postBannerPreview = (banner: Partial<Banner>) =>
   api.post<Banner>('bnrs/preview', banner)
+
+export const changeBannerSettings = (
+  banner: Banner,
+  bannerSettings: BannerSettings
+) => api.post<void>(`bnrs/${banner.id}/settings`, bannerSettings, true)
 
 export const searchMapBanners = (
   topRightLat: number,

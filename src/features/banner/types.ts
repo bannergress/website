@@ -35,6 +35,10 @@ export interface BannerState {
   createdBanner: Banner | undefined
 }
 
+export interface BannerSettings {
+  listType?: BannerListType
+}
+
 export type BannerType = 'sequential' | 'anyOrder'
 export type BannerListType = 'todo' | 'done' | 'blacklist' | 'none'
 

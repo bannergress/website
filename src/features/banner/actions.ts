@@ -14,12 +14,13 @@ import {
   REMOVE_CREATED_BANNER,
   SEARCH_MAP_BANNERS,
   SEARCH_MAP_OFFICIAL_BANNERS,
+  CHANGE_BANNER_SETTINS,
   EDIT_BANNER,
   DELETE_BANNER,
 } from './actionTypes'
 import * as api from './api'
 import { getCreatedBanner } from './selectors'
-import { Banner, ApiOrder, ApiOrderDirection } from './types'
+import { Banner, ApiOrder, ApiOrderDirection, BannerSettings } from './types'
 
 export const loadBannerAction = (id: string) => async (
   dispatch: Dispatch<BannerActionTypes>
@@ -259,5 +260,23 @@ export const deleteBannerAction = (banner: Banner) => async (
       type: DELETE_BANNER,
       payload: banner,
     })
+  }
+}
+
+export const changeBannerSettingsAction = (
+  banner: Banner,
+  bannerSettings: BannerSettings
+) => async (dispatch: Dispatch<BannerActionTypes>) => {
+  const response = await api.changeBannerSettings(banner, bannerSettings)
+  if (response.ok) {
+    dispatch({
+      type: CHANGE_BANNER_SETTINS,
+      payload: {
+        banner,
+        bannerSettings,
+      },
+    })
+  } else {
+    throw Error('Error while changing banner settings')
   }
 }

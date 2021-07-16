@@ -15,8 +15,12 @@ class Api {
     return this.request('DELETE', url, params)
   }
 
-  post<T>(url: string, data?: any): Promise<ApiResponse<T>> {
-    return this.request('POST', url, {}, data)
+  post<T>(
+    url: string,
+    data?: any,
+    ignoreResponseBody = false
+  ): Promise<ApiResponse<T>> {
+    return this.request('POST', url, {}, data, ignoreResponseBody)
   }
 
   put<T>(url: string, data?: any): Promise<ApiResponse<T>> {
@@ -27,7 +31,8 @@ class Api {
     method: string,
     url: string,
     params: {},
-    data?: any
+    data?: any,
+    ignoreResponseBody = false
   ): Promise<ApiResponse<T>> {
     try {
       await this.readyPromise
@@ -49,7 +54,7 @@ class Api {
         mode: 'cors',
       })
       if (response.ok) {
-        const json = await response.json()
+        const json = ignoreResponseBody ? null : await response.json()
         return {
           ok: true,
           data: json,

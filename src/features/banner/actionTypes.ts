@@ -1,5 +1,5 @@
 import { RehydrateAction } from '../../storeTypes'
-import { Banner } from './types'
+import { Banner, BannerSettings } from './types'
 
 export const LOAD_BANNER = 'LOAD_BANNER'
 export const LOAD_RECENT_BANNERS = 'LOAD_RECENT_BANNERS'
@@ -16,6 +16,7 @@ export const CREATE_BANNER = 'CREATE_BANNER'
 export const REMOVE_CREATED_BANNER = 'REMOVE_CREATED_BANNER'
 export const EDIT_BANNER = 'EDIT_BANNER'
 export const DELETE_BANNER = 'DELETE_BANNER'
+export const CHANGE_BANNER_SETTINS = 'CHANGE_BANNER_SETTINS'
 
 interface LoadBannerAction {
   type: typeof LOAD_BANNER
@@ -96,6 +97,14 @@ interface DeleteBannerAction {
   payload: Banner
 }
 
+interface ChangeBannerSettingsAction {
+  type: typeof CHANGE_BANNER_SETTINS
+  payload: {
+    banner: Banner
+    bannerSettings: BannerSettings
+  }
+}
+
 export type BannerActionTypes =
   | LoadBannerAction
   | LoadRecentBannersAction
@@ -113,3 +122,4 @@ export type BannerActionTypes =
   | SearchMapOfficialBannersAction
   | EditBannerAction
   | DeleteBannerAction
+  | ChangeBannerSettingsAction
