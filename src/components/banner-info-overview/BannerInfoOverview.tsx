@@ -85,6 +85,7 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
           selected={false}
           showFullImage
           linkStartPlace
+          applyBannerListStlye
         />
 
         {!hideControls && (

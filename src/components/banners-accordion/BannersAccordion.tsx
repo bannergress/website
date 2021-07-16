@@ -51,6 +51,7 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
             selected
             detailsUrl={generatePath('/banner/:id', { id: selectedBanner.id })}
             linkStartPlace={false}
+            applyBannerListStlye
           />
         </div>
       )}
@@ -61,6 +62,8 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
           hasMoreBanners={hasMoreBanners}
           onSelectBanner={onSelectBannerCallback}
           loadMoreBanners={loadMoreBanners}
+          applyBannerListStlyes
+          hideBlacklisted
         />
       )}
     </div>

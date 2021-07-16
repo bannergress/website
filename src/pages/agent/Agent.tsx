@@ -169,6 +169,8 @@ class Agent extends React.Component<AgentProps, AgentState> {
                             banners={banners}
                             hasMoreBanners={hasMoreBanners}
                             loadMoreBanners={this.onLoadMoreBanners}
+                            applyBannerListStlyes
+                            hideBlacklisted
                           />
                         </Row>
                       </>

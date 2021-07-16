@@ -68,7 +68,12 @@ export const RecentBanners: FC<RecentBannersProps> = ({
           Submit a New Banner
         </button>
       </div>
-      <BannerList banners={banners} hasMoreBanners={false} />
+      <BannerList
+        banners={banners}
+        hasMoreBanners={false}
+        applyBannerListStlyes
+        hideBlacklisted
+      />
     </div>
   )
 }

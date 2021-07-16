@@ -18,9 +18,16 @@ const BannerCard: FC<BannerCardProps> = ({
   showFullImage,
   detailsUrl,
   linkStartPlace,
+  applyBannerListStlye,
 }) => {
   const url = banner && banner.picture && new URL(banner.picture, baseUrl).href
-  const className = selected ? 'banner-card selected' : 'banner-card'
+
+  const bannerListStyleClassName =
+    banner && applyBannerListStlye
+      ? `list-style-${banner.listType || 'none'}`
+      : ''
+  let className = selected ? `banner-card selected` : `banner-card`
+  className = `${className} ${bannerListStyleClassName}`
   let lines: number | undefined
   if (banner?.numberOfMissions && banner.width) {
     lines = Math.ceil(banner.numberOfMissions / banner.width)
@@ -76,6 +83,7 @@ export interface BannerCardProps {
   banner: Banner | undefined
   selected: boolean
   showFullImage?: boolean
+  applyBannerListStlye: boolean
   detailsUrl?: string
   linkStartPlace: boolean
 }

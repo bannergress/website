@@ -1,3 +1,53 @@
+@import url(../../App.less);
+
+
+
+// Start Temporary styles for list types. Not final yet. 
+
+.list-style-background() {
+  content: " ";
+  z-index: 10;
+  display: block;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.banner-card.list-style-todo {
+  border: 1px solid @color-todo;
+  position: relative;
+}
+
+.banner-card.list-style-todo:after {
+  .list-style-background();
+  background: rgba(@color-todo, 0.05);
+}
+
+.banner-card.list-style-done {
+  border: 1px solid @color-done;
+  position: relative;
+}
+
+.banner-card.list-style-done:after {
+  .list-style-background();
+  background: rgba(@color-done, 0.05);
+}
+
+.banner-card.list-style-blacklist {
+  border: 1px solid @color-blacklist;
+  position: relative;
+}
+
+.banner-card.list-style-blacklist:after {
+  .list-style-background();
+  background: rgba(@color-blacklist, 0.05);
+}
+
+// End temporary Styles ^^
+
 .banner-circle {
   display: flex;
   align-items: center;

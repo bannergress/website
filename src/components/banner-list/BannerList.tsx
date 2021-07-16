@@ -14,6 +14,8 @@ const BannerList: FC<BannerListProps> = ({
   loadMoreBanners,
   selectedBannerId,
   onSelectBanner,
+  applyBannerListStlyes,
+  hideBlacklisted,
 }) => {
   const itemsRef = useRef<Array<HTMLDivElement | null>>([])
   const [ref] = useInfiniteScroll({
@@ -62,6 +64,10 @@ const BannerList: FC<BannerListProps> = ({
       <Fragment>
         <div className="banner-list">
           {banners?.map((banner, index) => {
+            if (hideBlacklisted && banner?.listType === 'blacklist') {
+              return null
+            }
+
             const bannerCard = getBannerCardWithLink(
               banner,
               <BannerCard
@@ -70,6 +76,7 @@ const BannerList: FC<BannerListProps> = ({
                 selected={banner.id === selectedBannerId}
                 detailsUrl={generatePath('/banner/:id', { id: banner.id })}
                 linkStartPlace={false}
+                applyBannerListStlye={applyBannerListStlyes}
               />
             )
             return (
@@ -102,6 +109,8 @@ export interface BannerListProps {
   selectedBannerId?: string
   loadMoreBanners?: () => Promise<void>
   onSelectBanner?: (banner: Banner) => void
+  applyBannerListStlyes: boolean
+  hideBlacklisted: boolean
 }
 
 export default BannerList
