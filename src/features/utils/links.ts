@@ -1,10 +1,18 @@
 import React from 'react'
+import { isMobile, isAndroid, isIOS } from './os'
 
 export const createExternalNavigationUri = (
   latitude: number,
   longitude: number
 ) => {
-  // Maybe can can later on decide which url to use based on the system, for example use geo: on mobile devices
+  if (isMobile()) {
+    if (isAndroid()) {
+      return `geo:${latitude},${longitude}?q=${latitude},${longitude}`
+    }
+    if (isIOS()) {
+      return `maps://q=${latitude},${longitude}`
+    }
+  }
   return `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`
 }
 
