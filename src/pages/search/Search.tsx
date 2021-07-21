@@ -214,6 +214,7 @@ class Search extends React.Component<SearchProps, SearchState> {
                           loadMoreBanners={this.onLoadMoreBanners}
                           applyBannerListStlyes
                           hideBlacklisted
+                          showDetailsButton={false}
                         />
                       </Row>
                     </>

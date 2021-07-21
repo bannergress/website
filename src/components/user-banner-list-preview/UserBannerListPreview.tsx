@@ -94,6 +94,7 @@ class UserBannerListPreview extends React.Component<
                     hasMoreBanners={false}
                     applyBannerListStlyes
                     hideBlacklisted={false}
+                    showDetailsButton={false}
                   />
 
                   <div className="seeFullList">

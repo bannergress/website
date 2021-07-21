@@ -186,6 +186,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
                 onSelectBanner={this.onSelectBanner}
                 applyBannerListStlyes
                 hideBlacklisted
+                showDetailsButton
               />
             </Scrollbars>
           </Col>

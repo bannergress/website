@@ -162,6 +162,7 @@ class Agent extends React.Component<AgentProps, AgentState> {
                             loadMoreBanners={this.onLoadMoreBanners}
                             applyBannerListStlyes
                             hideBlacklisted
+                            showDetailsButton={false}
                           />
                         </Row>
                       </>

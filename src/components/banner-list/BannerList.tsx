@@ -16,6 +16,7 @@ const BannerList: FC<BannerListProps> = ({
   onSelectBanner,
   applyBannerListStlyes,
   hideBlacklisted,
+  showDetailsButton,
 }) => {
   const itemsRef = useRef<Array<HTMLDivElement | null>>([])
   const [ref] = useInfiniteScroll({
@@ -74,7 +75,11 @@ const BannerList: FC<BannerListProps> = ({
                 key={banner.id}
                 banner={banner}
                 selected={banner.id === selectedBannerId}
-                detailsUrl={generatePath('/banner/:id', { id: banner.id })}
+                detailsUrl={
+                  showDetailsButton
+                    ? generatePath('/banner/:id', { id: banner.id })
+                    : undefined
+                }
                 linkStartPlace={false}
                 applyBannerListStlye={applyBannerListStlyes}
               />
@@ -111,6 +116,7 @@ export interface BannerListProps {
   onSelectBanner?: (banner: Banner) => void
   applyBannerListStlyes: boolean
   hideBlacklisted: boolean
+  showDetailsButton: boolean
 }
 
 export default BannerList

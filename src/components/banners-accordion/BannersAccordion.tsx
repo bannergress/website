@@ -64,6 +64,7 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
           loadMoreBanners={loadMoreBanners}
           applyBannerListStlyes
           hideBlacklisted
+          showDetailsButton
         />
       )}
     </div>

@@ -249,6 +249,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
                     loadMoreBanners={this.onLoadMoreBanners}
                     applyBannerListStlyes
                     hideBlacklisted
+                    showDetailsButton={false}
                   />
                 </>
               )}
