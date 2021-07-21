@@ -3,6 +3,7 @@ import _ from 'underscore'
 
 import NewsList from '../components/news-list'
 import RecentBanners from '../components/recent-banners'
+import { UserBannerListPreview } from '../components/user-banner-list-preview'
 import FooterMain from '../components/footer-main'
 import { Issue, IssuesList } from '../components/Issues-list'
 
@@ -37,6 +38,7 @@ export const Home: React.FC = () => {
       <div className="announcement-and-recent-banners">
         <IssuesList issues={issues} />
         <NewsList setIssues={addIssues} />
+        <UserBannerListPreview />
         <RecentBanners
           titleList={titleList}
           setIssues={addIssues}
