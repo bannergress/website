@@ -63,7 +63,8 @@ export const extend = <T extends { id?: string; title?: string }>(
 export const extendSorted = <T extends { id?: string; title?: string }>(
   source: Array<T>,
   target: Array<T>
-) => _.sortBy(extend(source, target), (b) => b.title)
+) => _.sortBy(extend(target, source), (b) => b.title)
+// Use target as source so that changed banners overwrite old banner information
 
 export const getBannerListTypeText = (listType: BannerListType) => {
   switch (listType) {
