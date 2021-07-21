@@ -70,7 +70,7 @@ const BannerCard: FC<BannerCardProps> = ({
           <div>{banner?.formattedAddress}</div>
         )}
       </div>
-      {selected && detailsUrl && (
+      {detailsUrl && (
         <div className="banner-info-details">
           <Link to={detailsUrl}>Details</Link>
         </div>
