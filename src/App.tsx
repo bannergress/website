@@ -73,7 +73,7 @@ const App: React.FC = () => {
                 />
                 <Redirect path="/user/banners" to="/user/banners/todo" />
                 <Route path="/help" component={Help} />
-                <PrivateRoute path="/new-banner" component={CreateBanner} />
+                <Route path="/new-banner" component={CreateBanner} />
                 <PrivateRoute
                   path="/edit-banner/:id"
                   component={CreateBanner}

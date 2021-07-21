@@ -42,6 +42,7 @@ import {
 } from '../../components/algorithm-detection-chooser'
 import AdvancedOptions from '../../components/advanced-options'
 import { IssuesList } from '../../components/Issues-list'
+import LoginRequired from '../../components/login/login-required'
 import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg'
 import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
 
@@ -560,6 +561,7 @@ class CreateBanner extends React.Component<
         <Helmet defer={false}>
           <title>{title}</title>
         </Helmet>
+
         <Prompt message={this.getPromptMessage} />
         <Beforeunload onBeforeunload={this.getPromptMessage} />
         <LoadingOverlay
@@ -569,146 +571,151 @@ class CreateBanner extends React.Component<
           fadeSpeed={500}
         />
         <h1>{title}</h1>
-        <div className="create-banner-steps">
-          <div className="missions-search">
-            <h1>
-              <span className="ellipse">1</span> Add Missions
-            </h1>
-            {/*
+
+        <LoginRequired>
+          <div className="create-banner-steps">
+            <div className="missions-search">
+              <h1>
+                <span className="ellipse">1</span> Add Missions
+              </h1>
+              {/*
             <h3>Location (Optional)</h3>
             <Input
               placeholder="Start typing..."
               onChange={(e) => this.onInputChange(e.target.value, 'location')}
             />
             */}
-            <h3>Search for missions</h3>
-            <span className="search-mission-subtitle">
-              You can search by mission name or author
-            </span>
-            <Input
-              placeholder="Enter at least 3 characters..."
-              value={searchText || ''}
-              maxLength={200}
-              onChange={(e) => this.onInputChange(e.target.value, 'searchText')}
-              onKeyPress={(k) =>
-                k.key === 'Enter' ? this.onSearchForced() : null
-              }
-            />
-            <div className="results-title">
-              <h3>Search results{unusedMissionsCount}</h3>
-              {unusedMissions && unusedMissions.length > 0 && (
-                <Button
-                  role="button"
-                  onClick={() => this.onAddAllMissions(unusedMissions)}
-                >
-                  Add All
-                </Button>
-              )}
-            </div>
-            <SearchMissionList
-              missions={unusedMissions}
-              hasMoreMissions={hasMore}
-              icon={<SVGRightArrow />}
-              initial={
-                status === 'initial' ||
-                (status === 'ready' && (!searchText || searchText.length < 3))
-              }
-              loadMoreMissions={this.onLoadMoreMissions}
-              onSelectMission={this.onAddMission}
-              onMissionAuthorClick={this.onMissionAuthorClicked}
-            />
-          </div>
-          <div className="missions-arrange">
-            <h1>
-              <span className="ellipse">2</span> Arrange
-            </h1>
-            <IssuesList
-              issues={issues.filter((issue) => issue.field === 'missions')}
-            />
-            <div className="algorithm">
-              <AlgorithmDetectionChooser
-                selected={extraction}
-                onChange={(val) => this.onInputChange(val, 'extraction')}
-                loading={status === 'detecting'}
+              <h3>Search for missions</h3>
+              <span className="search-mission-subtitle">
+                You can search by mission name or author
+              </span>
+              <Input
+                placeholder="Enter at least 3 characters..."
+                value={searchText || ''}
+                maxLength={200}
+                onChange={(e) =>
+                  this.onInputChange(e.target.value, 'searchText')
+                }
+                onKeyPress={(k) =>
+                  k.key === 'Enter' ? this.onSearchForced() : null
+                }
+              />
+              <div className="results-title">
+                <h3>Search results{unusedMissionsCount}</h3>
+                {unusedMissions && unusedMissions.length > 0 && (
+                  <Button
+                    role="button"
+                    onClick={() => this.onAddAllMissions(unusedMissions)}
+                  >
+                    Add All
+                  </Button>
+                )}
+              </div>
+              <SearchMissionList
+                missions={unusedMissions}
+                hasMoreMissions={hasMore}
+                icon={<SVGRightArrow />}
+                initial={
+                  status === 'initial' ||
+                  (status === 'ready' && (!searchText || searchText.length < 3))
+                }
+                loadMoreMissions={this.onLoadMoreMissions}
+                onSelectMission={this.onAddMission}
+                onMissionAuthorClick={this.onMissionAuthorClicked}
               />
             </div>
-            <div className="results-title">
-              <h3>{addedMissions.length} Missions in Total</h3>
-              {addedMissions.length > 0 && (
-                <Button
-                  role="button"
-                  onClick={() => this.onRemoveAllMissions()}
-                >
-                  Remove All
-                </Button>
-              )}
-            </div>
-            <SearchMissionList
-              missions={addedMissions}
-              hasMoreMissions={false}
-              initial
-              icon={<SVGCross />}
-              onSelectMission={this.onManageMission}
-              onMissionAuthorClick={this.onMissionAuthorClicked}
-              missionEditor={this.getMissionIndexEditor}
-              missionClass={this.getMissionClass}
-            />
-          </div>
-          <div className="create-banner-info">
-            <h1>
-              <span className="ellipse">3</span> Information
-            </h1>
-            <IssuesList
-              issues={issues.filter((issue) => issue.field !== 'missions')}
-            />
-            <h3>Banner Title</h3>
-            <Input
-              placeholder="Start typing..."
-              value={bannerTitle}
-              onChange={(e) =>
-                this.onInputChange(e.target.value, 'bannerTitle')
-              }
-            />
-            <h3>Description</h3>
-            <Input.TextArea
-              placeholder="Start typing..."
-              value={bannerDescription}
-              /* Note: The antd minRows seems to have a -1 bug on Firefox. Shows always one fewer row than specified.
-              Works well on other browser https://github.com/ant-design/ant-design/issues/30559  */
-              autoSize={{ minRows: 2 }}
-              maxLength={2000}
-              onChange={(e) =>
-                this.onInputChange(e.target.value, 'bannerDescription')
-              }
-            />
-            <h3>Options</h3>
-            <div className="adv-options-container open">
-              <AdvancedOptions
-                type={bannerType}
-                width={bannerWidth}
-                onChange={this.onInputChange}
+            <div className="missions-arrange">
+              <h1>
+                <span className="ellipse">2</span> Arrange
+              </h1>
+              <IssuesList
+                issues={issues.filter((issue) => issue.field === 'missions')}
               />
-            </div>
-            <h3>Preview</h3>
-            <div className="create-banner-preview">
-              <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
-                <BannerImage
-                  missions={addedMissions}
-                  width={bannerWidth}
-                  useIndex={bannerType === 'sequential'}
+              <div className="algorithm">
+                <AlgorithmDetectionChooser
+                  selected={extraction}
+                  onChange={(val) => this.onInputChange(val, 'extraction')}
+                  loading={status === 'detecting'}
                 />
-              </Scrollbars>
+              </div>
+              <div className="results-title">
+                <h3>{addedMissions.length} Missions in Total</h3>
+                {addedMissions.length > 0 && (
+                  <Button
+                    role="button"
+                    onClick={() => this.onRemoveAllMissions()}
+                  >
+                    Remove All
+                  </Button>
+                )}
+              </div>
+              <SearchMissionList
+                missions={addedMissions}
+                hasMoreMissions={false}
+                initial
+                icon={<SVGCross />}
+                onSelectMission={this.onManageMission}
+                onMissionAuthorClick={this.onMissionAuthorClicked}
+                missionEditor={this.getMissionIndexEditor}
+                missionClass={this.getMissionClass}
+              />
             </div>
-            <button
-              type="button"
-              onClick={this.onCreateBanner}
-              className="positive-action-button button-review"
-              disabled={issues.some((i) => i.type === 'error')}
-            >
-              Review
-            </button>
+            <div className="create-banner-info">
+              <h1>
+                <span className="ellipse">3</span> Information
+              </h1>
+              <IssuesList
+                issues={issues.filter((issue) => issue.field !== 'missions')}
+              />
+              <h3>Banner Title</h3>
+              <Input
+                placeholder="Start typing..."
+                value={bannerTitle}
+                onChange={(e) =>
+                  this.onInputChange(e.target.value, 'bannerTitle')
+                }
+              />
+              <h3>Description</h3>
+              <Input.TextArea
+                placeholder="Start typing..."
+                value={bannerDescription}
+                /* Note: The antd minRows seems to have a -1 bug on Firefox. Shows always one fewer row than specified.
+              Works well on other browser https://github.com/ant-design/ant-design/issues/30559  */
+                autoSize={{ minRows: 2 }}
+                maxLength={2000}
+                onChange={(e) =>
+                  this.onInputChange(e.target.value, 'bannerDescription')
+                }
+              />
+              <h3>Options</h3>
+              <div className="adv-options-container open">
+                <AdvancedOptions
+                  type={bannerType}
+                  width={bannerWidth}
+                  onChange={this.onInputChange}
+                />
+              </div>
+              <h3>Preview</h3>
+              <div className="create-banner-preview">
+                <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
+                  <BannerImage
+                    missions={addedMissions}
+                    width={bannerWidth}
+                    useIndex={bannerType === 'sequential'}
+                  />
+                </Scrollbars>
+              </div>
+              <button
+                type="button"
+                onClick={this.onCreateBanner}
+                className="positive-action-button button-review"
+                disabled={issues.some((i) => i.type === 'error')}
+              >
+                Review
+              </button>
+            </div>
           </div>
-        </div>
+        </LoginRequired>
       </div>
     )
   }

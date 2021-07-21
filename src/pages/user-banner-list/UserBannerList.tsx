@@ -22,10 +22,7 @@ import BannerOrderChooser from '../../components/banner-order-chooser'
 import BannerListTypeNavigation from '../../components/banner-list-type-navigation'
 import BannerList from '../../components/banner-list'
 import FooterMain from '../../components/footer-main'
-import IfUserInitializing from '../../components/login/if-user-initializing'
-import IfUserLoggedIn from '../../components/login/if-user-logged-in'
-import IfUserLoggedOut from '../../components/login/if-user-logged-out'
-
+import LoginRequired from '../../components/login/login-required'
 import './user-banner-list.less'
 
 class UserBannerList extends React.Component<
@@ -165,13 +162,7 @@ class UserBannerList extends React.Component<
               baseUrl="/user/banners/"
             />
 
-            <IfUserInitializing>Loading...</IfUserInitializing>
-
-            <IfUserLoggedOut>
-              <div>You must log in first to see this information</div>
-            </IfUserLoggedOut>
-
-            <IfUserLoggedIn>
+            <LoginRequired>
               <Layout>
                 {bannersStatus === 'success' && (
                   <>
@@ -209,7 +200,7 @@ class UserBannerList extends React.Component<
                 {(bannersStatus === 'initial' ||
                   bannersStatus === 'loading') && <>Loading...</>}
               </Layout>
-            </IfUserLoggedIn>
+            </LoginRequired>
           </div>
           <FooterMain />
         </div>

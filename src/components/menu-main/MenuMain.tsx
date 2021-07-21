@@ -5,6 +5,7 @@ import { ReactComponent as SVGHome } from '../../img/icons/home.svg'
 import { ReactComponent as SVGBrowse } from '../../img/icons/browse.svg'
 import { ReactComponent as SVGMap } from '../../img/icons/map.svg'
 import { ReactComponent as SVGHelp } from '../../img/icons/help.svg'
+import { ReactComponent as SVGAdd } from '../../img/icons/add.svg'
 
 import './menu-main.less'
 
@@ -36,6 +37,13 @@ const menuItems = [
     title: 'Help',
     icon: <SVGHelp className="icon" />,
     regExp: '^/help',
+  },
+  {
+    key: '5',
+    path: '/new-banner',
+    title: 'New',
+    icon: <SVGAdd className="icon" />,
+    regExp: '^/new-banner|/preview-banner',
   },
 ]
 

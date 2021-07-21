@@ -5,7 +5,6 @@ import { ThunkDispatch } from 'redux-thunk'
 
 import { getRecentBanners, loadRecentBanners } from '../../features/banner'
 import { BannerActionTypes } from '../../features/banner/actionTypes'
-import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
 import { RootState } from '../../storeTypes'
 import BannerList from '../banner-list'
 import { Issue } from '../Issues-list'
@@ -42,13 +41,6 @@ export const RecentBanners: FC<RecentBannersProps> = ({
       .finally(() => setLoading(false))
   }, [dispatch, setIssues, resetIssue, history.location])
 
-  const onCreateBanner = () => {
-    history.push('/new-banner')
-  }
-
-  const { authenticated } = useUserLoggedIn()
-  const disabled = !authenticated
-
   return (
     <div className="recent-banners">
       <LoadingOverlay
@@ -59,14 +51,6 @@ export const RecentBanners: FC<RecentBannersProps> = ({
       />
       <div className="recent-banners-title">
         <h1>{titleList}</h1>
-        <button
-          type="button"
-          onClick={onCreateBanner}
-          className="positive-action-button submit-new-button"
-          disabled={disabled}
-        >
-          Submit a New Banner
-        </button>
       </div>
       <BannerList
         banners={banners}

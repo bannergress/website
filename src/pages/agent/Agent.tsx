@@ -19,9 +19,7 @@ import { withAuthenticated } from '../../hocs/WithAuthenticated'
 import BannerOrderChooser from '../../components/banner-order-chooser'
 import BannerList from '../../components/banner-list'
 import FooterMain from '../../components/footer-main'
-import IfUserInitializing from '../../components/login/if-user-initializing'
-import IfUserLoggedIn from '../../components/login/if-user-logged-in'
-import IfUserLoggedOut from '../../components/login/if-user-logged-out'
+import LoginRequired from '../../components/login/login-required'
 
 import './agent.less'
 
@@ -141,13 +139,7 @@ class Agent extends React.Component<AgentProps, AgentState> {
           <div className="agent-content">
             <h1>{title}</h1>
 
-            <IfUserInitializing>Loading...</IfUserInitializing>
-
-            <IfUserLoggedOut>
-              <div>You must log in first to see this information</div>
-            </IfUserLoggedOut>
-
-            <IfUserLoggedIn>
+            <LoginRequired>
               <h2>Banners</h2>
 
               <Layout>
@@ -186,7 +178,7 @@ class Agent extends React.Component<AgentProps, AgentState> {
                 {(bannersStatus === 'initial' ||
                   bannersStatus === 'loading') && <>Loading...</>}
               </Layout>
-            </IfUserLoggedIn>
+            </LoginRequired>
           </div>
           <FooterMain />
         </div>
