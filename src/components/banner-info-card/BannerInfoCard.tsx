@@ -25,6 +25,7 @@ import './banner-info-card.less'
 import IfUserLoggedIn from '../login/if-user-logged-in'
 import { Distance } from '../distance/Distance'
 import { Duration } from '../duration/Duration'
+import IfUserLoggedOut from '../login/if-user-logged-out'
 
 const getAgents = (banner: Banner) =>
   _(mapMissions(banner.missions, (mission) => mission?.author))
@@ -289,6 +290,9 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => (
     <IfUserLoggedIn>
       <p>Created by {getAgents(banner)}</p>
     </IfUserLoggedIn>
+    <IfUserLoggedOut>
+      <p>Note: Please sign in to see author(s)</p>
+    </IfUserLoggedOut>
     {getMissionTypes(banner)}
     {getTotalDistance(banner)}
     {getInGameTime(banner)}
