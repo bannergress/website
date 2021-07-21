@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { Layout } from 'antd'
 import { Helmet } from 'react-helmet'
 import { ReactKeycloakProvider } from '@react-keycloak/web'
@@ -14,6 +14,7 @@ import { MapOverview } from './pages/map-overview'
 import { BannerInfo } from './pages/banner-info'
 import { Search } from './pages/search'
 import { Agent } from './pages/agent'
+import { UserBannerList } from './pages/user-banner-list'
 import { Browser } from './pages/browser'
 import { CreateBanner } from './pages/create-banner'
 import { PreviewBanner } from './pages/preview-banner'
@@ -42,7 +43,7 @@ const App: React.FC = () => {
       <Helmet
         defer={false}
         defaultTitle="Bannergress"
-        titleTemplate="Bannergress - %s"
+        titleTemplate="%s - Bannergress"
       />
       <Layout>
         <BrowserRouter>
@@ -66,6 +67,11 @@ const App: React.FC = () => {
                 <Route path="/banner/:id" component={BannerInfo} />
                 <Route path="/search/:term" component={Search} />
                 <Route path="/agent/:agentName" component={Agent} />
+                <Route
+                  path="/user/banners/:listType"
+                  component={UserBannerList}
+                />
+                <Redirect path="/user/banners" to="/user/banners/todo" />
                 <Route path="/help" component={Help} />
                 <PrivateRoute path="/new-banner" component={CreateBanner} />
                 <PrivateRoute

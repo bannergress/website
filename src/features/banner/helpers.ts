@@ -2,7 +2,7 @@ import _ from 'underscore'
 
 import { mapMissions } from '../mission'
 import { getMissionBounds } from '../mission/helpers'
-import { Banner } from './types'
+import { Banner, BannerListType } from './types'
 
 const BOUNDS_MARGIN = 0.0001
 
@@ -64,3 +64,20 @@ export const extendSorted = <T extends { id?: string; title?: string }>(
   source: Array<T>,
   target: Array<T>
 ) => _.sortBy(extend(source, target), (b) => b.title)
+
+export const getBannerListTypeText = (listType: BannerListType) => {
+  switch (listType) {
+    case 'blacklist':
+      return 'Hidden'
+      break
+    case 'done':
+      return 'Done'
+      break
+    case 'todo':
+      return 'To-Do'
+      break
+    default:
+      throw new Error('Unknown banner list type')
+      break
+  }
+}

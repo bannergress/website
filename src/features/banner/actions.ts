@@ -10,6 +10,8 @@ import {
   RESET_SEARCH_BANNERS,
   AGENT_BANNERS,
   RESET_AGENT_BANNERS,
+  USER_BANNER_LIST_BANNERS,
+  RESET_USER_BANNER_LIST_BANNERS,
   CREATE_BANNER,
   REMOVE_CREATED_BANNER,
   SEARCH_MAP_BANNERS,
@@ -20,7 +22,13 @@ import {
 } from './actionTypes'
 import * as api from './api'
 import { getCreatedBanner } from './selectors'
-import { Banner, ApiOrder, ApiOrderDirection, BannerSettings } from './types'
+import {
+  Banner,
+  ApiOrder,
+  ApiOrderDirection,
+  BannerSettings,
+  BannerListType,
+} from './types'
 
 export const loadBannerAction = (id: string) => async (
   dispatch: Dispatch<BannerActionTypes>
@@ -134,6 +142,38 @@ export const loadAgentBannersAction = (
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: AGENT_BANNERS,
+      payload: {
+        banners: response.data,
+        hasMore: response.data && response.data.length === api.PAGE_SIZE,
+      },
+    })
+  } else {
+    // dispatch({
+    //   type: BROWSE_SEARCH_ERROR,
+    // })
+  }
+}
+
+export const loadUserBannerListBannersAction = (
+  listType: BannerListType,
+  order: ApiOrder,
+  orderDirection: ApiOrderDirection,
+  page: number
+) => async (dispatch: Dispatch<BannerActionTypes>) => {
+  if (page === 0) {
+    dispatch({
+      type: RESET_USER_BANNER_LIST_BANNERS,
+    })
+  }
+  const response = await api.listUserBannerListBanners(
+    listType,
+    order,
+    orderDirection,
+    page
+  )
+  if (response.ok && response.data !== undefined) {
+    dispatch({
+      type: USER_BANNER_LIST_BANNERS,
       payload: {
         banners: response.data,
         hasMore: response.data && response.data.length === api.PAGE_SIZE,

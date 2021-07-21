@@ -28,10 +28,12 @@ export interface BannerState {
   browsedBanners: Array<Banner>
   searchBanners: Array<Banner>
   agentBanners: Array<Banner>
+  userBannerListBanners: Array<Banner>
   officialBanners: Array<Banner>
   canBrowseMore: Boolean
   canSearchMore: Boolean
   hasMoreAgentBanners: Boolean
+  hasMoreUserBannerListBanners: Boolean
   createdBanner: Banner | undefined
 }
 
@@ -42,5 +44,10 @@ export interface BannerSettings {
 export type BannerType = 'sequential' | 'anyOrder'
 export type BannerListType = 'todo' | 'done' | 'blacklist' | 'none'
 
-export type ApiOrder = 'created' | 'lengthMeters' | 'title' | 'numberOfMissions'
+export type ApiOrder =
+  | 'listAdded'
+  | 'created'
+  | 'lengthMeters'
+  | 'title'
+  | 'numberOfMissions'
 export type ApiOrderDirection = 'ASC' | 'DESC'

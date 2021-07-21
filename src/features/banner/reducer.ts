@@ -15,6 +15,8 @@ import {
   SEARCH_MAP_BANNERS,
   SEARCH_MAP_OFFICIAL_BANNERS,
   CHANGE_BANNER_SETTINS,
+  USER_BANNER_LIST_BANNERS,
+  RESET_USER_BANNER_LIST_BANNERS,
 } from './actionTypes'
 import { extend, extendSorted } from './helpers'
 import { BannerState } from './types'
@@ -26,9 +28,11 @@ const initialState: BannerState = {
   searchBanners: [],
   agentBanners: [],
   officialBanners: [],
+  userBannerListBanners: [],
   canBrowseMore: true,
   canSearchMore: true,
   hasMoreAgentBanners: true,
+  hasMoreUserBannerListBanners: true,
   createdBanner: undefined,
 }
 
@@ -69,6 +73,18 @@ export default (state = initialState, action: BannerActionTypes) => {
       }
     case RESET_AGENT_BANNERS:
       return { ...state, agentBanners: [] }
+    case USER_BANNER_LIST_BANNERS:
+      return {
+        ...state,
+        banners: extendSorted(state.banners, action.payload.banners),
+        userBannerListBanners: extend(
+          state.userBannerListBanners,
+          action.payload.banners
+        ),
+        hasMoreUserBannerListBanners: action.payload.hasMore,
+      }
+    case RESET_USER_BANNER_LIST_BANNERS:
+      return { ...state, userBannerListBanners: [] }
     case LOAD_RECENT_BANNERS_ERROR:
       return state
     case CREATE_BANNER:

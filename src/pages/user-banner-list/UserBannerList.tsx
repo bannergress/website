@@ -7,44 +7,53 @@ import { Helmet } from 'react-helmet'
 import { RootState } from '../../storeTypes'
 import {
   Banner,
+  BannerListType,
   BannerOrder,
   BannerOrderDirection,
-  getAgentBanners,
-  getHasMoreAgentBanners,
-  loadAgentBanners as loadAgentBannersAction,
+  getUserBannerListBanners,
+  getHasMoreUserBannerListBanners,
+  loadUserBannerListBanners as loadUserBannerListBannersAction,
+  getBannerListTypeText,
 } from '../../features/banner'
 
 import { withAuthenticated } from '../../hocs/WithAuthenticated'
 
 import BannerOrderChooser from '../../components/banner-order-chooser'
+import BannerListTypeNavigation from '../../components/banner-list-type-navigation'
 import BannerList from '../../components/banner-list'
 import FooterMain from '../../components/footer-main'
 import IfUserInitializing from '../../components/login/if-user-initializing'
 import IfUserLoggedIn from '../../components/login/if-user-logged-in'
 import IfUserLoggedOut from '../../components/login/if-user-logged-out'
 
-import './agent.less'
+import './user-banner-list.less'
 
-class Agent extends React.Component<AgentProps, AgentState> {
-  constructor(props: AgentProps) {
+class UserBannerList extends React.Component<
+  UserBannerListProps,
+  UserBannerListState
+> {
+  constructor(props: UserBannerListProps) {
     super(props)
     this.state = {
-      selectedOrder: 'created',
+      selectedOrder: 'listAdded',
       selectedDirection: 'DESC',
-      agentName: '',
+      listType: 'none',
       pageBanners: 0,
       bannersStatus: 'initial',
     }
   }
 
-  static getDerivedStateFromProps(props: AgentProps, state: AgentState) {
+  static getDerivedStateFromProps(
+    props: UserBannerListProps,
+    state: UserBannerListState
+  ) {
     const { match } = props
-    const { agentName } = state
-    const newAgentName = decodeURIComponent(match.params.agentName)
+    const { listType } = state
+    const newListType = decodeURIComponent(match.params.listType)
 
-    if (agentName !== newAgentName) {
+    if (listType !== newListType) {
       return {
-        agentName: newAgentName,
+        listType: newListType,
         pageBanners: 0,
       }
     }
@@ -53,25 +62,28 @@ class Agent extends React.Component<AgentProps, AgentState> {
   }
 
   componentDidMount() {
-    const { selectedDirection, selectedOrder, agentName } = this.state
+    const { selectedDirection, selectedOrder, listType } = this.state
 
-    this.doFetchBanners(agentName, selectedOrder, selectedDirection, 0)
+    this.doFetchBanners(listType, selectedOrder, selectedDirection, 0)
   }
 
-  componentDidUpdate(prevProps: AgentProps, prevState: AgentState) {
+  componentDidUpdate(
+    prevProps: UserBannerListProps,
+    prevState: UserBannerListState
+  ) {
     const { authenticated: prevAuthenticated } = prevProps
     const { authenticated } = this.props
 
-    const { agentName: prevAgentName } = prevState
-    const { agentName, selectedOrder, selectedDirection } = this.state
+    const { listType: prevListType } = prevState
+    const { listType, selectedOrder, selectedDirection } = this.state
 
-    if (prevAgentName !== agentName || prevAuthenticated !== authenticated) {
-      this.doFetchBanners(agentName, selectedOrder, selectedDirection, 0)
+    if (prevListType !== listType || prevAuthenticated !== authenticated) {
+      this.doFetchBanners(listType, selectedOrder, selectedDirection, 0)
     }
   }
 
   onOrderSelected = (newOrder: BannerOrder) => {
-    const { selectedOrder, selectedDirection, agentName } = this.state
+    const { selectedOrder, selectedDirection, listType } = this.state
     let newDirection: BannerOrderDirection = 'ASC'
     if (newOrder === selectedOrder) {
       newDirection = selectedDirection === 'ASC' ? 'DESC' : 'ASC'
@@ -86,7 +98,7 @@ class Agent extends React.Component<AgentProps, AgentState> {
         pageBanners: 0,
       })
     }
-    this.doFetchBanners(agentName, newOrder, newDirection, 0)
+    this.doFetchBanners(listType, newOrder, newDirection, 0)
   }
 
   onLoadMoreBanners = () => {
@@ -95,11 +107,11 @@ class Agent extends React.Component<AgentProps, AgentState> {
       selectedOrder,
       selectedDirection,
       pageBanners,
-      agentName,
+      listType,
     } = this.state
     this.setState({ pageBanners: pageBanners + 1 })
     return fetchBanners(
-      agentName,
+      listType,
       selectedOrder,
       selectedDirection,
       pageBanners + 1
@@ -107,13 +119,13 @@ class Agent extends React.Component<AgentProps, AgentState> {
   }
 
   getPageTitle() {
-    const { agentName } = this.state
-    const title = `Agent ${agentName}`
+    const { listType } = this.state
+    const title = `My ${getBannerListTypeText(listType)} Banners`
     return title
   }
 
   async doFetchBanners(
-    agentName: string,
+    listType: BannerListType,
     order: BannerOrder,
     orderDirection: BannerOrderDirection,
     pageBanners: number
@@ -122,24 +134,36 @@ class Agent extends React.Component<AgentProps, AgentState> {
 
     if (authenticated) {
       this.setState({ bannersStatus: 'loading' })
-      await fetchBanners(agentName, order, orderDirection, pageBanners)
+      await fetchBanners(listType, order, orderDirection, pageBanners)
       this.setState({ bannersStatus: 'success' })
     }
   }
 
   render() {
     const title: string = this.getPageTitle()
-    const { bannersStatus, selectedDirection, selectedOrder } = this.state
+    const {
+      bannersStatus,
+      selectedDirection,
+      selectedOrder,
+      listType,
+    } = this.state
     const { banners, hasMoreBanners } = this.props
+
+    const noBannersMessage = `Mark banners as ${getBannerListTypeText(
+      listType
+    )} to see them here.`
 
     return (
       <Fragment>
         <Helmet defer={false}>
           <title>{title}</title>
         </Helmet>
-        <div className="agent-page page-container">
-          <div className="agent-content">
-            <h1>{title}</h1>
+        <div className="user-banner-list-page page-container">
+          <div className="user-banner-list-content">
+            <BannerListTypeNavigation
+              bannerListType={listType}
+              baseUrl="/user/banners/"
+            />
 
             <IfUserInitializing>Loading...</IfUserInitializing>
 
@@ -148,8 +172,6 @@ class Agent extends React.Component<AgentProps, AgentState> {
             </IfUserLoggedOut>
 
             <IfUserLoggedIn>
-              <h2>Banners</h2>
-
               <Layout>
                 {bannersStatus === 'success' && (
                   <>
@@ -160,6 +182,7 @@ class Agent extends React.Component<AgentProps, AgentState> {
                             selectedOrder={selectedOrder}
                             selectedDirection={selectedDirection}
                             onOrderClicked={this.onOrderSelected}
+                            includeAddedList
                           />
                         </Row>
 
@@ -169,7 +192,7 @@ class Agent extends React.Component<AgentProps, AgentState> {
                             hasMoreBanners={hasMoreBanners}
                             loadMoreBanners={this.onLoadMoreBanners}
                             applyBannerListStlyes
-                            hideBlacklisted
+                            hideBlacklisted={false}
                           />
                         </Row>
                       </>
@@ -177,7 +200,7 @@ class Agent extends React.Component<AgentProps, AgentState> {
 
                     {banners.length === 0 && (
                       <>
-                        <Row>No banners found</Row>
+                        <Row>{noBannersMessage}</Row>
                       </>
                     )}
                   </>
@@ -195,11 +218,12 @@ class Agent extends React.Component<AgentProps, AgentState> {
   }
 }
 
-export interface AgentProps extends RouteComponentProps<{ agentName: string }> {
+export interface UserBannerListProps
+  extends RouteComponentProps<{ listType: BannerListType }> {
   banners: Array<Banner>
   hasMoreBanners: Boolean
   fetchBanners: (
-    agentName: string,
+    listType: BannerListType,
     order: BannerOrder,
     orderDirection: BannerOrderDirection,
     pageBanners: number
@@ -207,24 +231,24 @@ export interface AgentProps extends RouteComponentProps<{ agentName: string }> {
   authenticated: Boolean
 }
 
-interface AgentState {
+interface UserBannerListState {
   selectedOrder: BannerOrder
   selectedDirection: BannerOrderDirection
-  agentName: string
+  listType: BannerListType
   pageBanners: number
   bannersStatus: 'initial' | 'success' | 'loading' | 'error'
 }
 
 const mapStateToProps = (state: RootState) => ({
-  banners: getAgentBanners(state),
-  hasMoreBanners: getHasMoreAgentBanners(state),
+  banners: getUserBannerListBanners(state),
+  hasMoreBanners: getHasMoreUserBannerListBanners(state),
 })
 
 const mapDispatchToProps = {
-  fetchBanners: loadAgentBannersAction,
+  fetchBanners: loadUserBannerListBannersAction,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withAuthenticated(withRouter(Agent)))
+)(withAuthenticated(withRouter(UserBannerList)))

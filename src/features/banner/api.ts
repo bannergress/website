@@ -1,6 +1,6 @@
 import { api } from '../../api'
 import { Mission } from '../mission/types'
-import { Banner, BannerSettings, NumDictionary } from './types'
+import { Banner, BannerListType, BannerSettings, NumDictionary } from './types'
 
 const isMock = process.env.REACT_APP_USE_MOCK === 'true'
 export const PAGE_SIZE = 9
@@ -183,6 +183,22 @@ export const listAgentBanners = (
         orderBy: order,
         orderDirection,
         author: agentName,
+        limit: PAGE_SIZE,
+        offset: page * PAGE_SIZE,
+      })
+
+export const listUserBannerListBanners = (
+  listType: BannerListType,
+  order: string,
+  orderDirection: string,
+  page: number
+) =>
+  isMock
+    ? { data: createBanners(page), ok: true, status: 200 }
+    : api.get<Array<Banner>>('bnrs', {
+        orderBy: order,
+        orderDirection,
+        listTypes: listType,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
       })
