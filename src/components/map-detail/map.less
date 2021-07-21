@@ -24,8 +24,8 @@
   align-items: center;
   justify-content: center;
   color: rgb(255, 255, 255);
-  // text-shadow: -3px 0 #6832da, 0 3px #6832da, 3px 0 #6832da, 0 -3px #6832da;
-  background-color: rgb(104, 50, 218);
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  background-color: @color-pin;
   font-size: 12px;
   font-weight: bold;
 }
@@ -69,15 +69,26 @@
 }
 
 .marker-pin-medium-false.marker-pin-todo {
-  background-color: @color-todo; 
-  border-color: rgb(104, 50, 218);
-  color: rgb(104, 50, 218);;
+  background-color: @color-todo;
 }
 
 .marker-pin-medium-false.marker-pin-done {
-  background-color: @color-done; 
-  border-color: rgb(104, 50, 218);
-  color: rgb(104, 50, 218);;
+  background-color: @color-done;
+}
+
+.marker-pin-medium-false.marker-pin-done-todo {
+  background-image: linear-gradient( -45deg, @color-done 50%, @color-todo 50%);
+}
+
+.marker-pin-medium-false.marker-pin-normal-todo {
+  background-image: linear-gradient( -45deg, @color-pin 50%, @color-todo 50%);
+}
+
+.marker-pin-medium-false.marker-pin-normal-done {
+  background-image: linear-gradient( -45deg, @color-pin 50%, @color-done 50%);
+}
+.marker-pin-medium-false.marker-pin-all {
+  background-image: conic-gradient(@color-pin 0 33%, @color-done 0 66%, @color-todo 0);
 }
 
 .square-marker-pin {
@@ -101,7 +112,7 @@
 }
 
 .color-blue {
-  background-color: rgb(105, 52, 218);
+  background-color: @color-pin;
 }
 
 .marker-poi-pin {

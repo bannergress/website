@@ -202,32 +202,35 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     const numberMarkers = cluster.getChildCount()
 
     if (numberMarkers > 1) {
-
       // Currently used logic for clusters:
-      // When all banners done, show as done
-      // When at least one banner is todo, show as todo
-      // Else show as normal
+      // count all occurrences of banner types
+      // and set two or three colors depending on the available type
 
       const children = cluster.getAllChildMarkers()
 
-      let hasTodo = false
-      let hasAllDone = true
+      let countDone = 0
+      let countTodo = 0
+      let countNormal = 0
 
       children.forEach((marker) => {
         const banner = getBannerFromMarker(marker)
-        if (banner?.listType === 'todo') {
-          hasTodo = true
-        }
-        if (banner?.listType !== 'done') {
-          hasAllDone = false
-        }
+        if (banner?.listType === 'todo') countTodo += 1
+        if (banner?.listType === 'done') countDone += 1
+        if (banner?.listType === undefined) countNormal += 1
       })
-
       let listTypeClassName = ''
-      if (hasAllDone) {
+      if (countDone > 0 && countTodo > 0 && countNormal === 0) {
+        listTypeClassName = 'marker-pin-done-todo'
+      } else if (countDone === 0 && countTodo > 0 && countNormal > 0) {
+        listTypeClassName = 'marker-pin-normal-todo'
+      } else if (countDone > 0 && countTodo === 0 && countNormal > 0) {
+        listTypeClassName = 'marker-pin-normal-done'
+      } else if (countDone > 0 && countTodo === 0 && countNormal === 0) {
         listTypeClassName = 'marker-pin-done'
-      } else if (hasTodo) {
+      } else if (countDone === 0 && countTodo > 0 && countNormal === 0) {
         listTypeClassName = 'marker-pin-todo'
+      } else if (countDone > 0 && countTodo > 0 && countNormal > 0) {
+        listTypeClassName = 'marker-pin-all'
       }
 
       return divIcon({
