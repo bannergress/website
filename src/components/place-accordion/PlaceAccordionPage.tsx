@@ -5,6 +5,8 @@ import { Place } from '../../features/place'
 import { RootState } from '../../storeTypes'
 import PlaceEntry from '../place-list/PlaceEntry'
 import { PlaceAccordionEntry } from './PlaceAccordionEntry'
+import { ReactComponent as TriangleUpSVG } from '../../img/icons/triangle.svg'
+import { ReactComponent as TriangleDownSVG } from '../../img/icons/triangle-down.svg'
 
 import './place-accordion-page.less'
 
@@ -48,7 +50,8 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
         type="button"
         onClick={onToggleExpand}
       >
-        {title}
+        <div>{title}</div>
+        {expanded ? <TriangleUpSVG /> : <TriangleDownSVG />}
       </button>
       {expanded && (
         <div className="place-accordion-entries">
