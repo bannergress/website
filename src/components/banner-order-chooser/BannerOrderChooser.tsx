@@ -38,7 +38,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
     <div className="order-chooser">
       <div>
         <h4>Sort by</h4>
-        {includeAddedList && getButton('Date Added', 'listAdded')}
+        {includeAddedList && getButton('Added to List', 'listAdded')}
         {getButton('Date Created', 'created')}
         {getButton('A-Z', 'title')}
         {getButton('Distance', 'lengthMeters')}
