@@ -32,7 +32,8 @@ const getAgents = (banner: Banner) =>
     .uniq(false, (agent) => agent.name)
     .map((agent, index) => (
       <Fragment key={`${agent.name}-container`}>
-        {index > 0 && ','} <Agent key={agent.name} agent={agent} />
+        {index > 0 && ','}{' '}
+        <Agent key={agent.name} agent={agent} linkToAgentProfile />
       </Fragment>
     ))
 

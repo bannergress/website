@@ -45,7 +45,7 @@ const SearchMissionCard: FC<SearchMissionCardProps> = ({
             }
             tabIndex={-1}
           >
-            <Agent agent={mission.author} />
+            <Agent agent={mission.author} linkToAgentProfile={false} />
           </Button>
         )}
       </div>
