@@ -1,7 +1,5 @@
 @import url(../../App.less);
 
-
-
 // Start Temporary styles for list types. Not final yet. 
 
 .list-style-background() {
@@ -14,36 +12,25 @@
   left: 0;
   right: 0;
   pointer-events: none;
-}
-
-.banner-card.list-style-todo {
-  border: 1px solid @color-todo;
-  position: relative;
+  border-radius: 5px;
 }
 
 .banner-card.list-style-todo:after {
   .list-style-background();
   background: rgba(@color-todo, 0.05);
-}
-
-.banner-card.list-style-done {
-  border: 1px solid @color-done;
-  position: relative;
+  border: 1px solid @color-todo;
 }
 
 .banner-card.list-style-done:after {
   .list-style-background();
   background: rgba(@color-done, 0.05);
-}
-
-.banner-card.list-style-blacklist {
-  border: 1px solid @color-blacklist;
-  position: relative;
+  border: 1px solid @color-done;
 }
 
 .banner-card.list-style-blacklist:after {
   .list-style-background();
   background: rgba(@color-blacklist, 0.05);
+  border: 1px solid @color-blacklist;
 }
 
 // End temporary Styles ^^
@@ -71,6 +58,7 @@
   border: #2e2e2e 2px solid;
   padding: 18px;
   color: white;
+  position: relative;
 
   &.selected {
     border-color: #16d4b2;
