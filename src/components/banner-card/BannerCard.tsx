@@ -62,9 +62,9 @@ const BannerCard: FC<BannerCardProps> = ({
         </div>
         {linkStartPlace && banner?.startPlaceId ? (
           <div>
-            <a href={createBrowseUri(banner.startPlaceId)}>
+            <Link to={createBrowseUri(banner.startPlaceId)}>
               {banner?.formattedAddress}
-            </a>
+            </Link>
           </div>
         ) : (
           <div>{banner?.formattedAddress}</div>
