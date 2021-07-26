@@ -31,7 +31,7 @@ import 'leaflet/dist/leaflet.css'
 class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   private map: LeafletMap | undefined = undefined
 
-  private onlyOfficialText = 'Show only official Niantic banners'
+  private onlyOfficialText = 'Show only official Niantic mission collections'
 
   constructor(props: BannersMapProps) {
     super(props)
