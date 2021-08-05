@@ -24,6 +24,7 @@ export interface Banner {
 
 export interface BannerState {
   banners: Array<Banner>
+  fullBanners: Array<Banner>
   recentBanners: Array<Banner>
   browsedBanners: Array<Banner>
   searchBanners: Array<Banner>

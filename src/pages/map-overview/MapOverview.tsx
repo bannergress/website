@@ -13,7 +13,7 @@ import {
   loadMapBanners,
   loadMapOffcialBanners,
   loadBanner,
-  getBanner as getBannerSelector,
+  getFullBanner as getBannerSelector,
   extendSorted,
 } from '../../features/banner'
 import BannerList from '../../components/banner-list'

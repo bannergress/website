@@ -23,6 +23,7 @@ import { BannerState } from './types'
 
 const initialState: BannerState = {
   banners: [],
+  fullBanners: [],
   recentBanners: [],
   browsedBanners: [],
   searchBanners: [],
@@ -39,7 +40,12 @@ const initialState: BannerState = {
 export default (state = initialState, action: BannerActionTypes) => {
   switch (action.type) {
     case LOAD_BANNER:
-      return { ...state, banners: extend([action.payload], state.banners) }
+      return {
+        ...state,
+        banners: extend([action.payload], state.banners),
+        fullBanners: extend([action.payload], state.fullBanners),
+      }
+
     case LOAD_RECENT_BANNERS:
       return {
         ...state,
@@ -107,6 +113,7 @@ export default (state = initialState, action: BannerActionTypes) => {
       return {
         ...state,
         banners: extend([changedBanner], state.banners),
+        fullBanners: extend([changedBanner], state.fullBanners),
         officialBanners: extendSorted(state.officialBanners, [changedBanner]),
       }
     }

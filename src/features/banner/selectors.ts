@@ -5,6 +5,9 @@ import { containsBanner } from './helpers'
 export const getBanner = (state: RootState, id: string) =>
   state.banner.banners.find((b) => b.id === id)
 
+export const getFullBanner = (state: RootState, id: string) =>
+  state.banner.fullBanners.find((b) => b.id === id)
+
 export const getRecentBanners = (state: RootState) => state.banner.recentBanners
 
 export const getBrowsedBanners = (state: RootState) =>

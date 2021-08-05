@@ -10,6 +10,7 @@ describe('features > banner > bannerReducer', () => {
   it(`load banner, if ${LOAD_BANNER} action is provided`, () => {
     const initialState: BannerState = {
       banners: [],
+      fullBanners: [],
       recentBanners: [],
       browsedBanners: [],
       searchBanners: [],
@@ -36,6 +37,7 @@ describe('features > banner > bannerReducer', () => {
           picture: '',
         },
       ],
+      fullBanners: [],
       recentBanners: [],
       browsedBanners: [],
       searchBanners: [],
@@ -68,6 +70,7 @@ describe('features > banner > bannerReducer', () => {
   it(`load recent banners, if ${LOAD_RECENT_BANNERS} action is provided`, () => {
     const initialState: BannerState = {
       banners: [],
+      fullBanners: [],
       recentBanners: [],
       browsedBanners: [],
       searchBanners: [],
@@ -83,6 +86,7 @@ describe('features > banner > bannerReducer', () => {
 
     const expectedState: BannerState = {
       banners: [],
+      fullBanners: [],
       recentBanners: [
         {
           id: '1',

@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes'
 import {
   getBanner,
+  getFullBanner,
   getRecentBanners,
   getBrowsedBanners,
   getHasMoreBrowsedBanners,
@@ -49,6 +50,7 @@ export { default as BannerReducer } from './reducer'
 export { actionTypes }
 export {
   getBanner,
+  getFullBanner,
   getRecentBanners,
   getBrowsedBanners,
   getHasMoreBrowsedBanners,
