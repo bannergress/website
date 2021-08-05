@@ -21,6 +21,7 @@ export const showBannerRouteOnMap = (
   const missionMultiPolylines: LatLng[][] = [[]]
   let lastMissionTitle: string | undefined
   let prevMission = 0
+  const connectMissions = banner.type !== 'anyOrder'
 
   mapMissions(banner.missions, (mission, index) => {
     if (mission) {
@@ -28,10 +29,13 @@ export const showBannerRouteOnMap = (
 
       if (availableSteps && availableSteps.length) {
         const firstPOI = availableSteps[0].poi
-        if (firstPOI && prevMission + 1 === index) {
-          missionMultiPolylines[missionMultiPolylines.length - 1].push(
-            new LatLng(firstPOI.latitude, firstPOI.longitude)
-          )
+
+        if (connectMissions) {
+          if (firstPOI && prevMission + 1 === index) {
+            missionMultiPolylines[missionMultiPolylines.length - 1].push(
+              new LatLng(firstPOI.latitude, firstPOI.longitude)
+            )
+          }
         }
         prevMission = index
 
@@ -64,11 +68,17 @@ export const showBannerRouteOnMap = (
           pathOptions={lineStyle}
           positions={missionMultiPolylines}
         />
-        <SquareMarker coords={lastCoordinates!} color={color} pane="finalPane">
-          {lastMissionTitle && (
-            <Tooltip offset={[20, 0]}>{lastMissionTitle}</Tooltip>
-          )}
-        </SquareMarker>
+        {connectMissions && (
+          <SquareMarker
+            coords={lastCoordinates!}
+            color={color}
+            pane="finalPane"
+          >
+            {lastMissionTitle && (
+              <Tooltip offset={[20, 0]}>{lastMissionTitle}</Tooltip>
+            )}
+          </SquareMarker>
+        )}
       </>
     )
   }
