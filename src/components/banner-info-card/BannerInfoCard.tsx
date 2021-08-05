@@ -23,6 +23,7 @@ import { hasLatLng } from '../map-detail/showBannerRouteOnMap'
 
 import './banner-info-card.less'
 import IfUserLoggedIn from '../login/if-user-logged-in'
+import LoginButton from '../login/login-button'
 import { Distance } from '../distance/Distance'
 import { Duration } from '../duration/Duration'
 import IfUserLoggedOut from '../login/if-user-logged-out'
@@ -294,7 +295,13 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => (
       <p>Created by {getAgents(banner)}</p>
     </IfUserLoggedIn>
     <IfUserLoggedOut>
-      <p>Note: Please sign in to see author(s)</p>
+      <p>
+        Please{' '}
+        <LoginButton className="button-as-link" type="button">
+          sign in
+        </LoginButton>{' '}
+        to see author(s)
+      </p>
     </IfUserLoggedOut>
     {getMissionTypes(banner)}
     {getTotalDistance(banner)}
