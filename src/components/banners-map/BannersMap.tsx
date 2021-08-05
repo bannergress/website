@@ -199,6 +199,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   }
 
   createClusterCustomIcon = (cluster: MarkerCluster) => {
+    const { selectedBannerId } = this.props
     const numberMarkers = cluster.getChildCount()
 
     if (numberMarkers > 1) {
@@ -211,15 +212,20 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
       let countDone = 0
       let countTodo = 0
       let countNormal = 0
+      let anySelected = false
 
       children.forEach((marker) => {
         const banner = getBannerFromMarker(marker)
         if (banner?.listType === 'todo') countTodo += 1
         if (banner?.listType === 'done') countDone += 1
         if (banner?.listType === undefined) countNormal += 1
+        if (banner?.id === selectedBannerId) anySelected = true
       })
       let listTypeClassName = ''
-      if (countDone > 0 && countTodo > 0 && countNormal === 0) {
+
+      if (anySelected) {
+        listTypeClassName = 'marker-pin-true'
+      } else if (countDone > 0 && countTodo > 0 && countNormal === 0) {
         listTypeClassName = 'marker-pin-done-todo'
       } else if (countDone === 0 && countTodo > 0 && countNormal > 0) {
         listTypeClassName = 'marker-pin-normal-todo'
