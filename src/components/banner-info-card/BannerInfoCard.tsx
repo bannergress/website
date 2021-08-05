@@ -193,6 +193,8 @@ const getActions = (banner: Banner) => {
   const types = _(mapMissions(banner.missions, (mission) => mission?.steps))
     .chain()
     .flatten()
+    // Filter out unavailable waypoints, include hidden ones (no objective) and those not marked unavailable
+    .filter((p) => !p.objective || (p.poi && p.poi?.type !== 'unavailable'))
     .map((step) => step.objective || 'hidden')
     .countBy()
     .value()
