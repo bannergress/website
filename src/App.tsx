@@ -8,6 +8,7 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import keycloak from './keycloak'
 
 import { updateApiState } from './api'
+import patchDOMForGoogleTranslate from './features/utils/patchGoogleTranslate'
 import { About } from './pages/About'
 import { Home } from './pages/Home'
 import { MapOverview } from './pages/map-overview'
@@ -26,6 +27,8 @@ import Navbar from './components/navbar'
 import './App.less'
 
 const App: React.FC = () => {
+  patchDOMForGoogleTranslate()
+
   // register global Hotkeys
   useHotkeys('shift+n', () => {
     window.location.href = '/new-banner'
