@@ -16,6 +16,12 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
   const onEditBanner = () => {
     history.push(generatePath('/edit-banner/:id', { id: banner.id }))
   }
+  const onRefreshBanner = () => {
+    window.open(
+      `https://missions.ingress.com/?bgRefresh=${banner.id}`,
+      '_blank'
+    )
+  }
 
   const onDeleteBanner = async () => {
     // eslint-disable-next-line no-alert
@@ -28,6 +34,9 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
   if (authenticated) {
     return (
       <div className="banner-edit-tools">
+        <Button className="positive-action-button" onClick={onRefreshBanner}>
+          Refresh
+        </Button>
         <Button className="positive-action-button" onClick={onEditBanner}>
           Edit
         </Button>
