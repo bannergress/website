@@ -35,9 +35,10 @@ export const loadBannerAction = (id: string) => async (
 ) => {
   const response = await api.getBanner(id)
   if (response.ok && response.data !== undefined) {
+    const banner = { ...response.data, requestedId: id }
     dispatch({
       type: LOAD_BANNER,
-      payload: response.data,
+      payload: banner,
     })
   } else if (response.status === 404) {
     throw new Error('Banner not found')

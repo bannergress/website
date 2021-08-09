@@ -1,6 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import {
+  withRouter,
+  RouteComponentProps,
+  generatePath,
+  Redirect,
+} from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
 import { RootState } from '../../storeTypes'
@@ -34,6 +39,18 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
     const { getBanner, match } = this.props
     const { status } = this.state
     const banner = getBanner(match.params.id)
+
+    // When found ID different from loaded ID, redirect to loaded ID
+    if (
+      banner &&
+      match?.params?.id &&
+      match.params.id.localeCompare(banner.id, undefined, {
+        sensitivity: 'accent',
+      }) !== 0
+    ) {
+      const url = generatePath('/banner/:id', { id: banner.id })
+      return <Redirect to={url} />
+    }
 
     if (banner && banner.missions) {
       return (
