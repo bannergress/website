@@ -1,5 +1,5 @@
 // Copied from https://github.com/gaearon/reactjs.org/blob/d72a2c7df862cc28b32c7de638d63d69c2809b68/src/utils/patchDOMForGoogleTranslate.js
-// 
+//
 
 // This is not pretty.
 // See https://github.com/facebook/react/issues/11538#issuecomment-417504600
@@ -9,7 +9,9 @@
 export default function patchDOMForGoogleTranslate() {
   const originalRemoveChild = Node.prototype.removeChild
   // $FlowFixMe Intentionally monkepatching.
-  Node.prototype.removeChild = function (child) {
+  Node.prototype.removeChild = function newRemoveChild<T extends Node>(
+    child: T
+  ) {
     if (child.parentNode !== this) {
       if (typeof console !== 'undefined') {
         console.error(
@@ -18,14 +20,18 @@ export default function patchDOMForGoogleTranslate() {
           this
         )
       }
-      return child
+      return child as T
     }
-    return originalRemoveChild.apply(this, arguments)
+    // eslint-disable-next-line prefer-rest-params
+    return originalRemoveChild.apply(this, <any>arguments) as T
   }
 
   const originalInsertBefore = Node.prototype.insertBefore
   // $FlowFixMe Intentionally monkepatching.
-  Node.prototype.insertBefore = function (newNode, referenceNode) {
+  Node.prototype.insertBefore = function newInsertBefore<T extends Node>(
+    newNode: T,
+    referenceNode: Node | null
+  ) {
     if (referenceNode && referenceNode.parentNode !== this) {
       if (typeof console !== 'undefined') {
         console.error(
@@ -34,8 +40,9 @@ export default function patchDOMForGoogleTranslate() {
           this
         )
       }
-      return newNode
+      return newNode as T
     }
-    return originalInsertBefore.apply(this, arguments)
+    // eslint-disable-next-line prefer-rest-params
+    return originalInsertBefore.apply(this, <any>arguments) as T
   }
 }
