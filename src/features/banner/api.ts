@@ -137,6 +137,7 @@ export const getRecentBanners = (numberOfBanners: number) =>
         orderBy: 'created',
         orderDirection: 'DESC',
         limit: numberOfBanners,
+        online: true,
       })
 
 export const getBanners = (
@@ -234,4 +235,5 @@ export const searchMapBanners = (
     maxLongitude: topRightLng,
     onlyOfficialMissions: onlyOfficial,
     limit: 50,
+    online: true,
   })
