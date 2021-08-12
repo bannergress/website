@@ -10,6 +10,8 @@ export interface Banner {
   title: string
   description?: string
   numberOfMissions: number
+  numberOfSubmittedMissions: number
+  numberOfDisabledMissions: number
   startLatitude: number
   startLongitude: number
   lengthMeters?: number

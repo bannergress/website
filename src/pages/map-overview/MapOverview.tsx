@@ -15,6 +15,7 @@ import {
   loadBanner,
   getFullBanner as getBannerSelector,
   extendSorted,
+  isBannerFullyOnline,
 } from '../../features/banner'
 import BannerList from '../../components/banner-list'
 import BannersMap from '../../components/banners-map'
@@ -163,6 +164,9 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
         ),
         banners
       )
+
+      // Filter out partly or fully offline banners
+      banners = banners.filter((banner) => isBannerFullyOnline(banner))
     }
     if (selectedBannerId) {
       const selectedBanner = getBanner(selectedBannerId)

@@ -82,3 +82,10 @@ export const getBannerListTypeText = (listType: BannerListType) => {
       break
   }
 }
+
+export const isBannerFullyOnline = (banner: Banner) => {
+  return (
+    banner?.numberOfDisabledMissions === 0 &&
+    banner?.numberOfSubmittedMissions === 0
+  )
+}

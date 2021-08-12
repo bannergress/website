@@ -44,6 +44,7 @@ import {
   extend,
   extendSorted,
   getBannerListTypeText,
+  isBannerFullyOnline,
 } from './helpers'
 
 export { default as BannerReducer } from './reducer'
@@ -90,4 +91,10 @@ export type {
   ApiOrder,
   ApiOrderDirection,
 }
-export { getBannerBounds, extend, extendSorted, getBannerListTypeText }
+export {
+  getBannerBounds,
+  extend,
+  extendSorted,
+  getBannerListTypeText,
+  isBannerFullyOnline,
+}
