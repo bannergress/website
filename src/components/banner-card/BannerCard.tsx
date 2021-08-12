@@ -1,10 +1,11 @@
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
-import { Banner } from '../../features/banner'
+import { Banner, isBannerFullyOnline } from '../../features/banner'
 import { createBrowseUri } from '../../features/place'
 import BannerPicture from './BannerPicture'
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
+import { ReactComponent as SVGWarningTriangle } from '../../img/icons/warningtriangle.svg'
 import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
 
 import './banner-card.less'
@@ -33,6 +34,8 @@ const BannerCard: FC<BannerCardProps> = ({
     lines = Math.ceil(banner.numberOfMissions / banner.width)
   }
 
+  const fullyOnline = banner && isBannerFullyOnline(banner)
+
   return (
     <div className={className}>
       <div className="banner-card-title">{banner?.title}</div>
@@ -45,9 +48,13 @@ const BannerCard: FC<BannerCardProps> = ({
           lines={lines}
         />
       )}
-      <div className="banner-info-item">
+      <div className={`banner-info-item ${fullyOnline ? '' : 'warning'}`}>
         <div className="banner-info-item-icon">
-          <SVGExplorer className="icon" />
+          {fullyOnline ? (
+            <SVGExplorer className="icon" />
+          ) : (
+            <SVGWarningTriangle className="icon" />
+          )}
         </div>
         <div>
           {banner?.numberOfMissions} Missions,{' '}

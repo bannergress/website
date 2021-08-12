@@ -47,11 +47,6 @@
   margin-top: 8px;
 }
 
-.icon {
-  width: 0.9rem;
-  height: 0.9rem;
-}
-
 .banner-card {
   background: #2e2e2e;
   border-radius: 5px;
@@ -62,6 +57,11 @@
 
   &.selected {
     border-color: #16d4b2;
+  }
+
+  .icon {
+    width: 0.9rem;
+    height: 0.9rem;
   }
 
 }
@@ -149,10 +149,15 @@
     width: 20px;
 
     .icon {
-      fill: rgb(221, 221, 221);
+      fill: currentColor;
     }
   }
 }
+
+.banner-info-item.warning {
+  color: @color-blacklist;
+}
+
 
 .banner-card-picture {
   margin: 20px 0;
