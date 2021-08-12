@@ -76,7 +76,7 @@ export const getBannerIssues = (
       message: `The title must be between ${MIN_TITLE_LENGTH} and ${MAX_TITLE_LENGTH} characters`,
     })
   }
-  if (hasGaps(indexes)) {
+  if (bannerType === 'sequential' && hasGaps(indexes)) {
     issues.push({
       key: 'mission-gaps',
       type: 'warning',
@@ -97,7 +97,7 @@ export const getBannerIssues = (
       key: 'missions-total',
       type: 'warning',
       field: 'missions',
-      message: `The banner could be incomplete, as the length difers from the detected length in the title: ${detectedLength}`,
+      message: `The banner could be incomplete, as the length differs from the detected length in the title: ${detectedLength}`,
     })
   }
 
