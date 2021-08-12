@@ -104,13 +104,21 @@ class CreateBanner extends React.Component<
     _prevProps: CreateBannerProps,
     prevState: CreateBannerState
   ) {
-    const { match, getBanner } = this.props
+    const { match, getBanner, previousBanner } = this.props
     const { searchText } = this.state
     if (searchText !== prevState.searchText) {
       this.handleSearch()
     }
+
     if (match.params.id && prevState.id !== match.params.id) {
-      const banner = getBanner(match.params.id)
+      let banner
+
+      if (previousBanner && previousBanner.id === match.params.id) {
+        banner = previousBanner
+      } else {
+        banner = getBanner(match.params.id)
+      }
+
       if (banner) {
         this.initialize(banner)
       }
