@@ -89,3 +89,9 @@ export const isBannerFullyOnline = (banner: Banner) => {
     banner?.numberOfSubmittedMissions === 0
   )
 }
+
+export const isBannerFullyOffline = (banner: Banner) => {
+  return (
+    banner.numberOfDisabledMissions + banner.numberOfSubmittedMissions === banner.numberOfMissions
+  )
+}

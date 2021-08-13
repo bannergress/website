@@ -1,7 +1,11 @@
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
-import { Banner, isBannerFullyOnline } from '../../features/banner'
+import {
+  Banner,
+  isBannerFullyOnline,
+  isBannerFullyOffline,
+} from '../../features/banner'
 import { createBrowseUri } from '../../features/place'
 import BannerPicture from './BannerPicture'
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
@@ -36,6 +40,43 @@ const BannerCard: FC<BannerCardProps> = ({
 
   const fullyOnline = banner && isBannerFullyOnline(banner)
 
+  const getMissionInfo = () => {
+    const result = [<></>]
+
+    if (banner) {
+      result.push(<>{banner?.numberOfMissions} Missions, </>)
+
+      if (isBannerFullyOffline(banner)) {
+        result.push(<>(all offline)</>)
+      } else {
+        if (
+          banner.numberOfSubmittedMissions > 0 &&
+          banner.numberOfDisabledMissions > 0
+        ) {
+          result.push(
+            <>
+              ({banner.numberOfDisabledMissions} offline,{' '}
+              {banner.numberOfSubmittedMissions} missing){' '}
+            </>
+          )
+        } else if (banner.numberOfDisabledMissions > 0) {
+          result.push(<>({banner.numberOfDisabledMissions} offline) </>)
+        } else if (banner.numberOfSubmittedMissions > 0) {
+          result.push(<>({banner.numberOfSubmittedMissions} missing) </>)
+        }
+
+        result.push(
+          <>
+            {banner && banner.lengthMeters ? (
+              <Distance distanceMeters={banner?.lengthMeters} />
+            ) : null}
+          </>
+        )
+      }
+    }
+    return result
+  }
+
   return (
     <div className={className}>
       <div className="banner-card-title">{banner?.title}</div>
@@ -56,12 +97,7 @@ const BannerCard: FC<BannerCardProps> = ({
             <SVGWarningTriangle className="icon" />
           )}
         </div>
-        <div>
-          {banner?.numberOfMissions} Missions,{' '}
-          {banner && banner.lengthMeters ? (
-            <Distance distanceMeters={banner?.lengthMeters} />
-          ) : null}
-        </div>
+        <div>{getMissionInfo()}</div>
       </div>
       <div className="banner-info-item">
         <div className="banner-info-item-icon">

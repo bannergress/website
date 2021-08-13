@@ -45,6 +45,7 @@ import {
   extendSorted,
   getBannerListTypeText,
   isBannerFullyOnline,
+  isBannerFullyOffline,
 } from './helpers'
 
 export { default as BannerReducer } from './reducer'
@@ -97,4 +98,5 @@ export {
   extendSorted,
   getBannerListTypeText,
   isBannerFullyOnline,
+  isBannerFullyOffline,
 }
