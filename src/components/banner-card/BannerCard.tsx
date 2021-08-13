@@ -41,42 +41,36 @@ const BannerCard: FC<BannerCardProps> = ({
   const fullyOnline = banner && isBannerFullyOnline(banner)
 
   const getMissionInfo = () => {
-    const result = [<></>]
+    if (!banner) return null
 
-    if (banner) {
-      result.push(<>{banner?.numberOfMissions} Missions, </>)
-
-      if (isBannerFullyOffline(banner)) {
-        result.push(<>(all offline)</>)
-      } else {
-        if (
+    return (
+      <>
+        {banner?.numberOfMissions} Missions,{' '}
+        {isBannerFullyOffline(banner) && <>(all offline) </>}
+        {!isBannerFullyOffline(banner) &&
           banner.numberOfSubmittedMissions > 0 &&
-          banner.numberOfDisabledMissions > 0
-        ) {
-          result.push(
+          banner.numberOfDisabledMissions > 0 && (
             <>
               ({banner.numberOfDisabledMissions} offline,{' '}
               {banner.numberOfSubmittedMissions} missing){' '}
             </>
-          )
-        } else if (banner.numberOfDisabledMissions > 0) {
-          result.push(<>({banner.numberOfDisabledMissions} offline) </>)
-        } else if (banner.numberOfSubmittedMissions > 0) {
-          result.push(<>({banner.numberOfSubmittedMissions} missing) </>)
-        }
-
-        result.push(
-          <>
-            {banner && banner.lengthMeters ? (
-              <Distance distanceMeters={banner?.lengthMeters} />
-            ) : null}
-          </>
-        )
-      }
-    }
-    return result
+          )}
+        {!isBannerFullyOffline(banner) &&
+          banner.numberOfSubmittedMissions > 0 &&
+          banner.numberOfDisabledMissions === 0 && (
+            <>({banner.numberOfSubmittedMissions} missing) </>
+          )}
+        {!isBannerFullyOffline(banner) &&
+          banner.numberOfDisabledMissions > 0 &&
+          banner.numberOfSubmittedMissions === 0 && (
+            <>({banner.numberOfDisabledMissions} offline) </>
+          )}
+        {banner && !isBannerFullyOffline(banner) && banner.lengthMeters && (
+          <Distance distanceMeters={banner?.lengthMeters} />
+        )}
+      </>
+    )
   }
-
   return (
     <div className={className}>
       <div className="banner-card-title">{banner?.title}</div>
