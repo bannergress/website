@@ -17,8 +17,20 @@ const MissionList: React.FC<MissionListProps> = ({
 }) => {
   const itemsRef = useRef<Array<HTMLDivElement | null>>([])
 
-  const renderMission = (mission: Mission | undefined, index: number) => {
-    if (mission) {
+  const createEmptyMission = (sequence?: number) => {
+    return {
+      id: `missing_${sequence}`,
+      title: `Missing Mission ${sequence}`,
+      picture: '',
+    }
+  }
+
+  const renderMission = (
+    mission: Mission | undefined,
+    index: number,
+    sequence?: number
+  ) => {
+    if (mission && mission.id) {
       return (
         <MissionCard
           key={mission.id}
@@ -31,6 +43,17 @@ const MissionList: React.FC<MissionListProps> = ({
         />
       )
     }
+
+    if (mission) {
+      return (
+        <MissionCard
+          key={`missing_${sequence}`}
+          mission={createEmptyMission(sequence)}
+          expanded={false}
+        />
+      )
+    }
+
     return undefined
   }
 
