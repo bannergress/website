@@ -4,7 +4,19 @@ import { AvailableStep, Mission, Step } from './types'
 
 export const mapMissions = <T>(
   missions: NumDictionary<Mission> | undefined,
-  handler: (mission: Mission | undefined, index: number) => T | undefined | null
+  handler: (
+    mission: Mission | undefined,
+    /**
+     * The 0 based index according to the position in the
+     * banner image. Holes in the banner increase the index
+     */
+    index: number,
+    /**
+     * The 1 based index according list of missions. Holes in the banner
+     * have no sequence number
+     */
+    sequence: number | undefined
+  ) => T | undefined | null
 ): Array<T> => {
   if (!missions) return []
   const result: Array<T> = []
@@ -12,12 +24,16 @@ export const mapMissions = <T>(
     .map((k) => parseInt(k, 10))
     .sort((a, b) => a - b)
   const maxKey: number = _(keys).last() || 0
+
+  let sequenceCounter = 0
   for (let i = 0; i <= maxKey; i += 1) {
-    const val = handler(missions[i], i)
+    const sequence = missions[i] ? (sequenceCounter += 1) : undefined
+    const val = handler(missions[i], i, sequence)
     if (val !== undefined && val !== null) {
       result.push(val)
     }
   }
+
   return result
 }
 

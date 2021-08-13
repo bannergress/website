@@ -4,7 +4,16 @@ import { Mission, POI } from '../../features/mission'
 export interface MissionMarkerData {
   markerType: 'mission'
   mission: Mission
+  /**
+   * The 0 based index according to the position in the
+   * banner image. Holes in the banner increase the index
+   */
   index: number
+  /**
+   * The 1 based index according list of missions. Holes in the banner
+   * have no sequence number
+   */
+  sequence?: number
   isSequential: boolean
 }
 export interface EndMarkerData {
