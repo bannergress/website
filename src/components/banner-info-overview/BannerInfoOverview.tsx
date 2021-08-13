@@ -34,6 +34,8 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
 
   const activeView = view || activeViewFromState
 
+  const mobileOnlyOnInfoTabClass = activeView === 'info' ? '' : 'hide-on-mobile'
+
   const onTabClick = (key: BannerInfoView) => {
     setActiveView(key)
     if (onChangeView) onChangeView(key)
@@ -78,7 +80,11 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   const { missions } = banner
   return (
     <div className="banner-info-overview" ref={refElement}>
-      {!hideControls && <BannerEditTools banner={banner} />}
+      {!hideControls && (
+        <div className={mobileOnlyOnInfoTabClass}>
+          <BannerEditTools banner={banner} />
+        </div>
+      )}
       <div className="banner-info-container">
         <BannerCard
           banner={banner}
@@ -90,10 +96,12 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
 
         {!hideControls && (
           <IfUserLoggedIn>
-            <BannerListTypeControl
-              bannerListType={banner.listType}
-              onChangeListType={onListTypeChanged}
-            />
+            <div className={mobileOnlyOnInfoTabClass}>
+              <BannerListTypeControl
+                bannerListType={banner.listType}
+                onChangeListType={onListTypeChanged}
+              />
+            </div>
           </IfUserLoggedIn>
         )}
         <Tabs
