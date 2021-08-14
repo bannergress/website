@@ -625,6 +625,7 @@ class CreateBanner extends React.Component<
                 icon={<SVGRightArrow />}
                 initial={
                   status === 'initial' ||
+                  status === 'loading' ||
                   (status === 'ready' && (!searchText || searchText.length < 3))
                 }
                 loadMoreMissions={this.onLoadMoreMissions}
