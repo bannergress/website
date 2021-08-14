@@ -39,6 +39,7 @@ const BannerCard: FC<BannerCardProps> = ({
   }
 
   const fullyOnline = banner && isBannerFullyOnline(banner)
+  const fullyOffline = banner && isBannerFullyOffline(banner)
 
   const getMissionInfo = () => {
     if (!banner) return null
@@ -46,8 +47,8 @@ const BannerCard: FC<BannerCardProps> = ({
     return (
       <>
         {banner?.numberOfMissions} Missions,{' '}
-        {isBannerFullyOffline(banner) && <>(all offline) </>}
-        {!isBannerFullyOffline(banner) &&
+        {fullyOffline && <>(all offline) </>}
+        {!fullyOffline &&
           banner.numberOfSubmittedMissions > 0 &&
           banner.numberOfDisabledMissions > 0 && (
             <>
@@ -55,17 +56,17 @@ const BannerCard: FC<BannerCardProps> = ({
               {banner.numberOfSubmittedMissions} missing){' '}
             </>
           )}
-        {!isBannerFullyOffline(banner) &&
+        {!fullyOffline &&
           banner.numberOfSubmittedMissions > 0 &&
           banner.numberOfDisabledMissions === 0 && (
             <>({banner.numberOfSubmittedMissions} missing) </>
           )}
-        {!isBannerFullyOffline(banner) &&
+        {!fullyOffline &&
           banner.numberOfDisabledMissions > 0 &&
           banner.numberOfSubmittedMissions === 0 && (
             <>({banner.numberOfDisabledMissions} offline) </>
           )}
-        {banner && !isBannerFullyOffline(banner) && banner.lengthMeters && (
+        {banner && !fullyOffline && banner.lengthMeters && (
           <Distance distanceMeters={banner?.lengthMeters} />
         )}
       </>
@@ -74,15 +75,25 @@ const BannerCard: FC<BannerCardProps> = ({
   return (
     <div className={className}>
       <div className="banner-card-title">{banner?.title}</div>
-      {banner && url && (
-        <BannerPicture
-          url={url}
-          title={banner.title}
-          size={banner.width ?? 6}
-          showFullImage={showFullImage}
-          lines={lines}
-        />
-      )}
+      <div className="banner-card-picture-container">
+        {banner && url && (
+          <BannerPicture
+            url={url}
+            title={banner.title}
+            size={banner.width ?? 6}
+            showFullImage={showFullImage}
+            lines={lines}
+          />
+        )}
+
+        {fullyOffline && (
+          <div className="offline-overlay">
+            <div className="offline-overlay-line">
+              <SVGWarningTriangle /> BANNER OFFLINE
+            </div>
+          </div>
+        )}
+      </div>
       <div className={`banner-info-item ${fullyOnline ? '' : 'warning'}`}>
         <div className="banner-info-item-icon">
           {fullyOnline ? (
