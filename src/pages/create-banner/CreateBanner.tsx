@@ -75,6 +75,7 @@ class CreateBanner extends React.Component<
       detectedLength: 0,
       status: 'initial',
       extraction: props.match.params.id ? 'none' : 'advanced',
+      incomplete: 0,
     }
   }
 
@@ -273,7 +274,7 @@ class CreateBanner extends React.Component<
       if (!bannerDescriptionChanged) {
         newState.bannerDescription = addedMissions[0].description
       }
-      this.setState(newState)
+      this.setState(newState, () => this.onIncompleteConfirmed())
     }
   }
 
@@ -311,20 +312,25 @@ class CreateBanner extends React.Component<
 
   onMissionsChanged = (newMissions: Array<Mission>, newExtraction?: string) => {
     const { addedMissions, extraction } = this.state
+    const addedMissionsWithoutPlaceholders = addedMissions.filter(
+      (mission) => !!mission.id
+    )
     const extr = newExtraction ?? extraction
     if (extr === 'advanced') {
       this.setState(
         {
           status:
-            addedMissions.length || newMissions.length ? 'detecting' : 'ready',
+            addedMissionsWithoutPlaceholders.length || newMissions.length
+              ? 'detecting'
+              : 'ready',
         },
         () => {
           setTimeout(() => {
             if (extraction !== 'advanced' && extraction !== 'title') {
-              this.titleExtractor.fill(addedMissions)
+              this.titleExtractor.fill(addedMissionsWithoutPlaceholders)
             }
             this.advancedExtraction(
-              [...addedMissions, ...newMissions],
+              [...addedMissionsWithoutPlaceholders, ...newMissions],
               newMissions
             )
           }, 100)
@@ -372,7 +378,9 @@ class CreateBanner extends React.Component<
       if (extraction === 'advanced' || extraction === 'title') {
         this.titleExtractor.remove(mission)
       }
-      this.setState({ addedMissions: _(addedMissions).without(mission) })
+      this.setState({ addedMissions: _(addedMissions).without(mission) }, () =>
+        this.onIncompleteConfirmed()
+      )
     }
   }
 
@@ -440,11 +448,14 @@ class CreateBanner extends React.Component<
     const { addedMissions } = this.state
     const updatedMissions = [...addedMissions]
     updatedMissions.splice(pos, 1, { ...mission, index })
-    this.setState({
-      addedMissions: updatedMissions,
-      extraction: 'none',
-      bannerTitleChanged: true,
-    })
+    this.setState(
+      {
+        addedMissions: updatedMissions,
+        extraction: 'none',
+        bannerTitleChanged: true,
+      },
+      () => this.onIncompleteConfirmed()
+    )
   }
 
   onOrderMissions = () => {
@@ -497,6 +508,42 @@ class CreateBanner extends React.Component<
     return ''
   }
 
+  onIncomplete = () => {
+    this.setState(
+      (state) => ({
+        incomplete: state.detectedLength
+          ? state.detectedLength
+          : Math.max((state.addedMissions.length % 6) * 6, 6),
+      }),
+      () => this.onIncompleteConfirmed()
+    )
+  }
+
+  onIncompleteConfirmed = () => {
+    const { addedMissions, incomplete } = this.state
+    if (incomplete) {
+      const newMissions: Array<Mission & { index?: number }> = []
+      let i = 1
+      addedMissions
+        .filter((mission) => !!mission.id)
+        .forEach((mission) => {
+          if (mission.index) {
+            while (i < mission.index! && i <= incomplete) {
+              newMissions.push({ index: i } as any)
+              i += 1
+            }
+          }
+          newMissions.push(mission)
+          i += 1
+        })
+      while (i <= incomplete) {
+        newMissions.push({ index: i } as any)
+        i += 1
+      }
+      this.setState({ addedMissions: newMissions })
+    }
+  }
+
   render() {
     const { missions, hasMore } = this.props
     const {
@@ -511,6 +558,7 @@ class CreateBanner extends React.Component<
       startMissions,
       extraction,
       detectedLength,
+      incomplete,
     } = this.state
 
     let unusedMissions = _.filter(
@@ -658,6 +706,30 @@ class CreateBanner extends React.Component<
                   </Button>
                 )}
               </div>
+              <div className="incomplete-chooser">
+                {!incomplete && (
+                  <Button role="button" onClick={this.onIncomplete}>
+                    Add Filler Missions for Incomplete Banner
+                  </Button>
+                )}
+                {incomplete > 0 && (
+                  <>
+                    <div>Total number of missions when banner is complete</div>
+                    <div>
+                      <InputNumber
+                        value={incomplete}
+                        max={9999}
+                        min={0}
+                        onChange={(val) => this.setState({ incomplete: val })}
+                        onBlur={this.onIncompleteConfirmed}
+                      />
+                      {/* <Button onClick={this.onIncompleteConfirmed}>
+                        Confirm
+                      </Button> */}
+                    </div>
+                  </>
+                )}
+              </div>
               <SearchMissionList
                 missions={addedMissions}
                 hasMoreMissions={false}
@@ -764,6 +836,7 @@ interface CreateBannerState {
   detectedLength: number
   status: 'initial' | 'searching' | 'ready' | 'loading' | 'error' | 'detecting'
   extraction: Algorithm
+  incomplete: number
 }
 
 const mapStateToProps = (state: RootState) => ({

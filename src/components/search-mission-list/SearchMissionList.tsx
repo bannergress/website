@@ -30,7 +30,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
         <Scrollbars className="search-mission-list">
           {missions?.map((mission, index) => (
             <SearchMissionCard
-              key={mission.id}
+              key={`${mission.id}${mission.index}`}
               mission={mission}
               icon={icon}
               onSelectMission={onSelectMission}

@@ -23,6 +23,10 @@
   .mission-title {
     line-height: 130%;
     word-break: break-word;
+
+    &.placeholder {
+      color: #808080;
+    }
   }
 
   .mission-agent {
@@ -34,8 +38,9 @@
     height: 1.5rem;
     width: 1.5rem;
     transition: transform ease 0.3s;
+
     &.open {
-      transform:rotate(180deg);
+      transform: rotate(180deg);
     }
   }
 

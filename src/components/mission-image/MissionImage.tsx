@@ -8,14 +8,16 @@ const MissionImage: FC<MissionImageProps> = ({ mission }) => {
   return (
     <div
       className="mission-image"
-      title={mission.title}
-      style={{ backgroundImage: `url('${mission.picture}')` }}
-    />
+      title={mission?.title}
+      style={{ backgroundImage: `url('${mission?.picture}')` }}
+    >
+      {mission?.id ? '' : '?'}
+    </div>
   )
 }
 
 export interface MissionImageProps {
-  mission: Mission
+  mission?: Mission
 }
 
 export default MissionImage

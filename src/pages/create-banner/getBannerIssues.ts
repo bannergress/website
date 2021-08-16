@@ -36,6 +36,14 @@ export const getBannerIssues = (
     .filter((p) => p[1] > 1)
     .value()
 
+  if (missions.length > 0 && missions.every((mission) => !mission.id)) {
+    issues.push({
+      key: 'missions-placeholder',
+      type: 'error',
+      field: 'missions',
+      message: `A banner must contain an accepted mission.`,
+    })
+  }
   if (missions.length < MIN_MISSIONS || missions.length > MAX_MISSIONS) {
     issues.push({
       key: 'missions-length',
