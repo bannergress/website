@@ -149,3 +149,12 @@ export const getAvailableSteps: (mission: Mission) => AvailableStep[] = (
 export const createMissionIntelLink = (missionId: string) => {
   return `https://intel.ingress.com/mission/${missionId}`
 }
+
+export const isPlaceholder = (mission: Mission) =>
+  !mission.id || mission.id.startsWith('placeholder')
+
+export const getPlaceholderId = () =>
+  `placeholder-${Math.random().toString(36).substr(2, 9)}`
+
+export const managePlaceholder = (mission: Mission): Mission =>
+  !isPlaceholder(mission) ? mission : ({} as Mission)

@@ -9,7 +9,7 @@ const BannerImage: FC<BannerImageProps> = ({ missions, width, useIndex }) => {
   const mapMissions = () => {
     if (!useIndex) {
       return missions.map((mission) => (
-        <MissionImage key={`${mission.id}${mission.index}`} mission={mission} />
+        <MissionImage key={mission.id} mission={mission} />
       ))
     }
     const result: Array<JSX.Element> = []
@@ -18,12 +18,7 @@ const BannerImage: FC<BannerImageProps> = ({ missions, width, useIndex }) => {
     while (i < missions.length) {
       const mission = missions[i]
       if (!mission.index || mission.index === j) {
-        result.push(
-          <MissionImage
-            key={`${mission.id}${mission.index}`}
-            mission={mission}
-          />
-        )
+        result.push(<MissionImage key={mission.id} mission={mission} />)
         i += 1
         j += 1
       } else if (mission.index < j) {
@@ -41,6 +36,7 @@ const BannerImage: FC<BannerImageProps> = ({ missions, width, useIndex }) => {
     }
     return result
   }
+
   return (
     <div className="banner-image" style={{ width: 52 * width }}>
       {mapMissions()}
