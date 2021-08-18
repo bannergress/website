@@ -412,7 +412,7 @@ class CreateBanner extends React.Component<
           addedMissions,
           _(addedMissions)
             .without(mission)
-            .filter((m) => isPlaceholder(m))
+            .filter((m) => !isPlaceholder(m))
         ),
       })
     }
