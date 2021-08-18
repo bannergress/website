@@ -33,8 +33,14 @@ const SearchMissionCard: FC<SearchMissionCardProps> = ({
   onMissionAuthorClick,
   missionEditor,
 }) => {
-  if (!mission.id) {
-    return <PlaceHolderMission index={mission.index} />
+  if (mission.id.startsWith('placeholder')) {
+    return (
+      <PlaceHolderMission
+        mission={mission}
+        missionEditor={missionEditor}
+        className={className}
+      />
+    )
   }
   return (
     <div className={`search-mission-card ${className}`}>

@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-import { Mission } from '../../features/mission'
+import { isPlaceholder, Mission } from '../../features/mission'
 
 import './mission-image.less'
 
@@ -11,13 +11,13 @@ const MissionImage: FC<MissionImageProps> = ({ mission }) => {
       title={mission?.title}
       style={{ backgroundImage: `url('${mission?.picture}')` }}
     >
-      {mission?.id ? '' : '?'}
+      {isPlaceholder(mission) ? '?' : ''}
     </div>
   )
 }
 
 export interface MissionImageProps {
-  mission?: Mission
+  mission: Mission
 }
 
 export default MissionImage

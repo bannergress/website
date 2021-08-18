@@ -1,7 +1,7 @@
 import _ from 'underscore'
 
 import { BannerType } from '../../features/banner'
-import { Mission } from '../../features/mission'
+import { isPlaceholder, Mission } from '../../features/mission'
 import { Issue } from '../../components/Issues-list'
 
 export const MIN_MISSIONS = 2
@@ -36,7 +36,10 @@ export const getBannerIssues = (
     .filter((p) => p[1] > 1)
     .value()
 
-  if (missions.length > 0 && missions.every((mission) => !mission.id)) {
+  if (
+    missions.length > 0 &&
+    missions.every((mission) => isPlaceholder(mission))
+  ) {
     issues.push({
       key: 'missions-placeholder',
       type: 'error',
