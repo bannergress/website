@@ -8,7 +8,7 @@ const PlaceHolderMission: FC<PlaceHolderMissionProps> = ({
   className,
   missionEditor,
 }) => (
-  <div className={`search-mission-card ${className}`}>
+  <div className={`search-mission-card placeholder-card ${className}`}>
     <MissionImage mission={mission} />
     <div className="mission-title-and-author">
       <div className="mission-title placeholder">
