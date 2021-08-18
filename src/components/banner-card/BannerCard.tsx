@@ -46,28 +46,31 @@ const BannerCard: FC<BannerCardProps> = ({
 
     return (
       <>
-        {banner?.numberOfMissions} Missions,{' '}
-        {fullyOffline && <>(all offline) </>}
+        {banner?.numberOfMissions} Missions
+        {fullyOffline && <> (all offline) </>}
         {!fullyOffline &&
           banner.numberOfSubmittedMissions > 0 &&
           banner.numberOfDisabledMissions > 0 && (
             <>
+              {' '}
               ({banner.numberOfDisabledMissions} offline,{' '}
-              {banner.numberOfSubmittedMissions} missing){' '}
+              {banner.numberOfSubmittedMissions} missing)
             </>
           )}
         {!fullyOffline &&
           banner.numberOfSubmittedMissions > 0 &&
           banner.numberOfDisabledMissions === 0 && (
-            <>({banner.numberOfSubmittedMissions} missing) </>
+            <> ({banner.numberOfSubmittedMissions} missing)</>
           )}
         {!fullyOffline &&
           banner.numberOfDisabledMissions > 0 &&
           banner.numberOfSubmittedMissions === 0 && (
-            <>({banner.numberOfDisabledMissions} offline) </>
+            <> ({banner.numberOfDisabledMissions} offline)</>
           )}
         {banner && !fullyOffline && banner.lengthMeters && (
-          <Distance distanceMeters={banner?.lengthMeters} />
+          <>
+            , <Distance distanceMeters={banner?.lengthMeters} />
+          </>
         )}
       </>
     )
