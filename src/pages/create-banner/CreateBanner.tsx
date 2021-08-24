@@ -676,7 +676,7 @@ class CreateBanner extends React.Component<
     ) {
       const removed = _.filter(
         startMissions,
-        (m) => !_.some(addedMissions, (a) => a.id === m.id)
+        (m) => !isPlaceholder(m) && !_.some(addedMissions, (a) => a.id === m.id)
       )
       unusedMissions = _(unusedMissions)
         .chain()
