@@ -84,7 +84,11 @@ export class MapDetail extends React.Component<MapDetailProps> {
 
     return (
       <Fragment>
-        <MapContainer bounds={bounds} whenCreated={this.onMapCreated}>
+        <MapContainer
+          bounds={bounds}
+          whenCreated={this.onMapCreated}
+          tap={false}
+        >
           <LocateControl />
           <MapLoadingControl />
           {getAttributionLayer()}

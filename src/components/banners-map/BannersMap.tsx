@@ -268,6 +268,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
           whenCreated={this.onMapCreated}
           minZoom={3}
           worldCopyJump
+          tap={false}
         >
           <LayersControl position="topright">
             <LayersControl.Overlay
