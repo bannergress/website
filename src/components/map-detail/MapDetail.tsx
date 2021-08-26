@@ -8,6 +8,8 @@ import MissionStartMarkerList from './MissionStartMarkerList'
 import MissionPoiMarkerList from './MissionPoiMarkerList'
 
 import './map.less'
+import { LocateControl } from '../locate'
+import { MapLoadingControl } from '../map-loading-control'
 
 export class MapDetail extends React.Component<MapDetailProps> {
   mapRef: Map | undefined
@@ -83,6 +85,8 @@ export class MapDetail extends React.Component<MapDetailProps> {
     return (
       <Fragment>
         <MapContainer bounds={bounds} whenCreated={this.onMapCreated}>
+          <LocateControl />
+          <MapLoadingControl />
           {getAttributionLayer()}
           <Pane name="poi" style={{ zIndex: 550 }}>
             {banner.missions &&
