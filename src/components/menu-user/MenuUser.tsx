@@ -30,8 +30,9 @@ const MenuUser: React.FC<MenuUserProps> = ({ user, logout }) => {
     </Menu>
   )
 
+  /* Use both click and hover because of "Profile menu does not always appear #258" */
   return (
-    <Dropdown overlay={menu}>
+    <Dropdown trigger={['click', 'hover']} overlay={menu}>
       <Button className="menu-user">
         <UserPicture picture={user.picture} />{' '}
         <span className="arrow-icon">
