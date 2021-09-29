@@ -1,4 +1,5 @@
 import React, { FormEvent, Fragment, FC, useRef } from 'react'
+import { message } from 'antd'
 import { ReactComponent as SVGSearch } from '../../img/icons/search.svg'
 import './search-input.less'
 
@@ -19,7 +20,10 @@ const SearchInput: FC<SearchInputProps> = ({ autoFocus, onSearch }) => {
       }
 
       onSearch(term)
+    } else {
+      message.info('Text is too short for search.', 1)
     }
+
   }
 
   return (
