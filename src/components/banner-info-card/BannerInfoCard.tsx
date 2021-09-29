@@ -4,6 +4,7 @@ import { LatLng } from 'leaflet'
 import { Banner } from '../../features/banner'
 import {
   mapMissions,
+  isPlaceholder,
   MissionType,
   Objective,
   POI,
@@ -142,7 +143,17 @@ const getTotalTime = (banner: Banner) => {
       banner.missions,
       (mission) => mission?.averageDurationMilliseconds ?? 0
     ).reduce((t, sum) => sum + t)
-    return totalTimeInMS
+
+    const AnyWithoutTime = mapMissions(
+      banner.missions,
+      (mission) =>
+        mission === undefined ||
+        isPlaceholder(mission) ||
+        !mission.online ||
+        (mission.averageDurationMilliseconds ?? 0) === 0
+    ).reduce((offline, result) => result || offline)
+
+    return AnyWithoutTime ? 0 : totalTimeInMS
   }
 
   return 0
@@ -159,7 +170,13 @@ const getInGameTime = (banner: Banner) => {
       </div>
       <div className="info-title">In-game Time</div>
       <div className="info-content">
-        <Duration durationMilliseconds={totalTimeInMS} />
+        {totalTimeInMS === 0 ? (
+          <span title="No time available because some missions are offline, missings or have not been completed by any agent">
+            ???
+          </span>
+        ) : (
+          <Duration durationMilliseconds={totalTimeInMS} />
+        )}
       </div>
     </div>
   )
