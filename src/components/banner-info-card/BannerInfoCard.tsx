@@ -171,7 +171,7 @@ const getInGameTime = (banner: Banner) => {
       <div className="info-title">In-game Time</div>
       <div className="info-content">
         {totalTimeInMS === 0 ? (
-          <span title="No time available because some missions are offline, missings or have not been completed by any agent">
+          <span title="No time available because some missions are offline, missing or have not been completed by any agent">
             ???
           </span>
         ) : (
