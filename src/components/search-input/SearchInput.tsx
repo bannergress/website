@@ -11,7 +11,10 @@ const SearchInput: FC<SearchInputProps> = ({ autoFocus, onSearch }) => {
 
     const term = (textInput.current?.value || '').trim()
 
-    if (term.length >= 3) {
+    //  Improve search for non-latin scripts #256
+    const byteLength = new Blob([term]).size
+
+    if (byteLength >= 3) {
       // When we set focus to the input automatically (i.e. on mobile),
       // also remove it automatically after executing search so that the
       // virtual keyboard closes
@@ -23,7 +26,6 @@ const SearchInput: FC<SearchInputProps> = ({ autoFocus, onSearch }) => {
     } else {
       message.info('Text is too short for search.', 1)
     }
-
   }
 
   return (
