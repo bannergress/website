@@ -29,7 +29,7 @@ import { Distance } from '../distance/Distance'
 import { Duration } from '../duration/Duration'
 import IfUserLoggedOut from '../login/if-user-logged-out'
 
-const getAgents = (banner: Banner) =>
+const getAgentList = (banner: Banner) =>
   _(mapMissions(banner.missions, (mission) => mission?.author))
     .uniq(false, (agent) => agent.name)
     .map((agent, index) => (
@@ -38,6 +38,14 @@ const getAgents = (banner: Banner) =>
         <Agent key={agent.name} agent={agent} linkToAgentProfile />
       </Fragment>
     ))
+
+const getCreatedBy = (banner: Banner) => {
+  const agents = getAgentList(banner)
+  if (agents && agents.length) {
+    return <p>Created by{agents}</p>
+  }
+  return undefined
+}
 
 const getTypeName = (key: MissionType) => {
   switch (key) {
@@ -308,9 +316,7 @@ const getStartPointButton = (banner: Banner) => {
 const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => (
   <div className="banner-info-card">
     <p>{banner.description}</p>
-    <IfUserLoggedIn>
-      <p>Created by {getAgents(banner)}</p>
-    </IfUserLoggedIn>
+    <IfUserLoggedIn>{getCreatedBy(banner)}</IfUserLoggedIn>
     <IfUserLoggedOut>
       <p>
         Please{' '}
