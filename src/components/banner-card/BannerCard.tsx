@@ -67,11 +67,14 @@ const BannerCard: FC<BannerCardProps> = ({
           banner.numberOfSubmittedMissions === 0 && (
             <> ({banner.numberOfDisabledMissions} offline)</>
           )}
-        {banner && !fullyOffline && banner.lengthMeters && (
-          <>
-            , <Distance distanceMeters={banner?.lengthMeters} />
-          </>
-        )}
+        {banner &&
+          !fullyOffline &&
+          banner.lengthMeters !== undefined &&
+          banner.lengthMeters > 0 && (
+            <>
+              , <Distance distanceMeters={banner?.lengthMeters} />
+            </>
+          )}
       </>
     )
   }
