@@ -11,15 +11,11 @@ import MenuUser from '../../menu-user'
 
 const LoginInNavbar: React.FC = () => {
   const { keycloak } = useKeycloak()
-  const idTokenParsed = (keycloak.idTokenParsed as any) || {}
-  const user = {
-    picture: idTokenParsed.picture,
-  }
 
   return (
     <Fragment>
       <IfUserLoggedIn>
-        <MenuUser user={user} logout={() => keycloak.logout()} />
+        <MenuUser logout={() => keycloak.logout()} />
       </IfUserLoggedIn>
 
       <IfUserLoggedOut>

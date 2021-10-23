@@ -21,6 +21,7 @@ import { CreateBanner } from './pages/create-banner'
 import { PreviewBanner } from './pages/preview-banner'
 import { PrivateRoute } from './components/login/private-route'
 import { Help } from './pages/help'
+import { Account } from './pages/account'
 import MenuMain from './components/menu-main'
 import Navbar from './components/navbar'
 
@@ -86,6 +87,7 @@ const App: React.FC = () => {
                   path="/preview-banner"
                   component={PreviewBanner}
                 />
+                <PrivateRoute path="/account" component={Account} />
                 <Route component={Home} />
               </Switch>
             </div>

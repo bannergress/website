@@ -8,6 +8,7 @@ import { BannerReducer } from './features/banner'
 import { PlaceReducer } from './features/place'
 import { MissionReducer } from './features/mission'
 import { NewsReducer } from './features/news'
+import { UserReducer } from './features/user'
 
 const persistConfig = {
   key: 'root',
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   place: PlaceReducer,
   mission: MissionReducer,
   news: NewsReducer,
+  user: UserReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

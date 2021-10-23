@@ -4,12 +4,14 @@ import { BannerState } from './features/banner/types'
 import { PlaceState } from './features/place/types'
 import { MissionState } from './features/mission/types'
 import { NewsState } from './features/news/types'
+import { UserState } from './features/user/types'
 
 export interface RootState {
   banner: BannerState
   place: PlaceState
   mission: MissionState
   news: NewsState
+  user: UserState
 }
 
 export interface RehydrateAction {

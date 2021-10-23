@@ -5,9 +5,9 @@ import { Button, Dropdown, Menu } from 'antd'
 import { ReactComponent as SVGUpArrow } from '../../img/icons/up-arrow.svg'
 
 import './menu-user.less'
-import UserPicture from './UserPicture'
+import UserPicture from '../login/user-picture'
 
-const MenuUser: React.FC<MenuUserProps> = ({ user, logout }) => {
+const MenuUser: React.FC<MenuUserProps> = ({ logout }) => {
   const history = useHistory()
 
   const handleMenuClick = (e: { key: React.Key }) => {
@@ -18,6 +18,9 @@ const MenuUser: React.FC<MenuUserProps> = ({ user, logout }) => {
       case 'banners':
         history.push('/user/banners/')
         break
+      case 'account':
+        history.push('/account')
+        break
       default:
         break
     }
@@ -25,6 +28,7 @@ const MenuUser: React.FC<MenuUserProps> = ({ user, logout }) => {
   const menu = (
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="banners">My Lists</Menu.Item>
+      <Menu.Item key="account">Account</Menu.Item>
       <Menu.Divider />
       <Menu.Item key="logout">Logout</Menu.Item>
     </Menu>
@@ -34,7 +38,7 @@ const MenuUser: React.FC<MenuUserProps> = ({ user, logout }) => {
   return (
     <Dropdown trigger={['click', 'hover']} overlay={menu}>
       <Button className="menu-user">
-        <UserPicture picture={user.picture} />{' '}
+        <UserPicture className="user-picture" />{' '}
         <span className="arrow-icon">
           <SVGUpArrow />
         </span>
@@ -43,14 +47,7 @@ const MenuUser: React.FC<MenuUserProps> = ({ user, logout }) => {
   )
 }
 
-export interface User {
-  name?: string
-  email?: string
-  picture?: string
-}
-
 export interface MenuUserProps {
-  user: User
   logout: () => void
 }
 
