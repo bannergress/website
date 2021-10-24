@@ -48,8 +48,8 @@ import { IssuesList } from '../../components/Issues-list'
 import LoginRequired from '../../components/login/login-required'
 import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg'
 import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
-
 import { getBannerIssues, MAX_MISSIONS } from './getBannerIssues'
+
 import './create-banner.less'
 
 class CreateBanner extends React.Component<
@@ -140,11 +140,11 @@ class CreateBanner extends React.Component<
   }
 
   initialize = (banner: Banner) => {
-    const { location, history } = this.props
+    const { location, history, admin } = this.props
     const { extraction } = this.state
     const { title, description, missions, type, width, id, owner } = banner
 
-    if (location.pathname.indexOf('edit-banner') >= 0 && !owner) {
+    if (location.pathname.indexOf('edit-banner') >= 0 && !owner && !admin) {
       history.replace('/')
     }
 
@@ -912,6 +912,7 @@ class CreateBanner extends React.Component<
 }
 
 export interface CreateBannerProps extends RouteComponentProps<{ id: string }> {
+  admin?: boolean
   previousBanner: Banner | undefined
   missions: Array<Mission>
   hasMore: Boolean

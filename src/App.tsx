@@ -81,6 +81,7 @@ const App: React.FC = () => {
                 <PrivateRoute
                   path="/edit-banner/:id"
                   component={CreateBanner}
+                  adminRoles="manage-banners"
                 />
                 <PrivateRoute
                   path="/preview-banner"
