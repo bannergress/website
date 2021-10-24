@@ -20,7 +20,13 @@ export const claimUser = (agent: string) =>
 
 export const verifyUser = () =>
   isMock
-    ? { data: { agent: 'mock' }, ok: true, status: 200 }
+    ? {
+        data: <Partial<User>>{
+          agent: { name: 'mock', faction: 'enlightened' },
+        },
+        ok: true,
+        status: 200,
+      }
     : api.post<User>('user/verify')
 
 export const unlinkUser = () =>

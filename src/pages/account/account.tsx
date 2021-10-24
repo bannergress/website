@@ -111,10 +111,7 @@ const Account: React.FC = () => {
             </span>
             {currentUser && currentUser.agent && (
               <span className="agent-name">
-                <Agent
-                  agent={{ name: currentUser.agent, faction: 'enlightened' }}
-                  linkToAgentProfile
-                />
+                <Agent agent={currentUser.agent} linkToAgentProfile />
               </span>
             )}
           </div>
@@ -127,10 +124,7 @@ const Account: React.FC = () => {
           {isAccountLinked(currentUser) && (
             <p>
               Account linked:{' '}
-              <Agent
-                agent={{ name: currentUser.agent, faction: 'enlightened' }}
-                linkToAgentProfile={false}
-              />
+              <Agent agent={currentUser.agent} linkToAgentProfile={false} />
             </p>
           )}
           {!isClaiming &&

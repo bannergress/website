@@ -1,5 +1,7 @@
+import { NamedAgent } from '../mission/types'
+
 export interface User {
-  agent: string
+  agent: NamedAgent
   verificationAgent: string
   verificationToken: string
 }
