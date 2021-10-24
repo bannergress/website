@@ -140,8 +140,14 @@ class CreateBanner extends React.Component<
   }
 
   initialize = (banner: Banner) => {
+    const { location, history } = this.props
     const { extraction } = this.state
-    const { title, description, missions, type, width, id } = banner
+    const { title, description, missions, type, width, id, owner } = banner
+
+    if (location.pathname.indexOf('edit-banner') >= 0 && !owner) {
+      history.replace('/')
+    }
+
     const addedMissions = mapMissions<Mission & { index?: number }>(
       missions,
       (m, index) =>

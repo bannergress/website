@@ -12,6 +12,7 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
   const history = useHistory()
   const { authenticated } = useUserLoggedIn('manage-banners')
   const dispatch = useDispatch()
+  const owner = banner?.owner === true
 
   const onEditBanner = () => {
     history.push(generatePath('/edit-banner/:id', { id: banner.id }))
@@ -42,6 +43,15 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
         </Button>
         <Button className="negative-action-button" onClick={onDeleteBanner}>
           Delete
+        </Button>
+      </div>
+    )
+  }
+  if (owner) {
+    return (
+      <div className="banner-edit-tools">
+        <Button className="positive-action-button" onClick={onEditBanner}>
+          Edit
         </Button>
       </div>
     )

@@ -23,6 +23,7 @@ export interface Banner {
   width?: number
   averageDurationMilliseconds?: number
   startPlaceId?: string
+  owner?: Boolean
 }
 
 export interface BannerState {
