@@ -43,7 +43,7 @@ export class Navbar extends React.Component<NavBarProps, NavBarState> {
     const { history, className } = this.props
 
     const callSearch = (value: string) => {
-      const trimmedValue = value.trim()
+      const trimmedValue = encodeURIComponent(value.trim())
 
       if (trimmedValue !== '') {
         const path = generatePath('/search/:term', { term: trimmedValue })
