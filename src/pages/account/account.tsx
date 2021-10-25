@@ -14,6 +14,7 @@ import {
 } from '../../features/user'
 import { UserActionTypes } from '../../features/user/actionTypes'
 import { RootState } from '../../storeTypes'
+import { useRefreshToken } from '../../hooks/RefreshToken'
 import UserPicture from '../../components/login/user-picture'
 import UserName from '../../components/login/user-name'
 import { Agent } from '../../components/agent'
@@ -34,6 +35,7 @@ const Account: React.FC = () => {
   const [isClaiming, setIsClaiming] = useState(false)
   const [agent, setAgent] = useState<string>(currentUser?.verificationAgent)
   const [issues, setIssues] = useState<Array<Issue>>([])
+  const refreshToken = useRefreshToken()
 
   useEffect(() => {
     dispatch(loadCurrentUser()).catch((err) =>
@@ -56,11 +58,18 @@ const Account: React.FC = () => {
       ])
     )
   const onVerify = () => {
-    dispatch(verifyUser()).catch((err) =>
-      setIssues([
-        { key: 'verify', message: err.message, type: 'error', field: 'verify' },
-      ])
-    )
+    dispatch(verifyUser())
+      .then(() => refreshToken())
+      .catch((err) =>
+        setIssues([
+          {
+            key: 'verify',
+            message: err.message,
+            type: 'error',
+            field: 'verify',
+          },
+        ])
+      )
     setIsClaiming(false)
   }
   const onUnlinkUser = () =>
