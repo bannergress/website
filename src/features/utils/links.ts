@@ -23,3 +23,11 @@ export const getExternalLinkAttributes = () =>
     rel: 'noreferrer',
     target: '_blank',
   } as React.AnchorHTMLAttributes<HTMLAnchorElement>)
+
+export const decodeURIComponentSafe = (uriString: string) => {
+  try {
+    return decodeURIComponent(uriString)
+  } catch {
+    return uriString
+  }
+}

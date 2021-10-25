@@ -19,6 +19,7 @@ import {
   getHasMoreSearchPlaces,
   loadSearchPlaces as loadSearchPlacesAction,
 } from '../../features/place'
+import { decodeURIComponentSafe } from '../../features/utils'
 import BannerOrderChooser from '../../components/banner-order-chooser'
 import BannerList from '../../components/banner-list'
 import PlaceListFlat from '../../components/place-list-flat'
@@ -43,7 +44,7 @@ class Search extends React.Component<SearchProps, SearchState> {
   static getDerivedStateFromProps(props: SearchProps, state: SearchState) {
     const { match } = props
     const { searchTerm } = state
-    const newTerm = decodeURIComponent(match.params.term)
+    const newTerm = decodeURIComponentSafe(match.params.term)
 
     if (searchTerm !== newTerm) {
       return {

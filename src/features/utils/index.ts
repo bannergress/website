@@ -1,3 +1,11 @@
-import { createExternalNavigationUri, getExternalLinkAttributes } from './links'
+import {
+  createExternalNavigationUri,
+  getExternalLinkAttributes,
+  decodeURIComponentSafe,
+} from './links'
 
-export { createExternalNavigationUri, getExternalLinkAttributes }
+export {
+  createExternalNavigationUri,
+  getExternalLinkAttributes,
+  decodeURIComponentSafe,
+}
