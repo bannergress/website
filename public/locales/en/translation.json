@@ -182,7 +182,10 @@
       "start": "Banner starts here",
       "missions_one": "{{count}} mission start here",
       "missions_other": "{{count}} missions start here"
-    }
+    },
+    "locate": "Show me where I am",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out"
   },
   "buttons": {
     "addAll": "Add All",

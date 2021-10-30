@@ -24,6 +24,7 @@ import { showBannerRouteOnMap } from '../map-detail/showBannerRouteOnMap'
 import { getAttributionLayer } from '../map-detail/getAttributionLayer'
 import { LocateControl } from '../locate'
 import { MapLoadingControl } from '../map-loading-control'
+import { MapZoomControl } from '../map-zoom-control'
 
 import './banners-map.less'
 import 'leaflet/dist/leaflet.css'
@@ -282,6 +283,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
             </LayersControl.Overlay>
           </LayersControl>
 
+          <MapZoomControl />
           <LocateControl />
           <MapLoadingControl />
           {getAttributionLayer()}
