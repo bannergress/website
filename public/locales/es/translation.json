@@ -1,0 +1,327 @@
+{
+  "account": {
+    "title": "Cuenta",
+    "linking": {
+      "title": "Vincular cuenta de Ingress",
+      "change": "Cambiar cuenta asociada",
+      "unlink": "Desvincular cuenta",
+      "link": "Vincular cuenta de Ingress",
+      "none": "No tienes cuenta de Ingress asociada a la de Bannergress",
+      "linked": "Cuenta asociada: ",
+      "step1": {
+        "title": "Nombre de agente",
+        "action": "Generar Token"
+      },
+      "token": "Tu Token",
+      "step2": {
+        "title": "Siguiente paso",
+        "description": "Publica tu token como una actividad en los Foros de la Comunidad de Ingress",
+        "action": "Llévame allá",
+        "link": "//community.ingress.com/es/activity"
+      },
+      "step3": {
+        "title": "Después de publicar verifica el estado de tu cuenta",
+        "action": "Verificar"
+      }
+    }
+  },
+  "banners": {
+    "title": "Banners",
+    "latest": "Últimos banners",
+    "notFound": "Banner no encontrado",
+    "notFound_other": "No se han encontrado banners",
+    "noneWithId": "No hay banners con este id",
+    "banner": "Banner",
+    "offline": "<0 /> BANNER NO DISPONIBLE",
+    "collection": "Colección",
+    "width": "Ancho",
+    "mine": "Mis banners a {{type}}",
+    "markinfo": "Marca banners como '{{type}}' para verlos aquí.",
+    "exitFullscreen": "<0 /> Minimizar",
+    "creation": {
+      "edit": "Editar banner",
+      "new": "Crear banner",
+      "preview": {
+        "title": "Vista previa",
+        "generating": "Generando vista previa..."
+      },
+      "step1": {
+        "title": "<0>1</0> Añadir misiones",
+        "subtitle": "Busca las misiones",
+        "description": "Puedes buscar misiones por título o autor",
+        "placeholder": "Introduce al menos 3 caracteres...",
+        "results": "Resultados{{count}}"
+      },
+      "step2": {
+        "title": "<0>2</0> Organizar",
+        "subtitle_one": "{{count}} misión en total",
+        "subtitle_other": "{{count}} misiones en total",
+        "filler": "Añadir misiones de relleno para banners incompletos",
+        "totalComplete": "Número total de misiones del banner completo"
+      },
+      "step3": {
+        "title": "<0>3</0> Información",
+        "bannerTitle": "Título",
+        "description": "Descripción",
+        "options": "Opciones",
+        "help": {
+          "banner": "<0>Banner:</0> Colección de misiones que se han de completar seguidas para formar una imagen completa en tu perfil.",
+          "collection": "<0>Colección:</0> Colección de misiones que se pueden completar en cualquier orden."
+        },
+        "type": "Tipo de banner <1 />"
+      },
+      "errors": {
+        "noMissions": "Un banner ha de contener al menos una misión aceptada",
+        "numberOfMissions": "Un banner ha de contener entre {{min}} y {{max}} misiones",
+        "duplicates": "Índices duplicados: {{duplicates}}",
+        "invalidIndex": "Hay al menos una misión con índice inválido. Los índices han de ser enteros positivos",
+        "titleLength": "El título ha de tener entre {{min}} y {{max}} caracteres",
+        "search": "no hay misiones a buscar"
+      },
+      "warnings": {
+        "incomplete": "El banner podría estar incompleto ya que tiene agujeros",
+        "divisible": "El banner podría estar incompleto ya que el número total de misiones no es divisible por el ancho seleccionado: {{width}}",
+        "length": "El banner podría estar incompleto ya el número de misiones incluídas difiere del número total detectado en el título: {{length}}"
+      },
+      "algorithm": {
+        "help": "<p><strong>Manual:</strong> El título se detectará automáticamente de las misiones. La numeración de las misiones se hará secuencial empezando por 1.</p><p><strong>Automático:</strong> Detección automática del título del banner y la numeración de las misiones a partir del tíutlo de las misiones. Con banners muy largos puede ir lento.</p>* Si la detección se cambia a automática, el título y la ordenación puede cambiar.<br />* Si el título se modifica, no se cambiará automáticamente al añadir nuevas misiones.<br />* Si se cambia el índice de alguna misión, se activará el modo manual.",
+        "detection": "Detección <1 />",
+        "manual": "Manual",
+        "automatic": "Automática"
+      },
+      "confirmDelete": "¿Estás seguro de que quieres borrar este banner?"
+    },
+    "review": {
+      "title": "Revisar banner",
+      "saving": "Guardando...",
+      "submit": "Enviar banner"
+    },
+    "createdBy": "Creado por",
+    "types": {
+      "hidden": "Oculta",
+      "sequential": "Secuencial",
+      "anyOrder": "Cualquier orden",
+      "title_one": "Tipo de misión",
+      "title_other": "Tipos de misión"
+    },
+    "distance": {
+      "title": "Distancia total",
+      "route": "Primer a último POI",
+      "km": "{{distance}} km",
+      "m": "{{distance}} m"
+    },
+    "time": {
+      "title": "Tiempo del juego",
+      "warning": "No hay tiempo disponible ya que hay misiones no disponibles, faltan misiones o alguna misión no ha sido nunca completada."
+    },
+    "objective": {
+      "captureOrUpgrade" : "Capturar or mejorar",
+      "createField" : "Crear campo",
+      "createLink" : "Crear enlace",
+      "enterPassphrase" : "Introducir contraseña",
+      "hack" : "Hack",
+      "installMod" : "Instalar Mod",
+      "takePhoto" : "Hacer una foto",
+      "viewWaypoint" : "Visitar Waypoint",
+      "hidden" : "Oculta",
+      "title_one": "Acción {{type}}",
+      "title_other": "Acciones: "
+    },
+    "uniques": "Visitas únicas",
+    "goToStart": "Ir al inicio del banner",
+    "authorLogin": "Por favor, <2>inicie sesión</2> para ver los autores",
+    "info": "Información",
+    "errors": {
+      "noPois": "El banner no POIs disponibles actualmente",
+      "unknownType": "Tipo de banner desconocido",
+      "loading": "Error al cargar los últimos banners, prueba más tarde"
+    },
+    "done": {
+      "control": "<0 /> COMPLETADOS",
+      "name": "Completados"
+    },
+    "todo": {
+      "control": "<0 /> POR HACER",
+      "name": "Por hacer"
+    },
+    "hide": {
+      "control": "<0 /> OCULTOS",
+      "name": "Ocultos"
+    },
+    "loadingRecent": "Cargando últimos banners...",
+    "full": "Ver lista completa"
+  },
+  "loading": "Cargando...",
+  "loadingMore": "Cargando más elementos...",
+  "places": {
+    "title": "Lugares",
+    "notFound": "Lugar no encontrado",
+    "notFound_other": "No se han encontrado lugares",
+    "all": "Todos",
+    "refine": "Refinar...",
+    "allCountries": "Todos los países",
+    "countries": "Países",
+    "backArrow": "❮ <1 />",
+    "types": {
+      "country": "País",
+      "level1": "*First-level administrative division",
+      "level2": "*Second-level administrative division",
+      "level3": "*Third-level administrative division",
+      "level4": "*Fourth-level administrative division",
+      "level5": "*Fifth-level administrative division",
+      "locality": "Población",
+      "error": "Error"
+    }
+  },
+  "map": {
+    "title": "Mapa",
+    "area": "Banners en esta zona",
+    "niaOnly": "Mostrar únicamente misiones oficiales de Niantic",
+    "banner": {
+      "end": "El banner acaba aquí",
+      "start": "El banner empieza aquí",
+      "missions_one": "{{count}} misión empieza aquí",
+      "missions_other": "{{count}} misiones empiezan aquí"
+    }
+  },
+  "buttons": {
+    "addAll": "Añadir todo",
+    "copy": "Copiar",
+    "removeAll": "Quitar todo",
+    "review": "Revisar",
+    "goBack": "Atrás",
+    "details": "Detalles",
+    "edit": "Editar",
+    "delete": "Borrar",
+    "refresh": "Refrescar",
+    "info": "Info",
+    "missions": "Misiones",
+    "map": "Mapa",
+    "collapseAll": "Colapsar todo",
+    "expandAll": "Expandir todo"
+  },
+  "placeholders": {
+    "startTyping": "Empieza a escribir..."
+  },
+  "faqs": {
+    "title": "Preguntas frecuentes",
+    "question1": {
+      "title": "What is bannergress.com?",
+      "answer": "<p>After the horrific loss of our favorite Ingress fan page, some agents came together to start this project.</p><ul><li>get everyone involved</li><li>be open source (soon™)</li><li>be the long-term solution for finding banners</li><li>never stop developing</li></ul>"
+    },
+    "question2": {
+      "title": "How do I get Ingress missions to bannergress.com? (Part 1: setup)",
+      "answer": "<ol><li>Install <iitc>IITC-CE</iitc> (<b>Recommendation:</b> IITC Button browser add-on)</li><li>Install the <plugin>bannergress plugin</plugin><br /><i><b>Caution:</b> If you use a userscript manager parallel to the IITC browser add-on, you’re getting two tabs with installations; Install the plugin in the IITC Button view tab</i></li><li>Click on the <b>IITC icon</b> in your browser and make sure the following <b>two plugins are active</b>:<ul><li>Misc > Bannergress</li><li>Info > Missions</li></ul></li><li><b>Refresh</b> (F5) your IITC</li><li>Open <b>Bannergress settings</b> <br /><i>You can find this link at the end of the right sidebar</i></li><li>You have to <b>log in</b> first with your Google account <br /><i>Click on <b>Log in</b> button</i></li></ol><p>Now you are ready to scan missions! (Part 2)</p>"
+    },
+    "question3": {
+      "title": "How do I get Ingress missions to bannergress.com? (Part 2: scan missions)",
+      "answer": "<ol><li>Open your <iitc>IITC-CE</iitc></li><li>Go to the area which you want to scan</li><li><b>Zoom very closely</b> in mission dense areas<br /><i><b>Caution:</b> Only Top 25 missions will be shown!</i></li><li>Open <b>Missions in view</b><br /><i>You can find this link at the end of the right sidebar</i></li><li>A new window with Bannergress utilities on the top and a mission list including status (Only Top 25!) should be opened.<br />Now you can scan the missions in different ways:<br /><ul><li>The fastest way to get many missions uploaded is to <b>Process all!</b></li><li>If you explicitly want to upload one banner: use the <b>Filter by mission name</b></li><li>You can also upload <b>single missions</b> with the 🠋 on the right</li></ul></li><li><b>Navigate</b> with the map controls (“N”, “E”, S”, “W”) and <b>repeat</b> step 5<br /><i>We do get only missions if you hit a button!</i></li></ol>"
+    },
+    "question4": {
+      "title": "How can I add a banner to bannergress?",
+      "answer": "<ol><li>You have to be <b>logged in</b></li><li>You can find <b>Submit a new banner</b> on our landing page (Home)</li><li>New banner<ol><liem><div>Add Missions:</div><div>search for the banner name or author.<br /><i>Pro Tip: You can use % for a placeholder</i><br />You can add all or add specific missions with the ➔</div></liem><liem><div>Arrange:</div><div>The website tries to arrange the missions automatically.<br />You can always edit the mission numbers manually.<br /><i>If the missions can be finished in any order, check the advanced options in information</i></div></liem><liem><div>Information:</div><div>Please check the banner title, description and preview.<br />Click on <b>Review</b></div></liem><liem><div>Review:</div><div>You can see all banner information. If you are happy, click <b>Submit Banner</b></div></liem></ol></li></ol>"
+    },
+    "question5": {
+      "title": "Where can I find … (Useful links)",
+      "answer": "<p>...the <missioncreator>mission creator</missioncreator>?</p><p>...a <slicer>tool to slice</slicer> a banner picture?</p><p><br /></p><p>...the <iitc>IITC-CE</iitc>?</p><p>...the <plugin>bannergress plugin</plugin>?</p><p>...an <plugin2>IITC plugin</plugin2> which shows <b>more</b> than the Top 25 missions?</p>"
+    }
+  },
+  "help": {
+    "title": "FAQ y Soporte",
+    "community": "Soporte de la comunidad",
+    "telegram": {
+      "channel": {
+        "title": "<0 /> Canal de noticias de Telegram",
+        "link": "//t.me/bannergressnews"
+      },
+      "group": {
+        "title": "<0 /> Grupo general de Telegram",
+        "link": "//t.me/joinchat/_LDAw8VdJgFkMzI6"
+      },
+      "support": {
+        "title": "<0 /> Grupo de soporte de telegram",
+        "link": "//t.me/joinchat/rc0DVCAUQ4NkZmY8"
+      }
+    }
+  },
+  "search": {
+    "title": "Buscando {{searchTerm}}",
+    "button": "Bucar",
+    "errors": {
+      "short": "El texto es demasiado corto."
+    },
+    "placeholder": "Bucar banners o lugares"
+  },
+  "about": {
+    "title": "Acerca de",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas possimus doloribus error cumque autem asperiores, ullam deserunt quidem omnis doloremque itaque eius eaque sint facilis unde tenetur reiciendis aliquam soluta?"
+  },
+  "missions": {
+    "title": "Misiones",
+    "number_one": "{{count}} misión",
+    "number_other": "{{count}} misiones",
+    "offlineAll": " (ninguna disponible) ",
+    "offline_one": "{{count}} no disponible",
+    "offline_other": "{{count}} no disponibles",
+    "missing_one": "falta {{count}}",
+    "missing_other": "faltan {{count}}",
+    "markedOffline": "Misión marcada como no disponible",
+    "viewOnIntel": "Ver misión en el Intel de Ingress",
+    "inBanner": "Misiones en el banner",
+    "placeholder": "Misión de relleno {{index}}",
+    "notFound": "No se han encontrado misiones",
+    "searching": "Buscando misiones...",
+    "objective": {
+      "captureOrUpgrade" : "Capturar / Mejorar",
+      "createField" : "Campo",
+      "createLink" : "Enlace",
+      "enterPassphrase" : "Contraseña",
+      "hack" : "Hack",
+      "installMod" : "Mod",
+      "takePhoto" : "Foto",
+      "viewWaypoint" : "Waypoint",
+      "hidden" : "Oculta",
+      "hide" : "(oculta)",
+      "unavailable": "(no disponible)"
+    }
+  },
+  "order": {
+    "sortBy": "Ordenar por",
+    "listAdded": "Añadidas a la lista <2 />",
+    "created": "Fecha de creación <2 />",
+    "title": "A-Z <2 />",
+    "lengthMeters": "Distancia <2 />",
+    "numberOfMissions": "Total de missions <2 />"
+  },
+  "duration": {
+    "days": "{{count}} d ",
+    "hours": "{{count}} h ",
+    "minutes": "{{count}} min ",
+    "seconds": "{{count}} s"
+  },
+  "disclaimer": "Fan site no oficial ni asociado a Niantic Inc.<br />Ingress es una marca registrada de Niantic Inc.<br />Bannergress 2021",
+  "login": {
+    "title": "Entrar",
+    "help": "Identifícate con uno de estos proveedores",
+    "google": "<0 /> Entrar con Google",
+    "facebook": "<0 /> Entrar con Facebook",
+    "button": "Iniciar sesión",
+    "required": "Has de iniciar sesión para poder usar esta funcionalidad.",
+    "checking": "Comprobando usuario..."
+  },
+  "menu": {
+    "home": "Inicio",
+    "browse": "Navegador",
+    "help": "Ayuda",
+    "map": "Mapa",
+    "newBanner": "Nuevo",
+    "lists": "Mis listas",
+    "account": "Cuenta",
+    "logout": "Salir"
+  },
+  "missingData": "???",
+  "news": {
+    "error": "Error cargando noticias, por favor prueba más tarde",
+    "title": "Anuncios"
+  }
+}

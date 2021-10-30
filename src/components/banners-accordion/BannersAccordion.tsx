@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react'
 import { generatePath } from 'react-router-dom'
 import { Button } from 'antd'
+import { Trans } from 'react-i18next'
 
 import { Banner } from '../../features/banner'
 import BannerCard from '../banner-card'
@@ -30,7 +31,7 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
       } hide-on-desktop`}
     >
       <Button onClick={() => setExpanded(!expanded)}>
-        Banners in This Area{' '}
+        <Trans i18nKey="map.area">Banners in This Area</Trans>{' '}
         <span className={`carot-${expanded}`}>
           <SVGTriangle />
         </span>

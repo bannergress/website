@@ -1,5 +1,6 @@
 import { HTMLAttributes } from 'enzyme'
 import React, { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 
 import { ReactComponent as SVGBackArrow } from '../../img/icons/back-arrow.svg'
@@ -7,8 +8,6 @@ import { ReactComponent as SVGBackArrow } from '../../img/icons/back-arrow.svg'
 import './banner-info-mobile-switch.less'
 
 export type BannerInfoMobileView = 'info' | 'map' | 'missions'
-
-export interface BannerInfoMobileContainer {}
 
 const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
   title,
@@ -19,6 +18,7 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
   onGoBack,
 }) => {
   const history = useHistory()
+  const { t } = useTranslation()
 
   const showGoBack = onGoBack || history.length > 1
 
@@ -88,7 +88,7 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
             type="button"
             onClick={goBack}
           >
-            <SVGBackArrow title="Back" />
+            <SVGBackArrow title={t('buttons.back')} />
           </button>
         )}
         <span className="mobile-switch-title" title={title}>
@@ -97,9 +97,9 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
         {createSubmitButton()}
       </div>
       <div className="mobile-switch-tabs-row" role="tablist">
-        {createModeSwitchButton('info', 'Info')}
-        {createModeSwitchButton('missions', 'Missions')}
-        {createModeSwitchButton('map', 'Map')}
+        {createModeSwitchButton('info', t('buttons.info'))}
+        {createModeSwitchButton('missions', t('buttons.missions'))}
+        {createModeSwitchButton('map', t('buttons.map'))}
       </div>
     </div>
   )

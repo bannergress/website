@@ -1,10 +1,14 @@
 import React, { FormEvent, Fragment, FC, useRef } from 'react'
 import { message } from 'antd'
+import { useTranslation } from 'react-i18next'
+
 import { ReactComponent as SVGSearch } from '../../img/icons/search.svg'
+
 import './search-input.less'
 
 const SearchInput: FC<SearchInputProps> = ({ autoFocus, onSearch }) => {
   const textInput = useRef<HTMLInputElement>(null)
+  const { t } = useTranslation(undefined, { keyPrefix: 'search' })
 
   const handleClick = (e: FormEvent) => {
     e.preventDefault()
@@ -24,7 +28,7 @@ const SearchInput: FC<SearchInputProps> = ({ autoFocus, onSearch }) => {
 
       onSearch(term)
     } else {
-      message.info('Text is too short for search.', 1)
+      message.info(t('errors.short'), 1)
     }
   }
 
@@ -32,7 +36,7 @@ const SearchInput: FC<SearchInputProps> = ({ autoFocus, onSearch }) => {
     <Fragment>
       <form className="search-input-form" name="search" onSubmit={handleClick}>
         <input
-          placeholder="Search Banners or Places"
+          placeholder={t('placeholder')}
           enterKeyHint="search"
           type="search"
           className="search-input"

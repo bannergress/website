@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { Trans } from 'react-i18next'
 
 import { Mission } from '../../features/mission'
 import MissionImage from '../mission-image/MissionImage'
@@ -12,7 +13,9 @@ const PlaceHolderMission: FC<PlaceHolderMissionProps> = ({
     <MissionImage mission={mission} />
     <div className="mission-title-and-author">
       <div className="mission-title placeholder">
-        Placeholder {mission.index}
+        <Trans i18nKey="missions.placeholder" values={{ index: mission.index }}>
+          Placeholder {{ index: mission.index }}
+        </Trans>
       </div>
     </div>
     {missionEditor && missionEditor()}

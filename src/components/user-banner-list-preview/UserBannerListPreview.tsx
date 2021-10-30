@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -70,12 +71,12 @@ class UserBannerListPreview extends React.Component<
   }
 
   render() {
+    const { banners, i18n } = this.props
     const { bannersStatus, listType } = this.state
-    const { banners } = this.props
 
-    const noBannersMessage = `Mark banners as ${getBannerListTypeText(
-      listType
-    )} to see them here.`
+    const noBannersMessage = i18n?.t('banners.markinfo', {
+      type: getBannerListTypeText(listType),
+    })
 
     return (
       <IfUserLoggedIn>
@@ -98,7 +99,9 @@ class UserBannerListPreview extends React.Component<
                   />
 
                   <div className="seeFullList">
-                    <Link to={`/user/banners/${listType}`}>See Full List</Link>
+                    <Link to={`/user/banners/${listType}`}>
+                      <Trans i18nKey="banners.full">See Full List</Trans>
+                    </Link>
                   </div>
                 </>
               )}
@@ -112,7 +115,7 @@ class UserBannerListPreview extends React.Component<
           )}
 
           {(bannersStatus === 'initial' || bannersStatus === 'loading') && (
-            <>Loading...</>
+            <Trans i18nKey="loading">Loading...</Trans>
           )}
         </div>
       </IfUserLoggedIn>
@@ -120,7 +123,7 @@ class UserBannerListPreview extends React.Component<
   }
 }
 
-interface UserBannerListProps {
+interface UserBannerListProps extends WithTranslationProps {
   banners: Array<Banner>
   fetchBanners: (
     listType: BannerListType,
@@ -147,4 +150,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withAuthenticated(UserBannerListPreview))
+)(withAuthenticated(withTranslation()(UserBannerListPreview)))

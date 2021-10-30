@@ -2,15 +2,17 @@ import React, { FC } from 'react'
 import { generatePath, useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { Button } from 'antd'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { Banner, deleteBanner } from '../../features/banner'
+import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
 
 import './banner-edit-tools.less'
-import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
 
 export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
   const history = useHistory()
   const { authenticated } = useUserLoggedIn('manage-banners')
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const owner = banner?.owner === true
 
@@ -26,7 +28,7 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
 
   const onDeleteBanner = async () => {
     // eslint-disable-next-line no-alert
-    if (window.confirm('Do you really want to delete that banner?')) {
+    if (window.confirm(t('banners.confirmDelete'))) {
       dispatch(deleteBanner(banner))
       history.push('/')
     }
@@ -36,13 +38,13 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
     return (
       <div className="banner-edit-tools">
         <Button className="positive-action-button" onClick={onRefreshBanner}>
-          Refresh
+          <Trans i18nKey="buttons.refresh">Refresh</Trans>
         </Button>
         <Button className="positive-action-button" onClick={onEditBanner}>
-          Edit
+          <Trans i18nKey="buttons.edit">Edit</Trans>
         </Button>
         <Button className="negative-action-button" onClick={onDeleteBanner}>
-          Delete
+          <Trans i18nKey="buttons.delete">Delete</Trans>
         </Button>
       </div>
     )
@@ -51,7 +53,7 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
     return (
       <div className="banner-edit-tools">
         <Button className="positive-action-button" onClick={onEditBanner}>
-          Edit
+          <Trans i18nKey="buttons.edit">Edit</Trans>
         </Button>
       </div>
     )

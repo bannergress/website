@@ -9,7 +9,7 @@ import './locate-control.less'
 const LocateControl: FC = () => {
   const context = useLeafletContext()
   useEffect(() => {
-    L.control.locate().addTo(context.map)
+    L.control.locate({ showCompass: false } as any).addTo(context.map)
   }, [context.map])
 
   return null

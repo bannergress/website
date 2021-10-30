@@ -4,6 +4,7 @@ import { Prompt, RouteComponentProps, withRouter } from 'react-router'
 import { Beforeunload } from 'react-beforeunload'
 import { Location } from 'history'
 import { Helmet } from 'react-helmet'
+import { withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -71,7 +72,7 @@ class PreviewBanner extends React.Component<
   }
 
   render() {
-    const { banner } = this.props
+    const { banner, i18n } = this.props
     const { status } = this.state
     if (!banner) {
       return <Fragment />
@@ -80,7 +81,7 @@ class PreviewBanner extends React.Component<
     return (
       <>
         <Helmet defer={false}>
-          <title>Review Banner</title>
+          <title>{i18n?.t('banners.review.title')}</title>
         </Helmet>
         <Prompt message={this.getPromptMessage} />
         <Beforeunload onBeforeunload={() => this.getPromptMessage()} />
@@ -88,16 +89,16 @@ class PreviewBanner extends React.Component<
         <div className="banner-preview-page">
           <LoadingOverlay
             active={status === 'loading'}
-            text="Saving..."
+            text={i18n!.t('banners.review.saving')}
             spinner
             fadeSpeed={500}
           />
           <BannerInfoWithMap
             banner={banner}
             hideControls
-            submitButton="Submit Banner"
+            submitButton={i18n?.t('banners.review.submit')}
             onSubmitButtonClicked={this.onSubmitBanner}
-            goBackLabel="Review"
+            goBackLabel={i18n?.t('banners.creation.preview.title')}
             onGoBack={this.onBack}
           />
         </div>
@@ -106,35 +107,12 @@ class PreviewBanner extends React.Component<
   }
 }
 
-/* 
-
-import { ReactComponent as SVGBackArrow } from '../../img/icons/back-arrow.svg'
-
-          <div className="banner-preview-header">
-            <button type="button" className="back-button" onClick={this.onBack}>
-              <SVGBackArrow />
-            </button>
-            <h1>Review</h1>
-          </div>
-
-
-          <button
-              type="button"
-              className="positive-action-button"
-              onClick={this.onSubmitBanner}
-            >
-              Submit Banner
-            </button>
-
-
-
-*/
-
-export interface PreviewBannerProps extends RouteComponentProps {
+export type PreviewBannerProps = {
   banner: Banner | undefined
   submitBanner: () => Promise<string>
   removePendingBanner: () => void
-}
+} & RouteComponentProps &
+  WithTranslationProps
 
 interface PreviewBannerState {
   status: 'initial' | 'loading' | 'regress' | 'error'
@@ -152,4 +130,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(PreviewBanner))
+)(withRouter(withTranslation()(PreviewBanner)))

@@ -1,8 +1,8 @@
 import React from 'react'
+import { Trans } from 'react-i18next'
 
 import { Mission, createMissionIntelLink } from '../../features/mission'
 import { getExternalLinkAttributes } from '../../features/utils'
-
 import { Duration } from '../duration/Duration'
 import { Distance } from '../distance/Distance'
 
@@ -17,7 +17,9 @@ const MissionList: React.FC<MissionInfoProps> = ({ mission }) => {
     <div className="mission-info">
       {!mission.online && (
         <div className="mission-info-markedoffline">
-          Mission marked as offline
+          <Trans i18nKey="missions.markedOffline">
+            Mission marked as offline
+          </Trans>
         </div>
       )}
       <div className="mission-info-intel mission-info-logo-and-text">
@@ -34,7 +36,9 @@ const MissionList: React.FC<MissionInfoProps> = ({ mission }) => {
             {...getExternalLinkAttributes()}
             href={createMissionIntelLink(mission.id)}
           >
-            View Mission on Ingress Intel Map
+            <Trans i18nKey="missions.viewOnIntel">
+              View Mission on Ingress Intel Map
+            </Trans>
           </a>
         </div>
       </div>
@@ -47,7 +51,7 @@ const MissionList: React.FC<MissionInfoProps> = ({ mission }) => {
             {mission.lengthMeters ? (
               <Distance distanceMeters={mission.lengthMeters} />
             ) : (
-              <>???</>
+              <Trans i18nKey="missingData">???</Trans>
             )}
           </div>
         </div>
@@ -61,7 +65,7 @@ const MissionList: React.FC<MissionInfoProps> = ({ mission }) => {
                 durationMilliseconds={mission.averageDurationMilliseconds || 0}
               />
             ) : (
-              <>???</>
+              <Trans i18nKey="missingData">???</Trans>
             )}
           </div>
         </div>

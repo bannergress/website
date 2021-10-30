@@ -1,7 +1,7 @@
 import { divIcon, Marker as InternalMarker } from 'leaflet'
 import React, { FC } from 'react'
-
 import { Marker, Tooltip } from 'react-leaflet'
+
 import { Banner } from '../../features/banner'
 
 interface MarkerWithBanner {

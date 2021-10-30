@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { Col, Radio, Row, Slider, Tooltip } from 'antd'
+import { Trans } from 'react-i18next'
 
 import { BannerType } from '../../features/banner'
 import { ReactComponent as SVGHelp } from '../../img/icons/help-round.svg'
@@ -9,11 +10,15 @@ import './advanced-options.less'
 const typeHelp = (
   <>
     <p>
-      <b>Banner:</b> Collection of missions that must be completed in sequence
-      to complete the picture in your profile.
+      <Trans i18nKey="banners.creation.step3.help.banner">
+        <b>Banner:</b> Collection of missions that must be completed in sequence
+        to complete the picture in your profile.
+      </Trans>
     </p>
-    <b>Collection:</b> Collection of missions that can be completed in any order
-    as they don&apos;t form a picture.
+    <Trans i18nKey="banners.creation.step3.help.collection">
+      <b>Collection:</b> Collection of missions that can be completed in any
+      order as they don&apos;t form a picture.
+    </Trans>
   </>
 )
 
@@ -26,8 +31,10 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
     <Col span={12}>
       <Tooltip placement="right" title={typeHelp}>
         <h4>
-          Banner type
-          <SVGHelp />
+          <Trans i18nKey="banners.creation.step3.type">
+            Banner type
+            <SVGHelp />
+          </Trans>
         </h4>
       </Tooltip>
     </Col>
@@ -36,12 +43,18 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
         value={type}
         onChange={(e) => onChange(e.target.value, 'bannerType')}
       >
-        <Radio.Button value="sequential">Banner</Radio.Button>
-        <Radio.Button value="anyOrder">Collection</Radio.Button>
+        <Radio.Button value="sequential">
+          <Trans i18nKey="banners.banner">Banner</Trans>
+        </Radio.Button>
+        <Radio.Button value="anyOrder">
+          <Trans i18nKey="banners.collection">Collection</Trans>
+        </Radio.Button>
       </Radio.Group>
     </Col>
     <Col span={12}>
-      <h4>Banner width</h4>
+      <h4>
+        <Trans i18nKey="banners.width">Banner width</Trans>
+      </h4>
     </Col>
     <Col span={12}>
       <Slider

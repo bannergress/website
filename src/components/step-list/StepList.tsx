@@ -1,5 +1,6 @@
-import React, { Fragment, FC } from 'react'
+import React, { FC } from 'react'
 import { Row } from 'antd'
+import { Trans } from 'react-i18next'
 
 import { Step } from '../../features/mission'
 import StepCard from '../step-card'
@@ -17,9 +18,11 @@ const StepList: FC<StepListProps> = ({ steps }) => {
     )
   }
   return (
-    <Fragment>
-      <Row>Loading</Row>
-    </Fragment>
+    <>
+      <Row>
+        <Trans>loading</Trans>
+      </Row>
+    </>
   )
 }
 
