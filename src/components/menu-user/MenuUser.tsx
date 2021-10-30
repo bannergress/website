@@ -1,11 +1,12 @@
 import React from 'react'
 import { useHistory } from 'react-router'
 import { Button, Dropdown, Menu } from 'antd'
+import { Trans } from 'react-i18next'
 
+import UserPicture from '../login/user-picture'
 import { ReactComponent as SVGUpArrow } from '../../img/icons/up-arrow.svg'
 
 import './menu-user.less'
-import UserPicture from '../login/user-picture'
 
 const MenuUser: React.FC<MenuUserProps> = ({ logout }) => {
   const history = useHistory()
@@ -27,10 +28,16 @@ const MenuUser: React.FC<MenuUserProps> = ({ logout }) => {
   }
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="banners">My Lists</Menu.Item>
-      <Menu.Item key="account">Account</Menu.Item>
+      <Menu.Item key="banners">
+        <Trans i18nKey="menu.lists">My Lists</Trans>
+      </Menu.Item>
+      <Menu.Item key="account">
+        <Trans i18nKey="menu.account">Account</Trans>
+      </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="logout">Logout</Menu.Item>
+      <Menu.Item key="logout">
+        <Trans i18nKey="menu.logout">Logout</Trans>
+      </Menu.Item>
     </Menu>
   )
 

@@ -1,8 +1,10 @@
 import React, { Fragment } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
+import { Trans } from 'react-i18next'
+
+import LoginInNavbar from '../login-in-navbar'
 
 import './login-required.less'
-import LoginInNavbar from '../login-in-navbar'
 
 const LoginRequired: React.FC = (props) => {
   const { keycloak, initialized: keycloakInitialized } = useKeycloak()
@@ -17,7 +19,9 @@ const LoginRequired: React.FC = (props) => {
   return (
     <Fragment>
       {initializing && (
-        <div className="login-required-initializing">Loading...</div>
+        <div className="login-required-initializing">
+          <Trans i18nKey="loading">Loading...</Trans>
+        </div>
       )}
 
       {authenticated && <>{children}</>}
@@ -25,7 +29,11 @@ const LoginRequired: React.FC = (props) => {
       {notAuthenticated && (
         <>
           <div className="login-required">
-            <div>You must sign in first to access this functionality.</div>
+            <div>
+              <Trans i18nKey="login.required">
+                You must sign in first to access this functionality.
+              </Trans>
+            </div>
             <LoginInNavbar />
           </div>
         </>

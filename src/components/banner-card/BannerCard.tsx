@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
+import { Trans } from 'react-i18next'
 
 import {
   Banner,
@@ -7,13 +8,13 @@ import {
   isBannerFullyOffline,
 } from '../../features/banner'
 import { createBrowseUri } from '../../features/place'
+import { Distance } from '../distance/Distance'
 import BannerPicture from './BannerPicture'
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGWarningTriangle } from '../../img/icons/warningtriangle.svg'
 import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
 
 import './banner-card.less'
-import { Distance } from '../distance/Distance'
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL
 
@@ -44,29 +45,41 @@ const BannerCard: FC<BannerCardProps> = ({
   const getMissionInfo = () => {
     if (!banner) return null
 
+    const offline =
+      banner.numberOfDisabledMissions > 0 ? (
+        <Trans
+          i18nKey="missions.offline"
+          count={banner.numberOfDisabledMissions}
+        >
+          {{ count: banner.numberOfDisabledMissions }} offline
+        </Trans>
+      ) : undefined
+
+    const missing =
+      banner.numberOfSubmittedMissions > 0 ? (
+        <Trans
+          i18nKey="missions.missing"
+          count={banner.numberOfSubmittedMissions}
+        >
+          {{ count: banner.numberOfSubmittedMissions }} missing
+        </Trans>
+      ) : undefined
     return (
       <>
-        {banner?.numberOfMissions} Missions
-        {fullyOffline && <> (all offline) </>}
-        {!fullyOffline &&
-          banner.numberOfSubmittedMissions > 0 &&
-          banner.numberOfDisabledMissions > 0 && (
-            <>
-              {' '}
-              ({banner.numberOfDisabledMissions} offline,{' '}
-              {banner.numberOfSubmittedMissions} missing)
-            </>
-          )}
-        {!fullyOffline &&
-          banner.numberOfSubmittedMissions > 0 &&
-          banner.numberOfDisabledMissions === 0 && (
-            <> ({banner.numberOfSubmittedMissions} missing)</>
-          )}
-        {!fullyOffline &&
-          banner.numberOfDisabledMissions > 0 &&
-          banner.numberOfSubmittedMissions === 0 && (
-            <> ({banner.numberOfDisabledMissions} offline)</>
-          )}
+        <Trans i18nKey="missions.number" count={banner?.numberOfMissions}>
+          {{ count: banner?.numberOfMissions }} Missions
+        </Trans>
+        {fullyOffline && (
+          <Trans i18nKey="missions.offlinellAll"> (all offline) </Trans>
+        )}
+        {!fullyOffline && (offline || missing) && (
+          <>
+            {' '}
+            ({offline}
+            {offline && missing ? ', ' : ''}
+            {missing})
+          </>
+        )}
         {banner &&
           !fullyOffline &&
           banner.lengthMeters !== undefined &&
@@ -95,7 +108,9 @@ const BannerCard: FC<BannerCardProps> = ({
         {fullyOffline && (
           <div className="offline-overlay">
             <div className="offline-overlay-line">
-              <SVGWarningTriangle /> BANNER OFFLINE
+              <Trans i18nKey="banners.offline">
+                <SVGWarningTriangle /> BANNER OFFLINE
+              </Trans>
             </div>
           </div>
         )}
@@ -126,7 +141,9 @@ const BannerCard: FC<BannerCardProps> = ({
       </div>
       {detailsUrl && (
         <div className="banner-info-details">
-          <Link to={detailsUrl}>Details</Link>
+          <Link to={detailsUrl}>
+            <Trans i18nKey="buttons.details">Details</Trans>
+          </Link>
         </div>
       )}
     </div>

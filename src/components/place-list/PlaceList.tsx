@@ -1,5 +1,6 @@
 import React, { Fragment, FC } from 'react'
 import { Row } from 'antd'
+import { Trans } from 'react-i18next'
 
 import { Place, PlaceSortOrder, sortPlaces } from '../../features/place'
 import PlaceEntry from './PlaceEntry'
@@ -37,13 +38,15 @@ const PlaceList: FC<PlaceListProps> = ({
               role="button"
               tabIndex={0}
             >
-              ❮{' '}
-              <PlaceEntry
-                key={place.id}
-                place={place}
-                showNumbers={false}
-                attribute="longName"
-              />
+              <Trans i18nKey="places.backArrow">
+                ❮
+                <PlaceEntry
+                  key={place.id}
+                  place={place}
+                  showNumbers={false}
+                  attribute="longName"
+                />
+              </Trans>
             </span>
           </h2>
         ))}
@@ -69,7 +72,9 @@ const PlaceList: FC<PlaceListProps> = ({
   }
   return (
     <Fragment>
-      <Row>Loading</Row>
+      <Row>
+        <Trans>loading</Trans>
+      </Row>
     </Fragment>
   )
 }

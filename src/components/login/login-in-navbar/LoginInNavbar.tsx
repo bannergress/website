@@ -1,13 +1,14 @@
 import React, { Fragment } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
+import { Trans } from 'react-i18next'
 
 import IfUserLoggedIn from '../if-user-logged-in'
 import IfUserLoggedOut from '../if-user-logged-out'
 import IfUserInitializing from '../if-user-initializing'
 import LoginButton from '../login-button'
+import MenuUser from '../../menu-user'
 
 import './Login-in-navbar.less'
-import MenuUser from '../../menu-user'
 
 const LoginInNavbar: React.FC = () => {
   const { keycloak } = useKeycloak()
@@ -20,7 +21,7 @@ const LoginInNavbar: React.FC = () => {
 
       <IfUserLoggedOut>
         <LoginButton className="sign-in-button" type="button">
-          Sign In
+          <Trans i18nKey="login.button">Sign In</Trans>
         </LoginButton>
       </IfUserLoggedOut>
 

@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { Trans } from 'react-i18next'
 
 import { Place } from '../../features/place'
 import PlaceEntry from '../place-list/PlaceEntry'
@@ -25,7 +26,7 @@ export const PlaceAccordionEntry: FC<PlaceAccordionEntryProps> = ({
       {place && !all ? (
         <PlaceEntry place={place} showNumbers attribute="longName" />
       ) : (
-        'All'
+        <Trans i18nKey="places.all">All</Trans>
       )}
     </button>
   )

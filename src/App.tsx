@@ -1,4 +1,5 @@
-import React from 'react'
+/* eslint-disable i18next/no-literal-string */
+import React, { Suspense } from 'react'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { Layout } from 'antd'
 import { Helmet } from 'react-helmet'
@@ -25,6 +26,7 @@ import { Account } from './pages/account'
 import MenuMain from './components/menu-main'
 import Navbar from './components/navbar'
 
+import './i18n'
 import './App.less'
 
 const App: React.FC = () => {
@@ -36,68 +38,70 @@ const App: React.FC = () => {
   })
 
   return (
-    <ReactKeycloakProvider
-      authClient={keycloak}
-      initOptions={{
-        onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
-      }}
-      onEvent={(e) => e === 'onReady' && updateApiState()}
-    >
-      <Helmet
-        defer={false}
-        defaultTitle="Bannergress"
-        titleTemplate="%s - Bannergress"
-      />
-      <Layout>
-        <BrowserRouter>
-          {/* The Navbar should be hidden in mobile mode but only on some pages. */}
-          {/* So we add a class to it if we are on those pages */}
-          <Switch>
-            <Route path={['/banner/:id', '/preview-banner']}>
-              <Navbar className="hide-on-mobile" />
-            </Route>
-            <Route>
-              <Navbar />
-            </Route>
-          </Switch>
-          <Layout className="main">
-            <div className="container">
-              <Switch>
-                <Route path="/" component={Home} exact />
-                <Route path="/about" component={About} />
-                <Route path="/map" component={MapOverview} />
-                <Route path="/browse/:placeId?" component={Browser} />
-                <Route path="/banner/:id" component={BannerInfo} />
-                <Route path="/search/:term" component={Search} />
-                <Route path="/agent/:agentName" component={Agent} />
-                <Route
-                  path="/user/banners/:listType"
-                  component={UserBannerList}
-                />
-                <Redirect path="/user/banners" to="/user/banners/todo" />
-                <Route path="/help" component={Help} />
-                <Route path="/new-banner" component={CreateBanner} />
-                <PrivateRoute
-                  path="/edit-banner/:id"
-                  component={CreateBanner}
-                  adminRoles="manage-banners"
-                />
-                <PrivateRoute
-                  path="/preview-banner"
-                  component={PreviewBanner}
-                />
-                <PrivateRoute path="/account" component={Account} />
-                <Route component={Home} />
-              </Switch>
+    <Suspense fallback="Loading...">
+      <ReactKeycloakProvider
+        authClient={keycloak}
+        initOptions={{
+          onLoad: 'check-sso',
+          silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
+        }}
+        onEvent={(e) => e === 'onReady' && updateApiState()}
+      >
+        <Helmet
+          defer={false}
+          defaultTitle="Bannergress"
+          titleTemplate="%s - Bannergress"
+        />
+        <Layout>
+          <BrowserRouter>
+            {/* The Navbar should be hidden in mobile mode but only on some pages. */}
+            {/* So we add a class to it if we are on those pages */}
+            <Switch>
+              <Route path={['/banner/:id', '/preview-banner']}>
+                <Navbar className="hide-on-mobile" />
+              </Route>
+              <Route>
+                <Navbar />
+              </Route>
+            </Switch>
+            <Layout className="main">
+              <div className="container">
+                <Switch>
+                  <Route path="/" component={Home} exact />
+                  <Route path="/about" component={About} />
+                  <Route path="/map" component={MapOverview} />
+                  <Route path="/browse/:placeId?" component={Browser} />
+                  <Route path="/banner/:id" component={BannerInfo} />
+                  <Route path="/search/:term" component={Search} />
+                  <Route path="/agent/:agentName" component={Agent} />
+                  <Route
+                    path="/user/banners/:listType"
+                    component={UserBannerList}
+                  />
+                  <Redirect path="/user/banners" to="/user/banners/todo" />
+                  <Route path="/help" component={Help} />
+                  <Route path="/new-banner" component={CreateBanner} />
+                  <PrivateRoute
+                    path="/edit-banner/:id"
+                    component={CreateBanner}
+                    adminRoles="manage-banners"
+                  />
+                  <PrivateRoute
+                    path="/preview-banner"
+                    component={PreviewBanner}
+                  />
+                  <PrivateRoute path="/account" component={Account} />
+                  <Route component={Home} />
+                </Switch>
+              </div>
+            </Layout>
+            <div className="bottom-menu">
+              <MenuMain />
             </div>
-          </Layout>
-          <div className="bottom-menu">
-            <MenuMain />
-          </div>
-        </BrowserRouter>
-      </Layout>
-    </ReactKeycloakProvider>
+          </BrowserRouter>
+        </Layout>
+      </ReactKeycloakProvider>
+    </Suspense>
   )
 }
 

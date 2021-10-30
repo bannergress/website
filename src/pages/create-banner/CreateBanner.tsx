@@ -6,6 +6,7 @@ import { Input, InputNumber, Button } from 'antd'
 import { Helmet } from 'react-helmet'
 import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars'
+import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -252,10 +253,10 @@ class CreateBanner extends React.Component<
   }
 
   onLoadMoreMissions = (): Promise<void> => {
-    const { fetchMissions } = this.props
+    const { fetchMissions, i18n } = this.props
     const { location, searchText, page } = this.state
     if (!searchText) {
-      throw new Error('no missions to search')
+      throw new Error(i18n!.t('banners.creation.errors.search'))
     }
     this.setState({ page: page + 1 })
     return fetchMissions(location, searchText, 'title', 'ASC', page + 1)
@@ -653,7 +654,7 @@ class CreateBanner extends React.Component<
   }
 
   render() {
-    const { missions, hasMore } = this.props
+    const { missions, hasMore, i18n } = this.props
     const {
       addedMissions,
       searchText,
@@ -712,7 +713,9 @@ class CreateBanner extends React.Component<
       unusedMissionsCount = ''
     }
 
-    const title = id ? 'Edit Banner' : 'New Banner'
+    const title = id
+      ? i18n!.t('banners.creation.edit')
+      : i18n!.t('banners.creation.new')
     const issues = getBannerIssues(
       addedMissions,
       bannerType,
@@ -731,7 +734,7 @@ class CreateBanner extends React.Component<
         <Beforeunload onBeforeunload={this.getPromptMessage} />
         <LoadingOverlay
           active={status === 'loading'}
-          text="Generating preview..."
+          text={i18n!.t('banners.creation.preview.generating')}
           spinner
           fadeSpeed={500}
         />
@@ -741,7 +744,9 @@ class CreateBanner extends React.Component<
           <div className="create-banner-steps">
             <div className="missions-search">
               <h1>
-                <span className="ellipse">1</span> Add Missions
+                <Trans i18nKey="banners.creation.step1.title">
+                  <span className="ellipse">1</span> Add Missions
+                </Trans>
               </h1>
               {/*
             <h3>Location (Optional)</h3>
@@ -750,12 +755,18 @@ class CreateBanner extends React.Component<
               onChange={(e) => this.onInputChange(e.target.value, 'location')}
             />
             */}
-              <h3>Search for missions</h3>
+              <h3>
+                <Trans i18nKey="banners.creation.step1.subtitle">
+                  Search for missions
+                </Trans>
+              </h3>
               <span className="search-mission-subtitle">
-                You can search by mission name or author
+                <Trans i18nKey="banners.creation.step1.description">
+                  You can search by mission name or author
+                </Trans>
               </span>
               <Input
-                placeholder="Enter at least 3 characters..."
+                placeholder={i18n!.t('banners.creation.step1.placeholder')}
                 value={searchText || ''}
                 maxLength={200}
                 onChange={(e) =>
@@ -766,13 +777,20 @@ class CreateBanner extends React.Component<
                 }
               />
               <div className="results-title">
-                <h3>Search results{unusedMissionsCount}</h3>
+                <h3>
+                  <Trans
+                    i18nKey="banners.creation.step1.results"
+                    values={{ count: unusedMissionsCount }}
+                  >
+                    Search results{{ count: unusedMissionsCount }}
+                  </Trans>
+                </h3>
                 {unusedMissions && unusedMissions.length > 0 && (
                   <Button
                     role="button"
                     onClick={() => this.onAddAllMissions(unusedMissions)}
                   >
-                    Add All
+                    <Trans i18nKey="buttons.addAll">Add All</Trans>
                   </Button>
                 )}
               </div>
@@ -792,7 +810,9 @@ class CreateBanner extends React.Component<
             </div>
             <div className="missions-arrange">
               <h1>
-                <span className="ellipse">2</span> Arrange
+                <Trans i18nKey="banners.creation.step2.title">
+                  <span className="ellipse">2</span> Arrange
+                </Trans>
               </h1>
               <IssuesList
                 issues={issues.filter((issue) => issue.field === 'missions')}
@@ -805,25 +825,38 @@ class CreateBanner extends React.Component<
                 />
               </div>
               <div className="results-title">
-                <h3>{addedMissions.length} Missions in Total</h3>
+                <h3>
+                  <Trans
+                    i18nKey="banners.creation.step2.subtitle"
+                    count={addedMissions.length}
+                  >
+                    {{ count: addedMissions.length }} Missions in Total
+                  </Trans>
+                </h3>
                 {addedMissions.length > 0 && (
                   <Button
                     role="button"
                     onClick={() => this.onRemoveAllMissions()}
                   >
-                    Remove All
+                    <Trans i18nKey="buttons.removeAll">Remove All</Trans>
                   </Button>
                 )}
               </div>
               <div className="incomplete-chooser">
                 {!showIncomplete && (
                   <Button role="button" onClick={this.onIncomplete}>
-                    Add Filler Missions for Incomplete Banner
+                    <Trans i18nKey="banners.creation.step2.filler">
+                      Add Filler Missions for Incomplete Banner
+                    </Trans>
                   </Button>
                 )}
                 {showIncomplete && (
                   <>
-                    <div>Total number of missions when banner is complete</div>
+                    <div>
+                      <Trans i18nKey="banners.creation.step2.totalComplete">
+                        Total number of missions when banner is complete
+                      </Trans>
+                    </div>
                     <div>
                       <InputNumber
                         value={incomplete}
@@ -832,9 +865,6 @@ class CreateBanner extends React.Component<
                         onChange={(val) => this.setState({ incomplete: val })}
                         onBlur={() => this.onIncompleteConfirmed(true)}
                       />
-                      {/* <Button onClick={this.onIncompleteConfirmed}>
-                        Confirm
-                      </Button> */}
                     </div>
                   </>
                 )}
@@ -852,32 +882,44 @@ class CreateBanner extends React.Component<
             </div>
             <div className="create-banner-info">
               <h1>
-                <span className="ellipse">3</span> Information
+                <Trans i18nKey="banners.creation.step3.title">
+                  <span className="ellipse">3</span> Information
+                </Trans>
               </h1>
               <IssuesList
                 issues={issues.filter((issue) => issue.field !== 'missions')}
               />
-              <h3>Banner Title</h3>
+              <h3>
+                <Trans i18nKey="banners.creation.step3.bannerTitle">
+                  Banner Title
+                </Trans>
+              </h3>
               <Input
-                placeholder="Start typing..."
+                placeholder={i18n?.t('placeholders.startTyping')}
                 value={bannerTitle}
                 onChange={(e) =>
                   this.onInputChange(e.target.value, 'bannerTitle')
                 }
               />
-              <h3>Description</h3>
+              <h3>
+                <Trans i18nKey="banners.creation.step3.description">
+                  Description
+                </Trans>
+              </h3>
               <Input.TextArea
-                placeholder="Start typing..."
+                placeholder={i18n?.t('placeholders.startTyping')}
                 value={bannerDescription}
-                /* Note: The antd minRows seems to have a -1 bug on Firefox. Shows always one fewer row than specified.
-              Works well on other browser https://github.com/ant-design/ant-design/issues/30559  */
+                // Note: The antd minRows seems to have a -1 bug on Firefox. Shows always one fewer row than specified.
+                // Works well on other browser https://github.com/ant-design/ant-design/issues/30559
                 autoSize={{ minRows: 2 }}
                 maxLength={2000}
                 onChange={(e) =>
                   this.onInputChange(e.target.value, 'bannerDescription')
                 }
               />
-              <h3>Options</h3>
+              <h3>
+                <Trans i18nKey="banners.creation.step3.options">Options</Trans>
+              </h3>
               <div className="adv-options-container open">
                 <AdvancedOptions
                   type={bannerType}
@@ -885,7 +927,9 @@ class CreateBanner extends React.Component<
                   onChange={this.onInputChange}
                 />
               </div>
-              <h3>Preview</h3>
+              <h3>
+                <Trans i18nKey="banners.creation.preview.title">Preview</Trans>
+              </h3>
               <div className="create-banner-preview">
                 <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
                   <BannerImage
@@ -901,7 +945,7 @@ class CreateBanner extends React.Component<
                 className="positive-action-button button-review"
                 disabled={issues.some((i) => i.type === 'error')}
               >
-                Review
+                <Trans i18nKey="buttons.review">Review</Trans>
               </button>
             </div>
           </div>
@@ -911,7 +955,7 @@ class CreateBanner extends React.Component<
   }
 }
 
-export interface CreateBannerProps extends RouteComponentProps<{ id: string }> {
+export type CreateBannerProps = {
   admin?: boolean
   previousBanner: Banner | undefined
   missions: Array<Mission>
@@ -928,7 +972,8 @@ export interface CreateBannerProps extends RouteComponentProps<{ id: string }> {
   removePendingBanner: () => void
   getBanner: (id: string) => Banner | undefined
   fetchBanner: (id: string) => Promise<void>
-}
+} & RouteComponentProps<{ id: string }> &
+  WithTranslationProps
 
 interface CreateBannerState {
   id: string | undefined
@@ -968,4 +1013,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(CreateBanner))
+)(withRouter(withTranslation()(CreateBanner)))

@@ -1,11 +1,12 @@
-import React, { Fragment, FC } from 'react'
+import React, { FC } from 'react'
 import { Row } from 'antd'
+import { Trans } from 'react-i18next'
 
+import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
 import { Place } from '../../features/place'
 import PlaceCard from './PlaceCard'
 
 import './place-list-flat.less'
-import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
 
 const PlaceListFlat: FC<PlaceListFlatProps> = ({
   places,
@@ -18,7 +19,7 @@ const PlaceListFlat: FC<PlaceListFlatProps> = ({
 
   if (places && places.length > 0) {
     return (
-      <Fragment>
+      <>
         <div className="places-list-flat">
           {places?.map((place) => (
             <div key={place.id} className="places-list-flat-entry">
@@ -26,12 +27,24 @@ const PlaceListFlat: FC<PlaceListFlatProps> = ({
             </div>
           ))}
 
-          {hasMorePlaces && <div ref={ref}>Loading more items...</div>}
+          {hasMorePlaces && (
+            <div ref={ref}>
+              <Trans i18nKey="loadingMore">Loading more items...</Trans>
+            </div>
+          )}
         </div>
-      </Fragment>
+      </>
     )
   }
-  return <Fragment>{hasMorePlaces && <Row>Loading...</Row>}</Fragment>
+  return (
+    <>
+      {hasMorePlaces && (
+        <Row>
+          <Trans i18nKey="loading">Loading...</Trans>
+        </Row>
+      )}
+    </>
+  )
 }
 
 export interface PlaceListFlatProps {

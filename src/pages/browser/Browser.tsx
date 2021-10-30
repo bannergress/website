@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -159,6 +160,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
       getAdministrativeAreas,
       getPlace,
       hasMore,
+      i18n,
     } = this.props
     const {
       selectedDirection,
@@ -168,7 +170,14 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     } = this.state
 
     if (status === 'initial') {
-      return <LoadingOverlay spinner text="Loading..." fadeSpeed={500} active />
+      return (
+        <LoadingOverlay
+          spinner
+          text={i18n!.t('loading')}
+          fadeSpeed={500}
+          active
+        />
+      )
     }
 
     let administrativeAreas: Array<Place> | null = null
@@ -197,7 +206,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
 
     const pageTitle = selectedPlace
       ? selectedPlace.formattedAddress
-      : 'Countries'
+      : i18n!.t('places.countries')
 
     return (
       <div className="page-container">
@@ -207,7 +216,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
           </Helmet>
 
           <PlaceList
-            title={selectedPlace ? undefined : 'Countries'}
+            title={selectedPlace ? undefined : i18n!.t('places.countries')}
             order="numberOfBanners"
             places={administrativeAreas || countries}
             selectedPlaces={selectedPlaces}
@@ -223,19 +232,27 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
             />
             <div className="places-banners">
               {status === 'error' ? (
-                <>Place not found</>
+                <Trans i18nKey="places.notFound">Place not found</Trans>
               ) : (
                 <>
                   <h1 className="banner-count">
-                    {selectedPlace?.numberOfBanners} Banners
+                    {selectedPlace?.numberOfBanners}{' '}
+                    <Trans i18nKey="banners.title">Banners</Trans>
                     {selectedPlace && (
                       <>
                         <span className="banner-count-place">
-                          {' '}
-                          in {selectedPlace.longName}
+                          <Trans
+                            i18nKey="places.in"
+                            values={{ longName: selectedPlace.longName }}
+                          >
+                            in {{ longName: selectedPlace.longName }}
+                          </Trans>
                         </span>
                         <Link to={createMapUri(selectedPlace)}>
-                          <SVGMap className="browser-icon" title="Map" />
+                          <SVGMap
+                            className="browser-icon"
+                            title={i18n!.t('map.title')}
+                          />
                         </Link>
                       </>
                     )}
@@ -264,7 +281,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
   }
 }
 
-export interface BrowserProps extends RouteComponentProps<{ placeId: string }> {
+export type BrowserProps = {
   banners: Array<Banner>
   countries: Array<Place>
   hasMore: Boolean
@@ -279,7 +296,8 @@ export interface BrowserProps extends RouteComponentProps<{ placeId: string }> {
     orderDirection: BannerOrderDirection,
     page: number
   ) => Promise<void>
-}
+} & RouteComponentProps<{ placeId: string }> &
+  WithTranslationProps
 
 interface BrowserState {
   selectedOrder: BannerOrder
@@ -305,4 +323,7 @@ const mapDispatchToProps = {
   fetchPlace: loadPlaceAction,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Browser))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(withTranslation()(Browser)))

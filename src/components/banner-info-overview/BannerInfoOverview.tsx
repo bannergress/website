@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Tabs } from 'antd'
+import { useTranslation } from 'react-i18next'
 
 import {
   Banner,
@@ -8,13 +9,13 @@ import {
   changeBannerSettings,
 } from '../../features/banner'
 import BannerCard from '../banner-card'
+import { BannerEditTools } from '../banner-edit-tools/BannerEditTools'
 import BannerListTypeControl from '../banner-list-type-control'
 import MissionList from '../mission-list'
 import BannerInfoCard from '../banner-info-card'
 import IfUserLoggedIn from '../login/if-user-logged-in'
 
 import './banner-info-overview.less'
-import { BannerEditTools } from '../banner-edit-tools/BannerEditTools'
 
 export type BannerInfoView = 'info' | 'missions'
 
@@ -31,6 +32,7 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
 }) => {
   const dispatch = useDispatch()
   const [activeViewFromState, setActiveView] = useState(view)
+  const { t } = useTranslation()
 
   const activeView = view || activeViewFromState
 
@@ -109,10 +111,10 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
           activeKey={activeView}
           onTabClick={(key) => onTabClick(key as BannerInfoView)}
         >
-          <Tabs.TabPane tab="Banner Info" key="info">
+          <Tabs.TabPane tab={t('banners.info')} key="info">
             <BannerInfoCard banner={banner} />
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Missions" key="missions">
+          <Tabs.TabPane tab={t('missions.title')} key="missions">
             {missions && (
               <MissionList
                 missions={missions}

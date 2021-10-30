@@ -3,6 +3,7 @@ import _ from 'underscore'
 import { mapMissions } from '../mission'
 import { getMissionBounds } from '../mission/helpers'
 import { Banner, BannerListType } from './types'
+import i18n from '../../i18n'
 
 const BOUNDS_MARGIN = 0.0001
 
@@ -69,17 +70,13 @@ export const extendSorted = <T extends { id?: string; title?: string }>(
 export const getBannerListTypeText = (listType: BannerListType) => {
   switch (listType) {
     case 'blacklist':
-      return 'Hidden'
-      break
+      return i18n.t('banners.hide.name')
     case 'done':
-      return 'Done'
-      break
+      return i18n.t('banners.done.name')
     case 'todo':
-      return 'To-Do'
-      break
+      return i18n.t('banners.todo.name')
     default:
-      throw new Error('Unknown banner list type')
-      break
+      throw new Error(i18n.t('banners.errors.unknownType'))
   }
 }
 

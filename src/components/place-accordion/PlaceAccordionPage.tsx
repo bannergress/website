@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 import { Place } from '../../features/place'
 import { RootState } from '../../storeTypes'
@@ -18,6 +19,8 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
   onSelectPlace,
   onToggleExpand,
 }) => {
+  const { t } = useTranslation(undefined, { keyPrefix: 'places' })
+
   let title
   if (currentPlace) {
     title = (
@@ -28,9 +31,9 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
       />
     )
   } else if (parentPlace) {
-    title = 'Refine...'
+    title = t('refine')
   } else {
-    title = 'All Countries'
+    title = t('allCountries')
   }
 
   const children = useSelector((state: RootState) =>

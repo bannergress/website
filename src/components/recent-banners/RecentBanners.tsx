@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { ThunkDispatch } from 'redux-thunk'
+import { useTranslation } from 'react-i18next'
 
 import { getRecentBanners, loadRecentBanners } from '../../features/banner'
 import { BannerActionTypes } from '../../features/banner/actionTypes'
@@ -23,6 +24,7 @@ export const RecentBanners: FC<RecentBannersProps> = ({
   const dispatch: AppDispatch = useDispatch()
   const banners = useSelector(getRecentBanners)
   const [loading, setLoading] = useState(false)
+  const { t } = useTranslation(undefined, { keyPrefix: 'banners' })
 
   useEffect(() => {
     setLoading(true)
@@ -33,13 +35,13 @@ export const RecentBanners: FC<RecentBannersProps> = ({
           {
             key: 'recent-fetch-error',
             type: 'error',
-            message: 'Error loading recent banners, please try again later',
+            message: t('errors.loading'),
             field: 'recentBanners',
           },
         ])
       )
       .finally(() => setLoading(false))
-  }, [dispatch, setIssues, resetIssue, history.location])
+  }, [dispatch, setIssues, resetIssue, history.location, t])
 
   return (
     <div className="recent-banners">
@@ -47,7 +49,7 @@ export const RecentBanners: FC<RecentBannersProps> = ({
         active={loading}
         spinner
         fadeSpeed={500}
-        text="Loading recent banners..."
+        text={t('loadingRecent')}
       />
       <div className="recent-banners-title">
         <h1>{titleList}</h1>

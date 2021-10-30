@@ -10,6 +10,8 @@ import MissionPoiMarkerList from './MissionPoiMarkerList'
 import './map.less'
 import { LocateControl } from '../locate'
 import { MapLoadingControl } from '../map-loading-control'
+import { MapZoomControl } from '../map-zoom-control'
+import i18n from '../../i18n'
 
 export class MapDetail extends React.Component<MapDetailProps> {
   mapRef: Map | undefined
@@ -50,6 +52,8 @@ export class MapDetail extends React.Component<MapDetailProps> {
 
   onMapCreated = (map: Map) => {
     this.mapRef = map
+    // eslint-disable-next-line no-param-reassign
+    map.zoomControl.options.zoomInText = i18n!.t('map.zoomIn')
   }
 
   /**
@@ -89,6 +93,7 @@ export class MapDetail extends React.Component<MapDetailProps> {
           whenCreated={this.onMapCreated}
           tap={false}
         >
+          <MapZoomControl />
           <LocateControl />
           <MapLoadingControl />
           {getAttributionLayer()}

@@ -3,6 +3,7 @@ import _ from 'underscore'
 import { BannerType } from '../../features/banner'
 import { isPlaceholder, Mission } from '../../features/mission'
 import { Issue } from '../../components/Issues-list'
+import i18n from '../../i18n'
 
 export const MIN_MISSIONS = 2
 export const MAX_MISSIONS = 3000
@@ -44,7 +45,7 @@ export const getBannerIssues = (
       key: 'missions-placeholder',
       type: 'error',
       field: 'missions',
-      message: `A banner must contain an accepted mission.`,
+      message: i18n.t('banners.creation.errors.noMissions'),
     })
   }
   if (missions.length < MIN_MISSIONS || missions.length > MAX_MISSIONS) {
@@ -52,7 +53,10 @@ export const getBannerIssues = (
       key: 'missions-length',
       type: 'error',
       field: 'missions',
-      message: `A banner must contain between ${MIN_MISSIONS} and ${MAX_MISSIONS} missions.`,
+      message: i18n.t('banners.creation.errors.numberOfMissions', {
+        min: MIN_MISSIONS,
+        max: MAX_MISSIONS,
+      }),
     })
   }
   if (bannerType === 'sequential' && duplicates.length) {
@@ -60,7 +64,9 @@ export const getBannerIssues = (
       key: 'missions-duplicates',
       type: 'error',
       field: 'missions',
-      message: `Duplicate indexes: ${duplicates.map((d) => d[0]).join(', ')}`,
+      message: i18n.t('banners.creation.errors.duplicates', {
+        duplicates: duplicates.map((d) => d[0]).join(', '),
+      }),
     })
   }
   if (
@@ -71,8 +77,7 @@ export const getBannerIssues = (
       key: 'missions-invalid-index',
       type: 'error',
       field: 'missions',
-      message:
-        'There are at least a mission with an invalid index. Indexes must be positive integers.',
+      message: i18n.t('banners.creation.errors.invalidIndex'),
     })
   }
   if (
@@ -84,7 +89,10 @@ export const getBannerIssues = (
       key: 'title-length',
       type: 'error',
       field: 'title',
-      message: `The title must be between ${MIN_TITLE_LENGTH} and ${MAX_TITLE_LENGTH} characters`,
+      message: i18n.t('banners.creation.errors.titleLength', {
+        min: MIN_TITLE_LENGTH,
+        max: MAX_TITLE_LENGTH,
+      }),
     })
   }
   if (bannerType === 'sequential' && hasGaps(indexes)) {
@@ -92,7 +100,7 @@ export const getBannerIssues = (
       key: 'mission-gaps',
       type: 'warning',
       field: 'missions',
-      message: 'The banner could be incomplete, as it has gaps',
+      message: i18n.t('banners.creation.warnings.incomplete'),
     })
   }
   if (bannerType === 'sequential' && indexes.length % bannerWidth !== 0) {
@@ -100,7 +108,9 @@ export const getBannerIssues = (
       key: 'missions-divisible',
       type: 'warning',
       field: 'missions',
-      message: `The banner could be incomplete, as the number of missions is not divisible by the selected width: ${bannerWidth}`,
+      message: i18n.t('banners.creation.warnings.divisible', {
+        width: bannerWidth,
+      }),
     })
   }
   if (detectedLength && detectedLength !== indexes.length) {
@@ -108,7 +118,9 @@ export const getBannerIssues = (
       key: 'missions-total',
       type: 'warning',
       field: 'missions',
-      message: `The banner could be incomplete, as the length differs from the detected length in the title: ${detectedLength}`,
+      message: i18n.t('banners.creation.warnings.length', {
+        length: detectedLength,
+      }),
     })
   }
 

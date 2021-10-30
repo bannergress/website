@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Row, Layout } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -116,9 +117,12 @@ class UserBannerList extends React.Component<
   }
 
   getPageTitle() {
+    const { i18n } = this.props
     const { listType } = this.state
-    const title = `My ${getBannerListTypeText(listType)} Banners`
-    return title
+    return (
+      i18n?.t('banners.mine', { type: getBannerListTypeText(listType) }) ??
+      `My ${getBannerListTypeText(listType)} Banners`
+    )
   }
 
   async doFetchBanners(
@@ -145,10 +149,6 @@ class UserBannerList extends React.Component<
       listType,
     } = this.state
     const { banners, hasMoreBanners } = this.props
-
-    const noBannersMessage = `Mark banners as ${getBannerListTypeText(
-      listType
-    )} to see them here.`
 
     return (
       <Fragment>
@@ -192,14 +192,25 @@ class UserBannerList extends React.Component<
 
                     {banners.length === 0 && (
                       <>
-                        <Row>{noBannersMessage}</Row>
+                        <Row>
+                          <Trans
+                            i18nKey="banners.markinfo"
+                            values={{ type: getBannerListTypeText(listType) }}
+                          >
+                            Mark banners as{' '}
+                            {{ type: getBannerListTypeText(listType) }} to see
+                            see them here.
+                          </Trans>
+                        </Row>
                       </>
                     )}
                   </>
                 )}
 
                 {(bannersStatus === 'initial' ||
-                  bannersStatus === 'loading') && <>Loading...</>}
+                  bannersStatus === 'loading') && (
+                  <Trans i18nKey="loading">Loading...</Trans>
+                )}
               </Layout>
             </LoginRequired>
           </div>
@@ -210,8 +221,7 @@ class UserBannerList extends React.Component<
   }
 }
 
-export interface UserBannerListProps
-  extends RouteComponentProps<{ listType: BannerListType }> {
+export type UserBannerListProps = {
   banners: Array<Banner>
   hasMoreBanners: Boolean
   fetchBanners: (
@@ -221,7 +231,8 @@ export interface UserBannerListProps
     pageBanners: number
   ) => Promise<void>
   authenticated: Boolean
-}
+} & RouteComponentProps<{ listType: BannerListType }> &
+  WithTranslationProps
 
 interface UserBannerListState {
   selectedOrder: BannerOrder
@@ -243,4 +254,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withAuthenticated(withRouter(UserBannerList)))
+)(withAuthenticated(withRouter(withTranslation()(UserBannerList))))

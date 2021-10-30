@@ -1,12 +1,13 @@
 import React, { FC } from 'react'
 import { Radio, Tooltip } from 'antd'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { ReactComponent as SVGHelp } from '../../img/icons/help-round.svg'
 
 import './algorithm-detection-chooser.less'
 
 const extractionHelp = (
-  <>
+  <Trans i18nKey="banners.creation.algorithm.help">
     <p>
       <b>Manual:</b> Title will be detected automatically from missions. Mission
       numbering will be sequential starting from 1.
@@ -22,7 +23,7 @@ const extractionHelp = (
     new missions are added.
     <br />* If a mission number is changed manually, Manual detection will be
     activated.
-  </>
+  </Trans>
 )
 
 const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
@@ -30,6 +31,9 @@ const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
   loading,
   onChange,
 }) => {
+  const { t } = useTranslation(undefined, {
+    keyPrefix: 'banners.creation.algorithm',
+  })
   const getOption = (algorithm: Algorithm, title: string) => (
     <Radio.Button value={algorithm}>{title}</Radio.Button>
   )
@@ -38,7 +42,9 @@ const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
     <div className="algo-detection-chooser">
       <Tooltip placement="right" title={extractionHelp}>
         <h3>
-          Detection <SVGHelp />
+          <Trans i18nKey="banners.creation.algorithm.detection">
+            Detection <SVGHelp />
+          </Trans>
         </h3>
       </Tooltip>
       <div className={`lds-ellipsis display-${loading}`}>
@@ -48,8 +54,8 @@ const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
         <div />
       </div>
       <Radio.Group value={selected} onChange={(e) => onChange(e.target.value)}>
-        {getOption('none', 'Manual')}
-        {getOption('advanced', 'Automatic')}
+        {getOption('none', t('manual'))}
+        {getOption('advanced', t('automatic'))}
       </Radio.Group>
     </div>
   )

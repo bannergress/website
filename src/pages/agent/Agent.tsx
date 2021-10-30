@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Row, Layout } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { Trans } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -140,7 +141,9 @@ class Agent extends React.Component<AgentProps, AgentState> {
             <h1>{title}</h1>
 
             <LoginRequired>
-              <h2>Banners</h2>
+              <h2>
+                <Trans i18nKey="banners.title">Banners</Trans>
+              </h2>
 
               <Layout>
                 {bannersStatus === 'success' && (
@@ -170,14 +173,20 @@ class Agent extends React.Component<AgentProps, AgentState> {
 
                     {banners.length === 0 && (
                       <>
-                        <Row>No banners found</Row>
+                        <Row>
+                          <Trans i18nKey="banners.notFound" count={2}>
+                            No banners found
+                          </Trans>
+                        </Row>
                       </>
                     )}
                   </>
                 )}
 
                 {(bannersStatus === 'initial' ||
-                  bannersStatus === 'loading') && <>Loading...</>}
+                  bannersStatus === 'loading') && (
+                  <Trans i18nKey="loading">Loading...</Trans>
+                )}
               </Layout>
             </LoginRequired>
           </div>

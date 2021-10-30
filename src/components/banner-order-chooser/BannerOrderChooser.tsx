@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { Trans } from 'react-i18next'
 
 import { BannerOrder, BannerOrderDirection } from '../../features/banner'
 import { ReactComponent as SVGUpArrow } from '../../img/icons/up-arrow.svg'
@@ -22,14 +23,16 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
     return classNames
   }
 
-  const getButton = (title: string, type: BannerOrder) => (
+  const getButton = (type: BannerOrder) => (
     <button
       type="button"
       className={getButtonClass(type)}
       onClick={() => onOrderClicked(type)}
     >
       <div className="order-button-inner">
-        {title} <SVGUpArrow className="arrow" />
+        <Trans i18nKey={`order.${type}`}>
+          {{ type }} <SVGUpArrow className="arrow" />
+        </Trans>
       </div>
     </button>
   )
@@ -37,12 +40,14 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
   return (
     <div className="order-chooser">
       <div>
-        <h4>Sort by</h4>
-        {includeAddedList && getButton('Added to List', 'listAdded')}
-        {getButton('Date Created', 'created')}
-        {getButton('A-Z', 'title')}
-        {getButton('Distance', 'lengthMeters')}
-        {getButton('Total Missions', 'numberOfMissions')}
+        <h4>
+          <Trans i18nKey="order.sortBy">Sort by</Trans>
+        </h4>
+        {includeAddedList && getButton('listAdded')}
+        {getButton('created')}
+        {getButton('title')}
+        {getButton('lengthMeters')}
+        {getButton('numberOfMissions')}
       </div>
     </div>
   )

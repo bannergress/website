@@ -9,6 +9,7 @@ import {
   isFirstMissionInSequence,
 } from './MarkerData'
 import { getMarkerDataLabel } from './MarkerLabels'
+import i18n from '../../i18n'
 
 const createClusterLabel = (markerData: MarkerData[]) => {
   let firstSequentialMissionMarker: MarkerData | null = null
@@ -87,15 +88,17 @@ const createClusterTooltip = (cluster: MarkerCluster) => {
       }
     })
     if (hasFinish && ordered) {
-      tooltip = `Banner ends here`
+      tooltip = i18n.t('map.banner.end')
     }
     if (numMissions) {
-      tooltip = `${numMissions} mission${
-        numMissions > 1 ? 's' : ''
-      } starting here${tooltip ? `<br />${tooltip}` : ''}`
+      tooltip = `${i18n.t('map.banner.missions', { count: numMissions })}${
+        tooltip ? `<br />${tooltip}` : ''
+      }`
     }
     if (hasStart && ordered) {
-      tooltip = `Banner starts here${tooltip ? `<br />${tooltip}` : ''}`
+      tooltip = `${i18n.t('map.banner.start')}${
+        tooltip ? `<br />${tooltip}` : ''
+      }`
     }
   }
   return tooltip

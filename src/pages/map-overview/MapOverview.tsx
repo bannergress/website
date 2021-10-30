@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet'
 import { Col, Row } from 'antd'
 import { LatLngBounds } from 'leaflet'
 import Scrollbars from 'react-custom-scrollbars'
+import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -108,7 +109,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 
   render() {
-    const { getBanners, getBanner } = this.props
+    const { getBanners, getBanner, i18n } = this.props
     const {
       bounds,
       selectedBannerId,
@@ -176,12 +177,14 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     }
     return (
       <Fragment>
-        <Helmet defer={false}>
-          <title>Map</title>
+        <Helmet defer>
+          <title>{i18n?.t('map.title')}</title>
         </Helmet>
         <Row className="map-overview">
           <Col className="map-banners hide-on-mobile">
-            <h2>Banners in This Area</h2>
+            <h2>
+              <Trans i18nKey="map.area">Banners in This Area</Trans>
+            </h2>
             <Scrollbars className="banners-scroll">
               <BannerList
                 banners={banners}
@@ -216,7 +219,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     )
   }
 }
-export interface MapOverviewProps extends RouteComponentProps {
+export type MapOverviewProps = {
   getBanners: (
     topRightLat: number,
     topRightLng: number,
@@ -238,7 +241,8 @@ export interface MapOverviewProps extends RouteComponentProps {
   ) => Promise<void>
   fetchPreviewBanner: (id: string) => Promise<void>
   getBanner: (bannerId: string) => Banner | undefined
-}
+} & RouteComponentProps &
+  WithTranslationProps
 
 interface MapOverviewState {
   bounds: LatLngBounds | undefined
@@ -276,4 +280,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(MapOverview))
+)(withRouter(withTranslation()(MapOverview)))

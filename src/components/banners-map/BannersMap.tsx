@@ -24,14 +24,18 @@ import { showBannerRouteOnMap } from '../map-detail/showBannerRouteOnMap'
 import { getAttributionLayer } from '../map-detail/getAttributionLayer'
 import { LocateControl } from '../locate'
 import { MapLoadingControl } from '../map-loading-control'
+import { MapZoomControl } from '../map-zoom-control'
 
 import './banners-map.less'
 import 'leaflet/dist/leaflet.css'
+import i18n from '../../i18n'
 
 class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   private map: LeafletMap | undefined = undefined
 
-  private onlyOfficialText = 'Show only official Niantic mission collections'
+  private onlyOfficialText = i18n.t('map.niaOnly', {
+    default: 'Show only official Niantic mission collections',
+  })
 
   constructor(props: BannersMapProps) {
     super(props)
@@ -279,6 +283,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
             </LayersControl.Overlay>
           </LayersControl>
 
+          <MapZoomControl />
           <LocateControl />
           <MapLoadingControl />
           {getAttributionLayer()}

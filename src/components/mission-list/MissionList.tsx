@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useRef } from 'react'
 import { Row, Layout, Button } from 'antd'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { NumDictionary } from '../../features/banner'
 import { mapMissions, Mission } from '../../features/mission'
@@ -16,6 +17,7 @@ const MissionList: React.FC<MissionListProps> = ({
   onExpandAll,
 }) => {
   const itemsRef = useRef<Array<HTMLDivElement | null>>([])
+  const { t } = useTranslation()
 
   const createEmptyMission = (sequence?: number) => {
     return {
@@ -75,13 +77,15 @@ const MissionList: React.FC<MissionListProps> = ({
     return (
       <div className="mission-list">
         <div className="mission-list-header">
-          <h2>Missions in this banner</h2>
+          <h2>
+            <Trans i18nKey="missions.inBanner">Missions in this banner</Trans>
+          </h2>
           {onExpand && (
             <Button
               className="bg-button bg-button-default"
               onClick={onExpandAll}
             >
-              {expanded ? 'Collapse all' : 'Expand all'}
+              {expanded ? t('buttons.collapseAll') : t('buttons.expandAll')}
             </Button>
           )}
         </div>
@@ -96,7 +100,9 @@ const MissionList: React.FC<MissionListProps> = ({
     <Fragment>
       <Row justify="center">
         <Layout>
-          <div>Loading...</div>
+          <div>
+            <Trans i18nKey="loading">Loading...</Trans>
+          </div>
         </Layout>
       </Row>
     </Fragment>

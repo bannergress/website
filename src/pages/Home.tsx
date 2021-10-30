@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import _ from 'underscore'
+import { useTranslation } from 'react-i18next'
 
 import NewsList from '../components/news-list'
 import RecentBanners from '../components/recent-banners'
@@ -11,7 +12,8 @@ import './home.less'
 
 export const Home: React.FC = () => {
   const [issues, setIssues] = useState<Array<Issue>>([])
-  const titleList: string = 'Latest Banners'
+  const { t } = useTranslation()
+  const titleList: string = t('banners.latest')
 
   const addIssues = useCallback(
     (iss: Array<Issue>) => {

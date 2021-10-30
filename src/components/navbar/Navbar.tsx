@@ -2,6 +2,7 @@ import React from 'react'
 import { generatePath } from 'react-router'
 import { RouteComponentProps, withRouter, NavLink } from 'react-router-dom'
 import { Location } from 'history'
+import { withTranslation, WithTranslationProps } from 'react-i18next'
 
 import LoginInNavbar from '../login/login-in-navbar'
 import SearchInput from '../search-input'
@@ -40,7 +41,7 @@ export class Navbar extends React.Component<NavBarProps, NavBarState> {
   }
 
   render() {
-    const { history, className } = this.props
+    const { history, className, i18n } = this.props
 
     const callSearch = (value: string) => {
       const trimmedValue = encodeURIComponent(value.trim())
@@ -69,7 +70,7 @@ export class Navbar extends React.Component<NavBarProps, NavBarState> {
           <div className="right-menu">
             <div
               className={`hide-on-desktop mobile-search-button-container ${mobileSearchBarActiveClassName}`}
-              title="Search"
+              title={i18n?.t('search.button')}
             >
               <button
                 type="button"
@@ -95,12 +96,13 @@ export class Navbar extends React.Component<NavBarProps, NavBarState> {
   }
 }
 
-export interface NavBarProps extends RouteComponentProps {
+export type NavBarProps = {
   className?: string
-}
+} & RouteComponentProps &
+  WithTranslationProps
 
 export interface NavBarState {
   mobileSearchBarActive: Boolean
 }
 
-export default withRouter(Navbar)
+export default withRouter(withTranslation()(Navbar))

@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string */
 import React, { Component, RefObject } from 'react'
 import { CSSTransition } from 'react-transition-group'
 

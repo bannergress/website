@@ -1,5 +1,7 @@
 import React from 'react'
 import { Redirect, Route, RouteProps } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+
 import { useUserLoggedIn } from '../../../hooks/UserLoggedIn'
 import LoadingOverlay from '../../loading-overlay'
 
@@ -11,6 +13,8 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
 }) => {
   const { authenticated, initialized } = useUserLoggedIn(roles)
   const { authenticated: admin } = useUserLoggedIn(adminRoles)
+  const { t } = useTranslation()
+
   return (
     <Route
       {...rest}
@@ -20,7 +24,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
             <LoadingOverlay
               active
               spinner
-              text="Checking Login..."
+              text={t('login.checking')}
               fadeSpeed={500}
             />
           )

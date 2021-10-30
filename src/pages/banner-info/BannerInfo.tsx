@@ -7,6 +7,7 @@ import {
   Redirect,
 } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -36,7 +37,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
   }
 
   render() {
-    const { getBanner, match } = this.props
+    const { getBanner, match, i18n } = this.props
     const { status } = this.state
     const banner = getBanner(match.params.id)
 
@@ -65,16 +66,26 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
       )
     }
     if (status !== 'error') {
-      return <LoadingOverlay active spinner text="Loading..." fadeSpeed={500} />
+      return (
+        <LoadingOverlay
+          active
+          spinner
+          text={i18n!.t('loading')}
+          fadeSpeed={500}
+        />
+      )
     }
-    return <>No banners found with that id</>
+    return (
+      <Trans i18nKey="banners.noneWithId">No banners found with that id</Trans>
+    )
   }
 }
 
-export interface BannerInfoProps extends RouteComponentProps<{ id: string }> {
+export type BannerInfoProps = {
   getBanner: (id: string) => Banner | undefined
   fetchBanner: (id: string) => Promise<void>
-}
+} & RouteComponentProps<{ id: string }> &
+  WithTranslationProps
 
 interface BannerInfoState {
   status: 'initial' | 'loading' | 'ready' | 'error'
@@ -91,4 +102,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(BannerInfo))
+)(withRouter(withTranslation()(BannerInfo)))

@@ -1,6 +1,9 @@
 import React, { FC, Fragment } from 'react'
 import _ from 'underscore'
 import { LatLng } from 'leaflet'
+import { Trans } from 'react-i18next'
+import { Tooltip } from 'antd'
+
 import { Banner } from '../../features/banner'
 import {
   mapMissions,
@@ -14,20 +17,21 @@ import {
   createExternalNavigationUri,
   getExternalLinkAttributes,
 } from '../../features/utils'
+import { Agent } from '../agent/Agent'
+import { Distance } from '../distance/Distance'
+import { Duration } from '../duration/Duration'
+import IfUserLoggedIn from '../login/if-user-logged-in'
+import IfUserLoggedOut from '../login/if-user-logged-out'
+import LoginButton from '../login/login-button'
+import { hasLatLng } from '../map-detail/showBannerRouteOnMap'
 import { ReactComponent as SVGList } from '../../img/icons/list.svg'
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGTimer } from '../../img/icons/timer.svg'
 import { ReactComponent as SVGHand } from '../../img/icons/hand.svg'
 import { ReactComponent as SVGCompass } from '../../img/icons/compass.svg'
-import { Agent } from '../agent/Agent'
-import { hasLatLng } from '../map-detail/showBannerRouteOnMap'
+import i18n from '../../i18n'
 
 import './banner-info-card.less'
-import IfUserLoggedIn from '../login/if-user-logged-in'
-import LoginButton from '../login/login-button'
-import { Distance } from '../distance/Distance'
-import { Duration } from '../duration/Duration'
-import IfUserLoggedOut from '../login/if-user-logged-out'
 
 const getAgentList = (banner: Banner) =>
   _(mapMissions(banner.missions, (mission) => mission?.author))
@@ -42,23 +46,17 @@ const getAgentList = (banner: Banner) =>
 const getCreatedBy = (banner: Banner) => {
   const agents = getAgentList(banner)
   if (agents && agents.length) {
-    return <p>Created by{agents}</p>
+    return (
+      <p>
+        <Trans i18nKey="banners.createdBy">Created by</Trans>
+        {agents}
+      </p>
+    )
   }
   return undefined
 }
 
-const getTypeName = (key: MissionType) => {
-  switch (key) {
-    case 'hidden':
-      return 'Hidden'
-    case 'anyOrder':
-      return 'Any Order'
-    case 'sequential':
-      return 'Sequential'
-    default:
-      return ''
-  }
-}
+const getTypeName = (key: MissionType) => i18n.t(`banners.types.${key}`)
 
 const getMissionTypes = (banner: Banner) => {
   const types = _(
@@ -72,7 +70,9 @@ const getMissionTypes = (banner: Banner) => {
           <SVGList />
         </div>
         <div className="info-title">
-          {keys.length > 1 ? 'Mission Types' : 'Mission Type'}
+          <Trans i18nKey="banners.types.title" count={keys.length}>
+            Mission Types
+          </Trans>
         </div>
         {keys.length === 1 && (
           <div className="info-content">{getTypeName(keys[0])}</div>
@@ -126,7 +126,9 @@ const getTotalDistance = (banner: Banner) => {
         <div className="info-icon">
           <SVGExplorer />
         </div>
-        <div className="info-title">Total Distance</div>
+        <div className="info-title">
+          <Trans i18nKey="banners.distance.title">Total Distance</Trans>
+        </div>
         <div className="info-content">
           {banner.lengthMeters && (
             <Distance distanceMeters={banner.lengthMeters} />
@@ -135,7 +137,11 @@ const getTotalDistance = (banner: Banner) => {
       </div>
       {length !== undefined && length > 100 && (
         <div className="info-subrow">
-          <div className="info-subtitle">Last to first waypoint</div>
+          <div className="info-subtitle">
+            <Trans i18nKey="banners.distance.route">
+              Last to first waypoint
+            </Trans>
+          </div>
           <div className="info-subcontent">
             <Distance distanceMeters={length} />
           </div>
@@ -176,12 +182,16 @@ const getInGameTime = (banner: Banner) => {
       <div className="info-icon">
         <SVGTimer />
       </div>
-      <div className="info-title">In-game Time</div>
+      <div className="info-title">
+        <Trans i18nKey="banners.time.title">In-game Time</Trans>
+      </div>
       <div className="info-content">
         {totalTimeInMS === 0 ? (
-          <span title="No time available because some missions are offline, missing or have not been completed by any agent">
-            ???
-          </span>
+          <Tooltip placement="right" title={i18n.t('banners.time.warning')}>
+            <span>
+              <Trans i18nKey="banners.missingData">???</Trans>
+            </span>
+          </Tooltip>
         ) : (
           <Duration durationMilliseconds={totalTimeInMS} />
         )}
@@ -190,30 +200,8 @@ const getInGameTime = (banner: Banner) => {
   )
 }
 
-const getObjectiveName = (objective: Objective) => {
-  switch (objective) {
-    case 'captureOrUpgrade':
-      return 'Capture or Upgrade'
-    case 'createField':
-      return 'Create Field'
-    case 'createLink':
-      return 'Create Link'
-    case 'enterPassphrase':
-      return 'Enter Passphrase'
-    case 'hack':
-      return 'Hack'
-    case 'installMod':
-      return 'Install Mod'
-    case 'takePhoto':
-      return 'Take Photo'
-    case 'viewWaypoint':
-      return 'View Waypoint'
-    case 'hidden':
-      return 'Hidden'
-    default:
-      return ''
-  }
-}
+const getObjectiveName = (objective: Objective) =>
+  i18n.t(`banners.objective.${objective}`)
 
 const getActions = (banner: Banner) => {
   const types = _(mapMissions(banner.missions, (mission) => mission?.steps))
@@ -231,8 +219,15 @@ const getActions = (banner: Banner) => {
     .reduce((prev, next) => prev + next, 0)
     .value()
 
-  const mainActionLabel =
-    keys.length === 1 ? `Action: ${getObjectiveName(keys[0])}` : 'Actions'
+  const mainActionLabel = (
+    <Trans
+      i18nKey="banners.objective.title"
+      count={keys.length}
+      values={{ type: getObjectiveName(keys[0]) }}
+    >
+      Action: {{ type: getObjectiveName(keys[0]) }}
+    </Trans>
+  )
 
   return (
     <>
@@ -274,7 +269,9 @@ const getUniqueVisits = (banner: Banner) => {
       <div className="info-icon">
         <SVGCompass />
       </div>
-      <div className="info-title">Unique Visits</div>
+      <div className="info-title">
+        <Trans i18nKey="banners.uniques">Unique Visits</Trans>
+      </div>
       <div className="info-content">
         {count}
         {hasHidden && '+'}
@@ -306,7 +303,7 @@ const getStartPointButton = (banner: Banner) => {
           className="banner-info-button"
           href={url}
         >
-          Go to Banner Starting Point
+          <Trans i18nKey="banners.goToStart">Go to Banner Starting Point</Trans>
         </a>
       )}
     </>
@@ -319,11 +316,13 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => (
     <IfUserLoggedIn>{getCreatedBy(banner)}</IfUserLoggedIn>
     <IfUserLoggedOut>
       <p>
-        Please{' '}
-        <LoginButton className="button-as-link" type="button">
-          sign in
-        </LoginButton>{' '}
-        to see author(s)
+        <Trans i18nKey="banners.authorLogin">
+          Please{' '}
+          <LoginButton className="button-as-link" type="button">
+            sign in
+          </LoginButton>{' '}
+          to see author(s)
+        </Trans>
       </p>
     </IfUserLoggedOut>
     {getMissionTypes(banner)}

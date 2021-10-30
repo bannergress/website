@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Input } from 'antd'
 import { ThunkDispatch } from 'redux-thunk'
+import { useTranslation } from 'react-i18next'
 
 import {
   claimUser,
@@ -36,6 +37,7 @@ const Account: React.FC = () => {
   const [agent, setAgent] = useState<string>(currentUser?.verificationAgent)
   const [issues, setIssues] = useState<Array<Issue>>([])
   const refreshToken = useRefreshToken()
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'account' })
 
   useEffect(() => {
     dispatch(loadCurrentUser()).catch((err) =>
@@ -87,10 +89,10 @@ const Account: React.FC = () => {
             className="button-default"
             onClick={() => setIsClaiming(true)}
           >
-            Change Linked Account
+            {t('linking.change')}
           </Button>
           <Button className="button-default" onClick={onUnlinkUser}>
-            Unlink Account
+            {t('linking.unlink')}
           </Button>
         </div>
       )
@@ -101,7 +103,7 @@ const Account: React.FC = () => {
           className="positive-action-button"
           onClick={() => setIsClaiming(true)}
         >
-          Link Ingress Account
+          {t('linking.link')}
         </Button>
       </div>
     )
@@ -111,7 +113,7 @@ const Account: React.FC = () => {
     <div className="page-container">
       <div className="account-page">
         <IssuesList issues={issues} />
-        <h1>Account</h1>
+        <h1>{t('title')}</h1>
         <div className="agent-info">
           <UserPicture />
           <div className="agent-name-info">
@@ -126,13 +128,11 @@ const Account: React.FC = () => {
           </div>
         </div>
         <div className="account-linking">
-          <h3>Ingress account linking</h3>
-          {!isAccountLinked(currentUser) && (
-            <p>No account linked to your Bannergress profile</p>
-          )}
+          <h3>{t('linking.title')}</h3>
+          {!isAccountLinked(currentUser) && <p>{t('none')}</p>}
           {isAccountLinked(currentUser) && (
             <p>
-              Account linked:{' '}
+              {t('linking.linked')}
               <Agent agent={currentUser.agent} linkToAgentProfile={false} />
             </p>
           )}
@@ -141,46 +141,46 @@ const Account: React.FC = () => {
             getClaimButtons(currentUser)}
           {(isClaiming || isVerifying(currentUser)) && (
             <>
-              <h3>Ingress Account Name</h3>
+              <h3>{t('linking.step1.title')}</h3>
               <div className="input-agent-name">
                 <Input
                   value={agent}
                   onChange={(e) => setAgent(e.target.value)}
                 />
                 <Button className="button-default" onClick={onClaim}>
-                  Generate Token
+                  {t('linking.step1.action')}
                 </Button>
               </div>
             </>
           )}
           {isVerifying(currentUser) && (
             <>
-              <h3>Your Token</h3>
+              <h3>{t('linking.token')}</h3>
               <div className="input-agent-token">
                 <Input value={currentUser.verificationToken} disabled />
                 <Button
                   className="button-default"
                   onClick={() => onCopyToken(currentUser)}
                 >
-                  Copy
+                  {i18n.t('buttons.copy')}
                 </Button>
               </div>
 
-              <h3>Next step</h3>
-              <p>Post your token as an activity on Ingress Community Forums</p>
+              <h3>{t('linking.step2.title')}</h3>
+              <p>{t('linking.step2.description')}</p>
               <div>
                 <Link
                   className="forum-link"
-                  to="//community.ingress.com/en/activity"
+                  to={t<string>('linkin.step2.link')}
                   target="_blank"
                 >
-                  Take me there
+                  {t('linking.step2.action')}
                 </Link>
               </div>
-              <p>After posting verify your account linking status</p>
+              <p>{t('linking.step3.title')}</p>
               <div>
                 <Button className="positive-action-button" onClick={onVerify}>
-                  Verify
+                  {t('linking.step3.action')}
                 </Button>
               </div>
             </>

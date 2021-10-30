@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Row, Layout, Divider } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -118,9 +119,9 @@ class Search extends React.Component<SearchProps, SearchState> {
   }
 
   getPageTitle() {
+    const { i18n } = this.props
     const { searchTerm } = this.state
-    const title = `Search for ${searchTerm}`
-    return title
+    return i18n?.t('search.title', { searchTerm }) ?? `Search for ${searchTerm}`
   }
 
   async doFetchBanners(
@@ -161,7 +162,9 @@ class Search extends React.Component<SearchProps, SearchState> {
           <div className="search-content">
             <h1>{title}</h1>
 
-            <h2>Places</h2>
+            <h2>
+              <Trans i18nKey="places.title">Places</Trans>
+            </h2>
 
             <Layout>
               {placesStatus === 'success' && (
@@ -180,20 +183,26 @@ class Search extends React.Component<SearchProps, SearchState> {
 
                   {places.length === 0 && (
                     <>
-                      <Row>No places found</Row>
+                      <Row>
+                        <Trans i18nKey="places.notFound" count={2}>
+                          No places found
+                        </Trans>
+                      </Row>
                     </>
                   )}
                 </>
               )}
 
               {(placesStatus === 'initial' || placesStatus === 'loading') && (
-                <>Loading...</>
+                <Trans i18nKey="loading">Loading...</Trans>
               )}
             </Layout>
 
             <Divider type="horizontal" />
 
-            <h2>Banners</h2>
+            <h2>
+              <Trans i18nKey="banners.title">Banners</Trans>
+            </h2>
 
             <Layout>
               {bannersStatus === 'success' && (
@@ -223,14 +232,18 @@ class Search extends React.Component<SearchProps, SearchState> {
 
                   {banners.length === 0 && (
                     <>
-                      <Row>No banners found</Row>
+                      <Row>
+                        <Trans i18nKey="banners.notFound" count={2}>
+                          No banners found
+                        </Trans>
+                      </Row>
                     </>
                   )}
                 </>
               )}
 
               {(bannersStatus === 'initial' || bannersStatus === 'loading') && (
-                <>Loading...</>
+                <Trans i18nKey="loading">Loading...</Trans>
               )}
             </Layout>
           </div>
@@ -241,7 +254,7 @@ class Search extends React.Component<SearchProps, SearchState> {
   }
 }
 
-export interface SearchProps extends RouteComponentProps<{ term: string }> {
+export type SearchProps = {
   banners: Array<Banner>
   places: Array<Place>
   hasMoreBanners: Boolean
@@ -253,7 +266,8 @@ export interface SearchProps extends RouteComponentProps<{ term: string }> {
     pageBanners: number
   ) => Promise<void>
   fetchPlaces: (searchTerm: string, pagePlaces: number) => Promise<void>
-}
+} & RouteComponentProps<{ term: string }> &
+  WithTranslationProps
 
 interface SearchState {
   selectedOrder: BannerOrder
@@ -277,4 +291,7 @@ const mapDispatchToProps = {
   fetchPlaces: loadSearchPlacesAction,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Search))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(withTranslation()(Search)))

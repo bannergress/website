@@ -1,6 +1,7 @@
 import React, { ButtonHTMLAttributes, Fragment } from 'react'
 import { Row, Col, Modal } from 'antd'
 import { useKeycloak } from '@react-keycloak/web'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { ReactComponent as SVGGoogleLogo } from '../../../img/icons/google_logo.svg'
 import { ReactComponent as SVGFacebookLogo } from '../../../img/icons/facebook_logo.svg'
@@ -12,6 +13,7 @@ const LoginButton: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = (
 ) => {
   const { keycloak } = useKeycloak()
   const [modalIsOpen, setIsOpen] = React.useState(false)
+  const { t } = useTranslation()
 
   function openModal() {
     // Skip login chooser for now
@@ -28,7 +30,7 @@ const LoginButton: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = (
   return (
     <Fragment>
       <Modal
-        title="Login"
+        title={t('login.title')}
         visible={modalIsOpen}
         onCancel={closeModal}
         closable={false}
@@ -37,7 +39,11 @@ const LoginButton: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = (
       >
         <Row>
           <Col span={24}>
-            <p>Sign in using one of these identity providers</p>
+            <p>
+              <Trans i18nKey="login.help">
+                Sign in using one of these identity providers
+              </Trans>
+            </p>
           </Col>
         </Row>
         <Row>
@@ -47,8 +53,10 @@ const LoginButton: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = (
               className="buttonLogin buttonLoginGoogle"
               onClick={() => keycloak.login({ idpHint: 'google' })}
             >
-              <SVGGoogleLogo />
-              Login with Google
+              <Trans i18nKey="login.google">
+                <SVGGoogleLogo />
+                Login with Google
+              </Trans>
             </button>
           </Col>
           <Col span={12}>
@@ -57,8 +65,10 @@ const LoginButton: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = (
               className="buttonLogin buttonLoginFacebook"
               onClick={() => keycloak.login({ idpHint: 'facebook' })}
             >
-              <SVGFacebookLogo />
-              Login with Facebook
+              <Trans i18nKey="login.facebook">
+                <SVGFacebookLogo />
+                Login with Facebook
+              </Trans>
             </button>
           </Col>
         </Row>
