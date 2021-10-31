@@ -236,25 +236,32 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
               ) : (
                 <>
                   <h1 className="banner-count">
-                    {selectedPlace?.numberOfBanners}{' '}
-                    <Trans i18nKey="banners.title">Banners</Trans>
-                    {selectedPlace && (
-                      <>
-                        <span className="banner-count-place">
-                          <Trans
-                            i18nKey="places.in"
-                            values={{ longName: selectedPlace.longName }}
-                          >
-                            in {{ longName: selectedPlace.longName }}
-                          </Trans>
-                        </span>
+                    {selectedPlace ? (
+                      <Trans
+                        i18nKey="places.inCountry"
+                        count={selectedPlace.numberOfBanners}
+                        values={{ place: selectedPlace.longName }}
+                        components={{
+                          map: <Link to={createMapUri(selectedPlace)} />,
+                          icon: (
+                            <SVGMap
+                              className="browser-icon"
+                              title={i18n!.t('map.title')}
+                            />
+                          ),
+                        }}
+                      >
+                        {{ count: selectedPlace.numberOfBanners }} Banners in{' '}
+                        {{ place: selectedPlace.longName }}{' '}
                         <Link to={createMapUri(selectedPlace)}>
                           <SVGMap
                             className="browser-icon"
                             title={i18n!.t('map.title')}
                           />
                         </Link>
-                      </>
+                      </Trans>
+                    ) : (
+                      <Trans i18nKey="banners.title">Banners</Trans>
                     )}
                   </h1>
                   <BannerOrderChooser

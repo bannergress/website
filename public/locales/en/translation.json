@@ -171,7 +171,9 @@
       "level5": "Fifth-level administrative division",
       "locality": "Town / City",
       "error": "Error"
-    }
+    },
+    "inCountry_one": "{{count}} Banner in {{place}}<map><icon /></map>",
+    "inCountry_other": "{{count}} Banners in {{place}}<map><icon /></map>"
   },
   "map": {
     "title": "Map",

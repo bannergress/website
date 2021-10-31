@@ -171,7 +171,9 @@
       "level5": "*Fifth-level administrative division",
       "locality": "Población",
       "error": "Error"
-    }
+    },
+    "inCountry_one": "{{count}} banner en <map>{{place}}<icon /></map>",
+    "inCountry_other": "{{count}} banners en <map>{{place}}<icon /></map>"
   },
   "map": {
     "title": "Mapa",
