@@ -7,21 +7,25 @@
       "unlink": "Unlink Account",
       "link": "Link Ingress Account",
       "none": "No account linked to your Bannergress profile",
-      "linked": "Account linked: ",
+      "linked": "Account linked: <agent />",
       "step1": {
-        "title": "Ingress Account Name",
+        "title": "1. What's your Agent name?",
+        "description": "Make sure it's spelled correctly, otherwise we won't be able to verify it.",
         "action": "Generate Token"
       },
-      "token": "Your Token",
       "step2": {
-        "title": "Next step",
-        "description": "Post your token as an activity on Ingress Community Forums",
+        "title": "2. Copy the token",
+        "description": "We have generated a token for you that allows to link \"<span>{{agent}}</span>\" to your account. You need to copy this token for the next step."
+      },
+      "step3": {
+        "title": "3. Post the token",
+        "description": "You need to post the token as an activity on the Ingress Community Forum.",
         "action": "Take me there",
         "link": "//community.ingress.com/en/activity"
       },
-      "step3": {
-        "title": "After posting verify your account linking status",
-        "action": "Verify"
+      "step4": {
+        "title": "4. Complete verification",
+        "description": "Have you posted your token yet? Let us check."
       }
     }
   },
@@ -115,15 +119,15 @@
       "warning": "No time available because some missions are offline, missing or have not been completed by any agent"
     },
     "objective": {
-      "captureOrUpgrade" : "Capture or Upgrade",
-      "createField" : "Create Field",
-      "createLink" : "Create Link",
-      "enterPassphrase" : "Enter Passphrase",
-      "hack" : "Hack",
-      "installMod" : "Install Mod",
-      "takePhoto" : "Take Photo",
-      "viewWaypoint" : "View Waypoint",
-      "hidden" : "Hidden",
+      "captureOrUpgrade": "Capture or Upgrade",
+      "createField": "Create Field",
+      "createLink": "Create Link",
+      "enterPassphrase": "Enter Passphrase",
+      "hack": "Hack",
+      "installMod": "Install Mod",
+      "takePhoto": "Take Photo",
+      "viewWaypoint": "View Waypoint",
+      "hidden": "Hidden",
       "title_one": "Action {{type}}",
       "title_other": "Actions: "
     },
@@ -203,7 +207,11 @@
     "missions": "Missions",
     "map": "Map",
     "collapseAll": "Collapse all",
-    "expandAll": "Expand all"
+    "expandAll": "Expand all",
+    "next": "Next",
+    "back": "Back",
+    "verify": "Verify",
+    "abort": "Abort"
   },
   "placeholders": {
     "startTyping": "Start typing..."
@@ -276,16 +284,16 @@
     "notFound": "No missions found",
     "searching": "Searching missions...",
     "objective": {
-      "captureOrUpgrade" : "Capture / Upgrade",
-      "createField" : "Field",
-      "createLink" : "Link",
-      "enterPassphrase" : "Passphrase",
-      "hack" : "Hack",
-      "installMod" : "Mod",
-      "takePhoto" : "Photo",
-      "viewWaypoint" : "Waypoint",
-      "hidden" : "Hidden",
-      "hide" : "(hidden)",
+      "captureOrUpgrade": "Capture / Upgrade",
+      "createField": "Field",
+      "createLink": "Link",
+      "enterPassphrase": "Passphrase",
+      "hack": "Hack",
+      "installMod": "Mod",
+      "takePhoto": "Photo",
+      "viewWaypoint": "Waypoint",
+      "hidden": "Hidden",
+      "hide": "(hidden)",
       "unavailable": "(unavailable)"
     }
   },

@@ -5,6 +5,7 @@ import {
   CLAIM_USER,
   VERIFY_USER,
   UNLINK_USER,
+  ABORT_CLAIM_USER,
 } from './actionTypes'
 
 const initialState = {
@@ -22,6 +23,7 @@ export default (state = initialState, action: UserActionTypes) => {
     case CLAIM_USER:
     case VERIFY_USER:
     case UNLINK_USER:
+    case ABORT_CLAIM_USER:
       return {
         ...state,
         currentUser: action.payload,

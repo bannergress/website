@@ -31,3 +31,12 @@ export const verifyUser = () =>
 
 export const unlinkUser = () =>
   isMock ? { data: {}, ok: true, status: 200 } : api.post<User>('user/unlink')
+
+export const abortClaimUser = (agent: string) =>
+  isMock
+    ? {
+        data: {},
+        ok: true,
+        status: 200,
+      }
+    : api.delete<User>(`user/claim?agent=${agent}`)

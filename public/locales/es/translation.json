@@ -7,21 +7,25 @@
       "unlink": "Desvincular cuenta",
       "link": "Vincular cuenta de Ingress",
       "none": "No tienes cuenta de Ingress asociada a la de Bannergress",
-      "linked": "Cuenta asociada: ",
+      "linked": "Cuenta asociada: <agent />",
       "step1": {
-        "title": "Nombre de agente",
-        "action": "Generar Token"
+        "title": "1. Cuál es tu nombre de agente?",
+        "description": "Asegúrate de escribirlo bien, si no no podremos verificarlo.",
+        "action": "Generar token"
       },
-      "token": "Tu Token",
       "step2": {
-        "title": "Siguiente paso",
-        "description": "Publica tu token como una actividad en los Foros de la Comunidad de Ingress",
-        "action": "Llévame allá",
-        "link": "//community.ingress.com/es/activity"
+        "title": "2. Copia el token",
+        "description": "Hemos generado un token que te permite asociar la cuenta de Ingress \"<span>{{agent}}</span>\" a tu cuenta de Bannergress. Necesitarás copiar el token para el siguiente paso."
       },
       "step3": {
-        "title": "Después de publicar verifica el estado de tu cuenta",
-        "action": "Verificar"
+        "title": "3. Publica tu token",
+        "description": "Has de publicar tu token como una actividad en los foros de Ingress.",
+        "action": "Llévame ahí",
+        "link": "//community.ingress.com/es/activity"
+      },
+      "step4": {
+        "title": "4. Completar verificación",
+        "description": "Has publicado tu token en el foro? Comprobémoslo."
       }
     }
   },
@@ -203,7 +207,11 @@
     "missions": "Misiones",
     "map": "Mapa",
     "collapseAll": "Colapsar todo",
-    "expandAll": "Expandir todo"
+    "expandAll": "Expandir todo",
+    "next": "Siguiente",
+    "back": "Atrás",
+    "verify": "Verificar",
+    "abort": "Abortar"
   },
   "placeholders": {
     "startTyping": "Empieza a escribir..."
