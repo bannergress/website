@@ -49,19 +49,24 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
     }
   }, [currentUser, setAgent, setIsClaiming])
 
-  const onClaim = () =>
-    dispatch(claimUser(agent))
-      .then(() => slider.current?.next())
-      .catch((err) =>
-        setIssues([
-          {
-            key: 'claim',
-            message: err.message,
-            type: 'error',
-            field: 'verify',
-          },
-        ])
-      )
+  const onClaim = (user: User, newAgent: string) => {
+    if (user.verificationAgent !== newAgent) {
+      dispatch(claimUser(agent))
+        .then(() => slider.current?.next())
+        .catch((err) =>
+          setIssues([
+            {
+              key: 'claim',
+              message: err.message,
+              type: 'error',
+              field: 'verify',
+            },
+          ])
+        )
+    } else {
+      slider.current?.next()
+    }
+  }
   const onVerify = () => {
     dispatch(verifyUser())
       .then(() => {
@@ -172,7 +177,10 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
               >
                 <Trans i18nKey="buttons.abort">Abort</Trans>
               </Button>
-              <Button className="button-default" onClick={onClaim}>
+              <Button
+                className="button-default"
+                onClick={() => onClaim(currentUser, agent)}
+              >
                 <Trans i18nKey="buttons.next">Next</Trans>
               </Button>
             </div>
