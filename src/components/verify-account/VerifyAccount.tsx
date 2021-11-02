@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Button, Carousel, Input } from 'antd'
@@ -49,8 +49,8 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
     }
   }, [currentUser, setAgent, setIsClaiming])
 
-  const onClaim = (user: User, newAgent: string) => {
-    if (user.verificationAgent !== newAgent) {
+  const onClaim = useCallback(() => {
+    if (currentUser.verificationAgent !== agent) {
       dispatch(claimUser(agent))
         .then(() => slider.current?.next())
         .catch((err) =>
@@ -66,8 +66,8 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
     } else {
       slider.current?.next()
     }
-  }
-  const onVerify = () => {
+  }, [currentUser.verificationAgent, agent, slider, dispatch, setIssues])
+  const onVerify = useCallback(() => {
     dispatch(verifyUser())
       .then(() => {
         setIsClaiming(false)
@@ -84,16 +84,24 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
         ])
       )
     setIsClaiming(false)
-  }
-  const onUnlinkUser = () =>
-    dispatch(unlinkUser()).catch((err) =>
-      setIssues([
-        { key: 'unlink', message: err.message, type: 'error', field: 'verify' },
-      ])
-    )
-  const onAbort = (user: User) => {
-    if (user.verificationAgent) {
-      dispatch(abortClaimUser(user.verificationAgent))
+  }, [dispatch, refreshToken, setIssues])
+  const onUnlinkUser = useCallback(
+    () =>
+      dispatch(unlinkUser()).catch((err) =>
+        setIssues([
+          {
+            key: 'unlink',
+            message: err.message,
+            type: 'error',
+            field: 'verify',
+          },
+        ])
+      ),
+    [dispatch, setIssues]
+  )
+  const onAbort = useCallback(() => {
+    if (currentUser.verificationAgent) {
+      dispatch(abortClaimUser(currentUser.verificationAgent))
         .then(() => {
           setIsClaiming(false)
           setAgent('')
@@ -112,10 +120,10 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
       setIsClaiming(false)
       setAgent('')
     }
-  }
+  }, [currentUser.verificationAgent, dispatch, setIssues])
 
-  const getClaimButtons = (user: User) => {
-    if (isAccountLinked(user)) {
+  const getClaimButtons = useCallback(() => {
+    if (isAccountLinked(currentUser)) {
       return (
         <div className="change-verification-buttons">
           <Button
@@ -142,131 +150,140 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
         </Button>
       </div>
     )
-  }
+  }, [currentUser, onUnlinkUser])
   const onNext = () => slider.current?.next()
   const onBack = () => slider.current?.prev()
 
-  const getCarousel = (user: User) => (
-    <Carousel
-      ref={(c) => {
-        slider.current = c
-      }}
-      dots={false}
-    >
-      <div>
-        {(isClaiming || isVerifying(user)) && (
-          <>
-            <h3>
-              <Trans i18nKey="account.linking.step1.title">
-                1. What&apos;s your Agent name?
+  const getCarousel = useCallback(
+    () => (
+      <Carousel
+        ref={(c) => {
+          slider.current = c
+        }}
+        dots={false}
+      >
+        <div>
+          {(isClaiming || isVerifying(currentUser)) && (
+            <>
+              <h3>
+                <Trans i18nKey="account.linking.step1.title">
+                  1. What&apos;s your Agent name?
+                </Trans>
+              </h3>
+              <p>
+                <Trans i18nKey="account.linking.step1.description">
+                  Make sure it&apos;s spelled correctly, otherwise we won&apos;t
+                  be able to verify it.
+                </Trans>
+              </p>
+              <div className="input-agent-name">
+                <Input
+                  value={agent}
+                  onChange={(e) => setAgent(e.target.value)}
+                />
+              </div>
+              <div className="verify-steps-buttons">
+                <Button className="button-default" onClick={onAbort}>
+                  <Trans i18nKey="buttons.abort">Abort</Trans>
+                </Button>
+                <Button className="button-default" onClick={onClaim}>
+                  <Trans i18nKey="buttons.next">Next</Trans>
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
+        <div>
+          <h3>
+            <Trans i18nKey="account.linking.step2.title">
+              2. Copy the token
+            </Trans>
+          </h3>
+          <p>
+            <Trans
+              i18nKey="account.linking.step2.description"
+              values={{ agent: currentUser.verificationAgent }}
+              components={{ span: <span className="verify-account-agent" /> }}
+            >
+              We have generated a token for you that allows to link &quot;
+              <span className="verify-account-agent">
+                {{ agent: currentUser.verificationAgent }}
+              </span>
+              &quot; to your account. You need to copy this token for the next
+              step.
+            </Trans>
+          </p>
+          <div className="input-agent-token">
+            <Input value={currentUser.verificationToken} disabled />
+            <Button
+              className="button-default"
+              onClick={() => onCopyToken(currentUser)}
+            >
+              <Trans i18nKey="buttons.copy">Copy</Trans>
+            </Button>
+          </div>
+          <div className="verify-steps-buttons">
+            <Button className="button-default" onClick={onBack}>
+              <Trans i18nKey="buttons.back">Back</Trans>
+            </Button>
+            <Button className="button-default" onClick={onNext}>
+              <Trans i18nKey="buttons.next">Next</Trans>
+            </Button>
+          </div>
+        </div>
+        <div>
+          <h3>
+            <Trans i18nKey="account.linking.step3.title">
+              3. Post the token
+            </Trans>
+          </h3>
+          <p>
+            <Trans i18nKey="account.linking.step3.description">
+              You need to post the token as an activity on the Ingress Community
+              Forum.
+            </Trans>
+          </p>
+          <div className="verify-steps-buttons">
+            <Button className="button-default" onClick={onBack}>
+              <Trans i18nKey="buttons.back">Back</Trans>
+            </Button>
+            <Link
+              className="forum-link"
+              to={t<string>('linkin.step3.link')}
+              target="_blank"
+            >
+              <Trans i18nKey="account.linking.step3.action">
+                Take me there
               </Trans>
-            </h3>
-            <p>
-              <Trans i18nKey="account.linking.step1.description">
-                Make sure it&apos;s spelled correctly, otherwise we won&apos;t
-                be able to verify it.
-              </Trans>
-            </p>
-            <div className="input-agent-name">
-              <Input value={agent} onChange={(e) => setAgent(e.target.value)} />
-            </div>
-            <div className="verify-steps-buttons">
-              <Button
-                className="button-default"
-                onClick={() => onAbort(currentUser)}
-              >
-                <Trans i18nKey="buttons.abort">Abort</Trans>
-              </Button>
-              <Button
-                className="button-default"
-                onClick={() => onClaim(currentUser, agent)}
-              >
-                <Trans i18nKey="buttons.next">Next</Trans>
-              </Button>
-            </div>
-          </>
-        )}
-      </div>
-      <div>
-        <h3>
-          <Trans i18nKey="account.linking.step2.title">2. Copy the token</Trans>
-        </h3>
-        <p>
-          <Trans
-            i18nKey="account.linking.step2.description"
-            values={{ agent: user.verificationAgent }}
-            components={{ span: <span className="verify-account-agent" /> }}
-          >
-            We have generated a token for you that allows to link &quot;
-            <span className="verify-account-agent">
-              {{ agent: user.verificationAgent }}
-            </span>
-            &quot; to your account. You need to copy this token for the next
-            step.
-          </Trans>
-        </p>
-        <div className="input-agent-token">
-          <Input value={user.verificationToken} disabled />
-          <Button className="button-default" onClick={() => onCopyToken(user)}>
-            <Trans i18nKey="buttons.copy">Copy</Trans>
-          </Button>
+            </Link>
+            <Button className="button-default" onClick={onNext}>
+              <Trans i18nKey="buttons.next">Next</Trans>
+            </Button>
+          </div>
         </div>
-        <div className="verify-steps-buttons">
-          <Button className="button-default" onClick={onBack}>
-            <Trans i18nKey="buttons.back">Back</Trans>
-          </Button>
-          <Button className="button-default" onClick={onNext}>
-            <Trans i18nKey="buttons.next">Next</Trans>
-          </Button>
+        <div>
+          <h3>
+            <Trans i18nKey="account.linking.step4.title">
+              4. Complete verification
+            </Trans>
+          </h3>
+          <p>
+            <Trans i18nKey="account.linking.step4.description">
+              Have you posted your token yet? Let us check.
+            </Trans>
+          </p>
+          <div className="verify-steps-buttons">
+            <Button className="button-default" onClick={onBack}>
+              <Trans i18nKey="buttons.back">Back</Trans>
+            </Button>
+            <Button className="positive-action-button" onClick={onVerify}>
+              <Trans i18nKey="buttons.verify">Verify</Trans>
+            </Button>
+          </div>
         </div>
-      </div>
-      <div>
-        <h3>
-          <Trans i18nKey="account.linking.step3.title">3. Post the token</Trans>
-        </h3>
-        <p>
-          <Trans i18nKey="account.linking.step3.description">
-            You need to post the token as an activity on the Ingress Community
-            Forum.
-          </Trans>
-        </p>
-        <div className="verify-steps-buttons">
-          <Button className="button-default" onClick={onBack}>
-            <Trans i18nKey="buttons.back">Back</Trans>
-          </Button>
-          <Link
-            className="forum-link"
-            to={t<string>('linkin.step3.link')}
-            target="_blank"
-          >
-            <Trans i18nKey="account.linking.step3.action">Take me there</Trans>
-          </Link>
-          <Button className="button-default" onClick={onNext}>
-            <Trans i18nKey="buttons.next">Next</Trans>
-          </Button>
-        </div>
-      </div>
-      <div>
-        <h3>
-          <Trans i18nKey="account.linking.step4.title">
-            4. Complete verification
-          </Trans>
-        </h3>
-        <p>
-          <Trans i18nKey="account.linking.step4.description">
-            Have you posted your token yet? Let us check.
-          </Trans>
-        </p>
-        <div className="verify-steps-buttons">
-          <Button className="button-default" onClick={onBack}>
-            <Trans i18nKey="buttons.back">Back</Trans>
-          </Button>
-          <Button className="positive-action-button" onClick={onVerify}>
-            <Trans i18nKey="buttons.verify">Verify</Trans>
-          </Button>
-        </div>
-      </div>
-    </Carousel>
+      </Carousel>
+    ),
+    [agent, currentUser, isClaiming, onAbort, onClaim, onVerify, t]
   )
 
   return (
@@ -297,10 +314,8 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
             </Trans>
           </p>
         )}
-        {!isClaiming &&
-          !isVerifying(currentUser) &&
-          getClaimButtons(currentUser)}
-        {isClaiming && getCarousel(currentUser)}
+        {!isClaiming && !isVerifying(currentUser) && getClaimButtons()}
+        {isClaiming && getCarousel()}
       </div>
     </div>
   )
