@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Button, Carousel, Input } from 'antd'
 import { CarouselRef } from 'antd/lib/carousel'
-import { ThunkDispatch } from 'redux-thunk'
+import { ThunkDispatch, ThunkAction } from 'redux-thunk'
 import { Trans, useTranslation } from 'react-i18next'
 
 import {
@@ -17,16 +17,16 @@ import { UserActionTypes } from '../../features/user/actionTypes'
 import { RootState } from '../../storeTypes'
 import { useRefreshToken } from '../../hooks/RefreshToken'
 import { Agent } from '../agent'
+import { Issue } from '../Issues-list'
+import LoadingOverlay from '../loading-overlay'
 
 import './verify-account.less'
-import { Issue } from '../Issues-list'
 
 type AppDispatch = ThunkDispatch<RootState, any, UserActionTypes>
+type AppAction = ThunkAction<Promise<any>, RootState, any, UserActionTypes>
 
 const isAccountLinked = (user: User) => user && user.agent
 const isVerifying = (user: User) => !!user.verificationToken
-const onCopyToken = (user: User) =>
-  navigator.clipboard.writeText(user.verificationToken)
 
 const VerifyAccount: React.FC<VerifyAccountProps> = ({
   currentUser,
@@ -36,6 +36,7 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
   const slider = useRef<CarouselRef | null>()
   const [isClaiming, setIsClaiming] = useState(false)
   const [agent, setAgent] = useState<string>(currentUser?.verificationAgent)
+  const [loading, setLoading] = useState(false)
   const refreshToken = useRefreshToken()
   const { t } = useTranslation(undefined, { keyPrefix: 'account' })
 
@@ -49,11 +50,31 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
     }
   }, [currentUser, setAgent, setIsClaiming])
 
+  const dispatchWithLoading = useCallback(
+    (
+      action: AppAction,
+      onSuccess?: () => void,
+      onError?: (err: any) => void
+    ) => {
+      setLoading(true)
+      dispatch(action)
+        .then(() => {
+          if (onSuccess) onSuccess()
+        })
+        .catch((err) => {
+          if (onError) onError(err)
+        })
+        .finally(() => setLoading(false))
+    },
+    [dispatch]
+  )
+
   const onClaim = useCallback(() => {
     if (currentUser.verificationAgent !== agent) {
-      dispatch(claimUser(agent))
-        .then(() => slider.current?.next())
-        .catch((err) =>
+      dispatchWithLoading(
+        claimUser(agent),
+        () => slider.current?.next(),
+        (err) =>
           setIssues([
             {
               key: 'claim',
@@ -62,18 +83,20 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
               field: 'verify',
             },
           ])
-        )
+      )
     } else {
       slider.current?.next()
     }
-  }, [currentUser.verificationAgent, agent, slider, dispatch, setIssues])
+  }, [currentUser.verificationAgent, agent, dispatchWithLoading, setIssues])
+
   const onVerify = useCallback(() => {
-    dispatch(verifyUser())
-      .then(() => {
+    dispatchWithLoading(
+      verifyUser(),
+      () => {
         setIsClaiming(false)
         refreshToken()
-      })
-      .catch((err) =>
+      },
+      (err) =>
         setIssues([
           {
             key: 'verify',
@@ -82,31 +105,31 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
             field: 'verify',
           },
         ])
-      )
-    setIsClaiming(false)
-  }, [dispatch, refreshToken, setIssues])
-  const onUnlinkUser = useCallback(
-    () =>
-      dispatch(unlinkUser()).catch((err) =>
-        setIssues([
-          {
-            key: 'unlink',
-            message: err.message,
-            type: 'error',
-            field: 'verify',
-          },
-        ])
-      ),
-    [dispatch, setIssues]
-  )
+    )
+  }, [dispatchWithLoading, refreshToken, setIssues])
+
+  const onUnlinkUser = useCallback(() => {
+    dispatchWithLoading(unlinkUser(), undefined, (err) =>
+      setIssues([
+        {
+          key: 'unlink',
+          message: err.message,
+          type: 'error',
+          field: 'verify',
+        },
+      ])
+    )
+  }, [dispatchWithLoading, setIssues])
+
   const onAbort = useCallback(() => {
     if (currentUser.verificationAgent) {
-      dispatch(abortClaimUser(currentUser.verificationAgent))
-        .then(() => {
+      dispatchWithLoading(
+        abortClaimUser(currentUser.verificationAgent),
+        () => {
           setIsClaiming(false)
           setAgent('')
-        })
-        .catch((err) =>
+        },
+        (err) =>
           setIssues([
             {
               key: 'claim',
@@ -115,12 +138,12 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
               field: 'verify',
             },
           ])
-        )
+      )
     } else {
       setIsClaiming(false)
       setAgent('')
     }
-  }, [currentUser.verificationAgent, dispatch, setIssues])
+  }, [currentUser.verificationAgent, dispatchWithLoading, setIssues])
 
   const getClaimButtons = useCallback(() => {
     if (isAccountLinked(currentUser)) {
@@ -151,8 +174,15 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
       </div>
     )
   }, [currentUser, onUnlinkUser])
-  const onNext = () => slider.current?.next()
-  const onBack = () => slider.current?.prev()
+
+  const onNext = useCallback(() => slider.current?.next(), [])
+
+  const onBack = useCallback(() => slider.current?.prev(), [])
+
+  const onCopyToken = useCallback(() => {
+    navigator.clipboard.writeText(currentUser.verificationToken)
+    onNext()
+  }, [currentUser.verificationToken, onNext])
 
   const getCarousel = useCallback(
     () => (
@@ -161,6 +191,8 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
           slider.current = c
         }}
         dots={false}
+        swipe={false}
+        draggable={false}
       >
         <div>
           {(isClaiming || isVerifying(currentUser)) && (
@@ -186,7 +218,11 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
                 <Button className="button-default" onClick={onAbort}>
                   <Trans i18nKey="buttons.abort">Abort</Trans>
                 </Button>
-                <Button className="button-default" onClick={onClaim}>
+                <Button
+                  className="claim-button"
+                  onClick={onClaim}
+                  disabled={!agent || agent.length < 3}
+                >
                   <Trans i18nKey="buttons.next">Next</Trans>
                 </Button>
               </div>
@@ -215,10 +251,7 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
           </p>
           <div className="input-agent-token">
             <Input value={currentUser.verificationToken} disabled />
-            <Button
-              className="button-default"
-              onClick={() => onCopyToken(currentUser)}
-            >
+            <Button className="button-default" onClick={onCopyToken}>
               <Trans i18nKey="buttons.copy">Copy</Trans>
             </Button>
           </div>
@@ -226,7 +259,7 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
             <Button className="button-default" onClick={onBack}>
               <Trans i18nKey="buttons.back">Back</Trans>
             </Button>
-            <Button className="button-default" onClick={onNext}>
+            <Button className="positive-action-button" onClick={onNext}>
               <Trans i18nKey="buttons.next">Next</Trans>
             </Button>
           </div>
@@ -249,14 +282,14 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
             </Button>
             <Link
               className="forum-link"
-              to={t<string>('linkin.step3.link')}
+              to={t<string>('linking.step3.link')}
               target="_blank"
             >
               <Trans i18nKey="account.linking.step3.action">
                 Take me there
               </Trans>
             </Link>
-            <Button className="button-default" onClick={onNext}>
+            <Button className="positive-action-button" onClick={onNext}>
               <Trans i18nKey="buttons.next">Next</Trans>
             </Button>
           </div>
@@ -283,11 +316,28 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
         </div>
       </Carousel>
     ),
-    [agent, currentUser, isClaiming, onAbort, onClaim, onVerify, t]
+    [
+      agent,
+      currentUser,
+      isClaiming,
+      onAbort,
+      onBack,
+      onClaim,
+      onCopyToken,
+      onNext,
+      onVerify,
+      t,
+    ]
   )
 
   return (
     <div className="account-linking">
+      <LoadingOverlay
+        active={loading}
+        fadeSpeed={300}
+        spinner
+        text={t('loading')}
+      />
       <div>
         <h3>
           <Trans i18nKey="account.linking.title">Link Ingress Account</Trans>

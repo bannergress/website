@@ -1,6 +1,7 @@
 {
   "account": {
     "title": "Account",
+    "loading": "Working on it...",
     "linking": {
       "title": "Ingress account linking",
       "change": "Change Linked Account",

@@ -1,6 +1,7 @@
 {
   "account": {
     "title": "Cuenta",
+    "loading": "Cargando...",
     "linking": {
       "title": "Vincular cuenta de Ingress",
       "change": "Cambiar cuenta asociada",
@@ -21,7 +22,7 @@
         "title": "3. Publica tu token",
         "description": "Has de publicar tu token como una actividad en los foros de Ingress.",
         "action": "Llévame ahí",
-        "link": "//community.ingress.com/es/activity"
+        "link": "//community.ingress.com/en/activity"
       },
       "step4": {
         "title": "4. Completar verificación",
