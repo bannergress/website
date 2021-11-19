@@ -223,7 +223,7 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
                   onClick={onClaim}
                   disabled={!agent || agent.length < 3}
                 >
-                  <Trans i18nKey="buttons.next">Next</Trans>
+                  <Trans i18nKey="account.linking.step1.action">Continue</Trans>
                 </Button>
               </div>
             </>
@@ -251,16 +251,15 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
           </p>
           <div className="input-agent-token">
             <Input value={currentUser.verificationToken} disabled />
-            <Button className="button-default" onClick={onCopyToken}>
-              <Trans i18nKey="buttons.copy">Copy</Trans>
-            </Button>
           </div>
           <div className="verify-steps-buttons">
             <Button className="button-default" onClick={onBack}>
               <Trans i18nKey="buttons.back">Back</Trans>
             </Button>
-            <Button className="positive-action-button" onClick={onNext}>
-              <Trans i18nKey="buttons.next">Next</Trans>
+            <Button className="positive-action-button" onClick={onCopyToken}>
+              <Trans i18nKey="account.linking.step2.action">
+                Copy and continue
+              </Trans>
             </Button>
           </div>
         </div>
@@ -273,7 +272,7 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
           <p>
             <Trans i18nKey="account.linking.step3.description">
               You need to post the token as an activity on the Ingress Community
-              Forum.
+              Forum. (Make sure you are logged in there!)
             </Trans>
           </p>
           <div className="verify-steps-buttons">
@@ -284,14 +283,12 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
               className="forum-link"
               to={t<string>('linking.step3.link')}
               target="_blank"
+              onClick={onNext}
             >
               <Trans i18nKey="account.linking.step3.action">
-                Take me there
+                Take me there and continue
               </Trans>
             </Link>
-            <Button className="positive-action-button" onClick={onNext}>
-              <Trans i18nKey="buttons.next">Next</Trans>
-            </Button>
           </div>
         </div>
         <div>

@@ -12,21 +12,23 @@
       "step1": {
         "title": "1. What's your Agent name?",
         "description": "Make sure it's spelled correctly, otherwise we won't be able to verify it.",
-        "action": "Generate Token"
+        "action": "Continue"
       },
       "step2": {
         "title": "2. Copy the token",
-        "description": "We have generated a token for you that allows to link \"<span>{{agent}}</span>\" to your account. You need to copy this token for the next step."
+        "description": "We have generated a token for you that allows to link \"<span>{{agent}}</span>\" to your account. You need to copy this token for the next step.",
+        "action": "Copy and continue"
       },
       "step3": {
         "title": "3. Post the token",
-        "description": "You need to post the token as an activity on the Ingress Community Forum.",
-        "action": "Take me there",
+        "description": "You need to post the token as an activity on the Ingress Community Forum. (Make sure you are logged in there!)",
+        "action": "Take me there and continue",
         "link": "//community.ingress.com/en/activity"
       },
       "step4": {
         "title": "4. Complete verification",
-        "description": "Have you posted your token yet? Let us check."
+        "description": "Have you posted your token yet? Let us check.",
+        "action": "Verify"
       }
     }
   },
@@ -196,7 +198,6 @@
   },
   "buttons": {
     "addAll": "Add All",
-    "copy": "Copy",
     "removeAll": "Remove All",
     "review": "Review",
     "goBack": "Go back",
@@ -209,9 +210,7 @@
     "map": "Map",
     "collapseAll": "Collapse all",
     "expandAll": "Expand all",
-    "next": "Next",
     "back": "Back",
-    "verify": "Verify",
     "abort": "Abort"
   },
   "placeholders": {

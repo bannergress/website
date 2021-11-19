@@ -12,11 +12,12 @@
       "step1": {
         "title": "1. Cuál es tu nombre de agente?",
         "description": "Asegúrate de escribirlo bien, si no no podremos verificarlo.",
-        "action": "Generar token"
+        "action": "Siguiente"
       },
       "step2": {
         "title": "2. Copia el token",
-        "description": "Hemos generado un token que te permite asociar la cuenta de Ingress \"<span>{{agent}}</span>\" a tu cuenta de Bannergress. Necesitarás copiar el token para el siguiente paso."
+        "description": "Hemos generado un token que te permite asociar la cuenta de Ingress \"<span>{{agent}}</span>\" a tu cuenta de Bannergress. Necesitarás copiar el token para el siguiente paso.",
+        "action": "Copiar"
       },
       "step3": {
         "title": "3. Publica tu token",
@@ -26,7 +27,8 @@
       },
       "step4": {
         "title": "4. Completar verificación",
-        "description": "Has publicado tu token en el foro? Comprobémoslo."
+        "description": "Has publicado tu token en el foro? Comprobémoslo.",
+        "action": "Verificar"
       }
     }
   },
@@ -196,7 +198,6 @@
   },
   "buttons": {
     "addAll": "Añadir todo",
-    "copy": "Copiar",
     "removeAll": "Quitar todo",
     "review": "Revisar",
     "goBack": "Atrás",
@@ -209,9 +210,7 @@
     "map": "Mapa",
     "collapseAll": "Colapsar todo",
     "expandAll": "Expandir todo",
-    "next": "Siguiente",
     "back": "Atrás",
-    "verify": "Verificar",
     "abort": "Abortar"
   },
   "placeholders": {
