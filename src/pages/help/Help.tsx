@@ -1,5 +1,6 @@
 import React from 'react'
 import { Trans, useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet'
 
 import FooterMain from '../../components/footer-main'
 import { AllQuestions } from './AllQuestions'
@@ -15,6 +16,9 @@ const Help: React.FC = () => {
 
   return (
     <div className="page-container">
+      <Helmet defer={false}>
+        <title>{t('help.title')}</title>
+      </Helmet>
       <div className="help-page">
         <h1>
           <Trans i18nKey="help.title">FAQ and Support</Trans>
