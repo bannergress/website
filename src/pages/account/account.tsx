@@ -44,7 +44,7 @@ const Account: React.FC = () => {
         <IssuesList issues={issues} onCloseIssue={onCloseIssue} />
         <h1>{t('title')}</h1>
         <div className="agent-info">
-          <UserPicture />
+          <UserPicture size={125} />
           <div className="agent-name-info">
             <span className="user-name">
               <UserName />

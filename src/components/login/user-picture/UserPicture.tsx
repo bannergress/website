@@ -1,8 +1,10 @@
 import React from 'react'
 import { useKeycloak } from '@react-keycloak/web'
+import { getSizedImageUrl } from '../../../features/utils'
 
 const UserPicture: React.FC<UserPictureProps> = ({
   className = 'user-picture',
+  size = 50,
 }) => {
   const { keycloak, initialized: keycloakInitialized } = useKeycloak()
 
@@ -12,9 +14,11 @@ const UserPicture: React.FC<UserPictureProps> = ({
         <div
           className={className}
           style={{
-            backgroundImage: `url('${
-              (keycloak.idTokenParsed as any).picture
-            }')`,
+            backgroundImage: `url('${getSizedImageUrl(
+              (keycloak.idTokenParsed as any).picture,
+              size,
+              true
+            )}')`,
           }}
         />
       )}
@@ -24,6 +28,7 @@ const UserPicture: React.FC<UserPictureProps> = ({
 
 export interface UserPictureProps {
   className?: string
+  size?: number
 }
 
 export default UserPicture

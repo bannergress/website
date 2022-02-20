@@ -45,7 +45,7 @@ const MenuUser: React.FC<MenuUserProps> = ({ logout }) => {
   return (
     <Dropdown trigger={['click', 'hover']} overlay={menu}>
       <Button className="menu-user">
-        <UserPicture className="user-picture" />{' '}
+        <UserPicture className="user-picture" size={40} />{' '}
         <span className="arrow-icon">
           <SVGUpArrow />
         </span>

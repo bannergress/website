@@ -31,3 +31,14 @@ export const decodeURIComponentSafe = (uriString: string) => {
     return uriString
   }
 }
+
+export const getSizedImageUrl = (
+  imageUrl: string | undefined,
+  size: number,
+  square: boolean = false
+) => {
+  if (imageUrl && imageUrl.match(/googleusercontent/)) {
+    return `${imageUrl.split('=')[0]}=s${size}${square ? '-c' : ''}`
+  }
+  return imageUrl
+}
