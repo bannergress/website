@@ -37,8 +37,10 @@ export const getSizedImageUrl = (
   size: number,
   square: boolean = false
 ) => {
-  if (imageUrl && imageUrl.match(/googleusercontent/)) {
-    return `${imageUrl.split('=')[0]}=s${size}${square ? '-c' : ''}`
+  if (imageUrl && /(googleusercontent|ggpht)/i.test(imageUrl)) {
+    return `https://${imageUrl.split('://')[1].split('=')[0]}=s${size}${
+      square ? '-c' : ''
+    }`
   }
   return imageUrl
 }
