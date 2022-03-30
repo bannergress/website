@@ -32,7 +32,7 @@ class Search extends React.Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {
     super(props)
     this.state = {
-      selectedOrder: 'created',
+      selectedOrder: 'relevance',
       selectedDirection: 'DESC',
       searchTerm: '',
       pageBanners: 0,
@@ -214,6 +214,7 @@ class Search extends React.Component<SearchProps, SearchState> {
                           selectedOrder={selectedOrder}
                           selectedDirection={selectedDirection}
                           onOrderClicked={this.onOrderSelected}
+                          includeRelevance
                         />
                       </Row>
 

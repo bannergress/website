@@ -50,6 +50,7 @@ export type BannerType = 'sequential' | 'anyOrder'
 export type BannerListType = 'todo' | 'done' | 'blacklist' | 'none'
 
 export type ApiOrder =
+  | 'relevance'
   | 'listAdded'
   | 'created'
   | 'lengthMeters'

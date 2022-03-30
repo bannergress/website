@@ -11,6 +11,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
   selectedDirection,
   onOrderClicked,
   includeAddedList = false,
+  includeRelevance = false,
 }) => {
   const getButtonClass = (type: BannerOrder) => {
     let classNames = 'order-button'
@@ -43,6 +44,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
         <h4>
           <Trans i18nKey="order.sortBy">Sort by</Trans>
         </h4>
+        {includeRelevance && getButton('relevance')}
         {includeAddedList && getButton('listAdded')}
         {getButton('created')}
         {getButton('title')}
@@ -58,6 +60,7 @@ export interface BannerOrderChooserProps {
   selectedDirection: BannerOrderDirection
   onOrderClicked: (order: BannerOrder) => void
   includeAddedList?: boolean
+  includeRelevance?: boolean
 }
 
 export default BannerOrderChooser

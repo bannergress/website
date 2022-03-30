@@ -299,6 +299,7 @@
   },
   "order": {
     "sortBy": "Sort by",
+    "relevance": "Relevance <2 />",
     "listAdded": "Added to List <2 />",
     "created": "Date Created <2 />",
     "title": "A-Z <2 />",
