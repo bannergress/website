@@ -135,6 +135,8 @@
       "title_other": "Actions: "
     },
     "uniques": "Unique Visits",
+    "plannedOfflineDate": "Going offline on",
+    "latestUpdateStatus": "Last checked",
     "goToStart": "Go to Banner Starting Point",
     "authorLogin": "Please <2>sign in</2> to see author(s)",
     "info": "Banner Info",

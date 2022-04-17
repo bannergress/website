@@ -3,6 +3,7 @@ import _ from 'underscore'
 import { LatLng } from 'leaflet'
 import { Trans } from 'react-i18next'
 import { Tooltip } from 'antd'
+import { Temporal } from '@js-temporal/polyfill'
 
 import { Banner } from '../../features/banner'
 import {
@@ -29,9 +30,12 @@ import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGTimer } from '../../img/icons/timer.svg'
 import { ReactComponent as SVGHand } from '../../img/icons/hand.svg'
 import { ReactComponent as SVGCompass } from '../../img/icons/compass.svg'
+import { ReactComponent as SVGChecked } from '../../img/icons/checked.svg'
+import { ReactComponent as SVGOffline } from '../../img/icons/offline.svg'
 import i18n from '../../i18n'
 
 import './banner-info-card.less'
+import { PlainDate } from '../plain-date'
 
 const getAgentList = (banner: Banner) =>
   _(mapMissions(banner.missions, (mission) => mission?.author))
@@ -51,6 +55,80 @@ const getCreatedBy = (banner: Banner) => {
         <Trans i18nKey="banners.createdBy">Created by</Trans>
         {agents}
       </p>
+    )
+  }
+  return undefined
+}
+
+const getRemainingDaysCategory = (days: number) => {
+  if (days <= 0) {
+    return 'error-text'
+  }
+  if (days <= 14) {
+    return 'warning-text'
+  }
+  return undefined
+}
+
+const getPlannedOfflineDate = (banner: Banner) => {
+  if (banner.plannedOfflineDate) {
+    const plannedOfflineDate = Temporal.PlainDate.from(
+      banner.plannedOfflineDate
+    )
+    const now = Temporal.Now.plainDateISO()
+    const diffDays = now.until(plannedOfflineDate, {
+      largestUnit: 'day',
+    }).days
+    const className = getRemainingDaysCategory(diffDays)
+    return (
+      <div className="info-row">
+        <div className="info-icon">
+          <SVGOffline />
+        </div>
+        <div className="info-title">
+          <Trans i18nKey="banners.plannedOfflineDate">Going offline on</Trans>
+        </div>
+        <div className="info-content">
+          <span className={className}>
+            <PlainDate date={plannedOfflineDate} />
+          </span>
+        </div>
+      </div>
+    )
+  }
+  return undefined
+}
+
+const getLatestUpdateStatus = (banner: Banner) => {
+  const updateDates = mapMissions(banner.missions, (mission) =>
+    mission?.latestUpdateStatus
+      ? Temporal.Instant.from(mission?.latestUpdateStatus)
+      : undefined
+  )
+  let latestUpdate: Temporal.Instant | undefined
+  if (updateDates.length !== banner.numberOfMissions) {
+    latestUpdate = undefined
+  } else {
+    latestUpdate = updateDates.reduce((first, second) =>
+      Temporal.Instant.compare(first, second) < 0 ? first : second
+    )
+  }
+  if (latestUpdate) {
+    const date = latestUpdate
+      .toZonedDateTimeISO(Temporal.Now.timeZone())
+      .toPlainDate()
+    return (
+      <div className="info-row">
+        <div className="info-icon">
+          <SVGChecked />
+        </div>
+        <div className="info-title">
+          <Trans i18nKey="banners.latestUpdateStatus">Last checked</Trans>
+        </div>
+        <div className="info-content">
+          <PlainDate date={date} />
+        </div>
+      </div>
     )
   }
   return undefined
@@ -312,7 +390,8 @@ const getStartPointButton = (banner: Banner) => {
 
 const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => (
   <div className="banner-info-card">
-    <p>{banner.description}</p>
+    {banner.description && <p>{banner.description}</p>}
+    {banner.warning && <p className="warning-text">{banner.warning}</p>}
     <IfUserLoggedIn>{getCreatedBy(banner)}</IfUserLoggedIn>
     <IfUserLoggedOut>
       <p>
@@ -325,11 +404,13 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => (
         </Trans>
       </p>
     </IfUserLoggedOut>
+    {getPlannedOfflineDate(banner)}
     {getMissionTypes(banner)}
     {getTotalDistance(banner)}
     {getInGameTime(banner)}
     {getActions(banner)}
     {getUniqueVisits(banner)}
+    {getLatestUpdateStatus(banner)}
     {getStartPointButton(banner)}
   </div>
 )

@@ -54,7 +54,8 @@
           "formattedAddress"
         ]
       }
-    ]
+    ],
+    "react/sort-comp": "off"
   },
   "overrides": [
     {

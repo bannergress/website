@@ -24,6 +24,8 @@ export interface Banner {
   averageDurationMilliseconds?: number
   startPlaceId?: string
   owner?: Boolean
+  warning?: string
+  plannedOfflineDate?: string
 }
 
 export interface BannerState {

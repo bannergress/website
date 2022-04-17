@@ -59,6 +59,7 @@ export interface Mission {
   author?: NamedAgent
   averageDurationMilliseconds?: number
   lengthMeters?: number
+  latestUpdateStatus?: string
 }
 
 export interface MissionState {
