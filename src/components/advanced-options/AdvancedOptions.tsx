@@ -6,6 +6,7 @@ import { BannerType } from '../../features/banner'
 import { ReactComponent as SVGHelp } from '../../img/icons/help-round.svg'
 
 import './advanced-options.less'
+import { DatePicker } from '../date-picker/DatePicker'
 
 const typeHelp = (
   <>
@@ -25,6 +26,7 @@ const typeHelp = (
 const AdvancedOptions: FC<AdvancedOptionsProps> = ({
   type,
   width,
+  plannedOfflineDate,
   onChange,
 }) => (
   <Row className="banner-advanced-options">
@@ -64,13 +66,32 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
         value={width}
       />
     </Col>
+    <Col span={12}>
+      <h4>
+        <Trans i18nKey="banners.creation.step3.plannedOfflineDate.title">
+          Planned Offline Date
+        </Trans>
+      </h4>
+    </Col>
+    <Col span={12} style={{ textAlign: 'right' }}>
+      <DatePicker
+        onChange={(value: string | undefined) =>
+          onChange(value, 'bannerPlannedOfflineDate')
+        }
+        value={plannedOfflineDate}
+      />
+    </Col>
   </Row>
 )
 
 export interface AdvancedOptionsProps {
   type: BannerType
   width: number
-  onChange: (val: string | number, type: 'bannerType' | 'bannerWidth') => void
+  plannedOfflineDate: string | undefined
+  onChange: (
+    val: string | number | undefined,
+    type: 'bannerType' | 'bannerWidth' | 'bannerPlannedOfflineDate'
+  ) => void
 }
 
 export default AdvancedOptions

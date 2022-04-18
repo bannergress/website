@@ -70,6 +70,14 @@
         "title": "<0>3</0> Information",
         "bannerTitle": "Banner Title",
         "description": "Description",
+        "warning": {
+          "title": "Warning Text",
+          "subtitle": "Displays in a more noticeable color"
+        },
+        "plannedOfflineDate": {
+          "title": "Planned Offline Date",
+          "empty": "not planned"
+        },
         "options": "Options",
         "help": {
           "banner": "<0>Banner:</0> Collection of missions that must be completed in sequence to complete the picture in your profile.",

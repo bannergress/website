@@ -72,6 +72,8 @@ class CreateBanner extends React.Component<
       location: null,
       bannerTitle: undefined,
       bannerDescription: undefined,
+      bannerWarning: undefined,
+      bannerPlannedOfflineDate: undefined,
       bannerTitleChanged: false,
       bannerDescriptionChanged: false,
       bannerType: 'sequential',
@@ -143,7 +145,17 @@ class CreateBanner extends React.Component<
   initialize = (banner: Banner) => {
     const { location, history, admin } = this.props
     const { extraction } = this.state
-    const { title, description, missions, type, width, id, owner } = banner
+    const {
+      title,
+      description,
+      missions,
+      type,
+      width,
+      id,
+      owner,
+      warning,
+      plannedOfflineDate,
+    } = banner
 
     if (location.pathname.indexOf('edit-banner') >= 0 && !owner && !admin) {
       history.replace('/')
@@ -176,6 +188,8 @@ class CreateBanner extends React.Component<
       bannerTitleChanged: id !== undefined,
       bannerDescription: description,
       bannerDescriptionChanged: id !== undefined,
+      bannerWarning: warning,
+      bannerPlannedOfflineDate: plannedOfflineDate,
       addedMissions,
       bannerType: type!,
       bannerWidth: width!,
@@ -218,12 +232,14 @@ class CreateBanner extends React.Component<
   }
 
   onInputChange = (
-    val: string | number,
+    val: string | number | undefined,
     inputName:
       | 'searchText'
       | 'location'
       | 'bannerTitle'
       | 'bannerDescription'
+      | 'bannerWarning'
+      | 'bannerPlannedOfflineDate'
       | 'bannerType'
       | 'bannerWidth'
       | 'extraction'
@@ -246,7 +262,7 @@ class CreateBanner extends React.Component<
     if (inputName === 'extraction') {
       const { extraction } = this.state
       if (extraction !== val) {
-        this.onMissionsChanged([], val.toString())
+        this.onMissionsChanged([], val!.toString())
       }
     }
     this.setState(newState)
@@ -432,6 +448,8 @@ class CreateBanner extends React.Component<
       addedMissions,
       bannerTitle,
       bannerDescription,
+      bannerWarning,
+      bannerPlannedOfflineDate,
       bannerType,
       bannerWidth,
     } = this.state
@@ -462,6 +480,8 @@ class CreateBanner extends React.Component<
         id,
         title: bannerTitle!,
         description: bannerDescription,
+        warning: bannerWarning,
+        plannedOfflineDate: bannerPlannedOfflineDate,
         missions,
         numberOfMissions: addedMissions.length,
         width,
@@ -660,6 +680,8 @@ class CreateBanner extends React.Component<
       searchText,
       bannerTitle,
       bannerDescription,
+      bannerWarning,
+      bannerPlannedOfflineDate,
       bannerType,
       bannerWidth,
       status,
@@ -760,7 +782,7 @@ class CreateBanner extends React.Component<
                   Search for missions
                 </Trans>
               </h3>
-              <span className="search-mission-subtitle">
+              <span className="subtitle">
                 <Trans i18nKey="banners.creation.step1.description">
                   You can search by mission name or author
                 </Trans>
@@ -918,12 +940,34 @@ class CreateBanner extends React.Component<
                 }
               />
               <h3>
+                <Trans i18nKey="banners.creation.step3.warning.title">
+                  Warning Text
+                </Trans>
+              </h3>
+              <span className="subtitle">
+                <Trans i18nKey="banners.creation.step3.warning.subtitle">
+                  Displays in a more noticeable color
+                </Trans>
+              </span>
+              <Input.TextArea
+                placeholder={i18n?.t('placeholders.startTyping')}
+                value={bannerWarning}
+                // Note: The antd minRows seems to have a -1 bug on Firefox. Shows always one fewer row than specified.
+                // Works well on other browser https://github.com/ant-design/ant-design/issues/30559
+                autoSize={{ minRows: 2 }}
+                maxLength={2000}
+                onChange={(e) =>
+                  this.onInputChange(e.target.value, 'bannerWarning')
+                }
+              />
+              <h3>
                 <Trans i18nKey="banners.creation.step3.options">Options</Trans>
               </h3>
               <div className="adv-options-container open">
                 <AdvancedOptions
                   type={bannerType}
                   width={bannerWidth}
+                  plannedOfflineDate={bannerPlannedOfflineDate}
                   onChange={this.onInputChange}
                 />
               </div>
@@ -984,6 +1028,8 @@ interface CreateBannerState {
   location: string | null
   bannerTitle: string | undefined
   bannerDescription: string | undefined
+  bannerWarning: string | undefined
+  bannerPlannedOfflineDate: string | undefined
   bannerTitleChanged: boolean
   bannerDescriptionChanged: boolean
   bannerType: BannerType
