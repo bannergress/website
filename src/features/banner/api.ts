@@ -1,5 +1,6 @@
 import { api } from '../../api'
 import { Mission } from '../mission/types'
+import { BannerFilter } from './filter'
 import { Banner, BannerListType, BannerSettings, NumDictionary } from './types'
 
 const isMock = process.env.REACT_APP_USE_MOCK === 'true'
@@ -144,15 +145,15 @@ export const getRecentBanners = (numberOfBanners: number) =>
 
 export const getBanners = (
   placeId: string | undefined,
-  order: string,
-  orderDirection: string,
+  filter: BannerFilter,
   page: number
 ) =>
   isMock
     ? { data: createBanners(page), ok: true, status: 200 }
     : api.get<Array<Banner>>('bnrs', {
-        orderBy: order,
-        orderDirection,
+        orderBy: filter.orderBy,
+        orderDirection: filter.orderDirection,
+        online: filter.online,
         placeId,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
@@ -160,15 +161,15 @@ export const getBanners = (
 
 export const searchBanners = (
   searchTerm: string,
-  order: string,
-  orderDirection: string,
+  filter: BannerFilter,
   page: number
 ) =>
   isMock
     ? { data: createBanners(page), ok: true, status: 200 }
     : api.get<Array<Banner>>('bnrs', {
-        orderBy: order,
-        orderDirection,
+        orderBy: filter.orderBy,
+        orderDirection: filter.orderDirection,
+        online: filter.online,
         query: searchTerm,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
@@ -176,15 +177,15 @@ export const searchBanners = (
 
 export const listAgentBanners = (
   agentName: string,
-  order: string,
-  orderDirection: string,
+  filter: BannerFilter,
   page: number
 ) =>
   isMock
     ? { data: createBanners(page), ok: true, status: 200 }
     : api.get<Array<Banner>>('bnrs', {
-        orderBy: order,
-        orderDirection,
+        orderBy: filter.orderBy,
+        orderDirection: filter.orderDirection,
+        online: filter.online,
         author: agentName,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
@@ -192,15 +193,15 @@ export const listAgentBanners = (
 
 export const listUserBannerListBanners = (
   listType: BannerListType,
-  order: string,
-  orderDirection: string,
+  filter: BannerFilter,
   page: number
 ) =>
   isMock
     ? { data: createBanners(page), ok: true, status: 200 }
     : api.get<Array<Banner>>('bnrs', {
-        orderBy: order,
-        orderDirection,
+        orderBy: filter.orderBy,
+        orderDirection: filter.orderDirection,
+        online: filter.online,
         listTypes: listType,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,

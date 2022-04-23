@@ -21,14 +21,9 @@ import {
   DELETE_BANNER,
 } from './actionTypes'
 import * as api from './api'
+import { BannerFilter } from './filter'
 import { getCreatedBanner } from './selectors'
-import {
-  Banner,
-  ApiOrder,
-  ApiOrderDirection,
-  BannerSettings,
-  BannerListType,
-} from './types'
+import { Banner, BannerSettings, BannerListType } from './types'
 
 export const loadBannerAction = (id: string) => async (
   dispatch: Dispatch<BannerActionTypes>
@@ -61,8 +56,7 @@ export const loadRecentBannersAction = () => async (
 
 export const loadBrowsedBannersAction = (
   placeId: string | null,
-  order: ApiOrder,
-  orderDirection: ApiOrderDirection,
+  filter: BannerFilter,
   page: number
 ) => async (dispatch: Dispatch<BannerActionTypes>) => {
   if (page === 0) {
@@ -70,12 +64,7 @@ export const loadBrowsedBannersAction = (
       type: RESET_BROWSED_BANNERS,
     })
   }
-  const response = await api.getBanners(
-    placeId ?? undefined,
-    order,
-    orderDirection,
-    page
-  )
+  const response = await api.getBanners(placeId ?? undefined, filter, page)
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: BROWSE_BANNERS,
@@ -93,8 +82,7 @@ export const loadBrowsedBannersAction = (
 
 export const loadSearchBannersAction = (
   searchTerm: string,
-  order: ApiOrder,
-  orderDirection: ApiOrderDirection,
+  filter: BannerFilter,
   page: number
 ) => async (dispatch: Dispatch<BannerActionTypes>) => {
   if (page === 0) {
@@ -102,12 +90,7 @@ export const loadSearchBannersAction = (
       type: RESET_SEARCH_BANNERS,
     })
   }
-  const response = await api.searchBanners(
-    searchTerm,
-    order,
-    orderDirection,
-    page
-  )
+  const response = await api.searchBanners(searchTerm, filter, page)
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: SEARCH_BANNERS,
@@ -125,8 +108,7 @@ export const loadSearchBannersAction = (
 
 export const loadAgentBannersAction = (
   agentName: string,
-  order: ApiOrder,
-  orderDirection: ApiOrderDirection,
+  filter: BannerFilter,
   page: number
 ) => async (dispatch: Dispatch<BannerActionTypes>) => {
   if (page === 0) {
@@ -134,12 +116,7 @@ export const loadAgentBannersAction = (
       type: RESET_AGENT_BANNERS,
     })
   }
-  const response = await api.listAgentBanners(
-    agentName,
-    order,
-    orderDirection,
-    page
-  )
+  const response = await api.listAgentBanners(agentName, filter, page)
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: AGENT_BANNERS,
@@ -157,8 +134,7 @@ export const loadAgentBannersAction = (
 
 export const loadUserBannerListBannersAction = (
   listType: BannerListType,
-  order: ApiOrder,
-  orderDirection: ApiOrderDirection,
+  filter: BannerFilter,
   page: number
 ) => async (dispatch: Dispatch<BannerActionTypes>) => {
   if (page === 0) {
@@ -166,12 +142,7 @@ export const loadUserBannerListBannersAction = (
       type: RESET_USER_BANNER_LIST_BANNERS,
     })
   }
-  const response = await api.listUserBannerListBanners(
-    listType,
-    order,
-    orderDirection,
-    page
-  )
+  const response = await api.listUserBannerListBanners(listType, filter, page)
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: USER_BANNER_LIST_BANNERS,

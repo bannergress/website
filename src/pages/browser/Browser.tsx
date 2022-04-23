@@ -7,8 +7,6 @@ import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 import { RootState } from '../../storeTypes'
 import {
   Banner,
-  BannerOrder,
-  BannerOrderDirection,
   getBrowsedBanners,
   loadBrowsedBanners as loadBrowsedBannersAction,
   getHasMoreBrowsedBanners,
@@ -32,13 +30,27 @@ import { ReactComponent as SVGMap } from '../../img/icons/map.svg'
 
 import './browser.less'
 import LoadingOverlay from '../../components/loading-overlay'
+import {
+  BannerFilter,
+  BannerOrder,
+  BannerOrderDirection,
+} from '../../features/banner/filter'
+import {
+  getDefaultOnline,
+  getDefaultOrder,
+} from '../../features/settings/selectors'
+import { updateSettingsAction } from '../../features/settings/actions'
+import { SettingsState } from '../../features/settings/types'
 
 class Browser extends React.Component<BrowserProps, BrowserState> {
   constructor(props: BrowserProps) {
     super(props)
     this.state = {
-      selectedOrder: 'created',
-      selectedDirection: 'DESC',
+      filter: {
+        orderBy: props.defaultOrderBy,
+        orderDirection: props.defaultOrderDirection,
+        online: props.defaultOnline,
+      },
       page: 0,
       status: 'initial',
     }
@@ -46,7 +58,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
 
   componentDidMount() {
     const { fetchBanners, fetchPlace, match } = this.props
-    const { selectedDirection, selectedOrder } = this.state
+    const { filter } = this.state
     const { placeId } = match.params
 
     const promises: Array<Promise<any>> = []
@@ -60,7 +72,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
       .then(() => this.setState({ status: 'success' }))
       .catch(() => this.setState({ status: 'error' }))
 
-    fetchBanners(placeId, selectedOrder, selectedDirection, 0)
+    fetchBanners(placeId, filter, 0)
   }
 
   static getDerivedStateFromProps(props: BrowserProps, state: BrowserState) {
@@ -73,32 +85,26 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
   componentDidUpdate(prevProps: BrowserProps) {
     const { fetchBanners, match } = this.props
     const { placeId } = match.params
-    const { selectedOrder, selectedDirection } = this.state
+    const { filter } = this.state
     if (placeId !== prevProps.match.params.placeId) {
-      fetchBanners(placeId, selectedOrder, selectedDirection, 0)
+      fetchBanners(placeId, filter, 0)
     }
   }
 
-  onOrderSelected = (newOrder: BannerOrder) => {
-    const { fetchBanners, match } = this.props
+  onFilterChanged = (filter: BannerFilter) => {
+    const { fetchBanners, match, updateSettings } = this.props
     const { placeId } = match.params
-    const { selectedOrder, selectedDirection } = this.state
 
-    let newDirection: BannerOrderDirection = 'ASC'
-    if (newOrder === selectedOrder) {
-      newDirection = selectedDirection === 'ASC' ? 'DESC' : 'ASC'
-      this.setState({
-        selectedDirection: newDirection,
-        page: 0,
-      })
-    } else {
-      this.setState({
-        selectedOrder: newOrder,
-        selectedDirection: newDirection,
-        page: 0,
-      })
-    }
-    fetchBanners(placeId, newOrder, newDirection, 0)
+    this.setState({
+      filter,
+      page: 0,
+    })
+    updateSettings({
+      defaultOnline: filter.online,
+      defaultOrderBy: filter.orderBy,
+      defaultOrderDirection: filter.orderDirection,
+    })
+    fetchBanners(placeId, filter, 0)
   }
 
   onPlaceSelected = async (place: Place | undefined) => {
@@ -148,9 +154,9 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
   onLoadMoreBanners = () => {
     const { fetchBanners, match } = this.props
     const { placeId } = match.params
-    const { selectedOrder, selectedDirection, page } = this.state
+    const { filter, page } = this.state
     this.setState({ page: page + 1 })
-    return fetchBanners(placeId, selectedOrder, selectedDirection, page + 1)
+    return fetchBanners(placeId, filter, page + 1)
   }
 
   render() {
@@ -162,12 +168,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
       hasMore,
       i18n,
     } = this.props
-    const {
-      selectedDirection,
-      selectedOrder,
-      selectedPlaceId,
-      status,
-    } = this.state
+    const { filter, selectedPlaceId, status } = this.state
 
     if (status === 'initial') {
       return (
@@ -265,9 +266,8 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
                     )}
                   </h1>
                   <BannerOrderChooser
-                    selectedOrder={selectedOrder}
-                    selectedDirection={selectedDirection}
-                    onOrderClicked={this.onOrderSelected}
+                    filter={filter}
+                    onFilterChanged={this.onFilterChanged}
                   />
                   <BannerList
                     banners={banners}
@@ -289,6 +289,9 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
 }
 
 export type BrowserProps = {
+  defaultOrderBy: BannerOrder
+  defaultOrderDirection: BannerOrderDirection
+  defaultOnline: boolean | undefined
   banners: Array<Banner>
   countries: Array<Place>
   hasMore: Boolean
@@ -299,16 +302,15 @@ export type BrowserProps = {
   fetchPlace: (placeID: string) => Promise<void>
   fetchBanners: (
     placeId: string | null,
-    order: BannerOrder,
-    orderDirection: BannerOrderDirection,
+    filter: BannerFilter,
     page: number
   ) => Promise<void>
+  updateSettings: (settings: Partial<SettingsState>) => void
 } & RouteComponentProps<{ placeId: string }> &
   WithTranslationProps
 
 interface BrowserState {
-  selectedOrder: BannerOrder
-  selectedDirection: BannerOrderDirection
+  filter: BannerFilter
   selectedPlaceId?: string
   page: number
   status: 'initial' | 'success' | 'loading' | 'error'
@@ -321,6 +323,8 @@ const mapStateToProps = (state: RootState) => ({
     getAdministrativeAreasSelector(state, parentPlaceId),
   getPlace: (placeId: string) => getPlaceSelector(state, placeId),
   hasMore: getHasMoreBrowsedBanners(state),
+  defaultOnline: getDefaultOnline(state),
+  ...getDefaultOrder(state),
 })
 
 const mapDispatchToProps = {
@@ -328,6 +332,7 @@ const mapDispatchToProps = {
   fetchBanners: loadBrowsedBannersAction,
   fetchAdministrativeAreas: loadAdministrativeAreasAction,
   fetchPlace: loadPlaceAction,
+  updateSettings: updateSettingsAction,
 }
 
 export default connect(

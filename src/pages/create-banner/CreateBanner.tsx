@@ -28,8 +28,6 @@ import {
   createBanner as createBannerAction,
   removePendingBanner as removePendingBannerAction,
   loadBanner as fetchBannerAction,
-  ApiOrder,
-  ApiOrderDirection,
   getBanner as getBannerSelector,
 } from '../../features/banner'
 import {
@@ -52,6 +50,7 @@ import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
 import { getBannerIssues, MAX_MISSIONS } from './getBannerIssues'
 
 import './create-banner.less'
+import { MissionFilter } from '../../features/mission/filter'
 
 class CreateBanner extends React.Component<
   CreateBannerProps,
@@ -221,7 +220,12 @@ class CreateBanner extends React.Component<
     if (searchText && searchText.length > 2) {
       try {
         this.setState({ page: 0, status: 'searching' })
-        await fetchMissions(location, searchText, 'title', 'ASC', 0)
+        await fetchMissions(
+          location,
+          searchText,
+          { orderBy: 'title', orderDirection: 'ASC' },
+          0
+        )
         this.setState({ status: 'ready' })
       } catch {
         this.setState({ status: 'error' })
@@ -275,7 +279,12 @@ class CreateBanner extends React.Component<
       throw new Error(i18n!.t('banners.creation.errors.search'))
     }
     this.setState({ page: page + 1 })
-    return fetchMissions(location, searchText, 'title', 'ASC', page + 1)
+    return fetchMissions(
+      location,
+      searchText,
+      { orderBy: 'title', orderDirection: 'ASC' },
+      page + 1
+    )
   }
 
   advancedExtraction = (
@@ -1007,8 +1016,7 @@ export type CreateBannerProps = {
   fetchMissions: (
     location: string | null,
     query: string,
-    order: ApiOrder,
-    orderDirection: ApiOrderDirection,
+    filter: MissionFilter,
     page: number
   ) => Promise<void>
   createBanner: (banner: Partial<Banner>) => Promise<void>

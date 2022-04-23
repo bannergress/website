@@ -36,8 +36,6 @@ import {
   BannerListType,
   BannerState,
   NumDictionary,
-  ApiOrder,
-  ApiOrderDirection,
 } from './types'
 import {
   getBannerBounds,
@@ -81,17 +79,7 @@ export {
   deleteBannerAction as deleteBanner,
   changeBannerSettingsAction as changeBannerSettings,
 }
-export type {
-  Banner,
-  BannerType,
-  BannerListType,
-  BannerState,
-  NumDictionary,
-  ApiOrder as BannerOrder,
-  ApiOrderDirection as BannerOrderDirection,
-  ApiOrder,
-  ApiOrderDirection,
-}
+export type { Banner, BannerType, BannerListType, BannerState, NumDictionary }
 export {
   getBannerBounds,
   extend,

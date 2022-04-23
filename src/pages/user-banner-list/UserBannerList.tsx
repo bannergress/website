@@ -9,8 +9,6 @@ import { RootState } from '../../storeTypes'
 import {
   Banner,
   BannerListType,
-  BannerOrder,
-  BannerOrderDirection,
   getUserBannerListBanners,
   getHasMoreUserBannerListBanners,
   loadUserBannerListBanners as loadUserBannerListBannersAction,
@@ -25,6 +23,7 @@ import BannerList from '../../components/banner-list'
 import FooterMain from '../../components/footer-main'
 import LoginRequired from '../../components/login/login-required'
 import './user-banner-list.less'
+import { BannerFilter } from '../../features/banner/filter'
 
 class UserBannerList extends React.Component<
   UserBannerListProps,
@@ -33,8 +32,11 @@ class UserBannerList extends React.Component<
   constructor(props: UserBannerListProps) {
     super(props)
     this.state = {
-      selectedOrder: 'listAdded',
-      selectedDirection: 'DESC',
+      filter: {
+        orderBy: 'created',
+        orderDirection: 'DESC',
+        online: undefined,
+      },
       listType: 'none',
       pageBanners: 0,
       bannersStatus: 'initial',
@@ -60,9 +62,9 @@ class UserBannerList extends React.Component<
   }
 
   componentDidMount() {
-    const { selectedDirection, selectedOrder, listType } = this.state
+    const { filter, listType } = this.state
 
-    this.doFetchBanners(listType, selectedOrder, selectedDirection, 0)
+    this.doFetchBanners(listType, filter, 0)
   }
 
   componentDidUpdate(
@@ -73,47 +75,27 @@ class UserBannerList extends React.Component<
     const { authenticated } = this.props
 
     const { listType: prevListType } = prevState
-    const { listType, selectedOrder, selectedDirection } = this.state
+    const { listType, filter } = this.state
 
     if (prevListType !== listType || prevAuthenticated !== authenticated) {
-      this.doFetchBanners(listType, selectedOrder, selectedDirection, 0)
+      this.doFetchBanners(listType, filter, 0)
     }
   }
 
-  onOrderSelected = (newOrder: BannerOrder) => {
-    const { selectedOrder, selectedDirection, listType } = this.state
-    let newDirection: BannerOrderDirection = 'ASC'
-    if (newOrder === selectedOrder) {
-      newDirection = selectedDirection === 'ASC' ? 'DESC' : 'ASC'
-      this.setState({
-        selectedDirection: newDirection,
-        pageBanners: 0,
-      })
-    } else {
-      this.setState({
-        selectedOrder: newOrder,
-        selectedDirection: newDirection,
-        pageBanners: 0,
-      })
-    }
-    this.doFetchBanners(listType, newOrder, newDirection, 0)
+  onFilterChanged = (filter: BannerFilter) => {
+    const { listType } = this.state
+    this.setState({
+      filter,
+      pageBanners: 0,
+    })
+    this.doFetchBanners(listType, filter, 0)
   }
 
   onLoadMoreBanners = () => {
     const { fetchBanners } = this.props
-    const {
-      selectedOrder,
-      selectedDirection,
-      pageBanners,
-      listType,
-    } = this.state
+    const { filter, pageBanners, listType } = this.state
     this.setState({ pageBanners: pageBanners + 1 })
-    return fetchBanners(
-      listType,
-      selectedOrder,
-      selectedDirection,
-      pageBanners + 1
-    )
+    return fetchBanners(listType, filter, pageBanners + 1)
   }
 
   getPageTitle() {
@@ -127,27 +109,21 @@ class UserBannerList extends React.Component<
 
   async doFetchBanners(
     listType: BannerListType,
-    order: BannerOrder,
-    orderDirection: BannerOrderDirection,
+    filter: BannerFilter,
     pageBanners: number
   ) {
     const { fetchBanners, authenticated } = this.props
 
     if (authenticated) {
       this.setState({ bannersStatus: 'loading' })
-      await fetchBanners(listType, order, orderDirection, pageBanners)
+      await fetchBanners(listType, filter, pageBanners)
       this.setState({ bannersStatus: 'success' })
     }
   }
 
   render() {
     const title: string = this.getPageTitle()
-    const {
-      bannersStatus,
-      selectedDirection,
-      selectedOrder,
-      listType,
-    } = this.state
+    const { bannersStatus, filter, listType } = this.state
     const { banners, hasMoreBanners } = this.props
 
     return (
@@ -170,9 +146,8 @@ class UserBannerList extends React.Component<
                       <>
                         <Row justify="start" className="order-chooser">
                           <BannerOrderChooser
-                            selectedOrder={selectedOrder}
-                            selectedDirection={selectedDirection}
-                            onOrderClicked={this.onOrderSelected}
+                            filter={filter}
+                            onFilterChanged={this.onFilterChanged}
                             includeAddedList
                           />
                         </Row>
@@ -226,8 +201,7 @@ export type UserBannerListProps = {
   hasMoreBanners: Boolean
   fetchBanners: (
     listType: BannerListType,
-    order: BannerOrder,
-    orderDirection: BannerOrderDirection,
+    filter: BannerFilter,
     pageBanners: number
   ) => Promise<void>
   authenticated: Boolean
@@ -235,8 +209,7 @@ export type UserBannerListProps = {
   WithTranslationProps
 
 interface UserBannerListState {
-  selectedOrder: BannerOrder
-  selectedDirection: BannerOrderDirection
+  filter: BannerFilter
   listType: BannerListType
   pageBanners: number
   bannersStatus: 'initial' | 'success' | 'loading' | 'error'

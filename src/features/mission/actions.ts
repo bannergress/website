@@ -1,17 +1,16 @@
 import { Dispatch } from 'redux'
-import { ApiOrder, ApiOrderDirection } from '../banner/types'
 import {
   MissionActionTypes,
   RESET_SEARCH_MISSIONS,
   SEARCH_MISSIONS,
 } from './actionTypes'
 import * as api from './api'
+import { MissionFilter } from './filter'
 
 export const searchMissionsAction = (
   location: string | null,
   query: string,
-  order: ApiOrder,
-  orderDirection: ApiOrderDirection,
+  filter: MissionFilter,
   page: number
 ) => async (dispatch: Dispatch<MissionActionTypes>) => {
   if (page === 0) {
@@ -19,13 +18,7 @@ export const searchMissionsAction = (
       type: RESET_SEARCH_MISSIONS,
     })
   }
-  const response = await api.searchMissions(
-    location,
-    query,
-    order,
-    orderDirection,
-    page
-  )
+  const response = await api.searchMissions(location, query, filter, page)
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: SEARCH_MISSIONS,

@@ -1,3 +1,12 @@
+.filter-and-sort {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 10px;
+  column-gap: 10px;
+}
+
 .order-button {
   border: none;
   border-radius: 5px;
@@ -10,16 +19,9 @@
     background-image: linear-gradient(180deg, #109393, #15D4B2);
     padding: 2px;
 
-    &.inverse {
-      .arrow {
-        transform: rotate(180deg);
-      }
+    .order-button-inner {
+      padding: 4px 9px;
     }
-  }
-
-  .arrow {
-    height: 0.625em;
-    fill: white;
   }
 
   .order-button-inner {
@@ -27,6 +29,7 @@
     border-radius: 4px;
     flex: 1;
     padding: 5px 10px;
+    font-size: 16px;
   }
 }
 
@@ -42,5 +45,41 @@
     flex: 0 0 auto;
     align-items: baseline;
     flex-wrap: nowrap;
+  }
+}
+
+.filter-and-sort-modal {
+  .ant-modal-body {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  h2 {
+    font-weight: bold;
+  }
+
+  h3 {
+    flex: 1;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+
+  .back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 13px;
+  }
+
+  .filter-and-sort-switch-row {
+    display: flex;
+    align-items: center;
+  }
+
+  .filter-and-sort-button-row {
+    display: flex;
+    row-gap: 10px;
+    column-gap: 10px;
+    flex-wrap: wrap;
   }
 }

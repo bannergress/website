@@ -8,8 +8,6 @@ import { Trans } from 'react-i18next'
 import { RootState } from '../../storeTypes'
 import {
   Banner,
-  BannerOrder,
-  BannerOrderDirection,
   getAgentBanners,
   getHasMoreAgentBanners,
   loadAgentBanners as loadAgentBannersAction,
@@ -23,13 +21,17 @@ import FooterMain from '../../components/footer-main'
 import LoginRequired from '../../components/login/login-required'
 
 import './agent.less'
+import { BannerFilter } from '../../features/banner/filter'
 
 class Agent extends React.Component<AgentProps, AgentState> {
   constructor(props: AgentProps) {
     super(props)
     this.state = {
-      selectedOrder: 'created',
-      selectedDirection: 'DESC',
+      filter: {
+        orderBy: 'created',
+        orderDirection: 'DESC',
+        online: true,
+      },
       agentName: '',
       pageBanners: 0,
       bannersStatus: 'initial',
@@ -52,9 +54,9 @@ class Agent extends React.Component<AgentProps, AgentState> {
   }
 
   componentDidMount() {
-    const { selectedDirection, selectedOrder, agentName } = this.state
+    const { filter, agentName } = this.state
 
-    this.doFetchBanners(agentName, selectedOrder, selectedDirection, 0)
+    this.doFetchBanners(agentName, filter, 0)
   }
 
   componentDidUpdate(prevProps: AgentProps, prevState: AgentState) {
@@ -62,47 +64,27 @@ class Agent extends React.Component<AgentProps, AgentState> {
     const { authenticated } = this.props
 
     const { agentName: prevAgentName } = prevState
-    const { agentName, selectedOrder, selectedDirection } = this.state
+    const { agentName, filter } = this.state
 
     if (prevAgentName !== agentName || prevAuthenticated !== authenticated) {
-      this.doFetchBanners(agentName, selectedOrder, selectedDirection, 0)
+      this.doFetchBanners(agentName, filter, 0)
     }
   }
 
-  onOrderSelected = (newOrder: BannerOrder) => {
-    const { selectedOrder, selectedDirection, agentName } = this.state
-    let newDirection: BannerOrderDirection = 'ASC'
-    if (newOrder === selectedOrder) {
-      newDirection = selectedDirection === 'ASC' ? 'DESC' : 'ASC'
-      this.setState({
-        selectedDirection: newDirection,
-        pageBanners: 0,
-      })
-    } else {
-      this.setState({
-        selectedOrder: newOrder,
-        selectedDirection: newDirection,
-        pageBanners: 0,
-      })
-    }
-    this.doFetchBanners(agentName, newOrder, newDirection, 0)
+  onFilterChanged = (filter: BannerFilter) => {
+    const { agentName } = this.state
+    this.setState({
+      filter,
+      pageBanners: 0,
+    })
+    this.doFetchBanners(agentName, filter, 0)
   }
 
   onLoadMoreBanners = () => {
     const { fetchBanners } = this.props
-    const {
-      selectedOrder,
-      selectedDirection,
-      pageBanners,
-      agentName,
-    } = this.state
+    const { filter, pageBanners, agentName } = this.state
     this.setState({ pageBanners: pageBanners + 1 })
-    return fetchBanners(
-      agentName,
-      selectedOrder,
-      selectedDirection,
-      pageBanners + 1
-    )
+    return fetchBanners(agentName, filter, pageBanners + 1)
   }
 
   getPageTitle() {
@@ -113,22 +95,21 @@ class Agent extends React.Component<AgentProps, AgentState> {
 
   async doFetchBanners(
     agentName: string,
-    order: BannerOrder,
-    orderDirection: BannerOrderDirection,
+    filter: BannerFilter,
     pageBanners: number
   ) {
     const { fetchBanners, authenticated } = this.props
 
     if (authenticated) {
       this.setState({ bannersStatus: 'loading' })
-      await fetchBanners(agentName, order, orderDirection, pageBanners)
+      await fetchBanners(agentName, filter, pageBanners)
       this.setState({ bannersStatus: 'success' })
     }
   }
 
   render() {
     const title: string = this.getPageTitle()
-    const { bannersStatus, selectedDirection, selectedOrder } = this.state
+    const { bannersStatus, filter } = this.state
     const { banners, hasMoreBanners } = this.props
 
     return (
@@ -152,9 +133,8 @@ class Agent extends React.Component<AgentProps, AgentState> {
                       <>
                         <Row justify="start" className="order-chooser">
                           <BannerOrderChooser
-                            selectedOrder={selectedOrder}
-                            selectedDirection={selectedDirection}
-                            onOrderClicked={this.onOrderSelected}
+                            filter={filter}
+                            onFilterChanged={this.onFilterChanged}
                           />
                         </Row>
 
@@ -202,16 +182,14 @@ export interface AgentProps extends RouteComponentProps<{ agentName: string }> {
   hasMoreBanners: Boolean
   fetchBanners: (
     agentName: string,
-    order: BannerOrder,
-    orderDirection: BannerOrderDirection,
+    filter: BannerFilter,
     pageBanners: number
   ) => Promise<void>
   authenticated: Boolean
 }
 
 interface AgentState {
-  selectedOrder: BannerOrder
-  selectedDirection: BannerOrderDirection
+  filter: BannerFilter
   agentName: string
   pageBanners: number
   bannersStatus: 'initial' | 'success' | 'loading' | 'error'

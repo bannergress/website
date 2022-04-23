@@ -7,8 +7,6 @@ import { RootState } from '../../storeTypes'
 import {
   Banner,
   BannerListType,
-  BannerOrder,
-  BannerOrderDirection,
   getUserBannerListBanners,
   loadUserBannerListBanners as loadUserBannerListBannersAction,
   getBannerListTypeText,
@@ -21,6 +19,7 @@ import BannerList from '../banner-list'
 import IfUserLoggedIn from '../login/if-user-logged-in'
 
 import './user-banner-list-preview.less'
+import { BannerFilter } from '../../features/banner/filter'
 
 class UserBannerListPreview extends React.Component<
   UserBannerListProps,
@@ -65,7 +64,11 @@ class UserBannerListPreview extends React.Component<
 
     if (authenticated) {
       this.setState({ bannersStatus: 'loading' })
-      await fetchBanners(listType, 'listAdded', 'DESC', 0)
+      await fetchBanners(
+        listType,
+        { orderBy: 'listAdded', orderDirection: 'DESC', online: undefined },
+        0
+      )
       this.setState({ bannersStatus: 'success' })
     }
   }
@@ -127,8 +130,7 @@ interface UserBannerListProps extends WithTranslationProps {
   banners: Array<Banner>
   fetchBanners: (
     listType: BannerListType,
-    order: BannerOrder,
-    orderDirection: BannerOrderDirection,
+    filter: BannerFilter,
     pageBanners: number
   ) => Promise<void>
   authenticated: Boolean

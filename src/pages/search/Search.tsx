@@ -8,8 +8,6 @@ import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 import { RootState } from '../../storeTypes'
 import {
   Banner,
-  BannerOrder,
-  BannerOrderDirection,
   getSearchBanners,
   getHasMoreSearchBanners,
   loadSearchBanners as loadSearchBannersAction,
@@ -27,13 +25,20 @@ import PlaceListFlat from '../../components/place-list-flat'
 import FooterMain from '../../components/footer-main'
 
 import './search.less'
+import { BannerFilter } from '../../features/banner/filter'
+import { SettingsState } from '../../features/settings/types'
+import { getDefaultOnline } from '../../features/settings/selectors'
+import { updateSettingsAction } from '../../features/settings/actions'
 
 class Search extends React.Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {
     super(props)
     this.state = {
-      selectedOrder: 'relevance',
-      selectedDirection: 'DESC',
+      filter: {
+        orderBy: 'relevance',
+        orderDirection: 'DESC',
+        online: props.defaultOnline,
+      },
       searchTerm: '',
       pageBanners: 0,
       pagePlaces: 0,
@@ -59,56 +64,40 @@ class Search extends React.Component<SearchProps, SearchState> {
   }
 
   componentDidMount() {
-    const { selectedDirection, selectedOrder, searchTerm } = this.state
+    const { filter, searchTerm } = this.state
 
-    this.doFetchBanners(searchTerm, selectedOrder, selectedDirection, 0)
+    this.doFetchBanners(searchTerm, filter, 0)
     this.doFetchPlaces(searchTerm, 0)
   }
 
   componentDidUpdate(prevProps: SearchProps, prevState: SearchState) {
     const { searchTerm: prevSearchTerm } = prevState
-    const { searchTerm, selectedOrder, selectedDirection } = this.state
+    const { searchTerm, filter } = this.state
 
     if (prevSearchTerm !== searchTerm) {
-      this.doFetchBanners(searchTerm, selectedOrder, selectedDirection, 0)
+      this.doFetchBanners(searchTerm, filter, 0)
       this.doFetchPlaces(searchTerm, 0)
     }
   }
 
-  onOrderSelected = (newOrder: BannerOrder) => {
-    const { selectedOrder, selectedDirection, searchTerm } = this.state
-    let newDirection: BannerOrderDirection = 'ASC'
-    if (newOrder === selectedOrder) {
-      newDirection = selectedDirection === 'ASC' ? 'DESC' : 'ASC'
-      this.setState({
-        selectedDirection: newDirection,
-        pageBanners: 0,
-      })
-    } else {
-      this.setState({
-        selectedOrder: newOrder,
-        selectedDirection: newDirection,
-        pageBanners: 0,
-      })
-    }
-    this.doFetchBanners(searchTerm, newOrder, newDirection, 0)
+  onFilterChanged = (filter: BannerFilter) => {
+    const { searchTerm } = this.state
+    const { updateSettings } = this.props
+    this.setState({
+      filter,
+      pageBanners: 0,
+    })
+    updateSettings({
+      defaultOnline: filter.online,
+    })
+    this.doFetchBanners(searchTerm, filter, 0)
   }
 
   onLoadMoreBanners = () => {
     const { fetchBanners } = this.props
-    const {
-      selectedOrder,
-      selectedDirection,
-      pageBanners,
-      searchTerm,
-    } = this.state
+    const { filter, pageBanners, searchTerm } = this.state
     this.setState({ pageBanners: pageBanners + 1 })
-    return fetchBanners(
-      searchTerm,
-      selectedOrder,
-      selectedDirection,
-      pageBanners + 1
-    )
+    return fetchBanners(searchTerm, filter, pageBanners + 1)
   }
 
   onLoadMorePlaces = () => {
@@ -126,13 +115,12 @@ class Search extends React.Component<SearchProps, SearchState> {
 
   async doFetchBanners(
     searchTerm: string,
-    order: BannerOrder,
-    orderDirection: BannerOrderDirection,
+    filter: BannerFilter,
     pageBanners: number
   ) {
     const { fetchBanners } = this.props
     this.setState({ bannersStatus: 'loading' })
-    await fetchBanners(searchTerm, order, orderDirection, pageBanners)
+    await fetchBanners(searchTerm, filter, pageBanners)
     this.setState({ bannersStatus: 'success' })
   }
 
@@ -145,12 +133,7 @@ class Search extends React.Component<SearchProps, SearchState> {
 
   render() {
     const title: string = this.getPageTitle()
-    const {
-      bannersStatus,
-      placesStatus,
-      selectedDirection,
-      selectedOrder,
-    } = this.state
+    const { bannersStatus, placesStatus, filter } = this.state
     const { banners, places, hasMoreBanners, hasMorePlaces } = this.props
 
     return (
@@ -205,19 +188,18 @@ class Search extends React.Component<SearchProps, SearchState> {
             </h2>
 
             <Layout>
+              <Row justify="start" className="order-chooser">
+                <BannerOrderChooser
+                  filter={filter}
+                  onFilterChanged={this.onFilterChanged}
+                  includeRelevance
+                />
+              </Row>
+
               {bannersStatus === 'success' && (
                 <>
                   {banners.length > 0 && (
                     <>
-                      <Row justify="start" className="order-chooser">
-                        <BannerOrderChooser
-                          selectedOrder={selectedOrder}
-                          selectedDirection={selectedDirection}
-                          onOrderClicked={this.onOrderSelected}
-                          includeRelevance
-                        />
-                      </Row>
-
                       <Row>
                         <BannerList
                           banners={banners}
@@ -262,17 +244,17 @@ export type SearchProps = {
   hasMorePlaces: Boolean
   fetchBanners: (
     searchTerm: string,
-    order: BannerOrder,
-    orderDirection: BannerOrderDirection,
+    filter: BannerFilter,
     pageBanners: number
   ) => Promise<void>
   fetchPlaces: (searchTerm: string, pagePlaces: number) => Promise<void>
+  defaultOnline: boolean | undefined
+  updateSettings: (settings: Partial<SettingsState>) => void
 } & RouteComponentProps<{ term: string }> &
   WithTranslationProps
 
 interface SearchState {
-  selectedOrder: BannerOrder
-  selectedDirection: BannerOrderDirection
+  filter: BannerFilter
   searchTerm: string
   pageBanners: number
   pagePlaces: number
@@ -285,11 +267,13 @@ const mapStateToProps = (state: RootState) => ({
   places: getSearchPlaces(state),
   hasMoreBanners: getHasMoreSearchBanners(state),
   hasMorePlaces: getHasMoreSearchPlaces(state),
+  defaultOnline: getDefaultOnline(state),
 })
 
 const mapDispatchToProps = {
   fetchBanners: loadSearchBannersAction,
   fetchPlaces: loadSearchPlacesAction,
+  updateSettings: updateSettingsAction,
 }
 
 export default connect(
