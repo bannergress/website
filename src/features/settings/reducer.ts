@@ -4,7 +4,7 @@ import { SettingsState } from './types'
 const initialState: SettingsState = {
   defaultOrderBy: 'created',
   defaultOrderDirection: 'DESC',
-  defaultOnline: false,
+  defaultOnline: true,
 }
 
 export const SettingsReducer = (
