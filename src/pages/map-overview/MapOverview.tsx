@@ -219,6 +219,8 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
               hasMoreBanners={false}
               selectedBannerId={selectedBannerId}
               onSelectBanner={this.onSelectBanner}
+              filter={filter}
+              onFilterChanged={this.onFilterChanged}
             />
           </Col>
         </Row>

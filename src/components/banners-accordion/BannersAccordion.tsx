@@ -9,6 +9,8 @@ import BannerList from '../banner-list'
 import { ReactComponent as SVGTriangle } from '../../img/icons/triangle.svg'
 
 import './banners-accordion.less'
+import BannerOrderChooser from '../banner-order-chooser'
+import { BannerFilter } from '../../features/banner/filter'
 
 const BannerAccordion: FC<BannerAccordionProps> = ({
   banners,
@@ -16,6 +18,8 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
   selectedBannerId,
   loadMoreBanners,
   onSelectBanner,
+  onFilterChanged,
+  filter,
 }) => {
   const [expanded, setExpanded] = useState(false)
   const onSelectBannerCallback = (banner: Banner) => {
@@ -30,7 +34,10 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
         selectedBanner && 'banner-selected'
       } hide-on-desktop`}
     >
-      <Button onClick={() => setExpanded(!expanded)}>
+      <Button
+        className="banner-accordion-expander"
+        onClick={() => setExpanded(!expanded)}
+      >
         <Trans i18nKey="map.area">Banners in This Area</Trans>{' '}
         <span className={`carot-${expanded}`}>
           <SVGTriangle />
@@ -57,16 +64,24 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
         </div>
       )}
       {expanded && (
-        <BannerList
-          banners={banners}
-          selectedBannerId={selectedBannerId}
-          hasMoreBanners={hasMoreBanners}
-          onSelectBanner={onSelectBannerCallback}
-          loadMoreBanners={loadMoreBanners}
-          applyBannerListStlyes
-          hideBlacklisted
-          showDetailsButton
-        />
+        <>
+          <BannerOrderChooser
+            filter={filter}
+            onFilterChanged={onFilterChanged}
+            includeOfficial
+            includeSorting={false}
+          />
+          <BannerList
+            banners={banners}
+            selectedBannerId={selectedBannerId}
+            hasMoreBanners={hasMoreBanners}
+            onSelectBanner={onSelectBannerCallback}
+            loadMoreBanners={loadMoreBanners}
+            applyBannerListStlyes
+            hideBlacklisted
+            showDetailsButton
+          />
+        </>
       )}
     </div>
   )
@@ -78,6 +93,8 @@ export interface BannerAccordionProps {
   selectedBannerId?: string
   loadMoreBanners?: () => Promise<void>
   onSelectBanner: (banner: Banner) => void
+  onFilterChanged: (filter: BannerFilter) => void
+  filter: BannerFilter
 }
 
 export default BannerAccordion
