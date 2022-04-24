@@ -13,6 +13,8 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
   onFilterChanged,
   includeAddedList = false,
   includeRelevance = false,
+  includeSorting = true,
+  includeOfficial = false,
 }) => {
   const [open, setOpen] = useState<boolean>(false)
   const [currentFilter, setCurrentFilter] = useState<BannerFilter>(filter)
@@ -53,6 +55,13 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
         orderDirection: currentFilter.orderDirection === 'ASC' ? 'DESC' : 'ASC',
       })
     }
+  }
+
+  const onOfficialChanged = (includeUnofficial: boolean) => {
+    updateFilter({
+      ...currentFilter,
+      onlyOfficialMissions: includeUnofficial ? undefined : true,
+    })
   }
 
   const onOnlineChanged = (showOffline: boolean) => {
@@ -101,9 +110,13 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
         <button type="button" className="back-button" onClick={hide}>
           <SVGBackArrowSmall />
         </button>
-        <div>
+        <div className="filter-and-sort-content">
           <h2>
-            <Trans i18nKey="order.filterAndSort">Filter and Sort</Trans>
+            {includeSorting ? (
+              <Trans i18nKey="order.filterAndSort">Filter and Sort</Trans>
+            ) : (
+              <Trans i18nKey="order.filter">Filter</Trans>
+            )}
           </h2>
           <div className="filter-and-sort-switch-row">
             <h3>
@@ -116,36 +129,70 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
               onChange={onOnlineChanged}
             />
           </div>
-          <h3>
-            <Trans i18nKey="order.sortBy">Sort by</Trans>
-          </h3>
-          <div className="filter-and-sort-button-row">
-            {includeRelevance && getButton('relevance')}
-            {includeAddedList && getButton('listAdded')}
-            {getButton('created')}
-            {getButton('title')}
-            {getButton('lengthMeters')}
-            {getButton('numberOfMissions')}
-          </div>
+          {includeOfficial && (
+            <div className="filter-and-sort-switch-row">
+              <h3>
+                <Trans i18nKey="order.showUnofficialBanners">
+                  Show non-Niantic missions
+                </Trans>
+              </h3>
+              <Switch
+                checked={!currentFilter.onlyOfficialMissions}
+                onChange={onOfficialChanged}
+              />
+            </div>
+          )}
+          {includeSorting && (
+            <>
+              <h3>
+                <Trans i18nKey="order.sortBy">Sort by</Trans>
+              </h3>
+              <div className="filter-and-sort-button-row">
+                {includeRelevance && getButton('relevance')}
+                {includeAddedList && getButton('listAdded')}
+                {getButton('created')}
+                {getButton('title')}
+                {getButton('lengthMeters')}
+                {getButton('numberOfMissions')}
+              </div>
+            </>
+          )}
         </div>
       </Modal>
       <button type="button" onClick={show} className="order-button selected">
         <div className="order-button-inner">
-          <Trans i18nKey="order.filterAndSort">Filter and Sort</Trans>
+          {includeSorting ? (
+            <Trans i18nKey="order.filterAndSort">Filter and Sort</Trans>
+          ) : (
+            <Trans i18nKey="order.filter">Filter</Trans>
+          )}
         </div>
       </button>
       <div>
-        <Trans i18nKey="order.text.sortedBy">
-          Sorted by{' '}
-          <Order
-            orderBy={currentFilter.orderBy}
-            orderDirection={currentFilter.orderDirection}
-          />
-        </Trans>
+        {includeSorting && (
+          <>
+            <Trans i18nKey="order.text.sortedBy">
+              Sorted by{' '}
+              <Order
+                orderBy={currentFilter.orderBy}
+                orderDirection={currentFilter.orderDirection}
+              />
+            </Trans>
+            {' / '}
+          </>
+        )}
         {currentFilter.online ? (
-          <Trans i18nKey="order.text.excludeOffline">, excluding Offline</Trans>
+          <Trans i18nKey="order.text.excludeOffline">Excluding Offline</Trans>
         ) : (
-          <Trans i18nKey="order.text.includeOffline">, showing Offline</Trans>
+          <Trans i18nKey="order.text.includeOffline">Showing Offline</Trans>
+        )}
+        {currentFilter.onlyOfficialMissions && (
+          <>
+            {' / '}
+            <Trans i18nKey="order.text.onlyOfficial">
+              Niantic missions only
+            </Trans>
+          </>
         )}
       </div>
     </div>
@@ -157,6 +204,8 @@ export interface BannerOrderChooserProps {
   onFilterChanged: (filter: BannerFilter) => void
   includeAddedList?: boolean
   includeRelevance?: boolean
+  includeSorting?: boolean
+  includeOfficial?: boolean
 }
 
 export default BannerOrderChooser

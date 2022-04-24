@@ -151,9 +151,7 @@ export const getBanners = (
   isMock
     ? { data: createBanners(page), ok: true, status: 200 }
     : api.get<Array<Banner>>('bnrs', {
-        orderBy: filter.orderBy,
-        orderDirection: filter.orderDirection,
-        online: filter.online,
+        ...filter,
         placeId,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
@@ -167,9 +165,7 @@ export const searchBanners = (
   isMock
     ? { data: createBanners(page), ok: true, status: 200 }
     : api.get<Array<Banner>>('bnrs', {
-        orderBy: filter.orderBy,
-        orderDirection: filter.orderDirection,
-        online: filter.online,
+        ...filter,
         query: searchTerm,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
@@ -183,9 +179,7 @@ export const listAgentBanners = (
   isMock
     ? { data: createBanners(page), ok: true, status: 200 }
     : api.get<Array<Banner>>('bnrs', {
-        orderBy: filter.orderBy,
-        orderDirection: filter.orderDirection,
-        online: filter.online,
+        ...filter,
         author: agentName,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
@@ -199,9 +193,7 @@ export const listUserBannerListBanners = (
   isMock
     ? { data: createBanners(page), ok: true, status: 200 }
     : api.get<Array<Banner>>('bnrs', {
-        orderBy: filter.orderBy,
-        orderDirection: filter.orderDirection,
-        online: filter.online,
+        ...filter,
         listTypes: listType,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
@@ -229,14 +221,13 @@ export const searchMapBanners = (
   topRightLng: number,
   bottomLeftLat: number,
   bottomLeftLng: number,
-  onlyOfficial: boolean
+  filter: BannerFilter
 ) =>
   api.get<Array<Banner>>('bnrs', {
+    ...filter,
     minLatitude: bottomLeftLat,
     maxLatitude: topRightLat,
     minLongitude: bottomLeftLng,
     maxLongitude: topRightLng,
-    onlyOfficialMissions: onlyOfficial,
     limit: 50,
-    online: true,
   })

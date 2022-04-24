@@ -12,8 +12,8 @@ import {
   CREATE_BANNER,
   REMOVE_CREATED_BANNER,
   EDIT_BANNER,
+  RESET_MAP_BANNERS,
   SEARCH_MAP_BANNERS,
-  SEARCH_MAP_OFFICIAL_BANNERS,
   CHANGE_BANNER_SETTINS,
   USER_BANNER_LIST_BANNERS,
   RESET_USER_BANNER_LIST_BANNERS,
@@ -28,7 +28,7 @@ const initialState: BannerState = {
   browsedBanners: [],
   searchBanners: [],
   agentBanners: [],
-  officialBanners: [],
+  mapBanners: [],
   userBannerListBanners: [],
   canBrowseMore: true,
   canSearchMore: true,
@@ -99,13 +99,15 @@ export default (state = initialState, action: BannerActionTypes) => {
       return { ...state, createdBanner: undefined }
     case EDIT_BANNER:
       return { ...state, createdBanner: action.payload }
-    case SEARCH_MAP_BANNERS:
-      return { ...state, banners: extendSorted(state.banners, action.payload) }
-    case SEARCH_MAP_OFFICIAL_BANNERS:
+    case RESET_MAP_BANNERS:
       return {
         ...state,
-        banners: extendSorted(state.banners, action.payload),
-        officialBanners: extendSorted(state.officialBanners, action.payload),
+        mapBanners: [],
+      }
+    case SEARCH_MAP_BANNERS:
+      return {
+        ...state,
+        mapBanners: extendSorted(state.mapBanners, action.payload),
       }
     case CHANGE_BANNER_SETTINS: {
       const { banner, bannerSettings } = action.payload
@@ -114,7 +116,6 @@ export default (state = initialState, action: BannerActionTypes) => {
         ...state,
         banners: extend([changedBanner], state.banners),
         fullBanners: extend([changedBanner], state.fullBanners),
-        officialBanners: extendSorted(state.officialBanners, [changedBanner]),
       }
     }
     default:

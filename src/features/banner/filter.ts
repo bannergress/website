@@ -12,4 +12,5 @@ export type BannerFilter = {
   orderBy: BannerOrder
   orderDirection: BannerOrderDirection
   online: boolean | undefined
+  onlyOfficialMissions?: boolean
 }

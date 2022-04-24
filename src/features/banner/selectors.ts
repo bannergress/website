@@ -40,12 +40,9 @@ export const getMapBanners = (
   topRightLat: number,
   topRightLng: number,
   bottomLeftLat: number,
-  bottomLeftLng: number,
-  onlyOfficial: boolean
+  bottomLeftLng: number
 ) => {
-  const banners = onlyOfficial
-    ? state.banner.officialBanners
-    : state.banner.banners
+  const banners = state.banner.mapBanners
 
   return _(banners)
     .chain()

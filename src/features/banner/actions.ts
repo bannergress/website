@@ -15,10 +15,10 @@ import {
   CREATE_BANNER,
   REMOVE_CREATED_BANNER,
   SEARCH_MAP_BANNERS,
-  SEARCH_MAP_OFFICIAL_BANNERS,
   CHANGE_BANNER_SETTINS,
   EDIT_BANNER,
   DELETE_BANNER,
+  RESET_MAP_BANNERS,
 } from './actionTypes'
 import * as api from './api'
 import { BannerFilter } from './filter'
@@ -196,47 +196,31 @@ export const submitBannerAction = () => async (
   throw Error('Error while creating banner')
 }
 
+export const resetMapBannersAction = () => async (
+  dispatch: Dispatch<BannerActionTypes>
+) => {
+  dispatch({
+    type: RESET_MAP_BANNERS,
+  })
+}
+
 export const loadMapBannersAction = (
   topRightLat: number,
   topRightLng: number,
   bottomLeftLat: number,
-  bottomLeftLng: number
+  bottomLeftLng: number,
+  filter: BannerFilter
 ) => async (dispatch: Dispatch<BannerActionTypes>) => {
   const response = await api.searchMapBanners(
     topRightLat,
     topRightLng,
     bottomLeftLat,
     bottomLeftLng,
-    false
+    filter
   )
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: SEARCH_MAP_BANNERS,
-      payload: response.data,
-    })
-  } else {
-    // dispatch({
-    //   type: BROWSE_SEARCH_ERROR,
-    // })
-  }
-}
-
-export const loadMapOfficialBannersAction = (
-  topRightLat: number,
-  topRightLng: number,
-  bottomLeftLat: number,
-  bottomLeftLng: number
-) => async (dispatch: Dispatch<BannerActionTypes>) => {
-  const response = await api.searchMapBanners(
-    topRightLat,
-    topRightLng,
-    bottomLeftLat,
-    bottomLeftLng,
-    true
-  )
-  if (response.ok && response.data !== undefined) {
-    dispatch({
-      type: SEARCH_MAP_OFFICIAL_BANNERS,
       payload: response.data,
     })
   } else {
