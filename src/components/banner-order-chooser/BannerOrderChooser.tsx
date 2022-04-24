@@ -36,6 +36,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
     switch (type) {
       case 'created':
       case 'relevance':
+      case 'listAdded':
         return 'DESC'
       default:
         return 'ASC'

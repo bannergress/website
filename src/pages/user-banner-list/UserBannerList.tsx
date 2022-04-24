@@ -33,7 +33,7 @@ class UserBannerList extends React.Component<
     super(props)
     this.state = {
       filter: {
-        orderBy: 'created',
+        orderBy: 'listAdded',
         orderDirection: 'DESC',
         online: undefined,
       },
@@ -140,18 +140,17 @@ class UserBannerList extends React.Component<
 
             <LoginRequired>
               <Layout>
+                <Row justify="start" className="order-chooser">
+                  <BannerOrderChooser
+                    filter={filter}
+                    onFilterChanged={this.onFilterChanged}
+                    includeAddedList
+                  />
+                </Row>
                 {bannersStatus === 'success' && (
                   <>
                     {banners.length > 0 && (
                       <>
-                        <Row justify="start" className="order-chooser">
-                          <BannerOrderChooser
-                            filter={filter}
-                            onFilterChanged={this.onFilterChanged}
-                            includeAddedList
-                          />
-                        </Row>
-
                         <Row>
                           <BannerList
                             banners={banners}
