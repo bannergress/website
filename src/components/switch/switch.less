@@ -1,0 +1,35 @@
+.bg-switch {
+  border-radius: 4px;
+  background-color: white;
+  padding: 1px;
+  width: 48px;
+  height: 28px;
+
+  .ant-switch {
+    background-color: #1f1f1f;
+    border-radius: 3px;
+    border: 1px solid;
+    border-color: #1f1f1f;
+    width: 46px;
+    height: 26px;
+    }
+
+  .ant-switch-handle::before {
+    border-radius: 1px;
+    width: 16px;
+    height: 20px;
+  }
+
+  &.bg-switch-selected {
+    background-image: linear-gradient(180deg, #109393, #15D4B2);
+
+    .ant-switch {
+      border-color: transparent;
+      background-clip: padding-box;
+    }
+
+    .ant-switch-handle::before {
+      background-color: #15D4B2;
+    }
+  }
+}

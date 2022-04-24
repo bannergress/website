@@ -1,4 +1,4 @@
-import { Modal, Switch } from 'antd'
+import { Modal } from 'antd'
 import React, { FC, useState } from 'react'
 import { Trans } from 'react-i18next'
 
@@ -7,6 +7,7 @@ import { ReactComponent as SVGBackArrowSmall } from '../../img/icons/back-arrow-
 import './banner-order-chooser.less'
 import { BannerFilter, BannerOrder } from '../../features/banner/filter'
 import Order, { hasBothDirections } from './Order'
+import Switch from '../switch/Switch'
 
 const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
   filter,
