@@ -28,6 +28,7 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
   width,
   plannedOfflineDate,
   onChange,
+  isEdit,
 }) => (
   <Row className="banner-advanced-options">
     <Col span={12}>
@@ -66,21 +67,25 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
         value={width}
       />
     </Col>
-    <Col span={12}>
-      <h4>
-        <Trans i18nKey="banners.creation.step3.plannedOfflineDate.title">
-          Planned Offline Date
-        </Trans>
-      </h4>
-    </Col>
-    <Col span={12} style={{ textAlign: 'right' }}>
-      <DatePicker
-        onChange={(value: string | undefined) =>
-          onChange(value, 'bannerPlannedOfflineDate')
-        }
-        value={plannedOfflineDate}
-      />
-    </Col>
+    {isEdit && (
+      <>
+        <Col span={12}>
+          <h4>
+            <Trans i18nKey="banners.creation.step3.plannedOfflineDate.title">
+              Planned Offline Date
+            </Trans>
+          </h4>
+        </Col>
+        <Col span={12} style={{ textAlign: 'right' }}>
+          <DatePicker
+            onChange={(value: string | undefined) =>
+              onChange(value, 'bannerPlannedOfflineDate')
+            }
+            value={plannedOfflineDate}
+          />
+        </Col>
+      </>
+    )}
   </Row>
 )
 
@@ -88,6 +93,7 @@ export interface AdvancedOptionsProps {
   type: BannerType
   width: number
   plannedOfflineDate: string | undefined
+  isEdit: boolean
   onChange: (
     val: string | number | undefined,
     type: 'bannerType' | 'bannerWidth' | 'bannerPlannedOfflineDate'

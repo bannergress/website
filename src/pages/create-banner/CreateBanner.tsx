@@ -744,7 +744,8 @@ class CreateBanner extends React.Component<
       unusedMissionsCount = ''
     }
 
-    const title = id
+    const isEdit = Boolean(id)
+    const title = isEdit
       ? i18n!.t('banners.creation.edit')
       : i18n!.t('banners.creation.new')
     const issues = getBannerIssues(
@@ -948,27 +949,31 @@ class CreateBanner extends React.Component<
                   this.onInputChange(e.target.value, 'bannerDescription')
                 }
               />
-              <h3>
-                <Trans i18nKey="banners.creation.step3.warning.title">
-                  Warning Text
-                </Trans>
-              </h3>
-              <span className="subtitle">
-                <Trans i18nKey="banners.creation.step3.warning.subtitle">
-                  Displays in a more noticeable color
-                </Trans>
-              </span>
-              <Input.TextArea
-                placeholder={i18n?.t('placeholders.startTyping')}
-                value={bannerWarning}
-                // Note: The antd minRows seems to have a -1 bug on Firefox. Shows always one fewer row than specified.
-                // Works well on other browser https://github.com/ant-design/ant-design/issues/30559
-                autoSize={{ minRows: 2 }}
-                maxLength={2000}
-                onChange={(e) =>
-                  this.onInputChange(e.target.value, 'bannerWarning')
-                }
-              />
+              {isEdit && (
+                <>
+                  <h3>
+                    <Trans i18nKey="banners.creation.step3.warning.title">
+                      Warning Text
+                    </Trans>
+                  </h3>
+                  <span className="subtitle">
+                    <Trans i18nKey="banners.creation.step3.warning.subtitle">
+                      Displays in a more noticeable color
+                    </Trans>
+                  </span>
+                  <Input.TextArea
+                    placeholder={i18n?.t('placeholders.startTyping')}
+                    value={bannerWarning}
+                    // Note: The antd minRows seems to have a -1 bug on Firefox. Shows always one fewer row than specified.
+                    // Works well on other browser https://github.com/ant-design/ant-design/issues/30559
+                    autoSize={{ minRows: 2 }}
+                    maxLength={2000}
+                    onChange={(e) =>
+                      this.onInputChange(e.target.value, 'bannerWarning')
+                    }
+                  />
+                </>
+              )}
               <h3>
                 <Trans i18nKey="banners.creation.step3.options">Options</Trans>
               </h3>
@@ -978,6 +983,7 @@ class CreateBanner extends React.Component<
                   width={bannerWidth}
                   plannedOfflineDate={bannerPlannedOfflineDate}
                   onChange={this.onInputChange}
+                  isEdit={isEdit}
                 />
               </div>
               <h3>
