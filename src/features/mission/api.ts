@@ -14,7 +14,7 @@ const getMissions = (startIndex: number, numberOfMissions: number) => {
       title: `test mission ${startIndex + i + 1}`,
       picture: imgUrl,
       description: 'Hack Runde durch Weißenburg',
-      online: true,
+      status: 'published',
     })
   }
   return missionList

@@ -46,6 +46,8 @@ export type Objective =
 
 export type MissionType = 'hidden' | 'anyOrder' | 'sequential'
 
+export type MissionStatus = 'submitted' | 'published' | 'disabled'
+
 export interface Mission {
   id: string
   title: string
@@ -55,7 +57,7 @@ export interface Mission {
   startLatitude?: number
   startLongitude?: number
   type?: MissionType
-  online?: Boolean
+  status?: MissionStatus
   author?: NamedAgent
   averageDurationMilliseconds?: number
   lengthMeters?: number

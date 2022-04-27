@@ -241,7 +241,7 @@ const getTotalTime = (banner: Banner) => {
       (mission) =>
         mission === undefined ||
         isPlaceholder(mission) ||
-        !mission.online ||
+        mission.status !== 'published' ||
         (mission.averageDurationMilliseconds ?? 0) === 0
     ).reduce((offline, result) => result || offline)
 

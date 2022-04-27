@@ -15,7 +15,7 @@ import './mission-info.less'
 const MissionList: React.FC<MissionInfoProps> = ({ mission }) => {
   return (
     <div className="mission-info">
-      {!mission.online && (
+      {mission.status !== 'published' && (
         <div className="mission-info-markedoffline">
           <Trans i18nKey="missions.markedOffline">
             Mission marked as offline

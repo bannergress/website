@@ -93,7 +93,7 @@ const getMissions = (numberOfMissions: number) => {
       ],
       description: 'Hack Runde durch Weißenburg',
       type: selectMissionType(),
-      online: true,
+      status: 'published',
     }
   }
   return missionList
