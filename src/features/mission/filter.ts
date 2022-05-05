@@ -1,5 +1,4 @@
-export type MissionOrder =
-| 'title'
+export type MissionOrder = 'title'
 
 export type MissionOrderDirection = 'ASC' | 'DESC'
 

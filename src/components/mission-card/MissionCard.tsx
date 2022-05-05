@@ -25,7 +25,7 @@ const MissionCard: React.FC<MissionCardProps> = ({
           {mission?.title}
         </div>
         {onExpand && (
-          <div>
+          <div className="shevron">
             <SVGChevron
               fill="#FFF"
               className={`icon ${expanded ? 'open' : ''}`}

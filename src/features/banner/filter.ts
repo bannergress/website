@@ -1,10 +1,10 @@
 export type BannerOrder =
-| 'relevance'
-| 'listAdded'
-| 'created'
-| 'lengthMeters'
-| 'title'
-| 'numberOfMissions'
+  | 'relevance'
+  | 'listAdded'
+  | 'created'
+  | 'lengthMeters'
+  | 'title'
+  | 'numberOfMissions'
 
 export type BannerOrderDirection = 'ASC' | 'DESC'
 
