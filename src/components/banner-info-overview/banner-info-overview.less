@@ -1,6 +1,11 @@
 .banner-info-overview {
+  justify-content: center;
+  display: flex;
 
   .banner-info-container {
+    &:not(:last-child){
+      padding-right: 10px;
+    }
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -72,3 +77,4 @@
     }
   }
 }
+
