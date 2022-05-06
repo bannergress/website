@@ -150,6 +150,10 @@ export const createMissionIntelLink = (missionId: string) => {
   return `https://intel.ingress.com/mission/${missionId}`
 }
 
+export const createMissionScannerLink = (missionId: string) => {
+  return `https://link.ingress.com/?link=https%3a%2f%2fintel.ingress.com%2fmission%2f${missionId}&apn=com.nianticproject.ingress&isi=576505181&ibi=com.google.ingress&ifl=https%3a%2f%2fapps.apple.com%2fapp%2fingress%2fid576505181&ofl=https%3a%2f%2fintel.ingress.com%2fmission%2f${missionId}`
+}
+
 export const isPlaceholder = (mission: Mission) =>
   !mission.id || mission.id.startsWith('placeholder')
 
