@@ -3,10 +3,31 @@
 }
 
 @mobile-detection: ~" screen and (max-width: 880px) ";
+@mobile-xs-detection: ~" screen and (max-width: 321px) ";
+@mobile-l-detection: ~" screen and (min-width: 426px) ";
+
+@media only @mobile-xs-detection {
+  .banner-list {
+    justify-content: center;
+    .banner-list-entry {
+      width: 296px;
+    }
+  }
+}
+
+@media only @mobile-l-detection {
+  .banner-card-picture-container {
+    height: 200px;
+  }
+}
 
 @media only @mobile-detection {
   .hide-on-mobile {
     display: none !important;
+  }
+
+  .brand-logo {
+    width: 50vw;
   }
 
   .banner-info-page {
@@ -17,6 +38,7 @@
     }
     .banner-info-overview .banner-info-container {
       padding-right: unset;
+      width: 320px;
     }
   }
 
@@ -38,6 +60,7 @@
         padding: 0.6em !important;
         width: 100% !important;
         max-width: 864px !important;
+        min-width: 320px !important;
         height: auto !important;
         overflow-y: unset !important;
       }
@@ -123,6 +146,17 @@
 
     &.banner-lines-2 {
       aspect-ratio: 3;
+    }
+  }
+
+  .announcement-and-recent-banners {
+    margin: 0.4rem;
+  }
+
+  .banner-list {
+    justify-content: center;
+    .banner-list-entry {
+      width: 360px;
     }
   }
 }

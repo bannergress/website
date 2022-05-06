@@ -65,7 +65,10 @@ const BannerPicture: FC<BannerPictureProps> = ({
   const imgRef = useRef<HTMLImageElement>(null)
   const loaded = useLoaded(imgRef)
   const animate =
-    loaded && inView && !window.matchMedia('(prefers-reduced-motion)').matches
+    loaded &&
+    inView &&
+    !window.matchMedia('(prefers-reduced-motion)').matches &&
+    lines > 2
 
   useEffect(() => {
     const innerDiv = innerRef.current
