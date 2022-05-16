@@ -82,12 +82,12 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   const { missions } = banner
   return (
     <div className="banner-info-overview" ref={refElement}>
-      {!hideControls && (
-        <div className={mobileOnlyOnInfoTabClass}>
-          <BannerEditTools banner={banner} />
-        </div>
-      )}
       <div className="banner-info-container">
+        {!hideControls && (
+          <div className={mobileOnlyOnInfoTabClass}>
+            <BannerEditTools banner={banner} />
+          </div>
+        )}
         <BannerCard
           banner={banner}
           selected={false}
