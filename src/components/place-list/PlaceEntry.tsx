@@ -4,6 +4,8 @@ import { Place } from '../../features/place'
 
 import './place-entry.less'
 
+import { ReactComponent as SVGLocality } from '../../img/icons/locality.svg'
+
 const PlaceEntry: FC<PlaceProps> = ({ place, showNumbers, attribute }) => (
   <>
     {place.type === 'country' && (
@@ -16,6 +18,11 @@ const PlaceEntry: FC<PlaceProps> = ({ place, showNumbers, attribute }) => (
             )
           )}
         </span>{' '}
+      </>
+    )}
+    {place.type === 'locality' && (
+      <>
+        <SVGLocality className="place-icon" />{' '}
       </>
     )}
     <span className="place-name" title={place[attribute]}>
