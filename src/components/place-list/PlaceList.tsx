@@ -26,6 +26,10 @@ const PlaceList: FC<PlaceListProps> = ({
   ) {
     const sortedPlaces = places ? sortPlaces(places, order) : places
 
+    const aligned = Boolean(
+      places && places.find((place) => place.type === 'locality')
+    )
+
     return (
       <div className="places-list">
         {title && <h2>{title}</h2>}
@@ -64,6 +68,7 @@ const PlaceList: FC<PlaceListProps> = ({
               place={place}
               showNumbers
               attribute="longName"
+              aligned={aligned}
             />
           </div>
         ))}
