@@ -127,17 +127,16 @@ class Agent extends React.Component<AgentProps, AgentState> {
               </h2>
 
               <Layout>
+                <Row justify="start" className="order-chooser">
+                  <BannerOrderChooser
+                    filter={filter}
+                    onFilterChanged={this.onFilterChanged}
+                  />
+                </Row>
                 {bannersStatus === 'success' && (
                   <>
                     {banners.length > 0 && (
                       <>
-                        <Row justify="start" className="order-chooser">
-                          <BannerOrderChooser
-                            filter={filter}
-                            onFilterChanged={this.onFilterChanged}
-                          />
-                        </Row>
-
                         <Row>
                           <BannerList
                             banners={banners}
