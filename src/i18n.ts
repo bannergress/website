@@ -24,6 +24,10 @@ i18n
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
+    detection: {
+      order: ['navigator'],
+      caches: [],
+    },
   })
 
 export default i18n
