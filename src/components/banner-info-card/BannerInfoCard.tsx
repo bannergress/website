@@ -71,7 +71,11 @@ const getRemainingDaysCategory = (days: number) => {
 }
 
 const getPlannedOfflineDate = (banner: Banner) => {
-  if (banner.plannedOfflineDate) {
+  if (
+    banner.plannedOfflineDate &&
+    banner.numberOfDisabledMissions === 0 &&
+    banner.numberOfSubmittedMissions === 0
+  ) {
     const plannedOfflineDate = Temporal.PlainDate.from(
       banner.plannedOfflineDate
     )
