@@ -1,7 +1,11 @@
 import React from 'react'
 import { Trans } from 'react-i18next'
 
-import { Mission, createMissionIntelLink } from '../../features/mission'
+import {
+  Mission,
+  createMissionIntelLink,
+  createMissionScannerLink,
+} from '../../features/mission'
 import { getExternalLinkAttributes } from '../../features/utils'
 import { Duration } from '../duration/Duration'
 import { Distance } from '../distance/Distance'
@@ -31,10 +35,10 @@ const MissionList: React.FC<MissionInfoProps> = ({ mission }) => {
           <SVGIntel fill="currentColor" />
           <Trans i18nKey="missions.viewOnIntel">View on Intel</Trans>
         </a>
-        {!isMobile() && (
+        {isMobile() && (
           <a
             {...getExternalLinkAttributes()}
-            href={createMissionIntelLink(mission.id)}
+            href={createMissionScannerLink(mission.id)}
           >
             <SVGIntel fill="currentColor" />
             <Trans i18nKey="missions.viewInScanner">View in Scanner</Trans>
