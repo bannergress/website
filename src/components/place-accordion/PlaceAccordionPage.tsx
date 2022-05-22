@@ -46,6 +46,10 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
     return null
   }
 
+  const aligned = Boolean(
+    children && children.find((place) => place.type === 'locality')
+  )
+
   return (
     <div className="place-accordion-page">
       <button
@@ -64,6 +68,7 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
             all
             onSelectPlace={onSelectPlace}
             selected={currentPlace?.id === undefined}
+            aligned={aligned}
           />
           {children.map((childPlace) => (
             <PlaceAccordionEntry
@@ -72,6 +77,7 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
               all={false}
               onSelectPlace={onSelectPlace}
               selected={currentPlace?.id === childPlace.id}
+              aligned={aligned}
             />
           ))}
         </div>
