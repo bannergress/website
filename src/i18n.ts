@@ -30,4 +30,8 @@ i18n
     },
   })
 
+window.addEventListener('languagechange', () => {
+  i18n.changeLanguage()
+})
+
 export default i18n
