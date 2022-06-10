@@ -4,10 +4,10 @@
   "plugins": [
     "@typescript-eslint",
     "react-hooks",
-    "i18next"
+    "i18next",
+    "jsx-a11y"
   ],
   "extends": [
-    "airbnb-typescript",
     "plugin:@typescript-eslint/base",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:prettier/recommended",

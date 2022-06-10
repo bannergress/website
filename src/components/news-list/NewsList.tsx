@@ -9,8 +9,6 @@ import { RootState } from '../../storeTypes'
 import Announcement from '../announcement'
 import { Issue } from '../Issues-list'
 
-import './news-list.less'
-
 type AppDispatch = ThunkDispatch<RootState, any, NewsActionTypes>
 
 const NewsList: React.FC<NewsListProps> = ({ setIssues }) => {

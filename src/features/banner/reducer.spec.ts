@@ -16,12 +16,12 @@ describe('features > banner > bannerReducer', () => {
       searchBanners: [],
       agentBanners: [],
       userBannerListBanners: [],
-      officialBanners: [],
       canBrowseMore: true,
       canSearchMore: true,
       hasMoreAgentBanners: true,
       hasMoreUserBannerListBanners: true,
       createdBanner: undefined,
+      mapBanners: [],
     }
 
     const expectedState: BannerState = {
@@ -45,12 +45,12 @@ describe('features > banner > bannerReducer', () => {
       searchBanners: [],
       agentBanners: [],
       userBannerListBanners: [],
-      officialBanners: [],
       canBrowseMore: true,
       canSearchMore: true,
       hasMoreAgentBanners: true,
       hasMoreUserBannerListBanners: true,
       createdBanner: undefined,
+      mapBanners: [],
     }
 
     const action: BannerActionTypes = {
@@ -78,12 +78,12 @@ describe('features > banner > bannerReducer', () => {
       searchBanners: [],
       agentBanners: [],
       userBannerListBanners: [],
-      officialBanners: [],
       canBrowseMore: true,
       canSearchMore: true,
       hasMoreAgentBanners: true,
       hasMoreUserBannerListBanners: true,
       createdBanner: undefined,
+      mapBanners: [],
     }
 
     const expectedState: BannerState = {
@@ -106,13 +106,13 @@ describe('features > banner > bannerReducer', () => {
       browsedBanners: [],
       searchBanners: [],
       agentBanners: [],
-      officialBanners: [],
       userBannerListBanners: [],
       canBrowseMore: true,
       canSearchMore: true,
       hasMoreAgentBanners: true,
       hasMoreUserBannerListBanners: true,
       createdBanner: undefined,
+      mapBanners: [],
     }
 
     const action: BannerActionTypes = {

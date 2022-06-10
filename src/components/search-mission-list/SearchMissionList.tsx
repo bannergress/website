@@ -8,8 +8,6 @@ import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
 import SearchMissionCard from '../search-mission-card'
 import LoadingOverlay from '../loading-overlay'
 
-import './search-mission-list.less'
-
 const SearchMissionList: FC<SearchMissionListProps> = ({
   missions,
   hasMoreMissions,
