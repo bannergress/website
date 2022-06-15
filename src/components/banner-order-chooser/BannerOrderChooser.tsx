@@ -173,7 +173,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
       <div>
         {includeSorting && (
           <>
-            <Trans i18nKey="order.text.sortedBy">
+            <Trans i18nKey="order.sortedBy">
               Sorted by{' '}
               <Order
                 orderBy={currentFilter.orderBy}
@@ -191,9 +191,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
         {currentFilter.onlyOfficialMissions && (
           <>
             {' / '}
-            <Trans i18nKey="order.text.onlyOfficial">
-              Niantic missions only
-            </Trans>
+            <Trans i18nKey="order.onlyOfficial">Niantic missions only</Trans>
           </>
         )}
       </div>

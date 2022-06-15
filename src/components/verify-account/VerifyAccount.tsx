@@ -341,7 +341,7 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
         </h3>
         {!isAccountLinked(currentUser) && (
           <p>
-            <Trans i18nKey="account.none">
+            <Trans i18nKey="account.linking.none">
               No account linked to your Bannergress profile
             </Trans>
           </p>

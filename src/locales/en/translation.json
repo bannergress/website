@@ -195,7 +195,6 @@
   "map": {
     "title": "Map",
     "area": "Banners in This Area",
-    "niaOnly": "Show only official Niantic mission collections",
     "banner": {
       "end": "Banner ends here",
       "start": "Banner starts here",
@@ -310,13 +309,23 @@
   },
   "order": {
     "sortBy": "Sort by",
+    "sortedBy": "Sorted by",
     "relevance": "Relevance",
     "listAdded": "Added to List <2 />",
     "created": "Date Created <2 />",
     "title": "A-Z <2 />",
     "lengthMeters": "Distance <2 />",
-    "numberOfMissions": "Total Missions <2 />"
-  },
+    "numberOfMissions": "Total Missions <2 />",
+    "text": {
+      "excludeOffline": "Excluding Offline",
+      "includeOffline": "Showing Offline"
+    },
+    "filter": "Filter",
+    "filterAndSort": "Filter and Sort",
+    "showOfflineBanners": "Show offline banners",
+    "onlyOfficial": "Show only official Niantic mission collections",
+    "showUnofficialBanners": "Show non-Niantic missions"
+},
   "duration": {
     "days": "{{count}} d ",
     "hours": "{{count}} h ",

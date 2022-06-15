@@ -8,6 +8,7 @@ i18n
     resourcesToBackend(async (language, namespace, callback) => {
       try {
         const { default: resources } = await import(
+          /* webpackChunkName: "[request]" */
           `./locales/${language}/${namespace}.json`
         )
         callback(null, resources)
@@ -20,7 +21,7 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    supportedLngs: ['en', 'es'],
+    supportedLngs: ['en', 'es', 'de'],
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
