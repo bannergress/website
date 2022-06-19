@@ -309,7 +309,7 @@
   },
   "order": {
     "sortBy": "Sort by",
-    "sortedBy": "Sorted by",
+    "sortedBy": "Sorted by <2 />",
     "relevance": "Relevance",
     "listAdded": "Added to List <2 />",
     "created": "Date Created <2 />",

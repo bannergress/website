@@ -299,7 +299,7 @@
   },
   "order": {
     "sortBy": "Ordenar por",
-    "sortedBy": "Ordenar por",
+    "sortedBy": "Ordenar por <2 />",
     "listAdded": "Añadidas a la lista <2 />",
     "created": "Fecha de creación <2 />",
     "title": "A-Z <2 />",

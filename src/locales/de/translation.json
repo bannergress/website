@@ -307,7 +307,7 @@
   },
   "order": {
     "sortBy": "Sortieren nach",
-    "sortedBy": "Sortiert nach",
+    "sortedBy": "Sortiert nach <2 />",
     "relevance": "Relevant",
     "listAdded": "Zu Liste hinzugefügt <2 />",
     "created": "Erstellungsdatum <2 />",
