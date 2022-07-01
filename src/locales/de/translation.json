@@ -292,7 +292,7 @@
     "notFound": "Keine Missionen gefunden",
     "searching": "Nach Missionen suchen...",
     "objective": {
-      "captureOrUpgrade": "Capture / Upgrade",
+      "captureOrUpgrade": "Capture\u00A0/ Upgrade",
       "createField": "Feld",
       "createLink": "Link",
       "enterPassphrase": "Frage",

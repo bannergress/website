@@ -294,7 +294,7 @@
     "notFound": "No missions found",
     "searching": "Searching missions...",
     "objective": {
-      "captureOrUpgrade": "Capture / Upgrade",
+      "captureOrUpgrade": "Capture\u00A0/ Upgrade",
       "createField": "Field",
       "createLink": "Link",
       "enterPassphrase": "Passphrase",
