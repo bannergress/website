@@ -6,7 +6,11 @@ import { PlainDate } from '../plain-date'
 
 import { ReactComponent as SVGEdit } from '../../img/icons/edit.svg'
 
-export const DatePicker: React.FC<DatePickerProps> = ({ value, onChange }) => {
+export const DatePicker: React.FC<DatePickerProps> = ({
+  value,
+  onChange,
+  emptyText,
+}) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const useShowPicker = 'showPicker' in HTMLInputElement.prototype
@@ -40,9 +44,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ value, onChange }) => {
           {value ? (
             <PlainDate date={Temporal.PlainDate.from(value)} />
           ) : (
-            <Trans i18nKey="banner.creation.step3.plannedOfflineDate.empty">
-              not planned
-            </Trans>
+            emptyText
           )}{' '}
           <SVGEdit />
         </div>
@@ -61,4 +63,5 @@ export const DatePicker: React.FC<DatePickerProps> = ({ value, onChange }) => {
 export interface DatePickerProps {
   value: string | undefined
   onChange: (value: string | undefined) => void
+  emptyText: string
 }

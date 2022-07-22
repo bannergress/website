@@ -12,5 +12,5 @@ export const PlainDate: FC<PlainDateProps> = ({ date }) => {
 }
 
 export interface PlainDateProps {
-  date: Temporal.PlainDate
+  date: Temporal.PlainDate | string
 }

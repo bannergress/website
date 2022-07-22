@@ -13,4 +13,6 @@ export type BannerFilter = {
   orderDirection: BannerOrderDirection
   online: boolean | undefined
   onlyOfficialMissions?: boolean
+  minEventTimestamp?: string
+  maxEventTimestamp?: string
 }

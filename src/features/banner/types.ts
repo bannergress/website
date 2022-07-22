@@ -26,6 +26,8 @@ export interface Banner {
   owner?: Boolean
   warning?: string
   plannedOfflineDate?: string
+  eventStartDate?: string
+  eventEndDate?: string
 }
 
 export interface BannerState {

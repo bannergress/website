@@ -73,6 +73,8 @@ class CreateBanner extends React.Component<
       bannerDescription: undefined,
       bannerWarning: undefined,
       bannerPlannedOfflineDate: undefined,
+      bannerEventStartDate: undefined,
+      bannerEventEndDate: undefined,
       bannerTitleChanged: false,
       bannerDescriptionChanged: false,
       bannerType: 'sequential',
@@ -154,6 +156,8 @@ class CreateBanner extends React.Component<
       owner,
       warning,
       plannedOfflineDate,
+      eventStartDate,
+      eventEndDate,
     } = banner
 
     if (location.pathname.indexOf('edit-banner') >= 0 && !owner && !admin) {
@@ -189,6 +193,8 @@ class CreateBanner extends React.Component<
       bannerDescriptionChanged: id !== undefined,
       bannerWarning: warning,
       bannerPlannedOfflineDate: plannedOfflineDate,
+      bannerEventStartDate: eventStartDate,
+      bannerEventEndDate: eventEndDate,
       addedMissions,
       bannerType: type!,
       bannerWidth: width!,
@@ -244,6 +250,8 @@ class CreateBanner extends React.Component<
       | 'bannerDescription'
       | 'bannerWarning'
       | 'bannerPlannedOfflineDate'
+      | 'bannerEventStartDate'
+      | 'bannerEventEndDate'
       | 'bannerType'
       | 'bannerWidth'
       | 'extraction'
@@ -459,6 +467,8 @@ class CreateBanner extends React.Component<
       bannerDescription,
       bannerWarning,
       bannerPlannedOfflineDate,
+      bannerEventStartDate,
+      bannerEventEndDate,
       bannerType,
       bannerWidth,
     } = this.state
@@ -491,6 +501,8 @@ class CreateBanner extends React.Component<
         description: bannerDescription,
         warning: bannerWarning,
         plannedOfflineDate: bannerPlannedOfflineDate,
+        eventStartDate: bannerEventStartDate,
+        eventEndDate: bannerEventEndDate,
         missions,
         numberOfMissions: addedMissions.length,
         width,
@@ -691,6 +703,8 @@ class CreateBanner extends React.Component<
       bannerDescription,
       bannerWarning,
       bannerPlannedOfflineDate,
+      bannerEventStartDate,
+      bannerEventEndDate,
       bannerType,
       bannerWidth,
       status,
@@ -982,6 +996,8 @@ class CreateBanner extends React.Component<
                   type={bannerType}
                   width={bannerWidth}
                   plannedOfflineDate={bannerPlannedOfflineDate}
+                  eventStartDate={bannerEventStartDate}
+                  eventEndDate={bannerEventEndDate}
                   onChange={this.onInputChange}
                   isEdit={isEdit}
                 />
@@ -1044,6 +1060,8 @@ interface CreateBannerState {
   bannerDescription: string | undefined
   bannerWarning: string | undefined
   bannerPlannedOfflineDate: string | undefined
+  bannerEventStartDate: string | undefined
+  bannerEventEndDate: string | undefined
   bannerTitleChanged: boolean
   bannerDescriptionChanged: boolean
   bannerType: BannerType

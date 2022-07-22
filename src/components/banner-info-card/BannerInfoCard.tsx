@@ -1,7 +1,7 @@
 import React, { FC, Fragment } from 'react'
 import _ from 'underscore'
 import { LatLng } from 'leaflet'
-import { Trans } from 'react-i18next'
+import { TFunction, Trans, useTranslation } from 'react-i18next'
 import { Tooltip } from 'antd'
 import { Temporal } from '@js-temporal/polyfill'
 
@@ -56,6 +56,38 @@ const getCreatedBy = (banner: Banner) => {
         {agents}
       </p>
     )
+  }
+  return undefined
+}
+
+const getEvent = (banner: Banner, t: TFunction) => {
+  if (banner.eventStartDate) {
+    let text
+    if (banner.eventEndDate === banner.eventStartDate) {
+      return (
+        <p>
+          <Trans
+            i18nKey="events.eventAt"
+            components={{
+              at: <PlainDate date={banner.eventStartDate} />,
+            }}
+          />
+        </p>
+      )
+    } else {
+      return (
+        <p>
+          <Trans
+            i18nKey="events.eventFromTo"
+            components={{
+              from: <PlainDate date={banner.eventStartDate} />,
+              to: <PlainDate date={banner.eventEndDate!} />,
+            }}
+          />
+        </p>
+      )
+    }
+    return <p>{text}</p>
   }
   return undefined
 }
@@ -392,32 +424,36 @@ const getStartPointButton = (banner: Banner) => {
   )
 }
 
-const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => (
-  <div className="banner-info-card">
-    {banner.description && <p>{banner.description}</p>}
-    {banner.warning && <p className="warning-text">{banner.warning}</p>}
-    <IfUserLoggedIn>{getCreatedBy(banner)}</IfUserLoggedIn>
-    <IfUserLoggedOut>
-      <p>
-        <Trans i18nKey="banners.authorLogin">
-          Please{' '}
-          <LoginButton className="button-as-link" type="button">
-            sign in
-          </LoginButton>{' '}
-          to see author(s)
-        </Trans>
-      </p>
-    </IfUserLoggedOut>
-    {getPlannedOfflineDate(banner)}
-    {getMissionTypes(banner)}
-    {getTotalDistance(banner)}
-    {getInGameTime(banner)}
-    {getActions(banner)}
-    {getUniqueVisits(banner)}
-    {getLatestUpdateStatus(banner)}
-    {getStartPointButton(banner)}
-  </div>
-)
+const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
+  const { t } = useTranslation()
+  return (
+    <div className="banner-info-card">
+      {getEvent(banner, t)}
+      {banner.description && <p>{banner.description}</p>}
+      {banner.warning && <p className="warning-text">{banner.warning}</p>}
+      <IfUserLoggedIn>{getCreatedBy(banner)}</IfUserLoggedIn>
+      <IfUserLoggedOut>
+        <p>
+          <Trans i18nKey="banners.authorLogin">
+            Please{' '}
+            <LoginButton className="button-as-link" type="button">
+              sign in
+            </LoginButton>{' '}
+            to see author(s)
+          </Trans>
+        </p>
+      </IfUserLoggedOut>
+      {getPlannedOfflineDate(banner)}
+      {getMissionTypes(banner)}
+      {getTotalDistance(banner)}
+      {getInGameTime(banner)}
+      {getActions(banner)}
+      {getUniqueVisits(banner)}
+      {getLatestUpdateStatus(banner)}
+      {getStartPointButton(banner)}
+    </div>
+  )
+}
 
 export interface BannerInfoCardProps {
   banner: Banner

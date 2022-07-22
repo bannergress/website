@@ -78,6 +78,14 @@
           "title": "Geplantes Offline-Datum",
           "empty": "nicht geplant"
         },
+        "eventStartDate": {
+          "title": "Event-Anfangsdatum",
+          "empty": "nicht gesetzt"
+        },
+        "eventEndDate": {
+          "title": "Event-Enddatum",
+          "empty": "nicht gesetzt"
+        },
         "options": "Optionen",
         "help": {
           "banner": "<0>Banner:</0> Menge von Missionen, die in der richtigen Reihenfolge abgeschlossen werden muss, um ein Gesamtbild in deinem Scanner zu erzeugen.",
@@ -354,5 +362,11 @@
   "news": {
     "error": "Fehler beim Laden der Ankündigungen, bitte später nochmal probieren",
     "title": "Ankündigungen"
+  },
+  "events": {
+    "title": "Aktuelle Events",
+    "none": "Aktuell finden keine Events statt.",
+    "eventAt": "Event am <at />.",
+    "eventFromTo": "Event vom <from /> bis <to />."
   }
 }

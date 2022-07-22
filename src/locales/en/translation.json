@@ -78,6 +78,14 @@
           "title": "Planned Offline Date",
           "empty": "not planned"
         },
+        "eventStartDate": {
+          "title": "Event Start Date",
+          "empty": "not set"
+        },
+        "eventEndDate": {
+          "title": "Event End Date",
+          "empty": "not set"
+        },
         "options": "Options",
         "help": {
           "banner": "<0>Banner:</0> Collection of missions that must be completed in sequence to complete the picture in your profile.",
@@ -356,5 +364,11 @@
   "news": {
     "error": "Error loading announcements, please try again later",
     "title": "Announcements"
+  },
+  "events": {
+    "title": "Current events",
+    "none": "There are currently no events taking place.",
+    "eventAt": "Event at <at />.",
+    "eventFromTo": "Event from <from /> to <to />."
   }
 }

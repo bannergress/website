@@ -345,5 +345,11 @@
   "news": {
     "error": "Error cargando noticias, por favor prueba más tarde",
     "title": "Anuncios"
+  },
+  "events": {
+    "title": "Eventos actuales",
+    "none": "Actualmente no hay eventos en curso.",
+    "eventAt": "Evento el <at />.",
+    "eventFromTo": "Evento del <from /> al <to />."
   }
 }

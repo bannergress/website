@@ -9,6 +9,7 @@ import FooterMain from '../components/footer-main'
 import { Issue, IssuesList } from '../components/Issues-list'
 
 import './home.less'
+import EventsPreview from '../components/events-preview/EventsPreview'
 
 export const Home: React.FC = () => {
   const [issues, setIssues] = useState<Array<Issue>>([])
@@ -41,6 +42,7 @@ export const Home: React.FC = () => {
         <IssuesList issues={issues} />
         <NewsList setIssues={addIssues} />
         <UserBannerListPreview />
+        <EventsPreview />
         <RecentBanners
           titleList={titleList}
           setIssues={addIssues}

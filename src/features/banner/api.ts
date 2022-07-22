@@ -157,6 +157,17 @@ export const getBanners = (
         offset: page * PAGE_SIZE,
       })
 
+export const getBannerList = (
+  filter: BannerFilter,
+  offset: number,
+  limit: number
+) =>
+  api.get<Array<Banner>>('bnrs', {
+    ...filter,
+    offset,
+    limit,
+  })
+
 export const searchBanners = (
   searchTerm: string,
   filter: BannerFilter,
