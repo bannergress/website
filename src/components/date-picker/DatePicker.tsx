@@ -1,6 +1,4 @@
 import React, { ChangeEvent, useRef } from 'react'
-import { Temporal } from '@js-temporal/polyfill'
-import { Trans } from 'react-i18next'
 
 import { PlainDate } from '../plain-date'
 
@@ -41,11 +39,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             onChange={onEditComplete}
             value={value || ''}
           />
-          {value ? (
-            <PlainDate date={Temporal.PlainDate.from(value)} />
-          ) : (
-            emptyText
-          )}{' '}
+          {value ? <PlainDate date={value} /> : emptyText}
+          {' '}
           <SVGEdit />
         </div>
       ) : (

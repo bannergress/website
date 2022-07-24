@@ -1,10 +1,9 @@
 import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Temporal } from '@js-temporal/polyfill'
 
 export const PlainDate: FC<PlainDateProps> = ({ date }) => {
   const { i18n } = useTranslation()
-  const d = new Date(date.toString())
+  const d = new Date(date)
   const formatted = new Intl.DateTimeFormat(i18n.language || 'en', {
     dateStyle: 'medium',
   }).format(d)
@@ -12,5 +11,5 @@ export const PlainDate: FC<PlainDateProps> = ({ date }) => {
 }
 
 export interface PlainDateProps {
-  date: Temporal.PlainDate | string
+  date: string
 }

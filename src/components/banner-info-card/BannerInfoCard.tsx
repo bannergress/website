@@ -3,7 +3,6 @@ import _ from 'underscore'
 import { LatLng } from 'leaflet'
 import { TFunction, Trans, useTranslation } from 'react-i18next'
 import { Tooltip } from 'antd'
-import { Temporal } from '@js-temporal/polyfill'
 
 import { Banner } from '../../features/banner'
 import {
@@ -108,13 +107,10 @@ const getPlannedOfflineDate = (banner: Banner) => {
     banner.numberOfDisabledMissions === 0 &&
     banner.numberOfSubmittedMissions === 0
   ) {
-    const plannedOfflineDate = Temporal.PlainDate.from(
-      banner.plannedOfflineDate
-    )
-    const now = Temporal.Now.plainDateISO()
-    const diffDays = now.until(plannedOfflineDate, {
-      largestUnit: 'day',
-    }).days
+    const diff =
+      new Date(banner.plannedOfflineDate).getTime() - new Date().getTime()
+    const diffDays = diff / 86_400_000
+    console.log(diffDays)
     const className = getRemainingDaysCategory(diffDays)
     return (
       <div className="info-row">
@@ -126,7 +122,7 @@ const getPlannedOfflineDate = (banner: Banner) => {
         </div>
         <div className="info-content">
           <span className={className}>
-            <PlainDate date={plannedOfflineDate} />
+            <PlainDate date={banner.plannedOfflineDate} />
           </span>
         </div>
       </div>
@@ -138,21 +134,19 @@ const getPlannedOfflineDate = (banner: Banner) => {
 const getLatestUpdateStatus = (banner: Banner) => {
   const updateDates = mapMissions(banner.missions, (mission) =>
     mission?.latestUpdateStatus
-      ? Temporal.Instant.from(mission?.latestUpdateStatus)
+      ? new Date(mission?.latestUpdateStatus)
       : undefined
   )
-  let latestUpdate: Temporal.Instant | undefined
+  let latestUpdate: Date | undefined
   if (updateDates.length !== banner.numberOfMissions) {
     latestUpdate = undefined
   } else {
     latestUpdate = updateDates.reduce((first, second) =>
-      Temporal.Instant.compare(first, second) < 0 ? first : second
+      first.getTime() < second.getTime() ? first : second
     )
   }
   if (latestUpdate) {
-    const date = latestUpdate
-      .toZonedDateTimeISO(Temporal.Now.timeZone())
-      .toPlainDate()
+    const date = new Date(latestUpdate).toISOString().substring(0, 10)
     return (
       <div className="info-row">
         <div className="info-icon">
