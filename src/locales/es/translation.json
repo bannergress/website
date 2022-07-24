@@ -131,8 +131,7 @@
       "takePhoto" : "Hacer una foto",
       "viewWaypoint" : "Visitar Waypoint",
       "hidden" : "Oculta",
-      "title_one": "Acción {{type}}",
-      "title_other": "Acciones: "
+      "title_other": "Acciones"
     },
     "uniques": "Visitas únicas",
     "goToStart": "Ir al inicio del banner",

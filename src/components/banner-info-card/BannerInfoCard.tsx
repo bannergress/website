@@ -110,7 +110,6 @@ const getPlannedOfflineDate = (banner: Banner) => {
     const diff =
       new Date(banner.plannedOfflineDate).getTime() - new Date().getTime()
     const diffDays = diff / 86_400_000
-    console.log(diffDays)
     const className = getRemainingDaysCategory(diffDays)
     return (
       <div className="info-row">
@@ -308,10 +307,10 @@ const getInGameTime = (banner: Banner) => {
   )
 }
 
-const getObjectiveName = (objective: Objective) =>
-  i18n.t(`banners.objective.${objective}`)
+const getObjectiveName = (objective: Objective, count: number, t: TFunction) =>
+  t(`banners.objective.${objective}`, { count })
 
-const getActions = (banner: Banner) => {
+const getActions = (banner: Banner, t: TFunction) => {
   const types = _(mapMissions(banner.missions, (mission) => mission?.steps))
     .chain()
     .flatten()
@@ -327,15 +326,10 @@ const getActions = (banner: Banner) => {
     .reduce((prev, next) => prev + next, 0)
     .value()
 
-  const mainActionLabel = (
-    <Trans
-      i18nKey="banners.objective.title"
-      count={keys.length}
-      values={{ type: getObjectiveName(keys[0]) }}
-    >
-      Action: {{ type: getObjectiveName(keys[0]) }}
-    </Trans>
-  )
+  const mainActionLabel =
+    keys.length > 1
+      ? t('banners.objective.title', { count: keys.length })
+      : getObjectiveName(keys[0], types[keys[0]], t)
 
   return (
     <>
@@ -349,7 +343,9 @@ const getActions = (banner: Banner) => {
       {keys.length > 1 &&
         keys.map((k) => (
           <div key={k} className="info-subrow">
-            <div className="info-subtitle">{getObjectiveName(k)}</div>
+            <div className="info-subtitle">
+              {getObjectiveName(k, types[k], t)}
+            </div>
             <div className="info-subcontent">{types[k]}</div>
           </div>
         ))}
@@ -441,7 +437,7 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
       {getMissionTypes(banner)}
       {getTotalDistance(banner)}
       {getInGameTime(banner)}
-      {getActions(banner)}
+      {getActions(banner, t)}
       {getUniqueVisits(banner)}
       {getLatestUpdateStatus(banner)}
       {getStartPointButton(banner)}
