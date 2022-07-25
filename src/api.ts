@@ -1,4 +1,5 @@
 import keycloak from './keycloak'
+import i18n from './i18n'
 
 class Api {
   resolve: (val: unknown) => void = () => {}
@@ -74,7 +75,10 @@ class Api {
   }
 
   getHeaders = async () => {
-    const headers: HeadersInit = { Accept: 'application/json' }
+    const headers: HeadersInit = {
+      Accept: 'application/json',
+      'Accept-Language': i18n.resolvedLanguage,
+    }
     if (keycloak.token) {
       await keycloak.updateToken(5)
       headers.Authorization = `Bearer ${keycloak.token}`
