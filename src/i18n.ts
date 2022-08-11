@@ -1,7 +1,29 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import LanguageDetector from 'i18next-browser-languagedetector'
 import resourcesToBackend from 'i18next-resources-to-backend'
+
+const supportedLngs = {
+  de: /^de(?:-.*)?$/,
+  en: /^en(?:-.*)?$/,
+  es: /^es(?:-.*)?$/,
+}
+
+const getLanguageToUse = () => {
+  const languages = navigator.languages
+  console.log('preferred language order:', JSON.stringify(languages))
+  for (const language of languages) {
+    for (const pair of Object.entries(supportedLngs)) {
+      const code = pair[0]
+      const regex = pair[1]
+      if (regex.test(language)) {
+        console.log('using language:', code)
+        return code
+      }
+    }
+  }
+  console.log('using fallback language: en')
+  return 'en'
+}
 
 i18n
   .use(
@@ -17,22 +39,16 @@ i18n
       }
     })
   )
-  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en',
-    supportedLngs: ['en', 'es', 'de'],
+    lng: getLanguageToUse(),
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
-    },
-    detection: {
-      order: ['navigator'],
-      caches: [],
     },
   })
 
 window.addEventListener('languagechange', () => {
-  i18n.changeLanguage()
+  i18n.changeLanguage(getLanguageToUse())
 })
 
 export default i18n
