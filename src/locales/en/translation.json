@@ -43,7 +43,7 @@
     "collection": "Collection",
     "width": "Banner Width",
     "mine": "My {{type}} Banners",
-    "markinfo": "Mark banners as {{type}} to see them here.",
+    "markinfo": "Mark banners as '{{type}}' to see them here.",
     "exitFullscreen": "<0 /> Exit Full Screen",
     "creation": {
       "edit": "Edit Banner",

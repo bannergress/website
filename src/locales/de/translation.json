@@ -43,7 +43,7 @@
     "collection": "Sammlung",
     "width": "Breite des Banners",
     "mine": "Meine {{type}} Banner",
-    "markinfo": "banners als {{type}} kennzeichnen, um sie hier zu sehen.",
+    "markinfo": "Banner als '{{type}}' kennzeichnen, um sie hier zu sehen.",
     "exitFullscreen": "<0 /> Vollbildmodus verlassen",
     "creation": {
       "edit": "Banner bearbeiten",
@@ -322,7 +322,7 @@
   "order": {
     "sortBy": "Sortieren nach",
     "sortedBy": "Sortiert nach <2 />",
-    "relevance": "Relevant",
+    "relevance": "Relevanz",
     "listAdded": "Zu Liste hinzugefügt <2 />",
     "created": "Erstellungsdatum <2 />",
     "title": "A-Z <2 />",
