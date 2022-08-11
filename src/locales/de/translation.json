@@ -130,8 +130,8 @@
     "distance": {
       "title": "Gesamtstrecke",
       "route": "End- zu Startpunkt",
-      "km": "{{distance}} km",
-      "m": "{{distance}} m"
+      "km": "{{distance, number}} km",
+      "m": "{{distance, number}} m"
     },
     "time": {
       "title": "Zeit im Spiel",

@@ -114,8 +114,8 @@
     "distance": {
       "title": "Distancia total",
       "route": "Primer a último POI",
-      "km": "{{distance}} km",
-      "m": "{{distance}} m"
+      "km": "{{distance, number}} km",
+      "m": "{{distance, number}} m"
     },
     "time": {
       "title": "Tiempo del juego",

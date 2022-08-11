@@ -130,8 +130,8 @@
     "distance": {
       "title": "Total Distance",
       "route": "Last to first waypoint",
-      "km": "{{distance}} km",
-      "m": "{{distance}} m"
+      "km": "{{distance, number}} km",
+      "m": "{{distance, number}} m"
     },
     "time": {
       "title": "In-game Time",
