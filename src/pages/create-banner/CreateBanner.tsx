@@ -277,6 +277,12 @@ class CreateBanner extends React.Component<
         this.onMissionsChanged([], val!.toString())
       }
     }
+    if (inputName === 'bannerEventStartDate') {
+      const { bannerEventEndDate } = this.state
+      if (!bannerEventEndDate) {
+        newState.bannerEventEndDate = val
+      }
+    }
     this.setState(newState)
   }
 
