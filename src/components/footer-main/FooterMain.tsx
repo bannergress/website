@@ -38,7 +38,7 @@ const FooterMain: React.FC = () => (
         <br />
         Ingress is a registered trademark of Niantic Inc.
         <br />
-        Bannergress 2021
+        Bannergress 2023
       </Trans>
     </div>
   </div>
