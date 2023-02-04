@@ -18,7 +18,7 @@ export const showBannerRouteOnMap = (
   openedMissionIndexes: Array<number>,
   color: 'green' | 'blue'
 ) => {
-  const missionMultiPolylines: LatLng[][] = [[]]
+  const missionMultiPolylines: LatLng[][] = []
   let lastMissionTitle: string | undefined
   let prevMission = 0
   const connectMissions = banner.type !== 'anyOrder'

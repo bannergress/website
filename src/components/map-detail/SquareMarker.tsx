@@ -14,16 +14,20 @@ const SquareMarker: FC<SquareMarkerProps> = ({
   const colorClassName = `color-${color}`
   const icon = getMarkerDataIcon(markerData, colorClassName)
 
-  return (
-    <Marker
-      icon={icon}
-      position={[coords.lat, coords.lng]}
-      ref={(el) => setMarkerData(el, markerData)}
-      pane={pane || 'markerPane'}
-    >
-      {children}
-    </Marker>
-  )
+  if (coords) {
+    return (
+      <Marker
+        icon={icon}
+        position={[coords.lat, coords.lng]}
+        ref={(el) => setMarkerData(el, markerData)}
+        pane={pane || 'markerPane'}
+      >
+        {children}
+      </Marker>
+    )
+  } else {
+    return <></>
+  }
 }
 
 export interface SquareMarkerProps {

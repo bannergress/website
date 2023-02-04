@@ -46,6 +46,9 @@ const MissionPoiMarkerList: FC<MissionPoiMarkerListProps> = ({
     if (zoom < 14) {
       return <></>
     }
+    if (lines.length === 0) {
+      return <></>
+    }
     return (
       <>
         {lines.map((l) => (
