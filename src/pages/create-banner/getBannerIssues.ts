@@ -30,7 +30,10 @@ export const getBannerIssues = (
   const issues: Array<Issue> = []
 
   const indexes = missions.map((mission) => mission.index)
-  const duplicates = _(indexes)
+  const validNumberIndexes = indexes.filter(
+    (i) => i !== null && i !== undefined && i > 0
+  )
+  const duplicates = _(validNumberIndexes)
     .chain()
     .countBy()
     .pairs()
