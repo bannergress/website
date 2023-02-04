@@ -32,6 +32,7 @@ export const showBannerRouteOnMap = (
 
         if (connectMissions) {
           if (firstPOI && prevMission + 1 === index) {
+            missionMultiPolylines[missionMultiPolylines.length - 1] ??= []
             missionMultiPolylines[missionMultiPolylines.length - 1].push(
               new LatLng(firstPOI.latitude, firstPOI.longitude)
             )
