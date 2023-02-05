@@ -200,6 +200,7 @@ class CreateBanner extends React.Component<
       bannerWidth: width!,
       incomplete: hasPlaceholders ? banner.numberOfMissions : 0,
       showIncomplete: hasPlaceholders,
+      owner: owner as boolean,
     })
   }
 
@@ -477,6 +478,7 @@ class CreateBanner extends React.Component<
       bannerEventEndDate,
       bannerType,
       bannerWidth,
+      owner,
     } = this.state
     const missions = addedMissions.reduce<NumDictionary<Mission>>(
       (prev, curr, currentIndex) => {
@@ -513,6 +515,7 @@ class CreateBanner extends React.Component<
         numberOfMissions: addedMissions.length,
         width,
         type: bannerType,
+        owner: owner,
       })
       history.push('/preview-banner')
     } catch {
@@ -1077,6 +1080,7 @@ interface CreateBannerState {
   extraction: Algorithm
   incomplete: number
   showIncomplete: boolean
+  owner?: boolean
 }
 
 const mapStateToProps = (state: RootState) => ({
