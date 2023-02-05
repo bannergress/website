@@ -329,7 +329,7 @@
     "lengthMeters": "Länge <2 />",
     "numberOfMissions": "Missionszahl <2 />",
     "text": {
-      "excludeOffline": "Offline ausblenden",
+      "excludeOffline": "Offline ausgeblendet",
       "includeOffline": "Offline zeigen"
     },
     "filter": "Filtern",

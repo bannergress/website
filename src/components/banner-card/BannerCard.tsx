@@ -70,7 +70,7 @@ const BannerCard: FC<BannerCardProps> = ({
           {{ count: banner?.numberOfMissions }} Missions
         </Trans>
         {fullyOffline && (
-          <Trans i18nKey="missions.offlinellAll"> (all offline) </Trans>
+          <Trans i18nKey="missions.offlineAll"> (all offline) </Trans>
         )}
         {!fullyOffline && (offline || missing) && (
           <>
