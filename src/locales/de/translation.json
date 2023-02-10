@@ -45,6 +45,8 @@
     "mine": "Meine {{type}} Banner",
     "markinfo": "Banner als '{{type}}' kennzeichnen, um sie hier zu sehen.",
     "exitFullscreen": "<0 /> Vollbildmodus verlassen",
+    "confirmDelete": "Möchtest du das Banner wirklich löschen?",
+    "confirmNotDone": "Erledigt-Markierung wirklich entfernen?",
     "creation": {
       "edit": "Banner bearbeiten",
       "new": "Neues Banner",
@@ -111,8 +113,7 @@
         "detection": "Erkennung <1 />",
         "manual": "Manuell",
         "automatic": "Automatisch"
-      },
-      "confirmDelete": "Möchtest du das Banner wirklich löschen?"
+      }
     },
     "review": {
       "title": "Banner überprüfen",

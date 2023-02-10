@@ -45,6 +45,8 @@
     "mine": "Mis banners a {{type}}",
     "markinfo": "Marca banners como '{{type}}' para verlos aquí.",
     "exitFullscreen": "<0 /> Minimizar",
+    "confirmDelete": "¿Estás seguro de que quieres borrar este banner?",
+    "confirmNotDone": "¿Realmente eliminar la marca de completados?",
     "creation": {
       "edit": "Editar banner",
       "new": "Crear banner",
@@ -95,8 +97,7 @@
         "detection": "Detección <1 />",
         "manual": "Manual",
         "automatic": "Automática"
-      },
-      "confirmDelete": "¿Estás seguro de que quieres borrar este banner?"
+      }
     },
     "review": {
       "title": "Revisar banner",

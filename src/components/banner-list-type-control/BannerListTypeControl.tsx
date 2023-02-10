@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { BannerListType } from '../../features/banner'
 import { ReactComponent as SVGTodo } from '../../img/icons/todo.svg'
@@ -15,11 +15,18 @@ const BannerListTypeControl: FC<BannerListTypeControlProps> = ({
   const activeClassTodo = bannerListType === 'todo' ? 'active' : ''
   const activeClassDone = bannerListType === 'done' ? 'active' : ''
   const activeClassBlacklist = bannerListType === 'blacklist' ? 'active' : ''
+  const { t } = useTranslation()
 
   const toggle = (clickedListType: BannerListType) => {
-    const newListType =
-      bannerListType === clickedListType ? 'none' : clickedListType
-    onChangeListType(newListType)
+    let skip: boolean = false
+    if (bannerListType === 'done') {
+      skip = !window.confirm(t('banners.confirmNotDone'))
+    }
+    if (!skip) {
+      const newListType =
+        bannerListType === clickedListType ? 'none' : clickedListType
+      onChangeListType(newListType)
+    }
   }
 
   return (

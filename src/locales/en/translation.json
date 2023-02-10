@@ -45,6 +45,8 @@
     "mine": "My {{type}} Banners",
     "markinfo": "Mark banners as '{{type}}' to see them here.",
     "exitFullscreen": "<0 /> Exit Full Screen",
+    "confirmDelete": "Do you really want to delete that banner?",
+    "confirmNotDone": "Do you really want to remove the Done marker?",
     "creation": {
       "edit": "Edit Banner",
       "new": "New Banner",
@@ -111,8 +113,7 @@
         "detection": "Detection <1 />",
         "manual": "Manual",
         "automatic": "Automatic"
-      },
-      "confirmDelete": "Do you really want to delete that banner?"
+      }
     },
     "review": {
       "title": "Review Banner",
