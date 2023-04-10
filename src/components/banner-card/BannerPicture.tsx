@@ -113,6 +113,7 @@ const BannerPicture: FC<BannerPictureProps> = ({
         </Button>
       </Modal>
       <div
+        key={`imageLoaded-${loaded}`}
         ref={ref}
         className={`banner-card-picture banner-lines-${lines}`}
         onClick={() => setModalOpened(showFullImage)}
