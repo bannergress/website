@@ -321,7 +321,7 @@
     "minutes": "{{count}} min ",
     "seconds": "{{count}} s"
   },
-  "disclaimer": "Fan site no oficial ni asociado a Niantic Inc.<br />Ingress es una marca registrada de Niantic Inc.<br />Bannergress 2023",
+  "disclaimer": "Fan site no oficial ni asociado a Niantic Inc.<br />Ingress es una marca registrada de Niantic Inc.<br />Bannergress",
   "login": {
     "title": "Entrar",
     "help": "Identifícate con uno de estos proveedores",
