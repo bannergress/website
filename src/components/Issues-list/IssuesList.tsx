@@ -5,16 +5,17 @@ import IssueCard from './IssueCard'
 
 import './issues.less'
 
-const IssuesList: FC<IssuesListProps> = ({ issues }) => (
+const IssuesList: FC<IssuesListProps> = ({ issues, onCloseIssue }) => (
   <div className="issues-list">
     {issues.map((issue) => (
-      <IssueCard key={issue.key} issue={issue} />
+      <IssueCard key={issue.key} issue={issue} onCloseIssue={onCloseIssue} />
     ))}
   </div>
 )
 
 export interface IssuesListProps {
   issues: Array<Issue>
+  onCloseIssue?: (issue: Issue) => void
 }
 
 export default IssuesList

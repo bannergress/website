@@ -1,5 +1,5 @@
 import { RehydrateAction } from '../../storeTypes'
-import { Banner } from './types'
+import { Banner, BannerSettings } from './types'
 
 export const LOAD_BANNER = 'LOAD_BANNER'
 export const LOAD_RECENT_BANNERS = 'LOAD_RECENT_BANNERS'
@@ -8,11 +8,17 @@ export const RESET_BROWSED_BANNERS = 'RESET_BROWSED_BANNERS'
 export const BROWSE_BANNERS = 'BROWSE_BANNERS'
 export const RESET_SEARCH_BANNERS = 'RESET_SEARCH_BANNERS'
 export const SEARCH_BANNERS = 'SEARCH_BANNERS'
+export const RESET_AGENT_BANNERS = 'RESET_AGENT_BANNERS'
+export const AGENT_BANNERS = 'AGENT_BANNERS'
+export const RESET_USER_BANNER_LIST_BANNERS = 'RESET_USER_BANNER_LIST_BANNERS'
+export const USER_BANNER_LIST_BANNERS = 'USER_BANNER_LIST_BANNERS'
+export const RESET_MAP_BANNERS = 'RESET_MAP_BANNERS'
 export const SEARCH_MAP_BANNERS = 'SEARCH_MAP_BANNERS'
 export const CREATE_BANNER = 'CREATE_BANNER'
 export const REMOVE_CREATED_BANNER = 'REMOVE_CREATED_BANNER'
 export const EDIT_BANNER = 'EDIT_BANNER'
 export const DELETE_BANNER = 'DELETE_BANNER'
+export const CHANGE_BANNER_SETTINS = 'CHANGE_BANNER_SETTINS'
 
 interface LoadBannerAction {
   type: typeof LOAD_BANNER
@@ -52,6 +58,30 @@ interface ResetSearchBannersAction {
   type: typeof RESET_SEARCH_BANNERS
 }
 
+interface AgentBannersAction {
+  type: typeof AGENT_BANNERS
+  payload: {
+    banners: Array<Partial<Banner>>
+    hasMore: Boolean
+  }
+}
+
+interface ResetAgentBannersAction {
+  type: typeof RESET_AGENT_BANNERS
+}
+
+interface UserBannerListBannersAction {
+  type: typeof USER_BANNER_LIST_BANNERS
+  payload: {
+    banners: Array<Partial<Banner>>
+    hasMore: Boolean
+  }
+}
+
+interface ResetUserBannerListBannersAction {
+  type: typeof RESET_USER_BANNER_LIST_BANNERS
+}
+
 interface CreateBannerAction {
   type: typeof CREATE_BANNER
   payload: Banner
@@ -59,6 +89,10 @@ interface CreateBannerAction {
 
 interface RemoveCreatedBannerAction {
   type: typeof REMOVE_CREATED_BANNER
+}
+
+interface ResetMapBannersAction {
+  type: typeof RESET_MAP_BANNERS
 }
 
 interface SearchMapBannersAction {
@@ -76,6 +110,14 @@ interface DeleteBannerAction {
   payload: Banner
 }
 
+interface ChangeBannerSettingsAction {
+  type: typeof CHANGE_BANNER_SETTINS
+  payload: {
+    banner: Banner
+    bannerSettings: BannerSettings
+  }
+}
+
 export type BannerActionTypes =
   | LoadBannerAction
   | LoadRecentBannersAction
@@ -85,8 +127,14 @@ export type BannerActionTypes =
   | RehydrateAction
   | SearchBannersAction
   | ResetSearchBannersAction
+  | AgentBannersAction
+  | ResetAgentBannersAction
+  | UserBannerListBannersAction
+  | ResetUserBannerListBannersAction
   | CreateBannerAction
   | RemoveCreatedBannerAction
+  | ResetMapBannersAction
   | SearchMapBannersAction
   | EditBannerAction
   | DeleteBannerAction
+  | ChangeBannerSettingsAction

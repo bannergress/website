@@ -1,10 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
+import { Beforeunload } from 'react-beforeunload'
 import { Input, InputNumber, Button } from 'antd'
 import { Helmet } from 'react-helmet'
 import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars'
+import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -14,6 +16,9 @@ import {
   Mission,
   searchMissions as searchMissionsAction,
   resetSearchMissions as resetSearchMissionsAction,
+  getPlaceholderId,
+  isPlaceholder,
+  managePlaceholder,
 } from '../../features/mission'
 import {
   Banner,
@@ -23,8 +28,6 @@ import {
   createBanner as createBannerAction,
   removePendingBanner as removePendingBannerAction,
   loadBanner as fetchBannerAction,
-  ApiOrder,
-  ApiOrderDirection,
   getBanner as getBannerSelector,
 } from '../../features/banner'
 import {
@@ -41,11 +44,13 @@ import {
 } from '../../components/algorithm-detection-chooser'
 import AdvancedOptions from '../../components/advanced-options'
 import { IssuesList } from '../../components/Issues-list'
+import LoginRequired from '../../components/login/login-required'
 import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg'
 import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
+import { getBannerIssues, MAX_MISSIONS } from './getBannerIssues'
 
-import { getBannerIssues } from './getBannerIssues'
 import './create-banner.less'
+import { MissionFilter } from '../../features/mission/filter'
 
 class CreateBanner extends React.Component<
   CreateBannerProps,
@@ -66,6 +71,10 @@ class CreateBanner extends React.Component<
       location: null,
       bannerTitle: undefined,
       bannerDescription: undefined,
+      bannerWarning: undefined,
+      bannerPlannedOfflineDate: undefined,
+      bannerEventStartDate: undefined,
+      bannerEventEndDate: undefined,
       bannerTitleChanged: false,
       bannerDescriptionChanged: false,
       bannerType: 'sequential',
@@ -73,6 +82,8 @@ class CreateBanner extends React.Component<
       detectedLength: 0,
       status: 'initial',
       extraction: props.match.params.id ? 'none' : 'advanced',
+      incomplete: 0,
+      showIncomplete: false,
     }
   }
 
@@ -102,13 +113,21 @@ class CreateBanner extends React.Component<
     _prevProps: CreateBannerProps,
     prevState: CreateBannerState
   ) {
-    const { match, getBanner } = this.props
+    const { match, getBanner, previousBanner } = this.props
     const { searchText } = this.state
     if (searchText !== prevState.searchText) {
       this.handleSearch()
     }
+
     if (match.params.id && prevState.id !== match.params.id) {
-      const banner = getBanner(match.params.id)
+      let banner
+
+      if (previousBanner && previousBanner.id === match.params.id) {
+        banner = previousBanner
+      } else {
+        banner = getBanner(match.params.id)
+      }
+
       if (banner) {
         this.initialize(banner)
       }
@@ -125,22 +144,46 @@ class CreateBanner extends React.Component<
   }
 
   initialize = (banner: Banner) => {
+    const { location, history, admin } = this.props
     const { extraction } = this.state
-    const { title, description, missions, type, width, id } = banner
+    const {
+      title,
+      description,
+      missions,
+      type,
+      width,
+      id,
+      owner,
+      warning,
+      plannedOfflineDate,
+      eventStartDate,
+      eventEndDate,
+    } = banner
+
+    if (location.pathname.indexOf('edit-banner') >= 0 && !owner && !admin) {
+      history.replace('/')
+    }
+
     const addedMissions = mapMissions<Mission & { index?: number }>(
       missions,
       (m, index) =>
         m
           ? {
               ...m,
+              id: m.id ?? getPlaceholderId(),
               index: index + 1,
             }
           : undefined
     )
     if (extraction === 'advanced' && addedMissions && addedMissions.length) {
       this.titleExtractor.reset()
-      this.titleExtractor.fill(addedMissions)
+      this.titleExtractor.fill(
+        addedMissions.filter((mission) => !isPlaceholder(mission))
+      )
     }
+    const hasPlaceholders = addedMissions.some((mission) =>
+      isPlaceholder(mission)
+    )
     this.setState({
       id,
       startMissions: id ? addedMissions : [],
@@ -148,9 +191,16 @@ class CreateBanner extends React.Component<
       bannerTitleChanged: id !== undefined,
       bannerDescription: description,
       bannerDescriptionChanged: id !== undefined,
+      bannerWarning: warning,
+      bannerPlannedOfflineDate: plannedOfflineDate,
+      bannerEventStartDate: eventStartDate,
+      bannerEventEndDate: eventEndDate,
       addedMissions,
       bannerType: type!,
       bannerWidth: width!,
+      incomplete: hasPlaceholders ? banner.numberOfMissions : 0,
+      showIncomplete: hasPlaceholders,
+      owner: owner as boolean,
     })
   }
 
@@ -177,7 +227,12 @@ class CreateBanner extends React.Component<
     if (searchText && searchText.length > 2) {
       try {
         this.setState({ page: 0, status: 'searching' })
-        await fetchMissions(location, searchText, 'title', 'ASC', 0)
+        await fetchMissions(
+          location,
+          searchText,
+          { orderBy: 'title', orderDirection: 'ASC' },
+          0
+        )
         this.setState({ status: 'ready' })
       } catch {
         this.setState({ status: 'error' })
@@ -188,12 +243,16 @@ class CreateBanner extends React.Component<
   }
 
   onInputChange = (
-    val: string | number,
+    val: string | number | undefined,
     inputName:
       | 'searchText'
       | 'location'
       | 'bannerTitle'
       | 'bannerDescription'
+      | 'bannerWarning'
+      | 'bannerPlannedOfflineDate'
+      | 'bannerEventStartDate'
+      | 'bannerEventEndDate'
       | 'bannerType'
       | 'bannerWidth'
       | 'extraction'
@@ -216,27 +275,43 @@ class CreateBanner extends React.Component<
     if (inputName === 'extraction') {
       const { extraction } = this.state
       if (extraction !== val) {
-        this.onMissionsChanged([], val.toString())
+        this.onMissionsChanged([], val!.toString())
+      }
+    }
+    if (inputName === 'bannerEventStartDate') {
+      const { bannerEventEndDate } = this.state
+      if (!bannerEventEndDate) {
+        newState.bannerEventEndDate = val
       }
     }
     this.setState(newState)
   }
 
   onLoadMoreMissions = (): Promise<void> => {
-    const { fetchMissions } = this.props
+    const { fetchMissions, i18n } = this.props
     const { location, searchText, page } = this.state
     if (!searchText) {
-      throw new Error('no missions to search')
+      throw new Error(i18n!.t('banners.creation.errors.search'))
     }
     this.setState({ page: page + 1 })
-    return fetchMissions(location, searchText, 'title', 'ASC', page + 1)
+    return fetchMissions(
+      location,
+      searchText,
+      { orderBy: 'title', orderDirection: 'ASC' },
+      page + 1
+    )
   }
 
   advancedExtraction = (
     missions: Array<Mission>,
     newMissions: Array<Mission>
   ) => {
-    const { bannerTitleChanged, bannerDescriptionChanged } = this.state
+    const {
+      bannerTitleChanged,
+      bannerDescriptionChanged,
+      addedMissions: prevAdded,
+      incomplete,
+    } = this.state
     if (missions.length || newMissions.length) {
       if (newMissions.length) {
         this.titleExtractor.fill(newMissions)
@@ -246,11 +321,18 @@ class CreateBanner extends React.Component<
         .chain()
         .map((m, index) => ({ ...m, mission: missions[index] }))
         .sortBy((m) => m.index)
-        .map((m) => ({ ...m.mission, index: m.index }))
+        .map((m) => ({
+          ...m.mission,
+          index: m.index && m.index <= MAX_MISSIONS ? m.index : undefined,
+        }))
         .value()
       const detectedLength = result.total
       const newState: Pick<CreateBannerState, any> = {
-        addedMissions,
+        addedMissions: this.manageIncomplete(
+          incomplete,
+          prevAdded,
+          addedMissions
+        ),
         detectedLength,
         status: 'ready',
       }
@@ -269,10 +351,11 @@ class CreateBanner extends React.Component<
       addedMissions,
       bannerTitleChanged,
       bannerDescriptionChanged,
+      incomplete,
     } = this.state
     const lastIndex = (_(addedMissions).last()?.index ?? 0) + 1
     const missions = [
-      ...addedMissions,
+      ...addedMissions.filter((mission) => !isPlaceholder(mission)),
       ...newMissions.map((mission, index) => ({
         ...mission,
         index: lastIndex + index,
@@ -283,7 +366,11 @@ class CreateBanner extends React.Component<
       const detectedLength =
         result.results.find((r) => !!r.totalMarker)?.totalMarker?.parsed ?? 0
       const newState: Pick<CreateBannerState, any> = {
-        addedMissions: missions,
+        addedMissions: this.manageIncomplete(
+          incomplete,
+          addedMissions,
+          missions
+        ),
         detectedLength,
       }
       if (!bannerTitleChanged) {
@@ -298,20 +385,25 @@ class CreateBanner extends React.Component<
 
   onMissionsChanged = (newMissions: Array<Mission>, newExtraction?: string) => {
     const { addedMissions, extraction } = this.state
+    const addedMissionsWithoutPlaceholders = addedMissions.filter(
+      (mission) => !isPlaceholder(mission)
+    )
     const extr = newExtraction ?? extraction
     if (extr === 'advanced') {
       this.setState(
         {
           status:
-            addedMissions.length || newMissions.length ? 'detecting' : 'ready',
+            addedMissionsWithoutPlaceholders.length || newMissions.length
+              ? 'detecting'
+              : 'ready',
         },
         () => {
           setTimeout(() => {
             if (extraction !== 'advanced' && extraction !== 'title') {
-              this.titleExtractor.fill(addedMissions)
+              this.titleExtractor.fill(addedMissionsWithoutPlaceholders)
             }
             this.advancedExtraction(
-              [...addedMissions, ...newMissions],
+              [...addedMissionsWithoutPlaceholders, ...newMissions],
               newMissions
             )
           }, 100)
@@ -348,18 +440,28 @@ class CreateBanner extends React.Component<
       bannerTitleChanged: false,
       bannerDescriptionChanged: false,
       detectedLength: 0,
+      incomplete: 0,
+      showIncomplete: false,
     })
   }
 
   onManageMission = (mission: Mission) => {
-    const { addedMissions, extraction } = this.state
+    const { incomplete, addedMissions, extraction } = this.state
     if (addedMissions.length === 1) {
       this.onRemoveAllMissions()
     } else {
       if (extraction === 'advanced' || extraction === 'title') {
         this.titleExtractor.remove(mission)
       }
-      this.setState({ addedMissions: _(addedMissions).without(mission) })
+      this.setState({
+        addedMissions: this.manageIncomplete(
+          incomplete,
+          addedMissions,
+          _(addedMissions)
+            .without(mission)
+            .filter((m) => !isPlaceholder(m))
+        ),
+      })
     }
   }
 
@@ -370,15 +472,20 @@ class CreateBanner extends React.Component<
       addedMissions,
       bannerTitle,
       bannerDescription,
+      bannerWarning,
+      bannerPlannedOfflineDate,
+      bannerEventStartDate,
+      bannerEventEndDate,
       bannerType,
       bannerWidth,
+      owner,
     } = this.state
     const missions = addedMissions.reduce<NumDictionary<Mission>>(
       (prev, curr, currentIndex) => {
         const index = bannerType === 'anyOrder' ? currentIndex : curr.index! - 1
         return {
           ...prev,
-          [index]: curr,
+          [index]: managePlaceholder(curr),
         }
       },
       {}
@@ -400,10 +507,15 @@ class CreateBanner extends React.Component<
         id,
         title: bannerTitle!,
         description: bannerDescription,
+        warning: bannerWarning,
+        plannedOfflineDate: bannerPlannedOfflineDate,
+        eventStartDate: bannerEventStartDate,
+        eventEndDate: bannerEventEndDate,
         missions,
         numberOfMissions: addedMissions.length,
         width,
         type: bannerType,
+        owner: owner,
       })
       history.push('/preview-banner')
     } catch {
@@ -484,13 +596,124 @@ class CreateBanner extends React.Component<
     return ''
   }
 
+  onIncomplete = () => {
+    const { detectedLength, addedMissions } = this.state
+    let incomplete = detectedLength
+    if (!incomplete) {
+      const maxIndex = _(addedMissions)
+        .chain()
+        .map((mission) => mission.index)
+        .max()
+        .value()
+      incomplete = Math.max(
+        6,
+        Math.ceil((maxIndex ?? 0) / 6) * 6,
+        Math.ceil(addedMissions.length / 6) * 6
+      )
+    }
+    this.setState({
+      addedMissions: this.manageIncomplete(
+        incomplete,
+        addedMissions,
+        addedMissions.filter((mission) => !isPlaceholder(mission))
+      ),
+      incomplete,
+      showIncomplete: true,
+    })
+  }
+
+  onIncompleteConfirmed = (updateWhhenEmpty: boolean = false) => {
+    const { addedMissions, incomplete } = this.state
+    if (incomplete || updateWhhenEmpty) {
+      const newMissions = this.manageIncomplete(
+        incomplete,
+        addedMissions,
+        addedMissions.filter((mission) => !isPlaceholder(mission))
+      )
+      const hasPlaceholders = newMissions.some((mission) =>
+        isPlaceholder(mission)
+      )
+      this.setState({
+        addedMissions: newMissions,
+        showIncomplete: hasPlaceholders,
+      })
+    }
+  }
+
+  manageIncomplete = (
+    incomplete: number,
+    addedMissions: Array<Mission & { index?: number }>,
+    missions: Array<Mission & { index?: number }>
+  ): Array<Mission & { index?: number }> => {
+    if (incomplete) {
+      const placeholders = addedMissions.filter((mission) =>
+        isPlaceholder(mission)
+      )
+      const maxIndex =
+        _([...missions, ...placeholders])
+          .chain()
+          .map((mission) => mission.index)
+          .max()
+          .value() ?? incomplete
+      let toAdd = incomplete - missions.length
+      let newMissions: Array<Mission & { index?: number }> = []
+      for (let i = 1; i <= maxIndex; i += 1) {
+        const current = missions.filter((m) => m.index === i)
+        const currentPlaceholder = placeholders.filter((m) => m.index === i)
+        if (current && current.length) {
+          newMissions = [...newMissions, ...current]
+        } else if (
+          currentPlaceholder &&
+          currentPlaceholder.length &&
+          toAdd > 0
+        ) {
+          newMissions = [...newMissions, ...currentPlaceholder]
+          toAdd -= currentPlaceholder.length
+        } else if (toAdd > 0) {
+          newMissions.push({ id: getPlaceholderId(), index: i } as any)
+          toAdd -= 1
+        }
+      }
+      newMissions = [...newMissions, ...missions.filter((m) => !m.index)]
+      let nextIndex =
+        Math.max(
+          _(newMissions)
+            .chain()
+            .map((mission) => mission.index)
+            .max()
+            .value() ?? 0,
+          0
+        ) + 1
+      while (toAdd > 0) {
+        newMissions.push({
+          id: getPlaceholderId(),
+          index: nextIndex,
+        } as any)
+        nextIndex += 1
+        toAdd -= 1
+      }
+      const hasPlaceholders = newMissions.some((mission) =>
+        isPlaceholder(mission)
+      )
+      this.setState({
+        showIncomplete: hasPlaceholders,
+      })
+      return newMissions
+    }
+    return missions
+  }
+
   render() {
-    const { missions, hasMore } = this.props
+    const { missions, hasMore, i18n } = this.props
     const {
       addedMissions,
       searchText,
       bannerTitle,
       bannerDescription,
+      bannerWarning,
+      bannerPlannedOfflineDate,
+      bannerEventStartDate,
+      bannerEventEndDate,
       bannerType,
       bannerWidth,
       status,
@@ -498,6 +721,8 @@ class CreateBanner extends React.Component<
       startMissions,
       extraction,
       detectedLength,
+      incomplete,
+      showIncomplete,
     } = this.state
 
     let unusedMissions = _.filter(
@@ -512,7 +737,7 @@ class CreateBanner extends React.Component<
     ) {
       const removed = _.filter(
         startMissions,
-        (m) => !_.some(addedMissions, (a) => a.id === m.id)
+        (m) => !isPlaceholder(m) && !_.some(addedMissions, (a) => a.id === m.id)
       )
       unusedMissions = _(unusedMissions)
         .chain()
@@ -542,7 +767,10 @@ class CreateBanner extends React.Component<
       unusedMissionsCount = ''
     }
 
-    const title = id ? 'Edit Banner' : 'New Banner'
+    const isEdit = Boolean(id)
+    const title = isEdit
+      ? i18n!.t('banners.creation.edit')
+      : i18n!.t('banners.creation.new')
     const issues = getBannerIssues(
       addedMissions,
       bannerType,
@@ -553,171 +781,273 @@ class CreateBanner extends React.Component<
 
     return (
       <div className="create-banner">
-        <Helmet>
+        <Helmet defer={false}>
           <title>{title}</title>
         </Helmet>
+
         <Prompt message={this.getPromptMessage} />
+        <Beforeunload onBeforeunload={this.getPromptMessage} />
         <LoadingOverlay
           active={status === 'loading'}
-          text="Generating preview..."
+          text={i18n!.t('banners.creation.preview.generating')}
           spinner
           fadeSpeed={500}
         />
         <h1>{title}</h1>
-        <div className="create-banner-steps">
-          <div className="missions-search">
-            <h1>
-              <span className="ellipse">1</span> Add Missions
-            </h1>
-            {/*
+
+        <LoginRequired>
+          <div className="create-banner-steps">
+            <div className="missions-search">
+              <h1>
+                <Trans i18nKey="banners.creation.step1.title">
+                  <span className="ellipse">1</span> Add Missions
+                </Trans>
+              </h1>
+              {/*
             <h3>Location (Optional)</h3>
             <Input
               placeholder="Start typing..."
               onChange={(e) => this.onInputChange(e.target.value, 'location')}
             />
             */}
-            <h3>Search for missions</h3>
-            <span className="search-mission-subtitle">
-              You can search by mission name or author
-            </span>
-            <Input
-              placeholder="Enter at least 3 characters..."
-              value={searchText || ''}
-              maxLength={200}
-              onChange={(e) => this.onInputChange(e.target.value, 'searchText')}
-              onKeyPress={(k) =>
-                k.key === 'Enter' ? this.onSearchForced() : null
-              }
-            />
-            <div className="results-title">
-              <h3>Search results{unusedMissionsCount}</h3>
-              {unusedMissions && unusedMissions.length > 0 && (
-                <Button
-                  role="button"
-                  onClick={() => this.onAddAllMissions(unusedMissions)}
-                >
-                  Add All
-                </Button>
-              )}
-            </div>
-            <SearchMissionList
-              missions={unusedMissions}
-              hasMoreMissions={hasMore}
-              icon={<SVGRightArrow />}
-              initial={
-                status === 'initial' ||
-                (status === 'ready' && (!searchText || searchText.length < 3))
-              }
-              loadMoreMissions={this.onLoadMoreMissions}
-              onSelectMission={this.onAddMission}
-              onMissionAuthorClick={this.onMissionAuthorClicked}
-            />
-          </div>
-          <div className="missions-arrange">
-            <h1>
-              <span className="ellipse">2</span> Arrange
-            </h1>
-            <IssuesList
-              issues={issues.filter((issue) => issue.field === 'missions')}
-            />
-            <div className="algorithm">
-              <AlgorithmDetectionChooser
-                selected={extraction}
-                onChange={(val) => this.onInputChange(val, 'extraction')}
-                loading={status === 'detecting'}
+              <h3>
+                <Trans i18nKey="banners.creation.step1.subtitle">
+                  Search for missions
+                </Trans>
+              </h3>
+              <span className="subtitle">
+                <Trans i18nKey="banners.creation.step1.description">
+                  You can search by mission name or author
+                </Trans>
+              </span>
+              <Input
+                placeholder={i18n!.t('banners.creation.step1.placeholder')}
+                value={searchText || ''}
+                maxLength={200}
+                onChange={(e) =>
+                  this.onInputChange(e.target.value, 'searchText')
+                }
+                onKeyPress={(k) =>
+                  k.key === 'Enter' ? this.onSearchForced() : null
+                }
+              />
+              <div className="results-title">
+                <h3>
+                  <Trans
+                    i18nKey="banners.creation.step1.results"
+                    values={{ count: unusedMissionsCount }}
+                  >
+                    Search results{{ count: unusedMissionsCount }}
+                  </Trans>
+                </h3>
+                {unusedMissions && unusedMissions.length > 0 && (
+                  <Button
+                    role="button"
+                    onClick={() => this.onAddAllMissions(unusedMissions)}
+                  >
+                    <Trans i18nKey="buttons.addAll">Add All</Trans>
+                  </Button>
+                )}
+              </div>
+              <SearchMissionList
+                missions={unusedMissions}
+                hasMoreMissions={hasMore}
+                icon={<SVGRightArrow />}
+                initial={
+                  status === 'initial' ||
+                  status === 'loading' ||
+                  (status === 'ready' && (!searchText || searchText.length < 3))
+                }
+                loadMoreMissions={this.onLoadMoreMissions}
+                onSelectMission={this.onAddMission}
+                onMissionAuthorClick={this.onMissionAuthorClicked}
               />
             </div>
-            <div className="results-title">
-              <h3>{addedMissions.length} Missions in Total</h3>
-              {addedMissions.length > 0 && (
-                <Button
-                  role="button"
-                  onClick={() => this.onRemoveAllMissions()}
-                >
-                  Remove All
-                </Button>
-              )}
-            </div>
-            <SearchMissionList
-              missions={addedMissions}
-              hasMoreMissions={false}
-              initial
-              icon={<SVGCross />}
-              onSelectMission={this.onManageMission}
-              onMissionAuthorClick={this.onMissionAuthorClicked}
-              missionEditor={this.getMissionIndexEditor}
-              missionClass={this.getMissionClass}
-            />
-          </div>
-          <div className="create-banner-info">
-            <h1>
-              <span className="ellipse">3</span> Information
-            </h1>
-            <IssuesList
-              issues={issues.filter((issue) => issue.field !== 'missions')}
-            />
-            <h3>Banner Title</h3>
-            <Input
-              placeholder="Start typing..."
-              value={bannerTitle}
-              onChange={(e) =>
-                this.onInputChange(e.target.value, 'bannerTitle')
-              }
-            />
-            <h3>Description</h3>
-            <Input.TextArea
-              placeholder="Start typing..."
-              value={bannerDescription}
-              /* Note: The antd minRows seems to have a -1 bug on Firefox. Shows always one fewer row than specified.
-              Works well on other browser https://github.com/ant-design/ant-design/issues/30559  */
-              autoSize={{ minRows: 2 }}
-              maxLength={2000}
-              onChange={(e) =>
-                this.onInputChange(e.target.value, 'bannerDescription')
-              }
-            />
-            <h3>Options</h3>
-            <div className="adv-options-container open">
-              <AdvancedOptions
-                type={bannerType}
-                width={bannerWidth}
-                onChange={this.onInputChange}
+            <div className="missions-arrange">
+              <h1>
+                <Trans i18nKey="banners.creation.step2.title">
+                  <span className="ellipse">2</span> Arrange
+                </Trans>
+              </h1>
+              <IssuesList
+                issues={issues.filter((issue) => issue.field === 'missions')}
               />
-            </div>
-            <h3>Preview</h3>
-            <div className="create-banner-preview">
-              <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
-                <BannerImage
-                  missions={addedMissions}
-                  width={bannerWidth}
-                  useIndex={bannerType === 'sequential'}
+              <div className="algorithm">
+                <AlgorithmDetectionChooser
+                  selected={extraction}
+                  onChange={(val) => this.onInputChange(val, 'extraction')}
+                  loading={status === 'detecting'}
                 />
-              </Scrollbars>
+              </div>
+              <div className="results-title">
+                <h3>
+                  <Trans
+                    i18nKey="banners.creation.step2.subtitle"
+                    count={addedMissions.length}
+                  >
+                    {{ count: addedMissions.length }} Missions in Total
+                  </Trans>
+                </h3>
+                {addedMissions.length > 0 && (
+                  <Button
+                    role="button"
+                    onClick={() => this.onRemoveAllMissions()}
+                  >
+                    <Trans i18nKey="buttons.removeAll">Remove All</Trans>
+                  </Button>
+                )}
+              </div>
+              <div className="incomplete-chooser">
+                {!showIncomplete && (
+                  <Button role="button" onClick={this.onIncomplete}>
+                    <Trans i18nKey="banners.creation.step2.filler">
+                      Add Filler Missions for Incomplete Banner
+                    </Trans>
+                  </Button>
+                )}
+                {showIncomplete && (
+                  <>
+                    <div>
+                      <Trans i18nKey="banners.creation.step2.totalComplete">
+                        Total number of missions when banner is complete
+                      </Trans>
+                    </div>
+                    <div>
+                      <InputNumber
+                        value={incomplete}
+                        max={9999}
+                        min={0}
+                        onChange={(val) => this.setState({ incomplete: val })}
+                        onBlur={() => this.onIncompleteConfirmed(true)}
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
+              <SearchMissionList
+                missions={addedMissions}
+                hasMoreMissions={false}
+                initial
+                icon={<SVGCross />}
+                onSelectMission={this.onManageMission}
+                onMissionAuthorClick={this.onMissionAuthorClicked}
+                missionEditor={this.getMissionIndexEditor}
+                missionClass={this.getMissionClass}
+              />
             </div>
-            <button
-              type="button"
-              onClick={this.onCreateBanner}
-              className="positive-action-button button-review"
-              disabled={issues.some((i) => i.type === 'error')}
-            >
-              Review
-            </button>
+            <div className="create-banner-info">
+              <h1>
+                <Trans i18nKey="banners.creation.step3.title">
+                  <span className="ellipse">3</span> Information
+                </Trans>
+              </h1>
+              <IssuesList
+                issues={issues.filter((issue) => issue.field !== 'missions')}
+              />
+              <h3>
+                <Trans i18nKey="banners.creation.step3.bannerTitle">
+                  Banner Title
+                </Trans>
+              </h3>
+              <Input
+                placeholder={i18n?.t('placeholders.startTyping')}
+                value={bannerTitle}
+                onChange={(e) =>
+                  this.onInputChange(e.target.value, 'bannerTitle')
+                }
+              />
+              <h3>
+                <Trans i18nKey="banners.creation.step3.description">
+                  Description
+                </Trans>
+              </h3>
+              <Input.TextArea
+                placeholder={i18n?.t('placeholders.startTyping')}
+                value={bannerDescription}
+                // Note: The antd minRows seems to have a -1 bug on Firefox. Shows always one fewer row than specified.
+                // Works well on other browser https://github.com/ant-design/ant-design/issues/30559
+                autoSize={{ minRows: 2 }}
+                maxLength={2000}
+                onChange={(e) =>
+                  this.onInputChange(e.target.value, 'bannerDescription')
+                }
+              />
+              {isEdit && (
+                <>
+                  <h3>
+                    <Trans i18nKey="banners.creation.step3.warning.title">
+                      Warning Text
+                    </Trans>
+                  </h3>
+                  <span className="subtitle">
+                    <Trans i18nKey="banners.creation.step3.warning.subtitle">
+                      Displays in a more noticeable color
+                    </Trans>
+                  </span>
+                  <Input.TextArea
+                    placeholder={i18n?.t('placeholders.startTyping')}
+                    value={bannerWarning}
+                    // Note: The antd minRows seems to have a -1 bug on Firefox. Shows always one fewer row than specified.
+                    // Works well on other browser https://github.com/ant-design/ant-design/issues/30559
+                    autoSize={{ minRows: 2 }}
+                    maxLength={2000}
+                    onChange={(e) =>
+                      this.onInputChange(e.target.value, 'bannerWarning')
+                    }
+                  />
+                </>
+              )}
+              <h3>
+                <Trans i18nKey="banners.creation.step3.options">Options</Trans>
+              </h3>
+              <div className="adv-options-container open">
+                <AdvancedOptions
+                  type={bannerType}
+                  width={bannerWidth}
+                  plannedOfflineDate={bannerPlannedOfflineDate}
+                  eventStartDate={bannerEventStartDate}
+                  eventEndDate={bannerEventEndDate}
+                  onChange={this.onInputChange}
+                  isEdit={isEdit}
+                />
+              </div>
+              <h3>
+                <Trans i18nKey="banners.creation.preview.title">Preview</Trans>
+              </h3>
+              <div className="create-banner-preview">
+                <Scrollbars autoHeight autoHeightMin={100} autoHeightMax={284}>
+                  <BannerImage
+                    missions={addedMissions}
+                    width={bannerWidth}
+                    useIndex={bannerType === 'sequential'}
+                  />
+                </Scrollbars>
+              </div>
+              <button
+                type="button"
+                onClick={this.onCreateBanner}
+                className="positive-action-button button-review"
+                disabled={issues.some((i) => i.type === 'error')}
+              >
+                <Trans i18nKey="buttons.review">Review</Trans>
+              </button>
+            </div>
           </div>
-        </div>
+        </LoginRequired>
       </div>
     )
   }
 }
 
-export interface CreateBannerProps extends RouteComponentProps<{ id: string }> {
+export type CreateBannerProps = {
+  admin?: boolean
   previousBanner: Banner | undefined
   missions: Array<Mission>
   hasMore: Boolean
   fetchMissions: (
     location: string | null,
     query: string,
-    order: ApiOrder,
-    orderDirection: ApiOrderDirection,
+    filter: MissionFilter,
     page: number
   ) => Promise<void>
   createBanner: (banner: Partial<Banner>) => Promise<void>
@@ -725,7 +1055,8 @@ export interface CreateBannerProps extends RouteComponentProps<{ id: string }> {
   removePendingBanner: () => void
   getBanner: (id: string) => Banner | undefined
   fetchBanner: (id: string) => Promise<void>
-}
+} & RouteComponentProps<{ id: string }> &
+  WithTranslationProps
 
 interface CreateBannerState {
   id: string | undefined
@@ -736,6 +1067,10 @@ interface CreateBannerState {
   location: string | null
   bannerTitle: string | undefined
   bannerDescription: string | undefined
+  bannerWarning: string | undefined
+  bannerPlannedOfflineDate: string | undefined
+  bannerEventStartDate: string | undefined
+  bannerEventEndDate: string | undefined
   bannerTitleChanged: boolean
   bannerDescriptionChanged: boolean
   bannerType: BannerType
@@ -743,6 +1078,9 @@ interface CreateBannerState {
   detectedLength: number
   status: 'initial' | 'searching' | 'ready' | 'loading' | 'error' | 'detecting'
   extraction: Algorithm
+  incomplete: number
+  showIncomplete: boolean
+  owner?: boolean
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -763,4 +1101,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(CreateBanner))
+)(withRouter(withTranslation()(CreateBanner)))

@@ -1,22 +1,34 @@
 import React, { Fragment } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { divIcon, LatLng, LatLngBounds, Map as LeafletMap } from 'leaflet'
+import {
+  divIcon,
+  LatLng,
+  LatLngBounds,
+  Map as LeafletMap,
+  MarkerCluster,
+} from 'leaflet'
 import { MapContainer, Pane, TileLayer } from 'react-leaflet'
 import _ from 'underscore'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 
 import { Banner, getBannerBounds } from '../../features/banner'
-import BannerMarker from './BannerMarker'
+import { BannerMarker, getBannerFromMarker } from './BannerMarker'
 import { showBannerRouteOnMap } from '../map-detail/showBannerRouteOnMap'
 import { getAttributionLayer } from '../map-detail/getAttributionLayer'
 import { LocateControl } from '../locate'
 import { MapLoadingControl } from '../map-loading-control'
+import { MapZoomControl } from '../map-zoom-control'
 
 import './banners-map.less'
 import 'leaflet/dist/leaflet.css'
+import i18n from '../../i18n'
 
 class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   private map: LeafletMap | undefined = undefined
+
+  private onlyOfficialText = i18n.t('map.niaOnly', {
+    default: 'Show only official Niantic mission collections',
+  })
 
   constructor(props: BannersMapProps) {
     super(props)
@@ -167,14 +179,54 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     return undefined
   }
 
-  createClusterCustomIcon = (cluster: any) => {
+  createClusterCustomIcon = (cluster: MarkerCluster) => {
+    const { selectedBannerId } = this.props
     const numberMarkers = cluster.getChildCount()
-    if (numberMarkers > 1)
+
+    if (numberMarkers > 1) {
+      // Currently used logic for clusters:
+      // count all occurrences of banner types
+      // and set two or three colors depending on the available type
+
+      const children = cluster.getAllChildMarkers()
+
+      let countDone = 0
+      let countTodo = 0
+      let countNormal = 0
+      let anySelected = false
+
+      children.forEach((marker) => {
+        const banner = getBannerFromMarker(marker)
+        if (banner?.listType === 'todo') countTodo += 1
+        if (banner?.listType === 'done') countDone += 1
+        if (banner?.listType === undefined) countNormal += 1
+        if (banner?.id === selectedBannerId) anySelected = true
+      })
+      let listTypeClassName = ''
+
+      if (anySelected) {
+        listTypeClassName = 'marker-pin-true'
+      } else if (countDone > 0 && countTodo > 0 && countNormal === 0) {
+        listTypeClassName = 'marker-pin-done-todo'
+      } else if (countDone === 0 && countTodo > 0 && countNormal > 0) {
+        listTypeClassName = 'marker-pin-normal-todo'
+      } else if (countDone > 0 && countTodo === 0 && countNormal > 0) {
+        listTypeClassName = 'marker-pin-normal-done'
+      } else if (countDone > 0 && countTodo === 0 && countNormal === 0) {
+        listTypeClassName = 'marker-pin-done'
+      } else if (countDone === 0 && countTodo > 0 && countNormal === 0) {
+        listTypeClassName = 'marker-pin-todo'
+      } else if (countDone > 0 && countTodo > 0 && countNormal > 0) {
+        listTypeClassName = 'marker-pin-all'
+      }
+
       return divIcon({
         className: 'custom-div-icon',
-        html: `<div class='marker-pin-medium-false'>${numberMarkers}</div>`,
+        html: `<div class='marker-pin-medium-false ${listTypeClassName}'>${numberMarkers}</div>`,
         iconAnchor: [0, 0],
       })
+    }
+
     return divIcon({
       className: 'custom-div-icon',
       html: `<div class='marker-pin-medium-false'></div>`,
@@ -196,14 +248,15 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
           whenCreated={this.onMapCreated}
           minZoom={3}
           worldCopyJump
+          tap={false}
         >
+          <MapZoomControl />
           <LocateControl />
           <MapLoadingControl />
           {getAttributionLayer()}
           <Pane name="finalPane" style={{ zIndex: 580 }} />
           <MarkerClusterGroup
             maxClusterRadius={25}
-            singleMarkerMode
             iconCreateFunction={this.createClusterCustomIcon}
           >
             {this.showBannersOnMap()}

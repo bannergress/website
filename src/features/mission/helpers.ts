@@ -4,7 +4,19 @@ import { AvailableStep, Mission, Step } from './types'
 
 export const mapMissions = <T>(
   missions: NumDictionary<Mission> | undefined,
-  handler: (mission: Mission | undefined, index: number) => T | undefined | null
+  handler: (
+    mission: Mission | undefined,
+    /**
+     * The 0 based index according to the position in the
+     * banner image. Holes in the banner increase the index
+     */
+    index: number,
+    /**
+     * The 1 based index according list of missions. Holes in the banner
+     * have no sequence number
+     */
+    sequence: number | undefined
+  ) => T | undefined | null
 ): Array<T> => {
   if (!missions) return []
   const result: Array<T> = []
@@ -12,12 +24,16 @@ export const mapMissions = <T>(
     .map((k) => parseInt(k, 10))
     .sort((a, b) => a - b)
   const maxKey: number = _(keys).last() || 0
+
+  let sequenceCounter = 0
   for (let i = 0; i <= maxKey; i += 1) {
-    const val = handler(missions[i], i)
+    const sequence = missions[i] ? (sequenceCounter += 1) : undefined
+    const val = handler(missions[i], i, sequence)
     if (val !== undefined && val !== null) {
       result.push(val)
     }
   }
+
   return result
 }
 
@@ -133,3 +149,16 @@ export const getAvailableSteps: (mission: Mission) => AvailableStep[] = (
 export const createMissionIntelLink = (missionId: string) => {
   return `https://intel.ingress.com/mission/${missionId}`
 }
+
+export const createMissionScannerLink = (missionId: string) => {
+  return `https://link.ingress.com/?link=https%3a%2f%2fintel.ingress.com%2fmission%2f${missionId}&apn=com.nianticproject.ingress&isi=576505181&ibi=com.google.ingress&ifl=https%3a%2f%2fapps.apple.com%2fapp%2fingress%2fid576505181&ofl=https%3a%2f%2fintel.ingress.com%2fmission%2f${missionId}`
+}
+
+export const isPlaceholder = (mission: Mission) =>
+  !mission.id || mission.id.startsWith('placeholder')
+
+export const getPlaceholderId = () =>
+  `placeholder-${Math.random().toString(36).substr(2, 9)}`
+
+export const managePlaceholder = (mission: Mission): Mission =>
+  !isPlaceholder(mission) ? mission : ({} as Mission)

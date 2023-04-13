@@ -3,12 +3,11 @@ import { connect } from 'react-redux'
 import { Row, Layout, Divider } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
 import {
   Banner,
-  BannerOrder,
-  BannerOrderDirection,
   getSearchBanners,
   getHasMoreSearchBanners,
   loadSearchBanners as loadSearchBannersAction,
@@ -19,19 +18,27 @@ import {
   getHasMoreSearchPlaces,
   loadSearchPlaces as loadSearchPlacesAction,
 } from '../../features/place'
+import { decodeURIComponentSafe } from '../../features/utils'
 import BannerOrderChooser from '../../components/banner-order-chooser'
 import BannerList from '../../components/banner-list'
 import PlaceListFlat from '../../components/place-list-flat'
 import FooterMain from '../../components/footer-main'
 
 import './search.less'
+import { BannerFilter } from '../../features/banner/filter'
+import { SettingsState } from '../../features/settings/types'
+import { getDefaultOnline } from '../../features/settings/selectors'
+import { updateSettingsAction } from '../../features/settings/actions'
 
 class Search extends React.Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {
     super(props)
     this.state = {
-      selectedOrder: 'created',
-      selectedDirection: 'DESC',
+      filter: {
+        orderBy: 'relevance',
+        orderDirection: 'DESC',
+        online: props.defaultOnline,
+      },
       searchTerm: '',
       pageBanners: 0,
       pagePlaces: 0,
@@ -43,7 +50,7 @@ class Search extends React.Component<SearchProps, SearchState> {
   static getDerivedStateFromProps(props: SearchProps, state: SearchState) {
     const { match } = props
     const { searchTerm } = state
-    const newTerm = decodeURIComponent(match.params.term)
+    const newTerm = decodeURIComponentSafe(match.params.term)
 
     if (searchTerm !== newTerm) {
       return {
@@ -57,56 +64,40 @@ class Search extends React.Component<SearchProps, SearchState> {
   }
 
   componentDidMount() {
-    const { selectedDirection, selectedOrder, searchTerm } = this.state
+    const { filter, searchTerm } = this.state
 
-    this.doFetchBanners(searchTerm, selectedOrder, selectedDirection, 0)
+    this.doFetchBanners(searchTerm, filter, 0)
     this.doFetchPlaces(searchTerm, 0)
   }
 
   componentDidUpdate(prevProps: SearchProps, prevState: SearchState) {
     const { searchTerm: prevSearchTerm } = prevState
-    const { searchTerm, selectedOrder, selectedDirection } = this.state
+    const { searchTerm, filter } = this.state
 
     if (prevSearchTerm !== searchTerm) {
-      this.doFetchBanners(searchTerm, selectedOrder, selectedDirection, 0)
+      this.doFetchBanners(searchTerm, filter, 0)
       this.doFetchPlaces(searchTerm, 0)
     }
   }
 
-  onOrderSelected = (newOrder: BannerOrder) => {
-    const { selectedOrder, selectedDirection, searchTerm } = this.state
-    let newDirection: BannerOrderDirection = 'ASC'
-    if (newOrder === selectedOrder) {
-      newDirection = selectedDirection === 'ASC' ? 'DESC' : 'ASC'
-      this.setState({
-        selectedDirection: newDirection,
-        pageBanners: 0,
-      })
-    } else {
-      this.setState({
-        selectedOrder: newOrder,
-        selectedDirection: newDirection,
-        pageBanners: 0,
-      })
-    }
-    this.doFetchBanners(searchTerm, newOrder, newDirection, 0)
+  onFilterChanged = (filter: BannerFilter) => {
+    const { searchTerm } = this.state
+    const { updateSettings } = this.props
+    this.setState({
+      filter,
+      pageBanners: 0,
+    })
+    updateSettings({
+      defaultOnline: filter.online,
+    })
+    this.doFetchBanners(searchTerm, filter, 0)
   }
 
   onLoadMoreBanners = () => {
     const { fetchBanners } = this.props
-    const {
-      selectedOrder,
-      selectedDirection,
-      pageBanners,
-      searchTerm,
-    } = this.state
+    const { filter, pageBanners, searchTerm } = this.state
     this.setState({ pageBanners: pageBanners + 1 })
-    return fetchBanners(
-      searchTerm,
-      selectedOrder,
-      selectedDirection,
-      pageBanners + 1
-    )
+    return fetchBanners(searchTerm, filter, pageBanners + 1)
   }
 
   onLoadMorePlaces = () => {
@@ -117,20 +108,19 @@ class Search extends React.Component<SearchProps, SearchState> {
   }
 
   getPageTitle() {
+    const { i18n } = this.props
     const { searchTerm } = this.state
-    const title = `Search for ${searchTerm}`
-    return title
+    return i18n?.t('search.title', { searchTerm }) ?? `Search for ${searchTerm}`
   }
 
   async doFetchBanners(
     searchTerm: string,
-    order: BannerOrder,
-    orderDirection: BannerOrderDirection,
+    filter: BannerFilter,
     pageBanners: number
   ) {
     const { fetchBanners } = this.props
     this.setState({ bannersStatus: 'loading' })
-    await fetchBanners(searchTerm, order, orderDirection, pageBanners)
+    await fetchBanners(searchTerm, filter, pageBanners)
     this.setState({ bannersStatus: 'success' })
   }
 
@@ -143,24 +133,21 @@ class Search extends React.Component<SearchProps, SearchState> {
 
   render() {
     const title: string = this.getPageTitle()
-    const {
-      bannersStatus,
-      placesStatus,
-      selectedDirection,
-      selectedOrder,
-    } = this.state
+    const { bannersStatus, placesStatus, filter } = this.state
     const { banners, places, hasMoreBanners, hasMorePlaces } = this.props
 
     return (
       <Fragment>
-        <Helmet>
+        <Helmet defer={false}>
           <title>{title}</title>
         </Helmet>
         <div className="search-page page-container">
           <div className="search-content">
             <h1>{title}</h1>
 
-            <h2>Places</h2>
+            <h2>
+              <Trans i18nKey="places.title">Places</Trans>
+            </h2>
 
             <Layout>
               {placesStatus === 'success' && (
@@ -179,39 +166,48 @@ class Search extends React.Component<SearchProps, SearchState> {
 
                   {places.length === 0 && (
                     <>
-                      <Row>No places found</Row>
+                      <Row>
+                        <Trans i18nKey="places.notFound" count={2}>
+                          No places found
+                        </Trans>
+                      </Row>
                     </>
                   )}
                 </>
               )}
 
               {(placesStatus === 'initial' || placesStatus === 'loading') && (
-                <>Loading...</>
+                <Trans i18nKey="loading">Loading...</Trans>
               )}
             </Layout>
 
             <Divider type="horizontal" />
 
-            <h2>Banners</h2>
+            <h2>
+              <Trans i18nKey="banners.title">Banners</Trans>
+            </h2>
 
             <Layout>
+              <Row justify="start" className="order-chooser">
+                <BannerOrderChooser
+                  filter={filter}
+                  onFilterChanged={this.onFilterChanged}
+                  includeRelevance
+                />
+              </Row>
+
               {bannersStatus === 'success' && (
                 <>
                   {banners.length > 0 && (
                     <>
-                      <Row justify="start" className="order-chooser">
-                        <BannerOrderChooser
-                          selectedOrder={selectedOrder}
-                          selectedDirection={selectedDirection}
-                          onOrderClicked={this.onOrderSelected}
-                        />
-                      </Row>
-
                       <Row>
                         <BannerList
                           banners={banners}
                           hasMoreBanners={hasMoreBanners}
                           loadMoreBanners={this.onLoadMoreBanners}
+                          applyBannerListStlyes
+                          hideBlacklisted
+                          showDetailsButton={false}
                         />
                       </Row>
                     </>
@@ -219,14 +215,18 @@ class Search extends React.Component<SearchProps, SearchState> {
 
                   {banners.length === 0 && (
                     <>
-                      <Row>No banners found</Row>
+                      <Row>
+                        <Trans i18nKey="banners.notFound" count={2}>
+                          No banners found
+                        </Trans>
+                      </Row>
                     </>
                   )}
                 </>
               )}
 
               {(bannersStatus === 'initial' || bannersStatus === 'loading') && (
-                <>Loading...</>
+                <Trans i18nKey="loading">Loading...</Trans>
               )}
             </Layout>
           </div>
@@ -237,23 +237,24 @@ class Search extends React.Component<SearchProps, SearchState> {
   }
 }
 
-export interface SearchProps extends RouteComponentProps<{ term: string }> {
+export type SearchProps = {
   banners: Array<Banner>
   places: Array<Place>
   hasMoreBanners: Boolean
   hasMorePlaces: Boolean
   fetchBanners: (
     searchTerm: string,
-    order: BannerOrder,
-    orderDirection: BannerOrderDirection,
+    filter: BannerFilter,
     pageBanners: number
   ) => Promise<void>
   fetchPlaces: (searchTerm: string, pagePlaces: number) => Promise<void>
-}
+  defaultOnline: boolean | undefined
+  updateSettings: (settings: Partial<SettingsState>) => void
+} & RouteComponentProps<{ term: string }> &
+  WithTranslationProps
 
 interface SearchState {
-  selectedOrder: BannerOrder
-  selectedDirection: BannerOrderDirection
+  filter: BannerFilter
   searchTerm: string
   pageBanners: number
   pagePlaces: number
@@ -266,11 +267,16 @@ const mapStateToProps = (state: RootState) => ({
   places: getSearchPlaces(state),
   hasMoreBanners: getHasMoreSearchBanners(state),
   hasMorePlaces: getHasMoreSearchPlaces(state),
+  defaultOnline: getDefaultOnline(state),
 })
 
 const mapDispatchToProps = {
   fetchBanners: loadSearchBannersAction,
   fetchPlaces: loadSearchPlacesAction,
+  updateSettings: updateSettingsAction,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Search))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(withTranslation()(Search)))

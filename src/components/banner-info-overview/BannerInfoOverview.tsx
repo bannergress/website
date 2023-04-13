@@ -1,13 +1,21 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Tabs } from 'antd'
+import { useTranslation } from 'react-i18next'
 
-import { Banner } from '../../features/banner'
+import {
+  Banner,
+  BannerListType,
+  changeBannerSettings,
+} from '../../features/banner'
 import BannerCard from '../banner-card'
+import { BannerEditTools } from '../banner-edit-tools/BannerEditTools'
+import BannerListTypeControl from '../banner-list-type-control'
 import MissionList from '../mission-list'
 import BannerInfoCard from '../banner-info-card'
+import IfUserLoggedIn from '../login/if-user-logged-in'
 
 import './banner-info-overview.less'
-import { BannerEditTools } from '../banner-edit-tools/BannerEditTools'
 
 export type BannerInfoView = 'info' | 'missions'
 
@@ -22,9 +30,13 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   onExpand,
   onExpandAll,
 }) => {
+  const dispatch = useDispatch()
   const [activeViewFromState, setActiveView] = useState(view)
+  const { t } = useTranslation()
 
   const activeView = view || activeViewFromState
+
+  const mobileOnlyOnInfoTabClass = activeView === 'info' ? '' : 'hide-on-mobile'
 
   const onTabClick = (key: BannerInfoView) => {
     setActiveView(key)
@@ -39,6 +51,10 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
       ?.item(0) as HTMLElement
 
     return tabsBar && tabsBar.offsetParent !== null
+  }
+
+  const onListTypeChanged = async (listType: BannerListType) => {
+    dispatch(changeBannerSettings(banner, { listType }))
   }
 
   useEffect(() => {
@@ -66,18 +82,39 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   const { missions } = banner
   return (
     <div className="banner-info-overview" ref={refElement}>
-      {!hideControls && <BannerEditTools banner={banner} />}
       <div className="banner-info-container">
-        <BannerCard banner={banner} selected={false} showFullImage />
+        {!hideControls && (
+          <div className={mobileOnlyOnInfoTabClass}>
+            <BannerEditTools banner={banner} />
+          </div>
+        )}
+        <BannerCard
+          banner={banner}
+          selected={false}
+          showFullImage
+          linkStartPlace
+          applyBannerListStlye
+        />
+
+        {!hideControls && (
+          <IfUserLoggedIn>
+            <div className={mobileOnlyOnInfoTabClass}>
+              <BannerListTypeControl
+                bannerListType={banner.listType}
+                onChangeListType={onListTypeChanged}
+              />
+            </div>
+          </IfUserLoggedIn>
+        )}
         <Tabs
           defaultActiveKey="info"
           activeKey={activeView}
           onTabClick={(key) => onTabClick(key as BannerInfoView)}
         >
-          <Tabs.TabPane tab="Banner Info" key="info">
+          <Tabs.TabPane tab={t('banners.info')} key="info">
             <BannerInfoCard banner={banner} />
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Missions" key="missions">
+          <Tabs.TabPane tab={t('missions.title')} key="missions">
             {missions && (
               <MissionList
                 missions={missions}

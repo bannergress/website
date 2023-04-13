@@ -1,20 +1,20 @@
 import React, { createRef } from 'react'
 import { LatLngBounds } from 'leaflet'
 import _ from 'underscore'
+import { withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { Banner, getBannerBounds } from '../../features/banner'
-import { MapDetail } from '../map-detail'
-
-import './banner-info-with-map.less'
 import { mapMissions } from '../../features/mission'
 import { BannerInfoOverview, BannerInfoView } from '../banner-info-overview'
 import {
   BannerInfoMobileSwitch,
   BannerInfoMobileView,
 } from '../banner-info-mobile-switch'
+import { MapDetail } from '../map-detail'
 import { IssuesList, Issue } from '../Issues-list'
-
 import { ReactComponent as SVGBackArrow } from '../../img/icons/back-arrow.svg'
+
+import './banner-info-with-map.less'
 
 class BannerInfoWithMap extends React.Component<
   BannerInfoWithMapProps,
@@ -110,6 +110,7 @@ class BannerInfoWithMap extends React.Component<
       onSubmitButtonClicked,
       goBackLabel,
       onGoBack,
+      i18n,
     } = this.props
     const {
       expanded,
@@ -132,7 +133,10 @@ class BannerInfoWithMap extends React.Component<
         issues.push({
           key: 'banner-no-bounds',
           type: 'error',
-          message: 'Banner has no POIs currently available',
+          message:
+            i18n?.t('banner.errors.noPois', {
+              defaultValue: 'Banner has no POIs currently available',
+            }) ?? 'Banner has no POIs currently available',
           field: 'bounds',
         })
       }
@@ -196,7 +200,7 @@ class BannerInfoWithMap extends React.Component<
                   ref={this.mapRef}
                 />
               )}
-              {issues.length && <IssuesList issues={issues} />}
+              {issues.length > 0 && <IssuesList issues={issues} />}
             </div>
           </div>
         </div>
@@ -207,7 +211,7 @@ class BannerInfoWithMap extends React.Component<
   }
 }
 
-export interface BannerInfoWithMapProps {
+export interface BannerInfoWithMapProps extends WithTranslationProps {
   banner: Banner
   hideControls?: boolean
   submitButton?: string
@@ -224,4 +228,4 @@ interface BannerInfoWithMapState {
   desktopView: BannerInfoView
 }
 
-export default BannerInfoWithMap
+export default withTranslation()(BannerInfoWithMap)

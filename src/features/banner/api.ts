@@ -1,8 +1,8 @@
 import { api } from '../../api'
 import { Mission } from '../mission/types'
-import { Banner, NumDictionary } from './types'
+import { BannerFilter } from './filter'
+import { Banner, BannerListType, BannerSettings } from './types'
 
-const isMock = process.env.REACT_APP_USE_MOCK === 'true'
 export const PAGE_SIZE = 9
 
 const getRandomInt = (max: number, multiplier: number, min: number) =>
@@ -15,161 +15,74 @@ const selectMissionType = (): Mission['type'] => {
   return 'sequential'
 }
 
-const getMissions = (numberOfMissions: number) => {
-  const missionList: NumDictionary<Mission> = []
-  for (let i = 0; i < numberOfMissions; i += 1) {
-    const imgUrl = `/badges/mission-set-${(i % 18) + 1}.png`
-    missionList[i] = {
-      id: (i + 1).toString(),
-      title: `test mission ${i + 1}`,
-      picture: imgUrl,
-      steps: [
-        {
-          poi: {
-            id: '1',
-            picture: '',
-            title: 'Mock POI 1',
-            type: 'portal',
-            latitude: 49.032618 + getRandomInt(200, 0.0001, 0),
-            longitude: 10.971546 + getRandomInt(200, 0.0001, 0),
-          },
-          objective: 'hack',
-        },
-        {
-          poi: {
-            id: '2',
-            picture: '',
-            title: 'Mock POI 2',
-            type: 'portal',
-            latitude: 49.032618 + getRandomInt(200, 0.0001, 0),
-            longitude: 10.971546 + getRandomInt(200, 0.0001, 0),
-          },
-          objective: 'hack',
-        },
-        {
-          poi: {
-            id: '3',
-            title: 'Mock POI 3',
-            type: 'fieldTripWaypoint',
-            latitude: 49.032618 + getRandomInt(200, 0.0001, 0),
-            longitude: 10.971546 + getRandomInt(200, 0.0001, 0),
-          },
-          objective: 'viewWaypoint',
-        },
-        {
-          poi: {
-            id: '4',
-            picture: '',
-            title: 'Mock POI 4',
-            type: 'portal',
-            latitude: 49.032618 + getRandomInt(200, 0.0001, 0),
-            longitude: 10.971546 + getRandomInt(200, 0.0001, 0),
-          },
-          objective: 'hack',
-        },
-        {
-          poi: {
-            id: '5',
-            picture: '',
-            title: 'Mock POI 5',
-            type: 'portal',
-            latitude: 49.032618 + getRandomInt(200, 0.0001, 0),
-            longitude: 10.971546 + getRandomInt(200, 0.0001, 0),
-          },
-          objective: 'captureOrUpgrade',
-        },
-        {
-          poi: {
-            id: '6',
-            picture: '',
-            title: 'Mock POI 6',
-            type: 'portal',
-            latitude: 49.032618 + getRandomInt(200, 0.0001, 0),
-            longitude: 10.971546 + getRandomInt(200, 0.0001, 0),
-          },
-          objective: 'hack',
-        },
-      ],
-      description: 'Hack Runde durch Weißenburg',
-      type: selectMissionType(),
-      online: true,
-    }
-  }
-  return missionList
-}
-
-const createBanner = (id: string, numberOfMissions: number): Banner => ({
-  title: `Banner #${id}`,
-  numberOfMissions,
-  id,
-  lengthMeters: getRandomInt(5000, 1, 200),
-  startLatitude: 49.032618,
-  startLongitude: 10.971546,
-  missions: getMissions(numberOfMissions),
-  formattedAddress: 'New York, NY',
-  picture:
-    'https://test.api.bannergress.com/banners/pictures/6e146b8681689b1a62b5e088a9865189',
-})
-
-const createBanners = (startIndex: number = 0) => {
-  const bannerList: Array<Banner> = []
-  bannerList.push(createBanner(`${startIndex}1`, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(`${startIndex}2`, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(`${startIndex}3`, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(`${startIndex}4`, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(`${startIndex}5`, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(`${startIndex}6`, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(`${startIndex}7`, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(`${startIndex}8`, getRandomInt(20, 6, 0)))
-  bannerList.push(createBanner(`${startIndex}9`, getRandomInt(20, 6, 0)))
-  return bannerList
-}
-
-export const getBanner = (id: string) =>
-  isMock
-    ? { data: createBanner(id, getRandomInt(20, 6, 0)), ok: true, status: 200 }
-    : api.get<Banner>(`bnrs/${id}`)
+export const getBanner = (id: string) => api.get<Banner>(`bnrs/${id}`)
 
 export const getRecentBanners = (numberOfBanners: number) =>
-  isMock
-    ? { data: createBanners(), ok: true, status: 200 }
-    : api.get<Array<Banner>>('bnrs', {
-        orderBy: 'created',
-        orderDirection: 'DESC',
-        limit: numberOfBanners,
-      })
+  api.get<Array<Banner>>('bnrs', {
+    orderBy: 'created',
+    orderDirection: 'DESC',
+    limit: numberOfBanners,
+    online: true,
+  })
 
 export const getBanners = (
   placeId: string | undefined,
-  order: string,
-  orderDirection: string,
+  filter: BannerFilter,
   page: number
 ) =>
-  isMock
-    ? { data: createBanners(page), ok: true, status: 200 }
-    : api.get<Array<Banner>>('bnrs', {
-        orderBy: order,
-        orderDirection,
-        placeId,
-        limit: PAGE_SIZE,
-        offset: page * PAGE_SIZE,
-      })
+  api.get<Array<Banner>>('bnrs', {
+    ...filter,
+    placeId,
+    limit: PAGE_SIZE,
+    offset: page * PAGE_SIZE,
+  })
+
+export const getBannerList = (
+  filter: BannerFilter,
+  offset: number,
+  limit: number
+) =>
+  api.get<Array<Banner>>('bnrs', {
+    ...filter,
+    offset,
+    limit,
+  })
 
 export const searchBanners = (
   searchTerm: string,
-  order: string,
-  orderDirection: string,
+  filter: BannerFilter,
   page: number
 ) =>
-  isMock
-    ? { data: createBanners(page), ok: true, status: 200 }
-    : api.get<Array<Banner>>('bnrs', {
-        orderBy: order,
-        orderDirection,
-        query: searchTerm,
-        limit: PAGE_SIZE,
-        offset: page * PAGE_SIZE,
-      })
+  api.get<Array<Banner>>('bnrs', {
+    ...filter,
+    query: searchTerm,
+    limit: PAGE_SIZE,
+    offset: page * PAGE_SIZE,
+  })
+
+export const listAgentBanners = (
+  agentName: string,
+  filter: BannerFilter,
+  page: number
+) =>
+  api.get<Array<Banner>>('bnrs', {
+    ...filter,
+    author: agentName,
+    limit: PAGE_SIZE,
+    offset: page * PAGE_SIZE,
+  })
+
+export const listUserBannerListBanners = (
+  listType: BannerListType,
+  filter: BannerFilter,
+  page: number
+) =>
+  api.get<Array<Banner>>('bnrs', {
+    ...filter,
+    listTypes: listType,
+    limit: PAGE_SIZE,
+    offset: page * PAGE_SIZE,
+  })
 
 export const postBanner = (banner: Partial<Banner>) =>
   api.post<Banner>('bnrs', banner)
@@ -183,13 +96,20 @@ export const deleteBanner = (banner: Partial<Banner>) =>
 export const postBannerPreview = (banner: Partial<Banner>) =>
   api.post<Banner>('bnrs/preview', banner)
 
+export const changeBannerSettings = (
+  banner: Banner,
+  bannerSettings: BannerSettings
+) => api.post<void>(`bnrs/${banner.id}/settings`, bannerSettings, true)
+
 export const searchMapBanners = (
   topRightLat: number,
   topRightLng: number,
   bottomLeftLat: number,
-  bottomLeftLng: number
+  bottomLeftLng: number,
+  filter: BannerFilter
 ) =>
   api.get<Array<Banner>>('bnrs', {
+    ...filter,
     minLatitude: bottomLeftLat,
     maxLatitude: topRightLat,
     minLongitude: bottomLeftLng,

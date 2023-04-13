@@ -23,6 +23,10 @@ import {
   getLastAvailableStep,
   getAvailableSteps,
   createMissionIntelLink,
+  createMissionScannerLink,
+  managePlaceholder,
+  isPlaceholder,
+  getPlaceholderId,
 } from './helpers'
 
 export { default as MissionReducer } from './reducer'
@@ -54,4 +58,8 @@ export {
   getLastAvailableStep,
   getAvailableSteps,
   createMissionIntelLink,
+  createMissionScannerLink,
+  managePlaceholder,
+  isPlaceholder,
+  getPlaceholderId,
 }

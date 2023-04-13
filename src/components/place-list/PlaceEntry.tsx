@@ -4,7 +4,15 @@ import { Place } from '../../features/place'
 
 import './place-entry.less'
 
-const PlaceEntry: FC<PlaceProps> = ({ place, showNumbers, attribute }) => (
+import { ReactComponent as SVGLocality } from '../../img/icons/locality.svg'
+import { ReactComponent as SVGArea } from '../../img/icons/area.svg'
+
+const PlaceEntry: FC<PlaceProps> = ({
+  place,
+  showNumbers,
+  attribute,
+  aligned,
+}) => (
   <>
     {place.type === 'country' && (
       <>
@@ -16,6 +24,16 @@ const PlaceEntry: FC<PlaceProps> = ({ place, showNumbers, attribute }) => (
             )
           )}
         </span>{' '}
+      </>
+    )}
+    {place.type === 'locality' && (
+      <>
+        <SVGLocality className="place-icon" />{' '}
+      </>
+    )}
+    {aligned && place.type !== 'locality' && place.type !== 'country' && (
+      <>
+        <SVGArea className="place-icon" />{' '}
       </>
     )}
     <span className="place-name" title={place[attribute]}>
@@ -32,6 +50,7 @@ export interface PlaceProps {
   place: Place
   showNumbers: boolean
   attribute: 'longName' | 'formattedAddress'
+  aligned?: boolean
 }
 
 export default PlaceEntry

@@ -1,12 +1,12 @@
 import React, { Fragment, FC } from 'react'
 import { Col } from 'antd'
 import { Scrollbars } from 'react-custom-scrollbars'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { Mission } from '../../features/mission'
 import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
 import SearchMissionCard from '../search-mission-card'
-
-import './search-mission-list.less'
+import LoadingOverlay from '../loading-overlay'
 
 const SearchMissionList: FC<SearchMissionListProps> = ({
   missions,
@@ -22,6 +22,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
   const [ref] = useInfiniteScroll({
     callback: loadMoreMissions,
   })
+  const { t } = useTranslation()
 
   if (missions && missions.length > 0) {
     return (
@@ -40,7 +41,11 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
               className={missionClass ? missionClass(mission) : ''}
             />
           ))}
-          {hasMoreMissions && <div ref={ref}>Loading more items...</div>}
+          {hasMoreMissions && (
+            <div ref={ref}>
+              <Trans i18nKey="loadingMore">Loading more items...</Trans>
+            </div>
+          )}
         </Scrollbars>
       </Fragment>
     )
@@ -48,12 +53,25 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
   if (!hasMoreMissions && !initial) {
     return (
       <Fragment>
-        <Col>No missions found</Col>
+        <Col>
+          <Trans i18nKey="missions.notFound">No missions found</Trans>
+        </Col>
       </Fragment>
     )
   }
   return (
-    <Fragment>{hasMoreMissions && !initial && <Col>Loading...</Col>}</Fragment>
+    <Fragment>
+      {hasMoreMissions && !initial && (
+        <Col>
+          <LoadingOverlay
+            active
+            spinner
+            fadeSpeed={500}
+            text={t('missions.searching')}
+          />
+        </Col>
+      )}
+    </Fragment>
   )
 }
 

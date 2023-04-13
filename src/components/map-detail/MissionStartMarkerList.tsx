@@ -18,8 +18,7 @@ const MissionStartMarkerList: FC<MissionStartMarkerListProps> = ({
       banner.type === 'sequential',
       onOpenMission
     )}
-    {banner.type !== 'anyOrder' &&
-      showBannerRouteOnMap(banner, openedMissionIndexes, 'green')}
+    {showBannerRouteOnMap(banner, openedMissionIndexes, 'green')}
   </MapCluster>
 )
 

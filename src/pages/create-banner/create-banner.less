@@ -77,7 +77,6 @@
     }
 
     .adv-options-container {
-      max-height: 130px;
       border: 1px solid white;
       border-radius: 4px;
       padding: 5px 20px;
@@ -127,12 +126,6 @@
       }
     }
 
-    .missions-search {
-      .search-mission-subtitle {
-        color: #888888;
-      }
-    }
-
     .results-title,
     .algorithm {
       display: flex;
@@ -163,6 +156,34 @@
 
       .ant-select {
         width: 100px;
+      }
+    }
+
+    .incomplete-chooser {
+      margin-bottom: 10px;
+
+      button {
+        margin: 0 !important;
+        background-color: #2e2e2e;
+        border: none;
+        display: block;
+        border-radius: 4px;
+        width: 100%;
+        box-shadow: 0 0 2px 0 rgba(157, 96, 212, 0.5) !important;
+        border: solid 2px transparent !important;
+        background-origin: border-box !important;
+        background-clip: content-box, border-box !important;
+        box-shadow: 2px 1000px 1px #1B1B1B inset !important;
+        transition: linear-gradient ease 0.6s;
+        text-align: center;
+        color: white;
+        background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(180deg, #109393, #15D4B2) !important;
+
+        @media (hover: hover) and (pointer: fine) {
+          &:hover {
+            background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(0deg, #109393, #15D4B2) !important;
+          }
+        }
       }
     }
 
@@ -214,5 +235,17 @@
 
   .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
     background: none !important;
+  }
+}
+
+.mobile-switch-submit-button {
+  flex-grow: 0;
+  white-space: nowrap;
+  width: auto;
+}
+
+.placeholder-card {
+  .ant-input-number {
+    margin-right: 87px !important;
   }
 }

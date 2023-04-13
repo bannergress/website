@@ -36,6 +36,7 @@ const BannerImage: FC<BannerImageProps> = ({ missions, width, useIndex }) => {
     }
     return result
   }
+
   return (
     <div className="banner-image" style={{ width: 52 * width }}>
       {mapMissions()}

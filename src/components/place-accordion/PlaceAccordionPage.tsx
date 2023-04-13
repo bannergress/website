@@ -1,10 +1,13 @@
 import React, { FC } from 'react'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 import { Place } from '../../features/place'
 import { RootState } from '../../storeTypes'
 import PlaceEntry from '../place-list/PlaceEntry'
 import { PlaceAccordionEntry } from './PlaceAccordionEntry'
+import { ReactComponent as TriangleUpSVG } from '../../img/icons/triangle.svg'
+import { ReactComponent as TriangleDownSVG } from '../../img/icons/triangle-down.svg'
 
 import './place-accordion-page.less'
 
@@ -16,6 +19,8 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
   onSelectPlace,
   onToggleExpand,
 }) => {
+  const { t } = useTranslation(undefined, { keyPrefix: 'places' })
+
   let title
   if (currentPlace) {
     title = (
@@ -26,9 +31,9 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
       />
     )
   } else if (parentPlace) {
-    title = 'Refine...'
+    title = t('refine')
   } else {
-    title = 'All Countries'
+    title = t('allCountries')
   }
 
   const children = useSelector((state: RootState) =>
@@ -41,6 +46,10 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
     return null
   }
 
+  const aligned = Boolean(
+    children && children.find((place) => place.type === 'locality')
+  )
+
   return (
     <div className="place-accordion-page">
       <button
@@ -48,7 +57,8 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
         type="button"
         onClick={onToggleExpand}
       >
-        {title}
+        <div>{title}</div>
+        {expanded ? <TriangleUpSVG /> : <TriangleDownSVG />}
       </button>
       {expanded && (
         <div className="place-accordion-entries">
@@ -58,6 +68,7 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
             all
             onSelectPlace={onSelectPlace}
             selected={currentPlace?.id === undefined}
+            aligned={aligned}
           />
           {children.map((childPlace) => (
             <PlaceAccordionEntry
@@ -66,6 +77,7 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
               all={false}
               onSelectPlace={onSelectPlace}
               selected={currentPlace?.id === childPlace.id}
+              aligned={aligned}
             />
           ))}
         </div>

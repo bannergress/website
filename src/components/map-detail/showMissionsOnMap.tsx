@@ -20,7 +20,7 @@ export const showMissionStartPointsOnMap = (
   isSequential: boolean,
   onOpenMission: (index: number) => void
 ) => {
-  return mapMissions(missions, (mission, index) => {
+  return mapMissions(missions, (mission, index, sequence) => {
     if (mission && mission?.steps!) {
       let startLat = 0
       let startLng = 0
@@ -46,6 +46,7 @@ export const showMissionStartPointsOnMap = (
         markerType: 'mission',
         mission,
         index,
+        sequence,
         isSequential,
       }
 

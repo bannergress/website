@@ -1,7 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import {
+  withRouter,
+  RouteComponentProps,
+  generatePath,
+  Redirect,
+} from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -31,14 +37,26 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
   }
 
   render() {
-    const { getBanner, match } = this.props
+    const { getBanner, match, i18n } = this.props
     const { status } = this.state
     const banner = getBanner(match.params.id)
+
+    // When found ID different from loaded ID, redirect to loaded ID
+    if (
+      banner &&
+      match?.params?.id &&
+      match.params.id.localeCompare(banner.id, undefined, {
+        sensitivity: 'accent',
+      }) !== 0
+    ) {
+      const url = generatePath('/banner/:id', { id: banner.id })
+      return <Redirect to={url} />
+    }
 
     if (banner && banner.missions) {
       return (
         <>
-          <Helmet>
+          <Helmet defer={false}>
             <title>{banner.title}</title>
           </Helmet>
           <div className="banner-info-page">
@@ -48,16 +66,26 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
       )
     }
     if (status !== 'error') {
-      return <LoadingOverlay active spinner text="Loading..." fadeSpeed={500} />
+      return (
+        <LoadingOverlay
+          active
+          spinner
+          text={i18n!.t('loading')}
+          fadeSpeed={500}
+        />
+      )
     }
-    return <>No banners found with that id</>
+    return (
+      <Trans i18nKey="banners.noneWithId">No banners found with that id</Trans>
+    )
   }
 }
 
-export interface BannerInfoProps extends RouteComponentProps<{ id: string }> {
+export type BannerInfoProps = {
   getBanner: (id: string) => Banner | undefined
   fetchBanner: (id: string) => Promise<void>
-}
+} & RouteComponentProps<{ id: string }> &
+  WithTranslationProps
 
 interface BannerInfoState {
   status: 'initial' | 'loading' | 'ready' | 'error'
@@ -74,4 +102,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(BannerInfo))
+)(withRouter(withTranslation()(BannerInfo)))

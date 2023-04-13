@@ -10,12 +10,18 @@ describe('features > banner > bannerReducer', () => {
   it(`load banner, if ${LOAD_BANNER} action is provided`, () => {
     const initialState: BannerState = {
       banners: [],
+      fullBanners: [],
       recentBanners: [],
       browsedBanners: [],
       searchBanners: [],
+      agentBanners: [],
+      userBannerListBanners: [],
       canBrowseMore: true,
       canSearchMore: true,
+      hasMoreAgentBanners: true,
+      hasMoreUserBannerListBanners: true,
       createdBanner: undefined,
+      mapBanners: [],
     }
 
     const expectedState: BannerState = {
@@ -24,6 +30,8 @@ describe('features > banner > bannerReducer', () => {
           id: '1',
           title: 'Banner 1',
           numberOfMissions: 0,
+          numberOfSubmittedMissions: 0,
+          numberOfDisabledMissions: 0,
           startLatitude: 0,
           startLongitude: 0,
           lengthMeters: 0,
@@ -31,12 +39,18 @@ describe('features > banner > bannerReducer', () => {
           picture: '',
         },
       ],
+      fullBanners: [],
       recentBanners: [],
       browsedBanners: [],
       searchBanners: [],
+      agentBanners: [],
+      userBannerListBanners: [],
       canBrowseMore: true,
       canSearchMore: true,
+      hasMoreAgentBanners: true,
+      hasMoreUserBannerListBanners: true,
       createdBanner: undefined,
+      mapBanners: [],
     }
 
     const action: BannerActionTypes = {
@@ -58,21 +72,30 @@ describe('features > banner > bannerReducer', () => {
   it(`load recent banners, if ${LOAD_RECENT_BANNERS} action is provided`, () => {
     const initialState: BannerState = {
       banners: [],
+      fullBanners: [],
       recentBanners: [],
       browsedBanners: [],
       searchBanners: [],
+      agentBanners: [],
+      userBannerListBanners: [],
       canBrowseMore: true,
       canSearchMore: true,
+      hasMoreAgentBanners: true,
+      hasMoreUserBannerListBanners: true,
       createdBanner: undefined,
+      mapBanners: [],
     }
 
     const expectedState: BannerState = {
       banners: [],
+      fullBanners: [],
       recentBanners: [
         {
           id: '1',
           title: 'Banner 1',
           numberOfMissions: 0,
+          numberOfDisabledMissions: 0,
+          numberOfSubmittedMissions: 0,
           startLatitude: 0,
           startLongitude: 0,
           lengthMeters: 0,
@@ -82,9 +105,14 @@ describe('features > banner > bannerReducer', () => {
       ],
       browsedBanners: [],
       searchBanners: [],
+      agentBanners: [],
+      userBannerListBanners: [],
       canBrowseMore: true,
       canSearchMore: true,
+      hasMoreAgentBanners: true,
+      hasMoreUserBannerListBanners: true,
       createdBanner: undefined,
+      mapBanners: [],
     }
 
     const action: BannerActionTypes = {

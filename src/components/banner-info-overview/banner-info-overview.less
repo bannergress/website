@@ -1,13 +1,25 @@
 .banner-info-overview {
+  justify-content: center;
+  display: flex;
 
   .banner-info-container {
+    &:not(:last-child){
+      padding-right: 10px;
+    }
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     width: 100%;
-    row-gap: 30px;
-    padding-right: 10px;
+    padding-right: 4px;
     width: 370px;
+
+    .banner-card {
+      margin-bottom: 15px;
+    }
+
+    .ant-tabs {
+      margin-top: 15px;
+    }
 
     // Hide line below the buttons
     .ant-tabs-nav::before {
@@ -65,3 +77,4 @@
     }
   }
 }
+

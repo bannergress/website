@@ -21,7 +21,7 @@ const getEndMarkerLabel = () => {
 function getMissionMarkerLabel(markerData: MissionMarkerData) {
   return (
     <div key={markerData.mission.id} className="marker-pin-row">
-      {markerData.index + 1}
+      {markerData.sequence ?? ''}
       {isHiddenMission(markerData) && <EyeOffSVG />}
     </div>
   )

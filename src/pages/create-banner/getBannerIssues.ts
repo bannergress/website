@@ -1,13 +1,14 @@
 import _ from 'underscore'
 
 import { BannerType } from '../../features/banner'
-import { Mission } from '../../features/mission'
+import { isPlaceholder, Mission } from '../../features/mission'
 import { Issue } from '../../components/Issues-list'
+import i18n from '../../i18n'
 
-const MIN_MISSIONS = 2
-const MAX_MISSIONS = 3000
-const MIN_TITLE_LENGTH = 3
-const MAX_TITLE_LENGTH = 200
+export const MIN_MISSIONS = 2
+export const MAX_MISSIONS = 3000
+export const MIN_TITLE_LENGTH = 3
+export const MAX_TITLE_LENGTH = 200
 
 const hasGaps = (indexes: Array<number | undefined>) => {
   if (indexes.length > 0) {
@@ -29,19 +30,36 @@ export const getBannerIssues = (
   const issues: Array<Issue> = []
 
   const indexes = missions.map((mission) => mission.index)
-  const duplicates = _(indexes)
+  const validNumberIndexes = indexes.filter(
+    (i) => i !== null && i !== undefined && i > 0
+  )
+  const duplicates = _(validNumberIndexes)
     .chain()
     .countBy()
     .pairs()
     .filter((p) => p[1] > 1)
     .value()
 
+  if (
+    missions.length > 0 &&
+    missions.every((mission) => isPlaceholder(mission))
+  ) {
+    issues.push({
+      key: 'missions-placeholder',
+      type: 'error',
+      field: 'missions',
+      message: i18n.t('banners.creation.errors.noMissions'),
+    })
+  }
   if (missions.length < MIN_MISSIONS || missions.length > MAX_MISSIONS) {
     issues.push({
       key: 'missions-length',
       type: 'error',
       field: 'missions',
-      message: `A banner must contain between ${MIN_MISSIONS} and ${MAX_MISSIONS} missions.`,
+      message: i18n.t('banners.creation.errors.numberOfMissions', {
+        min: MIN_MISSIONS,
+        max: MAX_MISSIONS,
+      }),
     })
   }
   if (bannerType === 'sequential' && duplicates.length) {
@@ -49,7 +67,9 @@ export const getBannerIssues = (
       key: 'missions-duplicates',
       type: 'error',
       field: 'missions',
-      message: `Duplicate indexes: ${duplicates.map((d) => d[0]).join(', ')}`,
+      message: i18n.t('banners.creation.errors.duplicates', {
+        duplicates: duplicates.map((d) => d[0]).join(', '),
+      }),
     })
   }
   if (
@@ -60,8 +80,7 @@ export const getBannerIssues = (
       key: 'missions-invalid-index',
       type: 'error',
       field: 'missions',
-      message:
-        'There are at least a mission with an invalid index. Indexes must be positive integers.',
+      message: i18n.t('banners.creation.errors.invalidIndex'),
     })
   }
   if (
@@ -73,15 +92,18 @@ export const getBannerIssues = (
       key: 'title-length',
       type: 'error',
       field: 'title',
-      message: `The title must be between ${MIN_TITLE_LENGTH} and ${MAX_TITLE_LENGTH} characters`,
+      message: i18n.t('banners.creation.errors.titleLength', {
+        min: MIN_TITLE_LENGTH,
+        max: MAX_TITLE_LENGTH,
+      }),
     })
   }
-  if (hasGaps(indexes)) {
+  if (bannerType === 'sequential' && hasGaps(indexes)) {
     issues.push({
       key: 'mission-gaps',
       type: 'warning',
       field: 'missions',
-      message: 'The banner could be incomplete, as it has gaps',
+      message: i18n.t('banners.creation.warnings.incomplete'),
     })
   }
   if (bannerType === 'sequential' && indexes.length % bannerWidth !== 0) {
@@ -89,7 +111,9 @@ export const getBannerIssues = (
       key: 'missions-divisible',
       type: 'warning',
       field: 'missions',
-      message: `The banner could be incomplete, as the number of missions is not divisible by the selected width: ${bannerWidth}`,
+      message: i18n.t('banners.creation.warnings.divisible', {
+        width: bannerWidth,
+      }),
     })
   }
   if (detectedLength && detectedLength !== indexes.length) {
@@ -97,7 +121,9 @@ export const getBannerIssues = (
       key: 'missions-total',
       type: 'warning',
       field: 'missions',
-      message: `The banner could be incomplete, as the length difers from the detected length in the title: ${detectedLength}`,
+      message: i18n.t('banners.creation.warnings.length', {
+        length: detectedLength,
+      }),
     })
   }
 

@@ -3,6 +3,8 @@
   flex-direction: column;
 
   .place-accordion-title {
+    display: flex;
+    flex-direction: row;
     border: none;
     background: none;
     text-align: left;
@@ -10,6 +12,16 @@
     cursor: pointer;
     font-size: 20px;
     font-weight: bold;
+
+    div {
+      flex: 1;
+    }
+
+    svg {
+      margin-top: auto;
+      margin-bottom: auto;
+      margin-right: 10px;
+    }
   }
 
   .place-accordion-entries {

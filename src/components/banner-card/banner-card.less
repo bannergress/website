@@ -1,3 +1,40 @@
+@import url(../../App.less);
+
+// Start Temporary styles for list types. Not final yet. 
+
+.list-style-background() {
+  content: " ";
+  z-index: 10;
+  display: block;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  border-radius: 5px;
+}
+
+.banner-card.list-style-todo:after {
+  .list-style-background();
+  background: rgba(@color-todo, 0.05);
+  border: 1px solid @color-todo;
+}
+
+.banner-card.list-style-done:after {
+  .list-style-background();
+  background: rgba(@color-done, 0.05);
+  border: 1px solid @color-done;
+}
+
+.banner-card.list-style-blacklist:after {
+  .list-style-background();
+  background: rgba(@color-blacklist, 0.05);
+  border: 1px solid @color-blacklist;
+}
+
+// End temporary Styles ^^
+
 .banner-circle {
   display: flex;
   align-items: center;
@@ -10,20 +47,21 @@
   margin-top: 8px;
 }
 
-.icon {
-  width: 0.9rem;
-  height: 0.9rem;
-}
-
 .banner-card {
   background: #2e2e2e;
   border-radius: 5px;
   border: #2e2e2e 2px solid;
   padding: 18px;
   color: white;
+  position: relative;
 
   &.selected {
     border-color: #16d4b2;
+  }
+
+  .icon {
+    width: 0.9rem;
+    height: 0.9rem;
   }
 
 }
@@ -95,6 +133,46 @@
   }
 }
 
+.banner-card-picture-container{
+  position: relative;
+  display: flex;
+
+  .offline-overlay{
+    font-size: 24px;
+    line-height: 18px;
+    color: #DDDDDD;
+
+    position: absolute;
+    left: -20px;
+    top: 0;
+    width: calc(100% + 2 * 20px);
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    pointer-events: none;    
+    
+   .offline-overlay-line {
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 3.5em;
+      display: flex;
+      flex-direction: row;
+      background-color: rgba(0, 0, 0, 0.7);
+
+      svg{
+        height: 1em;
+        width:1em;
+        fill: currentColor;
+        margin-right: 0.5em;
+      }
+    }
+  }
+}
+
 .banner-card-title {
   font-size: 20px;
   line-height: 21px;
@@ -111,10 +189,15 @@
     width: 20px;
 
     .icon {
-      fill: rgb(221, 221, 221);
+      fill: currentColor;
     }
   }
 }
+
+.banner-info-item.warning {
+  color: @color-blacklist;
+}
+
 
 .banner-card-picture {
   margin: 20px 0;
@@ -130,7 +213,6 @@
   max-width: 100%;
 
   &>img {
-    max-height: 100%;
     max-width: 100%;
   }
 

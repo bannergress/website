@@ -1,5 +1,5 @@
 import { api } from '../../api'
-import { ApiOrder, ApiOrderDirection } from '../banner/types'
+import { MissionFilter } from './filter'
 import { Mission } from './types'
 
 const isMock = process.env.REACT_APP_USE_MOCK === 'true'
@@ -14,7 +14,7 @@ const getMissions = (startIndex: number, numberOfMissions: number) => {
       title: `test mission ${startIndex + i + 1}`,
       picture: imgUrl,
       description: 'Hack Runde durch Weißenburg',
-      online: true,
+      status: 'published',
     })
   }
   return missionList
@@ -23,16 +23,15 @@ const getMissions = (startIndex: number, numberOfMissions: number) => {
 export const searchMissions = (
   location: string | null,
   query: string,
-  orderBy: ApiOrder,
-  orderDirection: ApiOrderDirection,
+  filter: MissionFilter,
   page: number
 ) =>
   isMock
     ? { data: getMissions(page * PAGE_SIZE, PAGE_SIZE), ok: true, status: 200 }
     : api.get<Array<Mission>>('missions/unused', {
         query,
-        orderBy,
-        orderDirection,
+        orderBy: filter.orderBy,
+        orderDirection: filter.orderDirection,
         limit: PAGE_SIZE,
         offset: page * PAGE_SIZE,
       })

@@ -14,7 +14,8 @@ const MissionCard: React.FC<MissionCardProps> = ({
   onExpand,
   onRef,
 }) => {
-  const missionTitleClassAddon = mission?.online ? '' : 'offline'
+  const missionTitleClassAddon =
+    mission?.status === 'published' ? '' : 'offline'
 
   return (
     <div ref={onRef} className="mission-card" key={mission?.id}>
@@ -24,7 +25,7 @@ const MissionCard: React.FC<MissionCardProps> = ({
           {mission?.title}
         </div>
         {onExpand && (
-          <div>
+          <div className="shevron">
             <SVGChevron
               fill="#FFF"
               className={`icon ${expanded ? 'open' : ''}`}

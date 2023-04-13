@@ -2,7 +2,8 @@ import _ from 'underscore'
 
 import { mapMissions } from '../mission'
 import { getMissionBounds } from '../mission/helpers'
-import { Banner } from './types'
+import { Banner, BannerListType } from './types'
+import i18n from '../../i18n'
 
 const BOUNDS_MARGIN = 0.0001
 
@@ -63,4 +64,32 @@ export const extend = <T extends { id?: string; title?: string }>(
 export const extendSorted = <T extends { id?: string; title?: string }>(
   source: Array<T>,
   target: Array<T>
-) => _.sortBy(extend(source, target), (b) => b.title)
+) => _.sortBy(extend(target, source), (b) => b.title)
+// Use target as source so that changed banners overwrite old banner information
+
+export const getBannerListTypeText = (listType: BannerListType) => {
+  switch (listType) {
+    case 'blacklist':
+      return i18n.t('banners.hide.name')
+    case 'done':
+      return i18n.t('banners.done.name')
+    case 'todo':
+      return i18n.t('banners.todo.name')
+    default:
+      throw new Error(i18n.t('banners.errors.unknownType'))
+  }
+}
+
+export const isBannerFullyOnline = (banner: Banner) => {
+  return (
+    banner?.numberOfDisabledMissions === 0 &&
+    banner?.numberOfSubmittedMissions === 0
+  )
+}
+
+export const isBannerFullyOffline = (banner: Banner) => {
+  return (
+    banner.numberOfDisabledMissions + banner.numberOfSubmittedMissions ===
+    banner.numberOfMissions
+  )
+}

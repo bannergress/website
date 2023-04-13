@@ -5,28 +5,35 @@ import {
   BROWSE_BANNERS,
   LOAD_BANNER,
   LOAD_RECENT_BANNERS,
-  LOAD_RECENT_BANNERS_ERROR,
   RESET_BROWSED_BANNERS,
   SEARCH_BANNERS,
   RESET_SEARCH_BANNERS,
+  AGENT_BANNERS,
+  RESET_AGENT_BANNERS,
+  USER_BANNER_LIST_BANNERS,
+  RESET_USER_BANNER_LIST_BANNERS,
   CREATE_BANNER,
   REMOVE_CREATED_BANNER,
   SEARCH_MAP_BANNERS,
+  CHANGE_BANNER_SETTINS,
   EDIT_BANNER,
   DELETE_BANNER,
+  RESET_MAP_BANNERS,
 } from './actionTypes'
 import * as api from './api'
+import { BannerFilter } from './filter'
 import { getCreatedBanner } from './selectors'
-import { Banner, ApiOrder, ApiOrderDirection } from './types'
+import { Banner, BannerSettings, BannerListType } from './types'
 
 export const loadBannerAction = (id: string) => async (
   dispatch: Dispatch<BannerActionTypes>
 ) => {
   const response = await api.getBanner(id)
   if (response.ok && response.data !== undefined) {
+    const banner = { ...response.data, requestedId: id }
     dispatch({
       type: LOAD_BANNER,
-      payload: response.data,
+      payload: banner,
     })
   } else if (response.status === 404) {
     throw new Error('Banner not found')
@@ -43,16 +50,13 @@ export const loadRecentBannersAction = () => async (
       payload: response.data,
     })
   } else {
-    dispatch({
-      type: LOAD_RECENT_BANNERS_ERROR,
-    })
+    throw new Error('Error loading banners')
   }
 }
 
 export const loadBrowsedBannersAction = (
   placeId: string | null,
-  order: ApiOrder,
-  orderDirection: ApiOrderDirection,
+  filter: BannerFilter,
   page: number
 ) => async (dispatch: Dispatch<BannerActionTypes>) => {
   if (page === 0) {
@@ -60,12 +64,7 @@ export const loadBrowsedBannersAction = (
       type: RESET_BROWSED_BANNERS,
     })
   }
-  const response = await api.getBanners(
-    placeId ?? undefined,
-    order,
-    orderDirection,
-    page
-  )
+  const response = await api.getBanners(placeId ?? undefined, filter, page)
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: BROWSE_BANNERS,
@@ -83,8 +82,7 @@ export const loadBrowsedBannersAction = (
 
 export const loadSearchBannersAction = (
   searchTerm: string,
-  order: ApiOrder,
-  orderDirection: ApiOrderDirection,
+  filter: BannerFilter,
   page: number
 ) => async (dispatch: Dispatch<BannerActionTypes>) => {
   if (page === 0) {
@@ -92,15 +90,62 @@ export const loadSearchBannersAction = (
       type: RESET_SEARCH_BANNERS,
     })
   }
-  const response = await api.searchBanners(
-    searchTerm,
-    order,
-    orderDirection,
-    page
-  )
+  const response = await api.searchBanners(searchTerm, filter, page)
   if (response.ok && response.data !== undefined) {
     dispatch({
       type: SEARCH_BANNERS,
+      payload: {
+        banners: response.data,
+        hasMore: response.data && response.data.length === api.PAGE_SIZE,
+      },
+    })
+  } else {
+    // dispatch({
+    //   type: BROWSE_SEARCH_ERROR,
+    // })
+  }
+}
+
+export const loadAgentBannersAction = (
+  agentName: string,
+  filter: BannerFilter,
+  page: number
+) => async (dispatch: Dispatch<BannerActionTypes>) => {
+  if (page === 0) {
+    dispatch({
+      type: RESET_AGENT_BANNERS,
+    })
+  }
+  const response = await api.listAgentBanners(agentName, filter, page)
+  if (response.ok && response.data !== undefined) {
+    dispatch({
+      type: AGENT_BANNERS,
+      payload: {
+        banners: response.data,
+        hasMore: response.data && response.data.length === api.PAGE_SIZE,
+      },
+    })
+  } else {
+    // dispatch({
+    //   type: BROWSE_SEARCH_ERROR,
+    // })
+  }
+}
+
+export const loadUserBannerListBannersAction = (
+  listType: BannerListType,
+  filter: BannerFilter,
+  page: number
+) => async (dispatch: Dispatch<BannerActionTypes>) => {
+  if (page === 0) {
+    dispatch({
+      type: RESET_USER_BANNER_LIST_BANNERS,
+    })
+  }
+  const response = await api.listUserBannerListBanners(listType, filter, page)
+  if (response.ok && response.data !== undefined) {
+    dispatch({
+      type: USER_BANNER_LIST_BANNERS,
       payload: {
         banners: response.data,
         hasMore: response.data && response.data.length === api.PAGE_SIZE,
@@ -151,17 +196,27 @@ export const submitBannerAction = () => async (
   throw Error('Error while creating banner')
 }
 
+export const resetMapBannersAction = () => async (
+  dispatch: Dispatch<BannerActionTypes>
+) => {
+  dispatch({
+    type: RESET_MAP_BANNERS,
+  })
+}
+
 export const loadMapBannersAction = (
   topRightLat: number,
   topRightLng: number,
   bottomLeftLat: number,
-  bottomLeftLng: number
+  bottomLeftLng: number,
+  filter: BannerFilter
 ) => async (dispatch: Dispatch<BannerActionTypes>) => {
   const response = await api.searchMapBanners(
     topRightLat,
     topRightLng,
     bottomLeftLat,
-    bottomLeftLng
+    bottomLeftLng,
+    filter
   )
   if (response.ok && response.data !== undefined) {
     dispatch({
@@ -201,5 +256,23 @@ export const deleteBannerAction = (banner: Banner) => async (
       type: DELETE_BANNER,
       payload: banner,
     })
+  }
+}
+
+export const changeBannerSettingsAction = (
+  banner: Banner,
+  bannerSettings: BannerSettings
+) => async (dispatch: Dispatch<BannerActionTypes>) => {
+  const response = await api.changeBannerSettings(banner, bannerSettings)
+  if (response.ok) {
+    dispatch({
+      type: CHANGE_BANNER_SETTINS,
+      payload: {
+        banner,
+        bannerSettings,
+      },
+    })
+  } else {
+    throw Error('Error while changing banner settings')
   }
 }

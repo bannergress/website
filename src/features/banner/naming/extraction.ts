@@ -21,11 +21,11 @@ const extractors: { [key: string]: NumberCandidateExtractor } = {
 
 const totalRegex = (total: number) =>
   new RegExp(
-    `^[\\w.-]{0,3}\\s*\\#?${total}[\\s\\-\\/\\])]+|[\\s\\-\\/[(,]+\\#?${total}\\s*[\\w.-]{0,3}$$`,
+    `^[\\w.-]{0,3}\\s*\\#?${total}[\\s\\-\\/\\])]+|[\\s\\-\\/[(,]+\\#?${total}\\s*[\\w.-]{0,3}$`,
     'gi'
   )
 
-const numberingRegex = /^(nr?o?|part|ч)\.?\s+|\s+(nr?o?|part|ч)\.?$/gi
+const numberingRegex = /\s+(nr?o?|part|ч)\.?$/gi
 
 const removeDates = (val: string) =>
   val.replace(
@@ -283,7 +283,7 @@ const getRefinedCandidateNumber = (
           // We want to discard total or other numbers
           index = lesserUsed.parsed
         }
-        if (index && maybeSection) {
+        if (index && maybeSection && maybeSection.parsed <= length / 6) {
           index += (maybeSection.parsed - 1) * maybeSection.uses
         }
       }
@@ -387,7 +387,12 @@ const extractNumbers = (missions: Array<Mission>, dic: TitleExtractor) => {
   return { results: refinedNumbers, total }
 }
 
-export const cleanTitle = (title1: string, title2: string, total?: number) => {
+export const cleanTitle = (
+  title1: string,
+  title2: string,
+  total: number | undefined,
+  missions: Array<Mission>
+) => {
   let part1 = title1
   let part2 = title2
   if (total) {
@@ -396,7 +401,20 @@ export const cleanTitle = (title1: string, title2: string, total?: number) => {
   }
   part1 = part1.replace(numberingRegex, '')
   part2 = part2.replace(numberingRegex, '')
-  return `${part1}${part2 ? ` ${part2}` : ''}`
+  let finalTitle = `${part1}${part2 ? ` ${part2}` : ''}`
+  if (finalTitle.match(/\d$/)) {
+    const continuesWithNumber = missions.some((mission) => {
+      const { title } = mission
+      if (title.replace(finalTitle, '').match(/^\d/)) {
+        return true
+      }
+      return false
+    })
+    if (continuesWithNumber) {
+      finalTitle = finalTitle.replace(/\d+$/, '')
+    }
+  }
+  return finalTitle
 }
 
 export const titleAndNumberingExtraction = (
@@ -407,7 +425,12 @@ export const titleAndNumberingExtraction = (
   const [bestTitle1, bestTitle2] = extractor.bestCombinedTitle(
     extractedNumbers.total
   )
-  const title = cleanTitle(bestTitle1, bestTitle2, extractedNumbers.total)
+  const title = cleanTitle(
+    bestTitle1,
+    bestTitle2,
+    extractedNumbers.total,
+    missions
+  )
   return {
     title,
     ...extractedNumbers,

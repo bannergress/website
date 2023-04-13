@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react'
 import { Button, Modal } from 'antd'
 import { useInView } from 'react-intersection-observer'
 import Scrollbars from 'react-custom-scrollbars'
+import { Trans } from 'react-i18next'
 
 import { useLoaded } from '../../hooks/Loaded'
 import { ReactComponent as SVGMinimize } from '../../img/icons/minimize.svg'
@@ -64,7 +65,10 @@ const BannerPicture: FC<BannerPictureProps> = ({
   const imgRef = useRef<HTMLImageElement>(null)
   const loaded = useLoaded(imgRef)
   const animate =
-    loaded && inView && !window.matchMedia('(prefers-reduced-motion)').matches
+    loaded &&
+    inView &&
+    !window.matchMedia('(prefers-reduced-motion)').matches &&
+    lines > 2
 
   useEffect(() => {
     const innerDiv = innerRef.current
@@ -103,10 +107,13 @@ const BannerPicture: FC<BannerPictureProps> = ({
           </Scrollbars>
         </Button>
         <Button role="button" className="close-button" onClick={onCloseModal}>
-          <SVGMinimize /> Exit Full Screen
+          <Trans i18nKey="banners.exitFullscreen">
+            <SVGMinimize /> Exit Full Screen
+          </Trans>
         </Button>
       </Modal>
       <div
+        key={`imageLoaded-${loaded}`}
         ref={ref}
         className={`banner-card-picture banner-lines-${lines}`}
         onClick={() => setModalOpened(showFullImage)}

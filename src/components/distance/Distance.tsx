@@ -1,14 +1,15 @@
 import React from 'react'
-
-const formatMetric = (distanceMeters: number) => {
-  const distanceMetersPrecision = Number(distanceMeters.toPrecision(2))
-  return distanceMetersPrecision >= 1000
-    ? `${distanceMetersPrecision / 1000}\u00A0km`
-    : `${distanceMetersPrecision}\u00A0m`
-}
+import { useTranslation } from 'react-i18next'
 
 export const Distance: React.FC<DistanceProps> = ({ distanceMeters }) => {
-  return <>{formatMetric(distanceMeters)}</>
+  const { t } = useTranslation()
+  const formatMetric = (meters: number) => {
+    const parsed = Number(meters.toPrecision(2))
+    return parsed >= 1000
+      ? t('banners.distance.km', { distance: parsed / 1000 })
+      : t('banners.distance.m', { distance: parsed })
+  }
+  return <span className="nobr">{formatMetric(distanceMeters)}</span>
 }
 
 export interface DistanceProps {

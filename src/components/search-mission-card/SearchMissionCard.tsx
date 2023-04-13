@@ -5,6 +5,7 @@ import { Mission, createMissionIntelLink } from '../../features/mission'
 import { getExternalLinkAttributes } from '../../features/utils'
 import { Agent } from '../agent/Agent'
 import MissionImage from '../mission-image/MissionImage'
+import PlaceHolderMission from './PlaceHolderMission'
 import { ReactComponent as SVGIntel } from '../../img/icons/intel.svg'
 
 import './search-mission-card.less'
@@ -32,6 +33,15 @@ const SearchMissionCard: FC<SearchMissionCardProps> = ({
   onMissionAuthorClick,
   missionEditor,
 }) => {
+  if (mission.id.startsWith('placeholder')) {
+    return (
+      <PlaceHolderMission
+        mission={mission}
+        missionEditor={missionEditor}
+        className={className}
+      />
+    )
+  }
   return (
     <div className={`search-mission-card ${className}`}>
       <MissionImage mission={mission} />
@@ -45,7 +55,7 @@ const SearchMissionCard: FC<SearchMissionCardProps> = ({
             }
             tabIndex={-1}
           >
-            <Agent agent={mission.author} />
+            <Agent agent={mission.author} linkToAgentProfile={false} />
           </Button>
         )}
       </div>

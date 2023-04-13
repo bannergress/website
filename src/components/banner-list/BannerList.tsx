@@ -1,6 +1,7 @@
-import React, { Fragment, FC, useEffect, useRef } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
 import { Row } from 'antd'
 import { Link, generatePath } from 'react-router-dom'
+import { Trans } from 'react-i18next'
 
 import { Banner } from '../../features/banner'
 import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
@@ -14,6 +15,9 @@ const BannerList: FC<BannerListProps> = ({
   loadMoreBanners,
   selectedBannerId,
   onSelectBanner,
+  applyBannerListStlyes,
+  hideBlacklisted,
+  showDetailsButton,
 }) => {
   const itemsRef = useRef<Array<HTMLDivElement | null>>([])
   const [ref] = useInfiniteScroll({
@@ -59,16 +63,26 @@ const BannerList: FC<BannerListProps> = ({
 
   if (banners && banners.length > 0) {
     return (
-      <Fragment>
+      <>
         <div className="banner-list">
           {banners?.map((banner, index) => {
+            if (hideBlacklisted && banner?.listType === 'blacklist') {
+              return null
+            }
+
             const bannerCard = getBannerCardWithLink(
               banner,
               <BannerCard
                 key={banner.id}
                 banner={banner}
                 selected={banner.id === selectedBannerId}
-                detailsUrl={generatePath('/banner/:id', { id: banner.id })}
+                detailsUrl={
+                  showDetailsButton
+                    ? generatePath('/banner/:id', { id: banner.id })
+                    : undefined
+                }
+                linkStartPlace={false}
+                applyBannerListStlye={applyBannerListStlyes}
               />
             )
             return (
@@ -85,14 +99,22 @@ const BannerList: FC<BannerListProps> = ({
           })}
           {hasMoreBanners && (
             <div ref={ref} className="banner-card">
-              Loading more items...
+              <Trans i18nKey="loadingMore">Loading more items...</Trans>
             </div>
           )}
         </div>
-      </Fragment>
+      </>
     )
   }
-  return <Fragment>{hasMoreBanners && <Row>Loading...</Row>}</Fragment>
+  return (
+    <>
+      {hasMoreBanners && (
+        <Row>
+          <Trans i18nKey="loading">Loading...</Trans>
+        </Row>
+      )}
+    </>
+  )
 }
 
 export interface BannerListProps {
@@ -101,6 +123,9 @@ export interface BannerListProps {
   selectedBannerId?: string
   loadMoreBanners?: () => Promise<void>
   onSelectBanner?: (banner: Banner) => void
+  applyBannerListStlyes: boolean
+  hideBlacklisted: boolean
+  showDetailsButton: boolean
 }
 
 export default BannerList

@@ -1,9 +1,13 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "react-hooks"],
+  "plugins": [
+    "@typescript-eslint",
+    "react-hooks",
+    "i18next",
+    "jsx-a11y"
+  ],
   "extends": [
-    "airbnb-typescript",
     "plugin:@typescript-eslint/base",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:prettier/recommended",
@@ -14,7 +18,9 @@
   },
   "rules": {
     // Make prettier code formatting suggestions more verbose.
-    "prettier/prettier": ["warn"],
+    "prettier/prettier": [
+      "warn"
+    ],
     // Disable <Fragment> => <> replacement. Feel free to change
     "react/jsx-fragments": "off",
     // Disable prefer default export
@@ -23,14 +29,45 @@
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": 0,
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
-    "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
+    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
+    "i18next/no-literal-string": [
+      "warn",
+      {
+        "markupOnly": true,
+        "ignore": [
+          "button",
+          "numberOfBanners",
+          "_blank",
+          "sequential",
+          "anyOrder",
+          "/.*",
+          "start",
+          "right",
+          "top",
+          "center",
+          "info",
+          "\\w+Pane",
+          "poi",
+          "#[0-9ABCDEF]+",
+          "currentColor",
+          "longName",
+          "formattedAddress"
+        ]
+      }
+    ],
+    "react/sort-comp": "off"
   },
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx"],
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
       "parserOptions": {
         "ecmaVersion": 12,
-        "project": ["./tsconfig.json"]
+        "project": [
+          "./tsconfig.json"
+        ]
       }
     }
   ]

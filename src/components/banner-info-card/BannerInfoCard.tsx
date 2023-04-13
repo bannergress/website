@@ -1,9 +1,13 @@
 import React, { FC, Fragment } from 'react'
 import _ from 'underscore'
 import { LatLng } from 'leaflet'
+import { TFunction, Trans, useTranslation } from 'react-i18next'
+import { Tooltip } from 'antd'
+
 import { Banner } from '../../features/banner'
 import {
   mapMissions,
+  isPlaceholder,
   MissionType,
   Objective,
   POI,
@@ -13,40 +17,153 @@ import {
   createExternalNavigationUri,
   getExternalLinkAttributes,
 } from '../../features/utils'
+import { Agent } from '../agent/Agent'
+import { Distance } from '../distance/Distance'
+import { Duration } from '../duration/Duration'
+import IfUserLoggedIn from '../login/if-user-logged-in'
+import IfUserLoggedOut from '../login/if-user-logged-out'
+import LoginButton from '../login/login-button'
+import { hasLatLng } from '../map-detail/showBannerRouteOnMap'
 import { ReactComponent as SVGList } from '../../img/icons/list.svg'
 import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
 import { ReactComponent as SVGTimer } from '../../img/icons/timer.svg'
 import { ReactComponent as SVGHand } from '../../img/icons/hand.svg'
 import { ReactComponent as SVGCompass } from '../../img/icons/compass.svg'
-import { Agent } from '../agent/Agent'
-import { hasLatLng } from '../map-detail/showBannerRouteOnMap'
+import { ReactComponent as SVGChecked } from '../../img/icons/checked.svg'
+import { ReactComponent as SVGOffline } from '../../img/icons/offline.svg'
+import i18n from '../../i18n'
 
 import './banner-info-card.less'
-import IfUserLoggedIn from '../login/if-user-logged-in'
-import { Distance } from '../distance/Distance'
-import { Duration } from '../duration/Duration'
+import { PlainDate } from '../plain-date'
 
-const getAgents = (banner: Banner) =>
+const getAgentList = (banner: Banner) =>
   _(mapMissions(banner.missions, (mission) => mission?.author))
     .uniq(false, (agent) => agent.name)
     .map((agent, index) => (
       <Fragment key={`${agent.name}-container`}>
-        {index > 0 && ','} <Agent key={agent.name} agent={agent} />
+        {index > 0 && ','}{' '}
+        <Agent key={agent.name} agent={agent} linkToAgentProfile />
       </Fragment>
     ))
 
-const getTypeName = (key: MissionType) => {
-  switch (key) {
-    case 'hidden':
-      return 'Hidden'
-    case 'anyOrder':
-      return 'Any Order'
-    case 'sequential':
-      return 'Sequential'
-    default:
-      return ''
+const getCreatedBy = (banner: Banner) => {
+  const agents = getAgentList(banner)
+  if (agents && agents.length) {
+    return (
+      <p>
+        <Trans i18nKey="banners.createdBy">Created by</Trans>
+        {agents}
+      </p>
+    )
   }
+  return undefined
 }
+
+const getEvent = (banner: Banner, t: TFunction) => {
+  if (banner.eventStartDate) {
+    let text
+    if (banner.eventEndDate === banner.eventStartDate) {
+      return (
+        <p>
+          <Trans
+            i18nKey="events.eventAt"
+            components={{
+              at: <PlainDate date={banner.eventStartDate} />,
+            }}
+          />
+        </p>
+      )
+    } else {
+      return (
+        <p>
+          <Trans
+            i18nKey="events.eventFromTo"
+            components={{
+              from: <PlainDate date={banner.eventStartDate} />,
+              to: <PlainDate date={banner.eventEndDate!} />,
+            }}
+          />
+        </p>
+      )
+    }
+    return <p>{text}</p>
+  }
+  return undefined
+}
+
+const getRemainingDaysCategory = (days: number) => {
+  if (days <= 0) {
+    return 'error-text'
+  }
+  if (days <= 14) {
+    return 'warning-text'
+  }
+  return undefined
+}
+
+const getPlannedOfflineDate = (banner: Banner) => {
+  if (
+    banner.plannedOfflineDate &&
+    banner.numberOfDisabledMissions === 0 &&
+    banner.numberOfSubmittedMissions === 0
+  ) {
+    const diff =
+      new Date(banner.plannedOfflineDate).getTime() - new Date().getTime()
+    const diffDays = diff / 86_400_000
+    const className = getRemainingDaysCategory(diffDays)
+    return (
+      <div className="info-row">
+        <div className="info-icon">
+          <SVGOffline />
+        </div>
+        <div className="info-title">
+          <Trans i18nKey="banners.plannedOfflineDate">Going offline on</Trans>
+        </div>
+        <div className="info-content">
+          <span className={className}>
+            <PlainDate date={banner.plannedOfflineDate} />
+          </span>
+        </div>
+      </div>
+    )
+  }
+  return undefined
+}
+
+const getLatestUpdateStatus = (banner: Banner) => {
+  const updateDates = mapMissions(banner.missions, (mission) =>
+    mission?.latestUpdateStatus
+      ? new Date(mission?.latestUpdateStatus)
+      : undefined
+  )
+  let latestUpdate: Date | undefined
+  if (updateDates.length !== banner.numberOfMissions) {
+    latestUpdate = undefined
+  } else {
+    latestUpdate = updateDates.reduce((first, second) =>
+      first.getTime() < second.getTime() ? first : second
+    )
+  }
+  if (latestUpdate) {
+    const date = new Date(latestUpdate).toISOString().substring(0, 10)
+    return (
+      <div className="info-row">
+        <div className="info-icon">
+          <SVGChecked />
+        </div>
+        <div className="info-title">
+          <Trans i18nKey="banners.latestUpdateStatus">Last checked</Trans>
+        </div>
+        <div className="info-content">
+          <PlainDate date={date} />
+        </div>
+      </div>
+    )
+  }
+  return undefined
+}
+
+const getTypeName = (key: MissionType) => i18n.t(`banners.types.${key}`)
 
 const getMissionTypes = (banner: Banner) => {
   const types = _(
@@ -60,7 +177,9 @@ const getMissionTypes = (banner: Banner) => {
           <SVGList />
         </div>
         <div className="info-title">
-          {keys.length > 1 ? 'Mission Types' : 'Mission Type'}
+          <Trans i18nKey="banners.types.title" count={keys.length}>
+            Mission Types
+          </Trans>
         </div>
         {keys.length === 1 && (
           <div className="info-content">{getTypeName(keys[0])}</div>
@@ -114,7 +233,9 @@ const getTotalDistance = (banner: Banner) => {
         <div className="info-icon">
           <SVGExplorer />
         </div>
-        <div className="info-title">Total Distance</div>
+        <div className="info-title">
+          <Trans i18nKey="banners.distance.title">Total Distance</Trans>
+        </div>
         <div className="info-content">
           {banner.lengthMeters && (
             <Distance distanceMeters={banner.lengthMeters} />
@@ -123,7 +244,11 @@ const getTotalDistance = (banner: Banner) => {
       </div>
       {length !== undefined && length > 100 && (
         <div className="info-subrow">
-          <div className="info-subtitle">Last to first waypoint</div>
+          <div className="info-subtitle">
+            <Trans i18nKey="banners.distance.route">
+              Last to first waypoint
+            </Trans>
+          </div>
           <div className="info-subcontent">
             <Distance distanceMeters={length} />
           </div>
@@ -139,7 +264,17 @@ const getTotalTime = (banner: Banner) => {
       banner.missions,
       (mission) => mission?.averageDurationMilliseconds ?? 0
     ).reduce((t, sum) => sum + t)
-    return totalTimeInMS
+
+    const AnyWithoutTime = mapMissions(
+      banner.missions,
+      (mission) =>
+        mission === undefined ||
+        isPlaceholder(mission) ||
+        mission.status !== 'published' ||
+        (mission.averageDurationMilliseconds ?? 0) === 0
+    ).reduce((offline, result) => result || offline)
+
+    return AnyWithoutTime ? 0 : totalTimeInMS
   }
 
   return 0
@@ -154,43 +289,33 @@ const getInGameTime = (banner: Banner) => {
       <div className="info-icon">
         <SVGTimer />
       </div>
-      <div className="info-title">In-game Time</div>
+      <div className="info-title">
+        <Trans i18nKey="banners.time.title">In-game Time</Trans>
+      </div>
       <div className="info-content">
-        <Duration durationMilliseconds={totalTimeInMS} />
+        {totalTimeInMS === 0 ? (
+          <Tooltip placement="right" title={i18n.t('banners.time.warning')}>
+            <span>
+              <Trans i18nKey="banners.missingData">???</Trans>
+            </span>
+          </Tooltip>
+        ) : (
+          <Duration durationMilliseconds={totalTimeInMS} />
+        )}
       </div>
     </div>
   )
 }
 
-const getObjectiveName = (objective: Objective) => {
-  switch (objective) {
-    case 'captureOrUpgrade':
-      return 'Capture or Upgrade'
-    case 'createField':
-      return 'Create Field'
-    case 'createLink':
-      return 'Create Link'
-    case 'enterPassphrase':
-      return 'Enter Passphrase'
-    case 'hack':
-      return 'Hack'
-    case 'installMod':
-      return 'Install Mod'
-    case 'takePhoto':
-      return 'Take Photo'
-    case 'viewWaypoint':
-      return 'View Waypoint'
-    case 'hidden':
-      return 'Hidden'
-    default:
-      return ''
-  }
-}
+const getObjectiveName = (objective: Objective, count: number, t: TFunction) =>
+  t(`banners.objective.${objective}`, { count })
 
-const getActions = (banner: Banner) => {
+const getActions = (banner: Banner, t: TFunction) => {
   const types = _(mapMissions(banner.missions, (mission) => mission?.steps))
     .chain()
     .flatten()
+    // Filter out unavailable waypoints, include hidden ones (no objective) and those not marked unavailable
+    .filter((p) => !p.objective || (p.poi && p.poi?.type !== 'unavailable'))
     .map((step) => step.objective || 'hidden')
     .countBy()
     .value()
@@ -202,7 +327,9 @@ const getActions = (banner: Banner) => {
     .value()
 
   const mainActionLabel =
-    keys.length === 1 ? `Action: ${getObjectiveName(keys[0])}` : 'Actions'
+    keys.length > 1
+      ? t('banners.objective.title', { count: keys.length })
+      : getObjectiveName(keys[0], types[keys[0]], t)
 
   return (
     <>
@@ -216,7 +343,9 @@ const getActions = (banner: Banner) => {
       {keys.length > 1 &&
         keys.map((k) => (
           <div key={k} className="info-subrow">
-            <div className="info-subtitle">{getObjectiveName(k)}</div>
+            <div className="info-subtitle">
+              {getObjectiveName(k, types[k], t)}
+            </div>
             <div className="info-subcontent">{types[k]}</div>
           </div>
         ))}
@@ -244,7 +373,9 @@ const getUniqueVisits = (banner: Banner) => {
       <div className="info-icon">
         <SVGCompass />
       </div>
-      <div className="info-title">Unique Visits</div>
+      <div className="info-title">
+        <Trans i18nKey="banners.uniques">Unique Visits</Trans>
+      </div>
       <div className="info-content">
         {count}
         {hasHidden && '+'}
@@ -276,27 +407,43 @@ const getStartPointButton = (banner: Banner) => {
           className="banner-info-button"
           href={url}
         >
-          Go to Banner Starting Point
+          <Trans i18nKey="banners.goToStart">Go to Banner Starting Point</Trans>
         </a>
       )}
     </>
   )
 }
 
-const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => (
-  <div className="banner-info-card">
-    <p>{banner.description}</p>
-    <IfUserLoggedIn>
-      <p>Created by {getAgents(banner)}</p>
-    </IfUserLoggedIn>
-    {getMissionTypes(banner)}
-    {getTotalDistance(banner)}
-    {getInGameTime(banner)}
-    {getActions(banner)}
-    {getUniqueVisits(banner)}
-    {getStartPointButton(banner)}
-  </div>
-)
+const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
+  const { t } = useTranslation()
+  return (
+    <div className="banner-info-card">
+      {getEvent(banner, t)}
+      {banner.description && <p>{banner.description}</p>}
+      {banner.warning && <p className="warning-text">{banner.warning}</p>}
+      <IfUserLoggedIn>{getCreatedBy(banner)}</IfUserLoggedIn>
+      <IfUserLoggedOut>
+        <p>
+          <Trans i18nKey="banners.authorLogin">
+            Please{' '}
+            <LoginButton className="button-as-link" type="button">
+              sign in
+            </LoginButton>{' '}
+            to see author(s)
+          </Trans>
+        </p>
+      </IfUserLoggedOut>
+      {getPlannedOfflineDate(banner)}
+      {getMissionTypes(banner)}
+      {getTotalDistance(banner)}
+      {getInGameTime(banner)}
+      {getActions(banner, t)}
+      {getUniqueVisits(banner)}
+      {getLatestUpdateStatus(banner)}
+      {getStartPointButton(banner)}
+    </div>
+  )
+}
 
 export interface BannerInfoCardProps {
   banner: Banner
