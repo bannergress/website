@@ -347,7 +347,7 @@
     "minutes": "{{count}} min ",
     "seconds": "{{count}} s"
   },
-  "disclaimer": "This is a fan site and not officially affiliated with Niantic Inc.<br />Ingress is a registered trademark of Niantic Inc.<br />Bannergress 2023",
+  "disclaimer": "This is a fan site and not officially affiliated with Niantic Inc.<br />Ingress is a registered trademark of Niantic Inc.<br />Bannergress",
   "login": {
     "title": "Login",
     "help": "Sign in using one of these identity providers",
