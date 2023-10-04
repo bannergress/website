@@ -419,8 +419,8 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
   return (
     <div className="banner-info-card">
       {getEvent(banner, t)}
-      {banner.description && <p>{banner.description}</p>}
       {banner.warning && <p className="warning-text">{banner.warning}</p>}
+      {banner.description && <p>{banner.description}</p>}
       <IfUserLoggedIn>{getCreatedBy(banner)}</IfUserLoggedIn>
       <IfUserLoggedOut>
         <p>
