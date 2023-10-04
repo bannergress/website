@@ -213,9 +213,7 @@ export const AllQuestions: React.FC = () => {
           components={{
             b: <b />,
             missioncreator: getLink('https://missions.ingress.com/'),
-            slicer: getLink(
-              'https://www.giacintogarcea.com/ingress/tools/missionset/'
-            ),
+            slicer: getLink('https://softspot.nl/ingress/bannercropper/'),
             iitc: getLink('https://iitc.app/'),
             plugin: getLink('/iitc-plugin-bannergress.user.js'),
             plugin2: getLink(
