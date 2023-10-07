@@ -144,6 +144,21 @@ export const AllQuestions: React.FC = () => {
           </ol>
         </Trans>
       </FaqQuestion>
+      <FaqQuestion key="6" title={t('question6.title')}>
+        <Trans
+          i18nKey="faqs.question6.answer"
+          components={{
+            iitcbutton: getLink('https://iitc.app/download_desktop'),
+            tampermonkey: getLink('https://www.tampermonkey.net/'),
+            creatorplugin: getLink(
+              'https://bannergress.com/creator-plugin-bannergress.user.js'
+            ),
+            missioncreator: getLink('https://missions.ingress.com/'),
+            ol: <ol />,
+            li: <li />,
+          }}
+        />
+      </FaqQuestion>
       <FaqQuestion key="4" title={t('question4.title')}>
         <Trans
           i18nKey="faqs.question4.answer"
@@ -206,6 +221,17 @@ export const AllQuestions: React.FC = () => {
             </li>
           </ol>
         </Trans>
+      </FaqQuestion>
+      <FaqQuestion key="7" title={t('question7.title')}>
+        <Trans
+          i18nKey="faqs.question7.answer"
+          components={{
+            accountpage: getLink('https://bannergress.com/account'),
+            div: <div />,
+            ol: <ol />,
+            li: <li />,
+          }}
+        />
       </FaqQuestion>
       <FaqQuestion key="5" title={t('question5.title')}>
         <Trans
