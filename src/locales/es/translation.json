@@ -236,6 +236,14 @@
     "question5": {
       "title": "Where can I find … (Useful links)",
       "answer": "<p>...the <missioncreator>mission creator</missioncreator>?</p><p>...a <slicer>tool to slice</slicer> a banner picture?</p><p><br /></p><p>...the <iitc>IITC-CE</iitc>?</p><p>...the <plugin>bannergress plugin</plugin>?</p><p>...an <plugin2>IITC plugin</plugin2> which shows <b>more</b> than the Top 25 missions?</p>"
+    },
+    "question6": {
+      "title": "How do I get my own Ingress missions to bannergress.com, using the Ingress Mission Creator?",
+      "answer": "<ol><li>You need either the <iitcbutton>IITC Button browser add-on</iitcbutton> or <tampermonkey>Tampermonkey</tampermonkey>.</li><li>Install the <creatorplugin>bannergress creator plugin</creatorplugin>.</li><li>Open <missioncreator>the mission creator</missioncreator> (you may be asked to log into your Ingress account). Then, click on “Sync with Bannergress” in the menu (you may be asked to log into your Bannergress account).</li></ol>"
+    },
+    "question7": {
+      "title": "How can I edit my own banners?",
+      "answer": "<div>Bannergress needs to know your Ingress agent name before it can provide you with edit permissions:</div><ol><li>Sign into Bannergress.</li><li>Open <accountpage>your Bannergress account page</accountpage>.</li><li>Click on \"Link Ingress Account\" and follow the instructions.</li></ol><div>After that, you have an edit button on all banners that you own.</div>"
     }
   },
   "help": {
