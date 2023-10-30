@@ -5,7 +5,7 @@ import Scrollbars from 'react-custom-scrollbars'
 import { Trans } from 'react-i18next'
 
 import { useLoaded } from '../../hooks/Loaded'
-import { ReactComponent as SVGMinimize } from '../../img/icons/minimize.svg'
+import SVGMinimize from '../../img/icons/minimize.svg?react'
 
 const getImageAnimation = (
   innerDiv: HTMLDivElement | null,

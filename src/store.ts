@@ -1,7 +1,6 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import { persistStore, persistReducer } from 'redux-persist'
 import storageSession from 'redux-persist/lib/storage/session'
-import { devToolsEnhancer } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 
 import { BannerReducer } from './features/banner'
@@ -33,6 +32,6 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 export const store = createStore(
   persistedReducer,
   {},
-  compose(applyMiddleware(thunk), devToolsEnhancer({}))
+  applyMiddleware(thunk)
 )
 export const persistor = persistStore(store)

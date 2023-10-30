@@ -26,7 +26,7 @@ import BannerList from '../../components/banner-list'
 import BannerOrderChooser from '../../components/banner-order-chooser'
 import FooterMain from '../../components/footer-main'
 import { PlaceAccordion } from '../../components/place-accordion/PlaceAccordion'
-import { ReactComponent as SVGMap } from '../../img/icons/map.svg'
+import SVGMap from '../../img/icons/map.svg?react'
 
 import './browser.less'
 import LoadingOverlay from '../../components/loading-overlay'
@@ -75,7 +75,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     fetchBanners(placeId, filter, 0)
   }
 
-  static getDerivedStateFromProps(props: BrowserProps, state: BrowserState) {
+  static getDerivedStateFromProps(props: Readonly<BrowserProps>, state: BrowserState) {
     const { match } = props
     const { placeId } = match.params
 

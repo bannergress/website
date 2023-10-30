@@ -2,14 +2,13 @@
   "name": "bannergress",
   "version": "2.5.2",
   "private": true,
+  "type": "module",
   "dependencies": {
-    "@craco/craco": "~6.1.2",
     "@fontsource/roboto": "^4.3.0",
     "@react-keycloak/core": "^3.2.0",
     "@react-keycloak/web": "^3.4.0",
     "@react-leaflet/core": "^1.0.2",
     "@types/enzyme": "~3.10.8",
-    "@types/jest": "~26.0.23",
     "@types/leaflet-loading": "^0.1.0",
     "@types/leaflet.markercluster": "^1.4.4",
     "@types/node": "~14.14.44",
@@ -25,9 +24,6 @@
     "@use-it/event-listener": "^0.1.6",
     "@wojtekmaj/enzyme-adapter-react-17": "~0.6.0",
     "antd": "^4.15.4",
-    "craco-antd": "^2.0.0",
-    "craco-eslint-webpack-plugin": "^1.0.0",
-    "craco-less": "~1.17.1",
     "enzyme": "~3.11.0",
     "eslint": "~7.23.0",
     "eslint-config-prettier": "~8.1.0",
@@ -55,42 +51,27 @@
     "react-leaflet": "~3.1.0",
     "react-leaflet-cluster": "^1.0.3",
     "react-redux": "~7.2.3",
-    "react-router": "^5.2.0",
+    "react-router": "~5.2.0",
     "react-router-dom": "~5.2.0",
-    "react-scripts": "^5.0.1",
     "react-transition-group": "^4.4.1",
     "redux": "~4.0.5",
     "redux-devtools-extension": "~2.13.9",
     "redux-mock-store": "~1.5.4",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
-    "typescript": "^4.6.3",
     "ua-parser-js": "^0.7.33",
     "underscore": "^1.13.0"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "preview": "vite preview",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "fix": "eslint src --ext .js,.jsx,.ts,.tsx  --fix",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
+    "fix": "eslint src --ext .js,.jsx,.ts,.tsx  --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@types/leaflet": "^1.7.0",
@@ -99,9 +80,16 @@
     "@types/react-helmet": "^6.1.1",
     "@types/react-transition-group": "^4.4.1",
     "@types/underscore": "^1.11.1",
+    "@vitejs/plugin-react-swc": "^3.3.2",
+    "eslint": "^8.45.0",
     "eslint-plugin-i18next": "^5.1.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
     "less": "~4.1.1",
     "less-loader": "~8.0.0",
-    "source-map-explorer": "^2.5.2"
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5",
+    "vite-plugin-svgr": "^4.1.0",
+    "vitest": "^0.34.6"
   }
 }

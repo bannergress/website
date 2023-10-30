@@ -2,7 +2,7 @@ import { Modal } from 'antd'
 import React, { FC, useState } from 'react'
 import { Trans } from 'react-i18next'
 
-import { ReactComponent as SVGBackArrowSmall } from '../../img/icons/back-arrow-small.svg'
+import SVGBackArrowSmall from '../../img/icons/back-arrow-small.svg?react'
 
 import './banner-order-chooser.less'
 import { BannerFilter, BannerOrder } from '../../features/banner/filter'

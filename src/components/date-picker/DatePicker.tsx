@@ -2,7 +2,7 @@ import React, { ChangeEvent, useRef } from 'react'
 
 import { PlainDate } from '../plain-date'
 
-import { ReactComponent as SVGEdit } from '../../img/icons/edit.svg'
+import SVGEdit from '../../img/icons/edit.svg?react'
 
 export const DatePicker: React.FC<DatePickerProps> = ({
   value,

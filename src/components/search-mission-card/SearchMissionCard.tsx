@@ -6,7 +6,7 @@ import { getExternalLinkAttributes } from '../../features/utils'
 import { Agent } from '../agent/Agent'
 import MissionImage from '../mission-image/MissionImage'
 import PlaceHolderMission from './PlaceHolderMission'
-import { ReactComponent as SVGIntel } from '../../img/icons/intel.svg'
+import SVGIntel from '../../img/icons/intel.svg?react'
 
 import './search-mission-card.less'
 

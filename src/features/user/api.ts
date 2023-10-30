@@ -1,7 +1,7 @@
 import { api } from '../../api'
 import { User } from './types'
 
-const isMock = process.env.REACT_APP_USE_MOCK === 'true'
+const isMock = import.meta.env.VITE_USE_MOCK === 'true'
 
 export const getUser = () =>
   isMock ? { data: {}, ok: true, status: 200 } : api.get<User>('user')

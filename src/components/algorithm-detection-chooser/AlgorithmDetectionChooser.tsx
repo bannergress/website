@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { Radio, Tooltip } from 'antd'
 import { Trans, useTranslation } from 'react-i18next'
 
-import { ReactComponent as SVGHelp } from '../../img/icons/help-round.svg'
+import SVGHelp from '../../img/icons/help-round.svg?react'
 
 import './algorithm-detection-chooser.less'
 

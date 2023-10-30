@@ -45,8 +45,8 @@ import {
 import AdvancedOptions from '../../components/advanced-options'
 import { IssuesList } from '../../components/Issues-list'
 import LoginRequired from '../../components/login/login-required'
-import { ReactComponent as SVGRightArrow } from '../../img/icons/right_arrow.svg'
-import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
+import SVGRightArrow from '../../img/icons/right_arrow.svg?react'
+import SVGCross from '../../img/icons/cross.svg?react'
 import { getBannerIssues, MAX_MISSIONS } from './getBannerIssues'
 
 import './create-banner.less'
@@ -573,7 +573,7 @@ class CreateBanner extends React.Component<
           value={mission.index}
           max={9999}
           min={1}
-          onChange={(val) => this.changeMissionNumber(mission, pos, val)}
+          onChange={(val) => this.changeMissionNumber(mission, pos, val!)}
           onBlur={this.onOrderMissions}
         />
       )
@@ -917,7 +917,7 @@ class CreateBanner extends React.Component<
                         value={incomplete}
                         max={9999}
                         min={0}
-                        onChange={(val) => this.setState({ incomplete: val })}
+                        onChange={(val) => this.setState({ incomplete: val! })}
                         onBlur={() => this.onIncompleteConfirmed(true)}
                       />
                     </div>

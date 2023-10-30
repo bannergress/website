@@ -7,7 +7,7 @@ import { AllQuestions } from './AllQuestions'
 
 import { getExternalLinkAttributes } from '../../features/utils'
 
-import { ReactComponent as SVGTelegram } from '../../img/icons/telegram.svg'
+import SVGTelegram from '../../img/icons/telegram.svg?react'
 
 import './help.less'
 
