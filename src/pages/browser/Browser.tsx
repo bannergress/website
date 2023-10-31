@@ -75,7 +75,10 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     fetchBanners(placeId, filter, 0)
   }
 
-  static getDerivedStateFromProps(props: Readonly<BrowserProps>, state: BrowserState) {
+  static getDerivedStateFromProps(
+    props: Readonly<BrowserProps>,
+    state: BrowserState
+  ) {
     const { match } = props
     const { placeId } = match.params
 

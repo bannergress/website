@@ -88,13 +88,8 @@ class CreateBanner extends React.Component<
   }
 
   componentDidMount() {
-    const {
-      previousBanner,
-      match,
-      getBanner,
-      fetchBanner,
-      history,
-    } = this.props
+    const { previousBanner, match, getBanner, fetchBanner, history } =
+      this.props
     let banner: Banner | undefined
     if (previousBanner) {
       banner = previousBanner

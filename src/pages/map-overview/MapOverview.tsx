@@ -124,13 +124,8 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
 
   render() {
     const { getBanners, getBanner, i18n } = this.props
-    const {
-      bounds,
-      selectedBannerId,
-      status,
-      selectedBounds,
-      filter,
-    } = this.state
+    const { bounds, selectedBannerId, status, selectedBounds, filter } =
+      this.state
     let banners: Array<Banner> = []
     const boundsToUse = selectedBounds ?? bounds
     if (boundsToUse) {

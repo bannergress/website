@@ -39,9 +39,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             onChange={onEditComplete}
             value={value || ''}
           />
-          {value ? <PlainDate date={value} /> : emptyText}
-          {' '}
-          <SVGEdit />
+          {value ? <PlainDate date={value} /> : emptyText} <SVGEdit />
         </div>
       ) : (
         <input

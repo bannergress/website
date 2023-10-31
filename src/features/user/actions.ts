@@ -10,41 +10,39 @@ import {
 } from './actionTypes'
 import * as api from './api'
 
-export const loadCurrentUser = () => async (
-  dispatch: Dispatch<UserActionTypes>
-) => {
-  const response = await api.getUser()
-  if (response.ok && response.data !== undefined) {
-    dispatch({
-      type: LOAD_USER,
-      payload: response.data,
-    })
-  } else if (!response.ok) {
-    throw new Error(
-      i18n.t('account.errors.loadUser', {
-        defaultValue: 'Error getting user info',
+export const loadCurrentUser =
+  () => async (dispatch: Dispatch<UserActionTypes>) => {
+    const response = await api.getUser()
+    if (response.ok && response.data !== undefined) {
+      dispatch({
+        type: LOAD_USER,
+        payload: response.data,
       })
-    )
+    } else if (!response.ok) {
+      throw new Error(
+        i18n.t('account.errors.loadUser', {
+          defaultValue: 'Error getting user info',
+        })
+      )
+    }
   }
-}
 
-export const claimUser = (agent: string) => async (
-  dispatch: Dispatch<UserActionTypes>
-) => {
-  const response = await api.claimUser(agent)
-  if (response.ok && response.data !== undefined) {
-    dispatch({
-      type: CLAIM_USER,
-      payload: response.data,
-    })
-  } else if (!response.ok) {
-    throw new Error(
-      i18n.t('account.linking.errors.claim', {
-        defaultValue: 'Error claiming agent',
+export const claimUser =
+  (agent: string) => async (dispatch: Dispatch<UserActionTypes>) => {
+    const response = await api.claimUser(agent)
+    if (response.ok && response.data !== undefined) {
+      dispatch({
+        type: CLAIM_USER,
+        payload: response.data,
       })
-    )
+    } else if (!response.ok) {
+      throw new Error(
+        i18n.t('account.linking.errors.claim', {
+          defaultValue: 'Error claiming agent',
+        })
+      )
+    }
   }
-}
 
 export const verifyUser = () => async (dispatch: Dispatch<UserActionTypes>) => {
   const response = await api.verifyUser()
@@ -78,20 +76,19 @@ export const unlinkUser = () => async (dispatch: Dispatch<UserActionTypes>) => {
   }
 }
 
-export const abortClaimUser = (agent: string) => async (
-  dispatch: Dispatch<UserActionTypes>
-) => {
-  const response = await api.abortClaimUser(agent)
-  if (response.ok && response.data !== undefined) {
-    dispatch({
-      type: ABORT_CLAIM_USER,
-      payload: response.data,
-    })
-  } else if (!response.ok) {
-    throw new Error(
-      i18n.t('account.linking.errors.abort', {
-        defaultValue: 'Error aborting claim',
+export const abortClaimUser =
+  (agent: string) => async (dispatch: Dispatch<UserActionTypes>) => {
+    const response = await api.abortClaimUser(agent)
+    if (response.ok && response.data !== undefined) {
+      dispatch({
+        type: ABORT_CLAIM_USER,
+        payload: response.data,
       })
-    )
+    } else if (!response.ok) {
+      throw new Error(
+        i18n.t('account.linking.errors.abort', {
+          defaultValue: 'Error aborting claim',
+        })
+      )
+    }
   }
-}
