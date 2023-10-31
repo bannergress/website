@@ -23,7 +23,7 @@
     "@typescript-eslint/parser": "^5.19.0",
     "@use-it/event-listener": "^0.1.6",
     "@wojtekmaj/enzyme-adapter-react-17": "~0.6.0",
-    "antd": "^4.15.4",
+    "antd": "^4.24.14",
     "enzyme": "~3.11.0",
     "eslint": "~7.23.0",
     "eslint-config-prettier": "~8.1.0",

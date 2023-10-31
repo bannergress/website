@@ -31,7 +31,7 @@ const LoginButton: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = (
     <Fragment>
       <Modal
         title={t('login.title')}
-        visible={modalIsOpen}
+        open={modalIsOpen}
         onCancel={closeModal}
         closable={false}
         footer={null}

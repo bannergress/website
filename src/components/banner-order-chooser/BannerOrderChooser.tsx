@@ -102,7 +102,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
   return (
     <div className="filter-and-sort">
       <Modal
-        visible={open}
+        open={open}
         onCancel={hide}
         closable={false}
         footer={null}

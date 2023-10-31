@@ -89,7 +89,7 @@ const BannerPicture: FC<BannerPictureProps> = ({
   return (
     <>
       <Modal
-        visible={modalOpened}
+        open={modalOpened}
         onCancel={onCloseModal}
         onOk={onCloseModal}
         footer={null}

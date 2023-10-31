@@ -80,6 +80,31 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   }, [view])
 
   const { missions } = banner
+
+  const tabs = [
+    {
+      label: t('banners.info'),
+      key: 'info',
+      children: <BannerInfoCard banner={banner} />,
+    },
+    {
+      label: t('missions.title'),
+      key: 'missions',
+      children: missions && (
+        <MissionList
+          missions={missions}
+          expandedMissionIndexes={expandedMissionIndexes}
+          expanded={expanded}
+          scrollMissionIndex={
+            activeView === 'missions' ? scrollMissionIndex : undefined
+          }
+          onExpand={onExpand}
+          onExpandAll={onExpandAll}
+        />
+      ),
+    },
+  ]
+
   return (
     <div className="banner-info-overview" ref={refElement}>
       <div className="banner-info-container">
@@ -110,25 +135,8 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
           defaultActiveKey="info"
           activeKey={activeView}
           onTabClick={(key) => onTabClick(key as BannerInfoView)}
-        >
-          <Tabs.TabPane tab={t('banners.info')} key="info">
-            <BannerInfoCard banner={banner} />
-          </Tabs.TabPane>
-          <Tabs.TabPane tab={t('missions.title')} key="missions">
-            {missions && (
-              <MissionList
-                missions={missions}
-                expandedMissionIndexes={expandedMissionIndexes}
-                expanded={expanded}
-                scrollMissionIndex={
-                  activeView === 'missions' ? scrollMissionIndex : undefined
-                }
-                onExpand={onExpand}
-                onExpandAll={onExpandAll}
-              />
-            )}
-          </Tabs.TabPane>
-        </Tabs>
+          items={tabs}
+        />
       </div>
     </div>
   )
