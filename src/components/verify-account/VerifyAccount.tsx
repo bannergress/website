@@ -281,7 +281,7 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
             </Button>
             <Link
               className="forum-link"
-              to={t<string>('linking.step3.link')}
+              to={t('linking.step3.link')}
               target="_blank"
               onClick={onNext}
             >
