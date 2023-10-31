@@ -10,5 +10,5 @@ if (!import.meta.env.VITE_KEYCLOAK_CLIENT_ID) {
   throw new Error('Keycloak not configured in .env')
 }
 
-const keycloak = Keycloak(keycloakConfig)
+const keycloak = new Keycloak(keycloakConfig)
 export default keycloak
