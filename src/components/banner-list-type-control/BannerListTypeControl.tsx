@@ -36,27 +36,36 @@ const BannerListTypeControl: FC<BannerListTypeControlProps> = ({
         className={`banner-list-type banner-list-type-todo ${activeClassTodo}`}
         onClick={() => toggle('todo')}
       >
-        <Trans i18nKey="banners.todo.control">
-          <SVGTodo /> TO-DO
-        </Trans>
+        <Trans
+          i18nKey="banners.todo.control"
+          components={{
+            icon: <SVGTodo />,
+          }}
+        />
       </button>
       <button
         type="button"
         className={`banner-list-type banner-list-type-done ${activeClassDone}`}
         onClick={() => toggle('done')}
       >
-        <Trans i18nKey="banners.done.control">
-          <SVGDone /> DONE
-        </Trans>
+        <Trans
+          i18nKey="banners.done.control"
+          components={{
+            icon: <SVGDone />,
+          }}
+        />
       </button>
       <button
         type="button"
         className={`banner-list-type banner-list-type-blacklist ${activeClassBlacklist}`}
         onClick={() => toggle('blacklist')}
       >
-        <Trans i18nKey="banners.hide.control">
-          <SVGBlacklist /> HIDE
-        </Trans>
+        <Trans
+          i18nKey="banners.hide.control"
+          components={{
+            icon: <SVGBlacklist />,
+          }}
+        />
       </button>
     </div>
   )

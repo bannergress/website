@@ -1,6 +1,6 @@
 import React, { Fragment, FC } from 'react'
 import { Row } from 'antd'
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { Place, PlaceSortOrder, sortPlaces } from '../../features/place'
 import PlaceEntry from './PlaceEntry'
@@ -14,6 +14,8 @@ const PlaceList: FC<PlaceListProps> = ({
   places,
   onSelectPlace,
 }) => {
+  const { t } = useTranslation()
+
   const onKeyPress = (event: React.KeyboardEvent<Element>, place: Place) => {
     if (event.key === 'Enter') {
       onSelectPlace(place)
@@ -42,15 +44,19 @@ const PlaceList: FC<PlaceListProps> = ({
               role="button"
               tabIndex={0}
             >
-              <Trans i18nKey="places.backArrow">
-                ❮
-                <PlaceEntry
-                  key={place.id}
-                  place={place}
-                  showNumbers={false}
-                  attribute="longName"
-                />
-              </Trans>
+              <Trans
+                i18nKey="places.backArrow"
+                components={{
+                  place: (
+                    <PlaceEntry
+                      key={place.id}
+                      place={place}
+                      showNumbers={false}
+                      attribute="longName"
+                    />
+                  ),
+                }}
+              />
             </span>
           </h2>
         ))}
@@ -77,9 +83,7 @@ const PlaceList: FC<PlaceListProps> = ({
   }
   return (
     <Fragment>
-      <Row>
-        <Trans>loading</Trans>
-      </Row>
+      <Row>{t('loading')}</Row>
     </Fragment>
   )
 }

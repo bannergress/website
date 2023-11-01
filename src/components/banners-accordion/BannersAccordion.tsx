@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react'
 import { generatePath } from 'react-router-dom'
 import { Button } from 'antd'
-import { Trans } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import { Banner } from '../../features/banner'
 import BannerCard from '../banner-card'
@@ -22,6 +22,7 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
   filter,
 }) => {
   const [expanded, setExpanded] = useState(false)
+  const { t } = useTranslation()
   const onSelectBannerCallback = (banner: Banner) => {
     setExpanded(false)
     onSelectBanner(banner)
@@ -38,7 +39,7 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
         className="banner-accordion-expander"
         onClick={() => setExpanded(!expanded)}
       >
-        <Trans i18nKey="map.area">Banners in This Area</Trans>{' '}
+        {t('map.area') + ' '}
         <span className={`carot-${expanded}`}>
           <SVGTriangle />
         </span>

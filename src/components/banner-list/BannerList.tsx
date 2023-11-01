@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef } from 'react'
 import { Row } from 'antd'
 import { Link, generatePath } from 'react-router-dom'
-import { Trans } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import { Banner } from '../../features/banner'
 import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
@@ -37,6 +37,8 @@ const BannerList: FC<BannerListProps> = ({
       })
     }
   }, [banners, selectedBannerId])
+
+  const { t } = useTranslation()
 
   const getBannerCardWithLink = (banner: Banner, contents: JSX.Element) =>
     onSelectBanner ? (
@@ -99,22 +101,14 @@ const BannerList: FC<BannerListProps> = ({
           })}
           {hasMoreBanners && (
             <div ref={ref} className="banner-card">
-              <Trans i18nKey="loadingMore">Loading more items...</Trans>
+              {t('loadingMore')}
             </div>
           )}
         </div>
       </>
     )
   }
-  return (
-    <>
-      {hasMoreBanners && (
-        <Row>
-          <Trans i18nKey="loading">Loading...</Trans>
-        </Row>
-      )}
-    </>
-  )
+  return <>{hasMoreBanners && <Row>{t('loading')}</Row>}</>
 }
 
 export interface BannerListProps {

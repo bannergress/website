@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 import SVGUpArrow from '../../img/icons/up-arrow.svg?react'
 
@@ -16,17 +16,21 @@ export const hasBothDirections = (type: BannerOrder) => {
 }
 
 const Order: FC<OrderProps> = ({ orderBy, orderDirection }) => {
+  const { t } = useTranslation()
   let classNames = 'banner-order-arrow'
   if (orderDirection === 'DESC') {
     classNames += ' banner-order-inverse'
   }
 
   return hasBothDirections(orderBy) ? (
-    <Trans i18nKey={`order.${orderBy}`}>
-      {{ orderBy }} <SVGUpArrow className={classNames} />
-    </Trans>
+    <Trans
+      i18nKey={`order.${orderBy}`}
+      components={{
+        icon: <SVGUpArrow className={classNames} />,
+      }}
+    />
   ) : (
-    <Trans i18nKey={`order.${orderBy}`}>{orderBy}</Trans>
+    <>{t(`order.${orderBy}`)}</>
   )
 }
 

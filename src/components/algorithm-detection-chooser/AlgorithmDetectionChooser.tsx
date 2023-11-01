@@ -7,23 +7,15 @@ import SVGHelp from '../../img/icons/help-round.svg?react'
 import './algorithm-detection-chooser.less'
 
 const extractionHelp = (
-  <Trans i18nKey="banners.creation.algorithm.help">
-    <p>
-      <b>Manual:</b> Title will be detected automatically from missions. Mission
-      numbering will be sequential starting from 1.
-    </p>
-    <p>
-      <b>Automatic:</b> Automatic title/numbering detection. With long banners
-      could be slower.
-    </p>
-    * If detection is changed to advanced, title and numbering may change as it
-    will be reevaluated.
-    <br />
-    * If title is changed manually, it won&apos;t be changed automatically when
-    new missions are added.
-    <br />* If a mission number is changed manually, Manual detection will be
-    activated.
-  </Trans>
+  <Trans
+    i18nKey="banners.creation.algorithm.help"
+    components={{
+      b: <b />,
+      p: <p />,
+      ul: <ul />,
+      li: <li />,
+    }}
+  />
 )
 
 const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
@@ -42,9 +34,12 @@ const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
     <div className="algo-detection-chooser">
       <Tooltip placement="right" title={extractionHelp}>
         <h3>
-          <Trans i18nKey="banners.creation.algorithm.detection">
-            Detection <SVGHelp />
-          </Trans>
+          <Trans
+            i18nKey="banners.creation.algorithm.detection"
+            components={{
+              icon: <SVGHelp />,
+            }}
+          />
         </h3>
       </Tooltip>
       <div className={`lds-ellipsis display-${loading}`}>

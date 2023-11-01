@@ -20,27 +20,23 @@ const Help: React.FC = () => {
         <title>{t('help.title')}</title>
       </Helmet>
       <div className="help-page">
-        <h1>
-          <Trans i18nKey="help.title">FAQ and Support</Trans>
-        </h1>
+        <h1>{t('help.title')}</h1>
         <div className="help-page-content">
-          <h3>
-            <Trans i18nKey="faqs.title">Frequently Asked</Trans>
-          </h3>
+          <h3>{t('faqs.title')}</h3>
           <AllQuestions />
-          <h3>
-            <Trans i18nKey="help.community">Community Support</Trans>
-          </h3>
+          <h3>{t('help.community')}</h3>
           <div className="faq-question">
             <a
               className="faq-question-title faq-question-link"
               {...getExternalLinkAttributes()}
               href={t('help.telegram.channel.link')}
             >
-              <Trans i18nKey="help.telegram.channel.title">
-                <SVGTelegram />
-                Telegram News Channel
-              </Trans>
+              <Trans
+                i18nKey="help.telegram.channel.title"
+                components={{
+                  icon: <SVGTelegram />,
+                }}
+              />
             </a>
           </div>
           <div className="faq-question">
@@ -49,10 +45,12 @@ const Help: React.FC = () => {
               {...getExternalLinkAttributes()}
               href={t('help.telegram.group.link')}
             >
-              <Trans i18nKey="help.telegram.group.title">
-                <SVGTelegram />
-                Telegram Group Chat
-              </Trans>
+              <Trans
+                i18nKey="help.telegram.group.title"
+                components={{
+                  icon: <SVGTelegram />,
+                }}
+              />
             </a>
           </div>
           <div className="faq-question">
@@ -61,10 +59,12 @@ const Help: React.FC = () => {
               {...getExternalLinkAttributes()}
               href={t('help.telegram.support.link')}
             >
-              <Trans i18nKey="help.telegram.support.title">
-                <SVGTelegram />
-                Telegram Support Chat
-              </Trans>
+              <Trans
+                i18nKey="help.telegram.support.title"
+                components={{
+                  icon: <SVGTelegram />,
+                }}
+              />
             </a>
           </div>
         </div>
