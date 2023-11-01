@@ -1,5 +1,5 @@
 import { Modal } from 'antd'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
 import SVGBackArrowSmall from '../../img/icons/back-arrow-small.svg?react'
@@ -18,14 +18,36 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
   includeOfficial = false,
 }) => {
   const [open, setOpen] = useState<boolean>(false)
+  const [loadingLocation, setLoadingLocation] = useState<boolean>(false)
   const [currentFilter, setCurrentFilter] = useState<BannerFilter>(filter)
   const { t } = useTranslation()
+  useEffect(() => {
+    if (loadingLocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setLoadingLocation(false)
+          updateFilter({
+            ...currentFilter,
+            orderBy: 'proximityStartPoint',
+            orderDirection: 'ASC',
+            proximityLatitude: pos.coords.latitude,
+            proximityLongitude: pos.coords.longitude,
+          })
+        },
+        () => {
+          setLoadingLocation(false)
+        },
+        { maximumAge: 0, enableHighAccuracy: true }
+      )
+    }
+  })
 
   const show = () => {
     setOpen(true)
   }
 
   const hide = () => {
+    setLoadingLocation(false)
     setOpen(false)
   }
 
@@ -47,11 +69,17 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
 
   const onOrderClicked = (type: BannerOrder) => {
     if (type !== currentFilter.orderBy) {
-      updateFilter({
-        ...currentFilter,
-        orderBy: type,
-        orderDirection: getDefaultDirection(type),
-      })
+      if (type === 'proximityStartPoint') {
+        setLoadingLocation(true)
+      } else {
+        updateFilter({
+          ...currentFilter,
+          orderBy: type,
+          orderDirection: getDefaultDirection(type),
+          proximityLatitude: undefined,
+          proximityLongitude: undefined,
+        })
+      }
     } else if (hasBothDirections(currentFilter.orderBy)) {
       updateFilter({
         ...currentFilter,
@@ -143,6 +171,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
                 {getButton('title')}
                 {getButton('lengthMeters')}
                 {getButton('numberOfMissions')}
+                {getButton('proximityStartPoint')}
               </div>
             </>
           )}

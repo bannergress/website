@@ -5,6 +5,7 @@ export type BannerOrder =
   | 'lengthMeters'
   | 'title'
   | 'numberOfMissions'
+  | 'proximityStartPoint'
 
 export type BannerOrderDirection = 'ASC' | 'DESC'
 
@@ -15,4 +16,6 @@ export type BannerFilter = {
   onlyOfficialMissions?: boolean
   minEventTimestamp?: string
   maxEventTimestamp?: string
+  proximityLatitude?: number
+  proximityLongitude?: number
 }

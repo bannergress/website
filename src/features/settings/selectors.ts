@@ -5,4 +5,6 @@ export const getDefaultOnline = (state: RootState) =>
 export const getDefaultOrder = (state: RootState) => ({
   defaultOrderBy: state.settings.defaultOrderBy,
   defaultOrderDirection: state.settings.defaultOrderDirection,
+  defaultProximityLatitude: state.settings.defaultProximityLatitude,
+  defaultProximityLongitude: state.settings.defaultProximityLongitude,
 })
