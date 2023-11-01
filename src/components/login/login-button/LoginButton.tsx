@@ -3,8 +3,8 @@ import { Row, Col, Modal } from 'antd'
 import { useKeycloak } from '@react-keycloak/web'
 import { Trans, useTranslation } from 'react-i18next'
 
-import { ReactComponent as SVGGoogleLogo } from '../../../img/icons/google_logo.svg'
-import { ReactComponent as SVGFacebookLogo } from '../../../img/icons/facebook_logo.svg'
+import SVGGoogleLogo from '../../../img/icons/google_logo.svg?react'
+import SVGFacebookLogo from '../../../img/icons/facebook_logo.svg?react'
 
 import './login-button.less'
 

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { extract } from './titleExtraction'
 
 describe('features > banner > naming > titleExtraction', () => {

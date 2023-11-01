@@ -12,7 +12,7 @@ import {
 } from '../banner-info-mobile-switch'
 import { MapDetail } from '../map-detail'
 import { IssuesList, Issue } from '../Issues-list'
-import { ReactComponent as SVGBackArrow } from '../../img/icons/back-arrow.svg'
+import SVGBackArrow from '../../img/icons/back-arrow.svg?react'
 
 import './banner-info-with-map.less'
 

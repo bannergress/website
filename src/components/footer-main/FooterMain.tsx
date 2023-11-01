@@ -3,10 +3,10 @@ import { Trans } from 'react-i18next'
 
 import { getExternalLinkAttributes } from '../../features/utils'
 
-// import { ReactComponent as SVGInstagram } from '../../img/icons/instagram.svg'
-// import { ReactComponent as SVGTwitter } from '../../img/icons/twitter.svg'
-import { ReactComponent as SVGTelegram } from '../../img/icons/telegram-bg.svg'
-import { ReactComponent as SVGIngress } from '../../img/icons/intel.svg'
+// import SVGInstagram from '../../img/icons/instagram.svg?react'
+// import SVGTwitter from '../../img/icons/twitter.svg?react'
+import SVGTelegram from '../../img/icons/telegram-bg.svg?react'
+import SVGIngress from '../../img/icons/intel.svg?react'
 
 import './footer.less'
 

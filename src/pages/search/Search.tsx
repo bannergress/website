@@ -47,7 +47,7 @@ class Search extends React.Component<SearchProps, SearchState> {
     }
   }
 
-  static getDerivedStateFromProps(props: SearchProps, state: SearchState) {
+  static getDerivedStateFromProps(props: Readonly<SearchProps>, state: SearchState) {
     const { match } = props
     const { searchTerm } = state
     const newTerm = decodeURIComponentSafe(match.params.term)

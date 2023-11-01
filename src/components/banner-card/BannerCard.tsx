@@ -10,13 +10,13 @@ import {
 import { createBrowseUri } from '../../features/place'
 import { Distance } from '../distance/Distance'
 import BannerPicture from './BannerPicture'
-import { ReactComponent as SVGExplorer } from '../../img/icons/explorer.svg'
-import { ReactComponent as SVGWarningTriangle } from '../../img/icons/warningtriangle.svg'
-import { ReactComponent as SVGPointer } from '../../img/icons/pointer.svg'
+import SVGExplorer from '../../img/icons/explorer.svg?react'
+import SVGWarningTriangle from '../../img/icons/warningtriangle.svg?react'
+import SVGPointer from '../../img/icons/pointer.svg?react'
 
 import './banner-card.less'
 
-const baseUrl = process.env.REACT_APP_API_BASE_URL
+const baseUrl = import.meta.env.VITE_API_BASE_URL
 
 const BannerCard: FC<BannerCardProps> = ({
   banner,

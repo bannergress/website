@@ -1,7 +1,7 @@
 import { api } from '../../api'
 import { Place } from './types'
 
-const isMock = process.env.REACT_APP_USE_MOCK === 'true'
+const isMock = import.meta.env.VITE_USE_MOCK === 'true'
 export const PAGE_SIZE = 9
 
 const createPlaces = (): Array<Place> => [

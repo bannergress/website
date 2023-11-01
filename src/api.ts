@@ -38,7 +38,7 @@ class Api {
     try {
       await this.readyPromise
 
-      const fullUrl = new URL(url, process.env.REACT_APP_API_BASE_URL)
+      const fullUrl = new URL(url, import.meta.env.VITE_API_BASE_URL)
       Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined) {
           fullUrl.searchParams.set(key, String(value))

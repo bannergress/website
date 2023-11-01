@@ -8,7 +8,7 @@ import LoginInNavbar from '../login/login-in-navbar'
 import SearchInput from '../search-input'
 import MenuMain from '../menu-main'
 import Logo from '../../img/logo/logo64.png'
-import { ReactComponent as SVGSearch } from '../../img/icons/search.svg'
+import SVGSearch from '../../img/icons/search.svg?react'
 
 import './Navbar.less'
 

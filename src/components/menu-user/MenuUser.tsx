@@ -4,7 +4,7 @@ import { Button, Dropdown, Menu } from 'antd'
 import { Trans } from 'react-i18next'
 
 import UserPicture from '../login/user-picture'
-import { ReactComponent as SVGUpArrow } from '../../img/icons/up-arrow.svg'
+import SVGUpArrow from '../../img/icons/up-arrow.svg?react'
 
 import './menu-user.less'
 

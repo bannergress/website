@@ -2,9 +2,9 @@ import React, { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { BannerListType } from '../../features/banner'
-import { ReactComponent as SVGTodo } from '../../img/icons/todo.svg'
-import { ReactComponent as SVGDone } from '../../img/icons/done.svg'
-import { ReactComponent as SVGBlacklist } from '../../img/icons/blacklist.svg'
+import SVGTodo from '../../img/icons/todo.svg?react'
+import SVGDone from '../../img/icons/done.svg?react'
+import SVGBlacklist from '../../img/icons/blacklist.svg?react'
 
 import './banner-list-type-control.less'
 

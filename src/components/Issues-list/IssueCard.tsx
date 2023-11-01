@@ -2,7 +2,7 @@ import { Button } from 'antd'
 import React, { FC } from 'react'
 import { Issue } from './Issue'
 
-import { ReactComponent as SVGCross } from '../../img/icons/cross.svg'
+import SVGCross from '../../img/icons/cross.svg?react'
 
 const IssueCard: FC<IssueCardProps> = ({ issue, onCloseIssue }) => {
   const onClose = () => {

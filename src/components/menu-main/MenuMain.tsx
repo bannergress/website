@@ -2,11 +2,11 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-import { ReactComponent as SVGHome } from '../../img/icons/home.svg'
-import { ReactComponent as SVGBrowse } from '../../img/icons/browse.svg'
-import { ReactComponent as SVGMap } from '../../img/icons/map.svg'
-import { ReactComponent as SVGHelp } from '../../img/icons/help.svg'
-import { ReactComponent as SVGAdd } from '../../img/icons/add.svg'
+import SVGHome from '../../img/icons/home.svg?react'
+import SVGBrowse from '../../img/icons/browse.svg?react'
+import SVGMap from '../../img/icons/map.svg?react'
+import SVGHelp from '../../img/icons/help.svg?react'
+import SVGAdd from '../../img/icons/add.svg?react'
 
 import './menu-main.less'
 

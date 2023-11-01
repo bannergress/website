@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Trans } from 'react-i18next'
 
-import { ReactComponent as SVGUpArrow } from '../../img/icons/up-arrow.svg'
+import SVGUpArrow from '../../img/icons/up-arrow.svg?react'
 
 import './order.less'
 import { BannerOrder, BannerOrderDirection } from '../../features/banner/filter'

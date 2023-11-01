@@ -44,7 +44,7 @@ class UserBannerList extends React.Component<
   }
 
   static getDerivedStateFromProps(
-    props: UserBannerListProps,
+    props: Readonly<UserBannerListProps>,
     state: UserBannerListState
   ) {
     const { match } = props

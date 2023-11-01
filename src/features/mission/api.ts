@@ -2,7 +2,7 @@ import { api } from '../../api'
 import { MissionFilter } from './filter'
 import { Mission } from './types'
 
-const isMock = process.env.REACT_APP_USE_MOCK === 'true'
+const isMock = import.meta.env.VITE_USE_MOCK === 'true'
 export const PAGE_SIZE = 100
 
 const getMissions = (startIndex: number, numberOfMissions: number) => {

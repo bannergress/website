@@ -3,7 +3,7 @@ import { Col, Radio, Row, Slider, Tooltip } from 'antd'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { BannerType } from '../../features/banner'
-import { ReactComponent as SVGHelp } from '../../img/icons/help-round.svg'
+import SVGHelp from '../../img/icons/help-round.svg?react'
 
 import './advanced-options.less'
 import { DatePicker } from '../date-picker/DatePicker'
