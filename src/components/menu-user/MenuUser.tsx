@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router'
 import { Button, Dropdown, Menu } from 'antd'
-import { Trans } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import UserPicture from '../login/user-picture'
 import SVGUpArrow from '../../img/icons/up-arrow.svg?react'
@@ -10,6 +10,7 @@ import './menu-user.less'
 
 const MenuUser: React.FC<MenuUserProps> = ({ logout }) => {
   const history = useHistory()
+  const { t } = useTranslation()
 
   const handleMenuClick = (e: { key: React.Key }) => {
     switch (e.key) {
@@ -26,24 +27,31 @@ const MenuUser: React.FC<MenuUserProps> = ({ logout }) => {
         break
     }
   }
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="banners">
-        <Trans i18nKey="menu.lists">My Lists</Trans>
-      </Menu.Item>
-      <Menu.Item key="account">
-        <Trans i18nKey="menu.account">Account</Trans>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="logout">
-        <Trans i18nKey="menu.logout">Logout</Trans>
-      </Menu.Item>
-    </Menu>
-  )
+  const menuProps = {
+    onClick: handleMenuClick,
+    items: [
+      {
+        label: t('menu.lists'),
+        key: 'banners',
+      },
+      {
+        label: t('menu.account'),
+        key: 'account',
+      },
+      {
+        type: 'divider',
+        key: 'divider',
+      },
+      {
+        label: t('menu.logout'),
+        key: 'logout',
+      },
+    ],
+  }
 
   /* Use both click and hover because of "Profile menu does not always appear #258" */
   return (
-    <Dropdown trigger={['click', 'hover']} overlay={menu}>
+    <Dropdown trigger={['click', 'hover']} menu={menuProps}>
       <Button className="menu-user">
         <UserPicture className="user-picture" size={40} />{' '}
         <span className="arrow-icon">

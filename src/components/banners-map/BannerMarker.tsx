@@ -9,7 +9,7 @@ interface MarkerWithBanner {
 }
 
 export const getBannerFromMarker = (marker: InternalMarker) => {
-  return ((marker as unknown) as MarkerWithBanner).banner
+  return (marker as unknown as MarkerWithBanner).banner
 }
 
 export const BannerMarker: FC<BannerMarkerProps> = ({

@@ -1,6 +1,6 @@
 import React, { Fragment, FC } from 'react'
 import { Col } from 'antd'
-import { Scrollbars } from 'react-custom-scrollbars'
+import { Scrollbars } from 'react-custom-scrollbars-2'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { Mission } from '../../features/mission'

@@ -4,7 +4,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { Col, Row } from 'antd'
 import { LatLngBounds } from 'leaflet'
-import Scrollbars from 'react-custom-scrollbars'
+import Scrollbars from 'react-custom-scrollbars-2'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
@@ -124,13 +124,8 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
 
   render() {
     const { getBanners, getBanner, i18n } = this.props
-    const {
-      bounds,
-      selectedBannerId,
-      status,
-      selectedBounds,
-      filter,
-    } = this.state
+    const { bounds, selectedBannerId, status, selectedBounds, filter } =
+      this.state
     let banners: Array<Banner> = []
     const boundsToUse = selectedBounds ?? bounds
     if (boundsToUse) {

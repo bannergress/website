@@ -1,7 +1,8 @@
 import React, { FC, Fragment } from 'react'
 import _ from 'underscore'
 import { LatLng } from 'leaflet'
-import { TFunction, Trans, useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
+import { TFunction } from 'i18next'
 import { Tooltip } from 'antd'
 
 import { Banner } from '../../features/banner'

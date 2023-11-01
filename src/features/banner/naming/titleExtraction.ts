@@ -77,9 +77,10 @@ function extractNumbers(
       return {
         ...missionResult,
         [prop]: bestCandidate,
-        remainingNumberCandidates: missionResult.remainingNumberCandidates!.filter(
-          (c) => c !== bestCandidate
-        ),
+        remainingNumberCandidates:
+          missionResult.remainingNumberCandidates!.filter(
+            (c) => c !== bestCandidate
+          ),
       }
     }),
   }
@@ -351,9 +352,10 @@ function extractTitles(
       return {
         ...missionResult,
         titleMarker: bestCandidate,
-        remainingTitleCandidates: missionResult.remainingTitleCandidates!.filter(
-          (c) => c !== bestCandidate
-        ),
+        remainingTitleCandidates:
+          missionResult.remainingTitleCandidates!.filter(
+            (c) => c !== bestCandidate
+          ),
       }
     }),
   }
