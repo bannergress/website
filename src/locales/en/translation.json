@@ -39,12 +39,12 @@
     "notFound_other": "No banners found",
     "noneWithId": "No banners found with that id",
     "banner": "Banner",
-    "offline": "<0 /> BANNER OFFLINE",
+    "offline": "<icon /> BANNER OFFLINE",
     "collection": "Collection",
     "width": "Banner Width",
     "mine": "My {{type}} Banners",
     "markinfo": "Mark banners as '{{type}}' to see them here.",
-    "exitFullscreen": "<0 /> Exit Full Screen",
+    "exitFullscreen": "<icon /> Exit Full Screen",
     "confirmDelete": "Do you really want to delete that banner?",
     "confirmNotDone": "Do you really want to remove the Done marker?",
     "creation": {
@@ -90,10 +90,10 @@
         },
         "options": "Options",
         "help": {
-          "banner": "<0>Banner:</0> Collection of missions that must be completed in sequence to complete the picture in your profile.",
-          "collection": "<0>Collection:</0> Collection of missions that can be completed in any order as they don't form a picture."
+          "banner": "<b>Banner:</b> Collection of missions that must be completed in sequence to complete the picture in your profile.",
+          "collection": "<b>Collection:</b> Collection of missions that can be completed in any order as they don't form a picture."
         },
-        "type": "Banner type <1 />"
+        "type": "Banner type <icon />"
       },
       "errors": {
         "noMissions": "A banner must contain an accepted mission",
@@ -109,8 +109,8 @@
         "length": "The banner could be incomplete, as the length differs from the detected length in the title: {{length}}"
       },
       "algorithm": {
-        "help": "<p><strong>Manual:</strong> Title will be detected automatically from missions. Mission numbering will be sequential starting from 1.</p><p><strong>Automatic:</strong> Automatic title/numbering detection. With long banners could be slower.</p>* If detection is changed to automatic, title and numbering may change as it will be reevaluated.<br />* If title is changed manually, it won't be changed automatically when new missions are added.<br />* If a mission number is changed manually, Manual detection will be activated.",
-        "detection": "Detection <1 />",
+        "help": "<p><b>Manual:</b> Title will be detected automatically from missions. Mission numbering will be sequential starting from 1.</p><p><b>Automatic:</b> Automatic title/numbering detection. With long banners could be slower.</p><ul><li>If detection is changed to automatic, title and numbering may change as it will be reevaluated.</li><li>If title is changed manually, it won't be changed automatically when new missions are added.</li><li>If a mission number is changed manually, Manual detection will be activated.</li></ul>",
+        "detection": "Detection <icon />",
         "manual": "Manual",
         "automatic": "Automatic"
       }
@@ -161,7 +161,7 @@
     "plannedOfflineDate": "Going offline on",
     "latestUpdateStatus": "Last checked",
     "goToStart": "Go to Banner Starting Point",
-    "authorLogin": "Please <2>sign in</2> to see author(s)",
+    "authorLogin": "Please <login>sign in</login> to see author(s)",
     "info": "Banner Info",
     "errors": {
       "noPois": "Banner has no POIs currently available",
@@ -169,15 +169,15 @@
       "loading": "Error loading recent banners, please try again later"
     },
     "done": {
-      "control": "<0 /> DONE",
+      "control": "<icon /> DONE",
       "name": "Done"
     },
     "todo": {
-      "control": "<0 /> TO-DO",
+      "control": "<icon /> TO-DO",
       "name": "To-Do"
     },
     "hide": {
-      "control": "<0 /> HIDE",
+      "control": "<icon /> HIDE",
       "name": "Hidden"
     },
     "loadingRecent": "Loading recent banners...",
@@ -193,7 +193,7 @@
     "refine": "Refine...",
     "allCountries": "All Countries",
     "countries": "Countries",
-    "backArrow": "❮ <1 />",
+    "backArrow": "❮ <place />",
     "types": {
       "country": "Country",
       "level1": "First-level administrative division",
@@ -276,15 +276,15 @@
     "community": "Community Support",
     "telegram": {
       "channel": {
-        "title": "<0 /> Telegram News Channel",
+        "title": "<icon /> Telegram News Channel",
         "link": "//t.me/bannergressnews"
       },
       "group": {
-        "title": "<0 /> Telegram Group Chat",
+        "title": "<icon /> Telegram Group Chat",
         "link": "//t.me/joinchat/_LDAw8VdJgFkMzI6"
       },
       "support": {
-        "title": "<0 /> Telegram Support Chat",
+        "title": "<icon /> Telegram Support Chat",
         "link": "//t.me/joinchat/rc0DVCAUQ4NkZmY8"
       }
     }
@@ -296,10 +296,6 @@
       "short": "Text is too short for search."
     },
     "placeholder": "Search Banners or Places"
-  },
-  "about": {
-    "title": "About",
-    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas possimus doloribus error cumque autem asperiores, ullam deserunt quidem omnis doloremque itaque eius eaque sint facilis unde tenetur reiciendis aliquam soluta?"
   },
   "missions": {
     "title": "Missions",
@@ -332,13 +328,13 @@
   },
   "order": {
     "sortBy": "Sort by",
-    "sortedBy": "Sorted by <2 />",
+    "sortedBy": "Sorted by <order />",
     "relevance": "Relevance",
-    "listAdded": "Added to List <2 />",
-    "created": "Date Created <2 />",
-    "title": "A-Z <2 />",
-    "lengthMeters": "Distance <2 />",
-    "numberOfMissions": "Total Missions <2 />",
+    "listAdded": "Added to List <icon />",
+    "created": "Date Created <icon />",
+    "title": "A-Z <icon />",
+    "lengthMeters": "Distance <icon />",
+    "numberOfMissions": "Total Missions <icon />",
     "text": {
       "excludeOffline": "Excluding Offline",
       "includeOffline": "Showing Offline"
@@ -355,12 +351,12 @@
     "minutes": "{{count}} min ",
     "seconds": "{{count}} s"
   },
-  "disclaimer": "This is a fan site and not officially affiliated with Niantic Inc.<br />Ingress is a registered trademark of Niantic Inc.<br />Bannergress",
+  "disclaimer": "This is a fan site and not officially affiliated with Niantic Inc.<newline />Ingress is a registered trademark of Niantic Inc.<newline />Bannergress 2021 - {{year}}",
   "login": {
     "title": "Login",
     "help": "Sign in using one of these identity providers",
-    "google": "<0 /> Login with Google",
-    "facebook": "<0 /> Login with Facebook",
+    "google": "<icon /> Login with Google",
+    "facebook": "<icon /> Login with Facebook",
     "button": "Sign In",
     "required": "You must sign in first to access this functionality.",
     "checking": "Checking Login..."

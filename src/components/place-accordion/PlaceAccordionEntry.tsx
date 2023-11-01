@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Trans } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import { Place } from '../../features/place'
 import PlaceEntry from '../place-list/PlaceEntry'
@@ -14,6 +14,7 @@ export const PlaceAccordionEntry: FC<PlaceAccordionEntryProps> = ({
   aligned,
   onSelectPlace,
 }) => {
+  const { t } = useTranslation()
   const extraClassName =
     (selected ? ' place-accordion-entry-selected' : '') +
     (all ? ' place-accordion-entry-all' : '')
@@ -39,7 +40,7 @@ export const PlaceAccordionEntry: FC<PlaceAccordionEntryProps> = ({
               <SVGArea className="place-icon" />{' '}
             </>
           )}
-          <Trans i18nKey="places.all">All</Trans>
+          {t('places.all')}
         </>
       )}
     </button>

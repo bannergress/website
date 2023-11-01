@@ -38,13 +38,13 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
     return (
       <div className="banner-edit-tools">
         <Button className="positive-action-button" onClick={onRefreshBanner}>
-          <Trans i18nKey="buttons.refresh">Refresh</Trans>
+          {t('buttons.refresh')}
         </Button>
         <Button className="positive-action-button" onClick={onEditBanner}>
-          <Trans i18nKey="buttons.edit">Edit</Trans>
+          {t('buttons.edit')}
         </Button>
         <Button className="negative-action-button" onClick={onDeleteBanner}>
-          <Trans i18nKey="buttons.delete">Delete</Trans>
+          {t('buttons.delete')}
         </Button>
       </div>
     )
@@ -53,7 +53,7 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
     return (
       <div className="banner-edit-tools">
         <Button className="positive-action-button" onClick={onEditBanner}>
-          <Trans i18nKey="buttons.edit">Edit</Trans>
+          {t('buttons.edit')}
         </Button>
       </div>
     )

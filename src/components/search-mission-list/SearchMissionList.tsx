@@ -1,7 +1,7 @@
 import React, { Fragment, FC } from 'react'
 import { Col } from 'antd'
 import { Scrollbars } from 'react-custom-scrollbars-2'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import { Mission } from '../../features/mission'
 import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
@@ -41,11 +41,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
               className={missionClass ? missionClass(mission) : ''}
             />
           ))}
-          {hasMoreMissions && (
-            <div ref={ref}>
-              <Trans i18nKey="loadingMore">Loading more items...</Trans>
-            </div>
-          )}
+          {hasMoreMissions && <div ref={ref}>{t('loadingMore')}</div>}
         </Scrollbars>
       </Fragment>
     )
@@ -53,9 +49,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
   if (!hasMoreMissions && !initial) {
     return (
       <Fragment>
-        <Col>
-          <Trans i18nKey="missions.notFound">No missions found</Trans>
-        </Col>
+        <Col>{t('missions.notFound')}</Col>
       </Fragment>
     )
   }

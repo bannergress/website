@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Row } from 'antd'
-import { Trans } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
 import { Place } from '../../features/place'
@@ -17,6 +17,8 @@ const PlaceListFlat: FC<PlaceListFlatProps> = ({
     callback: loadMorePlaces,
   })
 
+  const { t } = useTranslation()
+
   if (places && places.length > 0) {
     return (
       <>
@@ -27,24 +29,12 @@ const PlaceListFlat: FC<PlaceListFlatProps> = ({
             </div>
           ))}
 
-          {hasMorePlaces && (
-            <div ref={ref}>
-              <Trans i18nKey="loadingMore">Loading more items...</Trans>
-            </div>
-          )}
+          {hasMorePlaces && <div ref={ref}>{t('loadingMore')}</div>}
         </div>
       </>
     )
   }
-  return (
-    <>
-      {hasMorePlaces && (
-        <Row>
-          <Trans i18nKey="loading">Loading...</Trans>
-        </Row>
-      )}
-    </>
-  )
+  return <>{hasMorePlaces && <Row>{t('loading')}</Row>}</>
 }
 
 export interface PlaceListFlatProps {

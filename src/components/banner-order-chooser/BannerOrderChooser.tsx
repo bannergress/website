@@ -1,6 +1,6 @@
 import { Modal } from 'antd'
 import React, { FC, useState } from 'react'
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 import SVGBackArrowSmall from '../../img/icons/back-arrow-small.svg?react'
 
@@ -19,6 +19,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false)
   const [currentFilter, setCurrentFilter] = useState<BannerFilter>(filter)
+  const { t } = useTranslation()
 
   const show = () => {
     setOpen(true)
@@ -114,18 +115,10 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
         </button>
         <div className="filter-and-sort-content">
           <h2>
-            {includeSorting ? (
-              <Trans i18nKey="order.filterAndSort">Filter and Sort</Trans>
-            ) : (
-              <Trans i18nKey="order.filter">Filter</Trans>
-            )}
+            {includeSorting ? t('order.filterAndSort') : t('order.filter')}
           </h2>
           <div className="filter-and-sort-switch-row">
-            <h3>
-              <Trans i18nKey="order.showOfflineBanners">
-                Show offline banners
-              </Trans>
-            </h3>
+            <h3>{t('order.showOfflineBanners')}</h3>
             <Switch
               checked={!currentFilter.online}
               onChange={onOnlineChanged}
@@ -133,11 +126,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
           </div>
           {includeOfficial && (
             <div className="filter-and-sort-switch-row">
-              <h3>
-                <Trans i18nKey="order.showUnofficialBanners">
-                  Show non-Niantic missions
-                </Trans>
-              </h3>
+              <h3>{t('order.showUnofficialBanners')}</h3>
               <Switch
                 checked={!currentFilter.onlyOfficialMissions}
                 onChange={onOfficialChanged}
@@ -146,9 +135,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
           )}
           {includeSorting && (
             <>
-              <h3>
-                <Trans i18nKey="order.sortBy">Sort by</Trans>
-              </h3>
+              <h3>{t('order.sortBy')}</h3>
               <div className="filter-and-sort-button-row">
                 {includeRelevance && getButton('relevance')}
                 {includeAddedList && getButton('listAdded')}
@@ -163,35 +150,33 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
       </Modal>
       <button type="button" onClick={show} className="order-button selected">
         <div className="order-button-inner">
-          {includeSorting ? (
-            <Trans i18nKey="order.filterAndSort">Filter and Sort</Trans>
-          ) : (
-            <Trans i18nKey="order.filter">Filter</Trans>
-          )}
+          {includeSorting ? t('order.filterAndSort') : t('order.filter')}
         </div>
       </button>
       <div>
         {includeSorting && (
           <>
-            <Trans i18nKey="order.sortedBy">
-              Sorted by{' '}
-              <Order
-                orderBy={currentFilter.orderBy}
-                orderDirection={currentFilter.orderDirection}
-              />
-            </Trans>
+            <Trans
+              i18nKey="order.sortedBy"
+              components={{
+                order: (
+                  <Order
+                    orderBy={currentFilter.orderBy}
+                    orderDirection={currentFilter.orderDirection}
+                  />
+                ),
+              }}
+            />
             {' / '}
           </>
         )}
-        {currentFilter.online ? (
-          <Trans i18nKey="order.text.excludeOffline">Excluding Offline</Trans>
-        ) : (
-          <Trans i18nKey="order.text.includeOffline">Showing Offline</Trans>
-        )}
+        {currentFilter.online
+          ? t('order.text.excludeOffline')
+          : t('order.text.includeOffline')}
         {currentFilter.onlyOfficialMissions && (
           <>
             {' / '}
-            <Trans i18nKey="order.onlyOfficial">Niantic missions only</Trans>
+            {t('order.onlyOfficial')}
           </>
         )}
       </div>

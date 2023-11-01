@@ -10,7 +10,6 @@ import keycloak from './keycloak'
 
 import { updateApiState } from './api'
 import patchDOMForGoogleTranslate from './features/utils/patchGoogleTranslate'
-import { About } from './pages/About'
 import { Home } from './pages/Home'
 import { MapOverview } from './pages/map-overview'
 import { BannerInfo } from './pages/banner-info'
@@ -69,7 +68,6 @@ const App: React.FC = () => {
               <div className="container">
                 <Switch>
                   <Route path="/" component={Home} exact />
-                  <Route path="/about" component={About} />
                   <Route path="/map" component={MapOverview} />
                   <Route path="/events" component={Events} />
                   <Route path="/browse/:placeId?" component={Browser} />

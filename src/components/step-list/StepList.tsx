@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Row } from 'antd'
-import { Trans } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import { Step } from '../../features/mission'
 import StepCard from '../step-card'
@@ -8,6 +8,7 @@ import StepCard from '../step-card'
 import './step-list.less'
 
 const StepList: FC<StepListProps> = ({ steps }) => {
+  const { t } = useTranslation()
   if (steps && steps.length > 0) {
     return (
       <div className="step-list">
@@ -19,9 +20,7 @@ const StepList: FC<StepListProps> = ({ steps }) => {
   }
   return (
     <>
-      <Row>
-        <Trans>loading</Trans>
-      </Row>
+      <Row>{t('loading')}</Row>
     </>
   )
 }

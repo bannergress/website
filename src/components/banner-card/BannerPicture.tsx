@@ -107,9 +107,12 @@ const BannerPicture: FC<BannerPictureProps> = ({
           </Scrollbars>
         </Button>
         <Button role="button" className="close-button" onClick={onCloseModal}>
-          <Trans i18nKey="banners.exitFullscreen">
-            <SVGMinimize /> Exit Full Screen
-          </Trans>
+          <Trans
+            i18nKey="banners.exitFullscreen"
+            components={{
+              icon: <SVGMinimize />,
+            }}
+          />
         </Button>
       </Modal>
       <div

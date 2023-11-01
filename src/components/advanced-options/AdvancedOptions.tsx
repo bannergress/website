@@ -12,15 +12,21 @@ import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
 const typeHelp = (
   <>
     <p>
-      <Trans i18nKey="banners.creation.step3.help.banner">
-        <b>Banner:</b> Collection of missions that must be completed in sequence
-        to complete the picture in your profile.
-      </Trans>
+      <Trans
+        i18nKey="banners.creation.step3.help.banner"
+        components={{
+          b: <b />,
+        }}
+      />
     </p>
-    <Trans i18nKey="banners.creation.step3.help.collection">
-      <b>Collection:</b> Collection of missions that can be completed in any
-      order as they don&apos;t form a picture.
-    </Trans>
+    <p>
+      <Trans
+        i18nKey="banners.creation.step3.help.collection"
+        components={{
+          b: <b />,
+        }}
+      />
+    </p>
   </>
 )
 
@@ -41,10 +47,12 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
       <Col span={12}>
         <Tooltip placement="right" title={typeHelp}>
           <h4>
-            <Trans i18nKey="banners.creation.step3.type">
-              Banner type
-              <SVGHelp />
-            </Trans>
+            <Trans
+              i18nKey="banners.creation.step3.type"
+              components={{
+                icon: <SVGHelp />,
+              }}
+            />
           </h4>
         </Tooltip>
       </Col>
@@ -53,18 +61,14 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
           value={type}
           onChange={(e) => onChange(e.target.value, 'bannerType')}
         >
-          <Radio.Button value="sequential">
-            <Trans i18nKey="banners.banner">Banner</Trans>
-          </Radio.Button>
+          <Radio.Button value="sequential">{t('banners.banner')}</Radio.Button>
           <Radio.Button value="anyOrder">
-            <Trans i18nKey="banners.collection">Collection</Trans>
+            {t('banners.collection')}
           </Radio.Button>
         </Radio.Group>
       </Col>
       <Col span={12}>
-        <h4>
-          <Trans i18nKey="banners.width">Banner width</Trans>
-        </h4>
+        <h4>{t('banners.width')}</h4>
       </Col>
       <Col span={12}>
         <Slider
@@ -77,11 +81,7 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
       {(isEdit || manageBannersRole) && (
         <>
           <Col span={12}>
-            <h4>
-              <Trans i18nKey="banners.creation.step3.plannedOfflineDate.title">
-                Planned Offline Date
-              </Trans>
-            </h4>
+            <h4>{t('banners.creation.step3.plannedOfflineDate.title')}</h4>
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
             <DatePicker

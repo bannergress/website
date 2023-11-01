@@ -39,12 +39,12 @@
     "notFound_other": "No se han encontrado banners",
     "noneWithId": "No hay banners con este id",
     "banner": "Banner",
-    "offline": "<0 /> BANNER NO DISPONIBLE",
+    "offline": "<icon /> BANNER NO DISPONIBLE",
     "collection": "Colección",
     "width": "Ancho",
     "mine": "Mis banners a {{type}}",
     "markinfo": "Marca banners como '{{type}}' para verlos aquí.",
-    "exitFullscreen": "<0 /> Minimizar",
+    "exitFullscreen": "<icon /> Minimizar",
     "confirmDelete": "¿Estás seguro de que quieres borrar este banner?",
     "confirmNotDone": "¿Realmente eliminar la marca de completados?",
     "creation": {
@@ -74,10 +74,10 @@
         "description": "Descripción",
         "options": "Opciones",
         "help": {
-          "banner": "<0>Banner:</0> Colección de misiones que se han de completar seguidas para formar una imagen completa en tu perfil.",
-          "collection": "<0>Colección:</0> Colección de misiones que se pueden completar en cualquier orden."
+          "banner": "<b>Banner:</b> Colección de misiones que se han de completar seguidas para formar una imagen completa en tu perfil.",
+          "collection": "<b>Colección:</b> Colección de misiones que se pueden completar en cualquier orden."
         },
-        "type": "Tipo de banner <1 />"
+        "type": "Tipo de banner <icon />"
       },
       "errors": {
         "noMissions": "Un banner ha de contener al menos una misión aceptada",
@@ -93,8 +93,8 @@
         "length": "El banner podría estar incompleto ya el número de misiones incluídas difiere del número total detectado en el título: {{length}}"
       },
       "algorithm": {
-        "help": "<p><strong>Manual:</strong> El título se detectará automáticamente de las misiones. La numeración de las misiones se hará secuencial empezando por 1.</p><p><strong>Automático:</strong> Detección automática del título del banner y la numeración de las misiones a partir del tíutlo de las misiones. Con banners muy largos puede ir lento.</p>* Si la detección se cambia a automática, el título y la ordenación puede cambiar.<br />* Si el título se modifica, no se cambiará automáticamente al añadir nuevas misiones.<br />* Si se cambia el índice de alguna misión, se activará el modo manual.",
-        "detection": "Detección <1 />",
+        "help": "<p><b>Manual:</b> El título se detectará automáticamente de las misiones. La numeración de las misiones se hará secuencial empezando por 1.</p><p><b>Automático:</b> Detección automática del título del banner y la numeración de las misiones a partir del tíutlo de las misiones. Con banners muy largos puede ir lento.</p><ul><li>Si la detección se cambia a automática, el título y la ordenación puede cambiar.</li><li>Si el título se modifica, no se cambiará automáticamente al añadir nuevas misiones.</li><li>Si se cambia el índice de alguna misión, se activará el modo manual.</li></ul>",
+        "detection": "Detección <icon />",
         "manual": "Manual",
         "automatic": "Automática"
       }
@@ -136,7 +136,7 @@
     },
     "uniques": "Visitas únicas",
     "goToStart": "Ir al inicio del banner",
-    "authorLogin": "Por favor, <2>inicie sesión</2> para ver los autores",
+    "authorLogin": "Por favor, <login>inicie sesión</login> para ver los autores",
     "info": "Información",
     "errors": {
       "noPois": "El banner no POIs disponibles actualmente",
@@ -144,15 +144,15 @@
       "loading": "Error al cargar los últimos banners, prueba más tarde"
     },
     "done": {
-      "control": "<0 /> COMPLETADOS",
+      "control": "<icon /> COMPLETADOS",
       "name": "Completados"
     },
     "todo": {
-      "control": "<0 /> POR HACER",
+      "control": "<icon /> POR HACER",
       "name": "Por hacer"
     },
     "hide": {
-      "control": "<0 /> OCULTOS",
+      "control": "<icon /> OCULTOS",
       "name": "Ocultos"
     },
     "loadingRecent": "Cargando últimos banners...",
@@ -168,7 +168,7 @@
     "refine": "Refinar...",
     "allCountries": "Todos los países",
     "countries": "Países",
-    "backArrow": "❮ <1 />",
+    "backArrow": "❮ <place />",
     "types": {
       "country": "País",
       "level1": "*First-level administrative division",
@@ -251,15 +251,15 @@
     "community": "Soporte de la comunidad",
     "telegram": {
       "channel": {
-        "title": "<0 /> Canal de noticias de Telegram",
+        "title": "<icon /> Canal de noticias de Telegram",
         "link": "//t.me/bannergressnews"
       },
       "group": {
-        "title": "<0 /> Grupo general de Telegram",
+        "title": "<icon /> Grupo general de Telegram",
         "link": "//t.me/joinchat/_LDAw8VdJgFkMzI6"
       },
       "support": {
-        "title": "<0 /> Grupo de soporte de telegram",
+        "title": "<icon /> Grupo de soporte de telegram",
         "link": "//t.me/joinchat/rc0DVCAUQ4NkZmY8"
       }
     }
@@ -271,10 +271,6 @@
       "short": "El texto es demasiado corto."
     },
     "placeholder": "Bucar banners o lugares"
-  },
-  "about": {
-    "title": "Acerca de",
-    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas possimus doloribus error cumque autem asperiores, ullam deserunt quidem omnis doloremque itaque eius eaque sint facilis unde tenetur reiciendis aliquam soluta?"
   },
   "missions": {
     "title": "Misiones",
@@ -307,12 +303,12 @@
   },
   "order": {
     "sortBy": "Ordenar por",
-    "sortedBy": "Ordenar por <2 />",
-    "listAdded": "Añadidas a la lista <2 />",
-    "created": "Fecha de creación <2 />",
-    "title": "A-Z <2 />",
-    "lengthMeters": "Distancia <2 />",
-    "numberOfMissions": "Total de missions <2 />",
+    "sortedBy": "Ordenar por <order />",
+    "listAdded": "Añadidas a la lista <icon />",
+    "created": "Fecha de creación <icon />",
+    "title": "A-Z <icon />",
+    "lengthMeters": "Distancia <icon />",
+    "numberOfMissions": "Total de missions <icon />",
     "text": {
       "excludeOffline": "Excluding Offline",
       "includeOffline": "Showing Offline"
@@ -329,12 +325,12 @@
     "minutes": "{{count}} min ",
     "seconds": "{{count}} s"
   },
-  "disclaimer": "Fan site no oficial ni asociado a Niantic Inc.<br />Ingress es una marca registrada de Niantic Inc.<br />Bannergress",
+  "disclaimer": "Fan site no oficial ni asociado a Niantic Inc.<newline />Ingress es una marca registrada de Niantic Inc.<newline />Bannergress 2021 - {{year}}",
   "login": {
     "title": "Entrar",
     "help": "Identifícate con uno de estos proveedores",
-    "google": "<0 /> Entrar con Google",
-    "facebook": "<0 /> Entrar con Facebook",
+    "google": "<icon /> Entrar con Google",
+    "facebook": "<icon /> Entrar con Facebook",
     "button": "Iniciar sesión",
     "required": "Has de iniciar sesión para poder usar esta funcionalidad.",
     "checking": "Comprobando usuario..."

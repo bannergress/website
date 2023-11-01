@@ -1,5 +1,5 @@
 import React from 'react'
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 import {
   Mission,
@@ -18,13 +18,13 @@ import './mission-info.less'
 import { isMobile } from '../../features/utils/os'
 
 const MissionList: React.FC<MissionInfoProps> = ({ mission }) => {
+  const { t } = useTranslation()
+
   return (
     <div className="mission-info">
       {mission.status !== 'published' && (
         <div className="mission-info-markedoffline">
-          <Trans i18nKey="missions.markedOffline">
-            Mission marked as offline
-          </Trans>
+          {t('missions.markedOffline')}
         </div>
       )}
       <div className="mission-info-intel">
@@ -33,7 +33,7 @@ const MissionList: React.FC<MissionInfoProps> = ({ mission }) => {
           href={createMissionIntelLink(mission.id)}
         >
           <SVGIntel fill="currentColor" />
-          <Trans i18nKey="missions.viewOnIntel">View on Intel</Trans>
+          {t('missions.viewOnIntel')}
         </a>
         {isMobile() && (
           <a
@@ -41,7 +41,7 @@ const MissionList: React.FC<MissionInfoProps> = ({ mission }) => {
             href={createMissionScannerLink(mission.id)}
           >
             <SVGIntel fill="currentColor" />
-            <Trans i18nKey="missions.viewInScanner">View in Scanner</Trans>
+            {t('missions.viewInScanner')}
           </a>
         )}
       </div>
@@ -54,7 +54,7 @@ const MissionList: React.FC<MissionInfoProps> = ({ mission }) => {
             {mission.lengthMeters ? (
               <Distance distanceMeters={mission.lengthMeters} />
             ) : (
-              <Trans i18nKey="missingData">???</Trans>
+              t('missingData')
             )}
           </div>
         </div>
@@ -68,7 +68,7 @@ const MissionList: React.FC<MissionInfoProps> = ({ mission }) => {
                 durationMilliseconds={mission.averageDurationMilliseconds || 0}
               />
             ) : (
-              <Trans i18nKey="missingData">???</Trans>
+              t('missingData')
             )}
           </div>
         </div>

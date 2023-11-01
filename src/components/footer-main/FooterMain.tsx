@@ -33,14 +33,15 @@ const FooterMain: React.FC = () => (
       </a>
     </div>
     <div className="footer-disclaimers">
-      <Trans i18nKey="disclaimer">
-        This is a fan site and not officially affiliated with Niantic Inc.
-        <br />
-        Ingress is a registered trademark of Niantic Inc.
-        <br />
-        Bannergress
-      </Trans>
-      &nbsp;2021 - {new Date().getFullYear()}
+      <Trans
+        i18nKey="disclaimer"
+        values={{
+          year: new Date().getFullYear(),
+        }}
+        components={{
+          newline: <br />,
+        }}
+      />
     </div>
   </div>
 )

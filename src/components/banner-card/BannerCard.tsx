@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 import {
   Banner,
@@ -26,6 +26,8 @@ const BannerCard: FC<BannerCardProps> = ({
   linkStartPlace,
   applyBannerListStlye,
 }) => {
+  const { t } = useTranslation()
+
   const url = banner && banner.picture && new URL(banner.picture, baseUrl).href
 
   const bannerListStyleClassName =
@@ -46,32 +48,18 @@ const BannerCard: FC<BannerCardProps> = ({
     if (!banner) return null
 
     const offline =
-      banner.numberOfDisabledMissions > 0 ? (
-        <Trans
-          i18nKey="missions.offline"
-          count={banner.numberOfDisabledMissions}
-        >
-          {{ count: banner.numberOfDisabledMissions }} offline
-        </Trans>
-      ) : undefined
+      banner.numberOfDisabledMissions > 0
+        ? t('missions.offline', { count: banner.numberOfDisabledMissions })
+        : undefined
 
     const missing =
-      banner.numberOfSubmittedMissions > 0 ? (
-        <Trans
-          i18nKey="missions.missing"
-          count={banner.numberOfSubmittedMissions}
-        >
-          {{ count: banner.numberOfSubmittedMissions }} missing
-        </Trans>
-      ) : undefined
+      banner.numberOfSubmittedMissions > 0
+        ? t('missions.missing', { count: banner.numberOfSubmittedMissions })
+        : undefined
     return (
       <>
-        <Trans i18nKey="missions.number" count={banner?.numberOfMissions}>
-          {{ count: banner?.numberOfMissions }} Missions
-        </Trans>
-        {fullyOffline && (
-          <Trans i18nKey="missions.offlineAll"> (all offline) </Trans>
-        )}
+        {t('missions.number', { count: banner?.numberOfMissions })}
+        {fullyOffline && t('missions.offlineAll')}
         {!fullyOffline && (offline || missing) && (
           <>
             {' '}
@@ -108,9 +96,12 @@ const BannerCard: FC<BannerCardProps> = ({
         {fullyOffline && (
           <div className="offline-overlay">
             <div className="offline-overlay-line">
-              <Trans i18nKey="banners.offline">
-                <SVGWarningTriangle /> BANNER OFFLINE
-              </Trans>
+              <Trans
+                i18nKey="banners.offline"
+                components={{
+                  icon: <SVGWarningTriangle />,
+                }}
+              />
             </div>
           </div>
         )}
@@ -141,9 +132,7 @@ const BannerCard: FC<BannerCardProps> = ({
       </div>
       {detailsUrl && (
         <div className="banner-info-details">
-          <Link to={detailsUrl}>
-            <Trans i18nKey="buttons.details">Details</Trans>
-          </Link>
+          <Link to={detailsUrl}>{t('buttons.details')}</Link>
         </div>
       )}
     </div>

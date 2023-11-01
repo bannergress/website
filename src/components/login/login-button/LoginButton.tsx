@@ -39,11 +39,7 @@ const LoginButton: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = (
       >
         <Row>
           <Col span={24}>
-            <p>
-              <Trans i18nKey="login.help">
-                Sign in using one of these identity providers
-              </Trans>
-            </p>
+            <p>{t('login.help')}</p>
           </Col>
         </Row>
         <Row>
@@ -53,10 +49,12 @@ const LoginButton: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = (
               className="buttonLogin buttonLoginGoogle"
               onClick={() => keycloak.login({ idpHint: 'google' })}
             >
-              <Trans i18nKey="login.google">
-                <SVGGoogleLogo />
-                Login with Google
-              </Trans>
+              <Trans
+                i18nKey="login.google"
+                components={{
+                  icon: <SVGGoogleLogo />,
+                }}
+              />
             </button>
           </Col>
           <Col span={12}>
@@ -65,10 +63,12 @@ const LoginButton: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = (
               className="buttonLogin buttonLoginFacebook"
               onClick={() => keycloak.login({ idpHint: 'facebook' })}
             >
-              <Trans i18nKey="login.facebook">
-                <SVGFacebookLogo />
-                Login with Facebook
-              </Trans>
+              <Trans
+                i18nKey="login.facebook"
+                components={{
+                  icon: <SVGFacebookLogo />,
+                }}
+              />
             </button>
           </Col>
         </Row>
