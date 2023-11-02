@@ -1,4 +1,3 @@
-import { HTMLAttributes } from 'enzyme'
 import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
@@ -38,7 +37,7 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
 
   const createSubmitButton = () => {
     if (submitButton && onSubmitButtonClicked) {
-      const attributes: HTMLAttributes = {
+      const attributes = {
         className: 'positive-action-button mobile-switch-submit-button',
       }
 
@@ -60,7 +59,7 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
     view: BannerInfoMobileView,
     label: string
   ) => {
-    const attributes: HTMLAttributes = {
+    const attributes = {
       className: 'mobile-switch-switch-button',
     }
 
