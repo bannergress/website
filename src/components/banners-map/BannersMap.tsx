@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import {
   divIcon,
@@ -151,7 +151,9 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     map.addEventListener('dragend', this.onMapDraggedOrZoomed)
     map.addEventListener('zoomend', this.onMapDraggedOrZoomed)
     map.addEventListener('click', this.onMapClicked)
-    this.onMapDraggedOrZoomed()
+    useEffect(() => {
+      this.onMapDraggedOrZoomed()
+    })
     return null
   }
 
