@@ -34,6 +34,7 @@ export interface SquareMarkerProps {
   coords: LatLng
   color: 'green' | 'blue'
   pane?: string
+  children: React.ReactNode
 }
 
 export default SquareMarker

@@ -79,9 +79,11 @@ class LoadingOverlay extends Component<
         >
           <div data-testid="overlay" className="overlay">
             <div className="content">
-              {spinner &&
-                (typeof spinner === 'boolean' ? <Spinner /> : spinner)}
-              {text}
+              <>
+                {spinner &&
+                  (typeof spinner === 'boolean' ? <Spinner /> : spinner)}
+                {text}
+              </>
             </div>
           </div>
         </CSSTransition>
@@ -99,6 +101,7 @@ export interface LoadingOverlayProps {
   spinner: boolean | React.Component
   text: React.Component | string
   styles?: CSSStyleDeclaration
+  children?: React.ReactNode
 }
 
 interface LoadingOverlayState {}

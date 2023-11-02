@@ -7,7 +7,7 @@ import {
   Map as LeafletMap,
   MarkerCluster,
 } from 'leaflet'
-import { MapContainer, Pane, TileLayer } from 'react-leaflet'
+import { MapContainer, Pane, TileLayer, useMap } from 'react-leaflet'
 import _ from 'underscore'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 
@@ -145,12 +145,14 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     }
   }
 
-  onMapCreated = (map: LeafletMap) => {
+  RefSetup: React.FC = () => {
+    const map = useMap()
     this.map = map
     map.addEventListener('dragend', this.onMapDraggedOrZoomed)
     map.addEventListener('zoomend', this.onMapDraggedOrZoomed)
     map.addEventListener('click', this.onMapClicked)
     this.onMapDraggedOrZoomed()
+    return null
   }
 
   onSelectBanner = (banner: Banner) => {
@@ -243,13 +245,8 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
 
     return (
       <Fragment>
-        <MapContainer
-          {...startParams}
-          whenCreated={this.onMapCreated}
-          minZoom={3}
-          worldCopyJump
-          tap={false}
-        >
+        <MapContainer {...startParams} minZoom={3} worldCopyJump tap={false}>
+          <this.RefSetup />
           <MapZoomControl />
           <LocateControl />
           <MapLoadingControl />

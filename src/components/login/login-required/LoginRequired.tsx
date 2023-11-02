@@ -6,7 +6,7 @@ import LoginInNavbar from '../login-in-navbar'
 
 import './login-required.less'
 
-const LoginRequired: React.FC = (props) => {
+const LoginRequired: React.FC<LoginRequiredProps> = (props) => {
   const { keycloak, initialized: keycloakInitialized } = useKeycloak()
   const { t } = useTranslation()
   const { children } = props
@@ -35,6 +35,10 @@ const LoginRequired: React.FC = (props) => {
       )}
     </Fragment>
   )
+}
+
+export interface LoginRequiredProps {
+  children: React.ReactNode
 }
 
 export default LoginRequired
