@@ -20,6 +20,7 @@ const FaqQuestion: React.FC<FaqQuestionProps> = ({ title, children }) => {
 
 export interface FaqQuestionProps {
   title: string
+  children: React.ReactNode
 }
 
 export default FaqQuestion

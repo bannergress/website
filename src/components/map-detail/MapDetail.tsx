@@ -1,6 +1,6 @@
 import { LatLngBounds, Map } from 'leaflet'
 import React, { Fragment } from 'react'
-import { MapContainer, Pane } from 'react-leaflet'
+import { MapContainer, Pane, useMap } from 'react-leaflet'
 
 import { Banner } from '../../features/banner'
 import { getAttributionLayer } from './getAttributionLayer'
@@ -50,10 +50,12 @@ export class MapDetail extends React.Component<MapDetailProps> {
     }
   }
 
-  onMapCreated = (map: Map) => {
+  RefSetup: React.FC = () => {
+    const map = useMap()
     this.mapRef = map
     // eslint-disable-next-line no-param-reassign
     map.zoomControl.options.zoomInText = i18n!.t('map.zoomIn')
+    return null
   }
 
   /**
@@ -88,11 +90,8 @@ export class MapDetail extends React.Component<MapDetailProps> {
 
     return (
       <Fragment>
-        <MapContainer
-          bounds={bounds}
-          whenCreated={this.onMapCreated}
-          tap={false}
-        >
+        <MapContainer bounds={bounds} tap={false}>
+          <this.RefSetup />
           <MapZoomControl />
           <LocateControl />
           <MapLoadingControl />

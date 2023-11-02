@@ -7,10 +7,10 @@ interface Options {
 export const useInfiniteScroll = ({ callback }: Options) => {
   const [isFetching, setIsFetching] = useState(false)
   const observer = useRef<IntersectionObserver>()
-  const ref = useRef(null)
+  const ref = useRef<Element | null>(null)
 
   const setRef = useCallback(
-    (node) => {
+    (node: Element | null) => {
       if (ref.current) {
         observer.current?.disconnect()
       }

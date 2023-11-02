@@ -155,6 +155,7 @@ const MapCluster: FC<MapClusterProps> = ({ pane, children }) => {
 
 export interface MapClusterProps {
   pane?: string
+  children: React.ReactNode
 }
 
 export default MapCluster
