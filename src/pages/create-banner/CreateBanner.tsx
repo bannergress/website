@@ -566,6 +566,8 @@ class CreateBanner extends React.Component<
       return (
         <InputNumber
           value={mission.index}
+          // eslint-disable-next-line i18next/no-literal-string
+          inputMode="numeric"
           max={9999}
           min={1}
           onChange={(val) => this.changeMissionNumber(mission, pos, val!)}
