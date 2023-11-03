@@ -354,9 +354,6 @@
   "disclaimer": "This is a fan site and not officially affiliated with Niantic Inc.<newline />Ingress is a registered trademark of Niantic Inc.<newline />Bannergress 2021 - {{year}}",
   "login": {
     "title": "Login",
-    "help": "Sign in using one of these identity providers",
-    "google": "<icon /> Login with Google",
-    "facebook": "<icon /> Login with Facebook",
     "button": "Sign In",
     "required": "You must sign in first to access this functionality.",
     "checking": "Checking Login..."
