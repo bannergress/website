@@ -352,9 +352,6 @@
   "disclaimer": "Dies ist eine Fansite, die in keiner Beziehung zu Niantic Inc steht.<newline />Ingress ist eine eingetragene Marke von Niantic Inc.<newline />Bannergress 2021 - {{year}}",
   "login": {
     "title": "Anmelden",
-    "help": "Melde dich mit diesen Anbietern an",
-    "google": "<icon /> Anmelden mit Google",
-    "facebook": "<icon /> Anmelden mit Facebook",
     "button": "Anmelden",
     "required": "Du musst angemeldet sein, um diese Funktion nutzen zu können.",
     "checking": "Prüfe Anmeldung..."
