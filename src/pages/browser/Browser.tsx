@@ -179,7 +179,8 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
           text={i18n!.t('loading')}
           fadeSpeed={500}
           active
-         spinner={true}/>
+         spinner={true}
+        />
       )
     }
 
