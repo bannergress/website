@@ -5,6 +5,8 @@ const initialState: SettingsState = {
   defaultOrderBy: 'created',
   defaultOrderDirection: 'DESC',
   defaultOnline: true,
+  defaultProximityLatitude: undefined,
+  defaultProximityLongitude: undefined,
 }
 
 export const SettingsReducer = (

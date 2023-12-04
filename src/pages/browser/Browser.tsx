@@ -50,6 +50,8 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
         orderBy: props.defaultOrderBy,
         orderDirection: props.defaultOrderDirection,
         online: props.defaultOnline,
+        proximityLatitude: props.defaultProximityLatitude,
+        proximityLongitude: props.defaultProximityLongitude,
       },
       page: 0,
       status: 'initial',
@@ -106,6 +108,8 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
       defaultOnline: filter.online,
       defaultOrderBy: filter.orderBy,
       defaultOrderDirection: filter.orderDirection,
+      defaultProximityLatitude: filter.proximityLatitude,
+      defaultProximityLongitude: filter.proximityLongitude,
     })
     fetchBanners(placeId, filter, 0)
   }
@@ -295,6 +299,8 @@ export type BrowserProps = {
   defaultOrderBy: BannerOrder
   defaultOrderDirection: BannerOrderDirection
   defaultOnline: boolean | undefined
+  defaultProximityLatitude: number | undefined
+  defaultProximityLongitude: number | undefined
   banners: Array<Banner>
   countries: Array<Place>
   hasMore: Boolean

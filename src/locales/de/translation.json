@@ -333,6 +333,7 @@
     "title": "A-Z <icon />",
     "lengthMeters": "Länge <icon />",
     "numberOfMissions": "Missionszahl <icon />",
+    "proximityStartPoint": "Nähe",
     "text": {
       "excludeOffline": "Offline ausgeblendet",
       "includeOffline": "Offline zeigen"

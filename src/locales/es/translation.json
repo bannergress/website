@@ -309,6 +309,7 @@
     "title": "A-Z <icon />",
     "lengthMeters": "Distancia <icon />",
     "numberOfMissions": "Total de missions <icon />",
+    "proximityStartPoint": "Proximity",
     "text": {
       "excludeOffline": "Excluding Offline",
       "includeOffline": "Showing Offline"
