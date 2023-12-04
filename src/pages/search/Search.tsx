@@ -196,6 +196,7 @@ class Search extends React.Component<SearchProps, SearchState> {
                   filter={filter}
                   onFilterChanged={this.onFilterChanged}
                   includeRelevance
+                  includeOfficial
                 />
               </Row>
 
