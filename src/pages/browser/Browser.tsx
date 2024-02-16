@@ -180,10 +180,10 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     if (status === 'initial') {
       return (
         <LoadingOverlay
-          spinner
           text={i18n!.t('loading')}
           fadeSpeed={500}
           active
+          spinner={true}
         />
       )
     }
@@ -275,6 +275,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
                   <BannerOrderChooser
                     filter={filter}
                     onFilterChanged={this.onFilterChanged}
+                    includeOfficial
                   />
                   <BannerList
                     banners={banners}

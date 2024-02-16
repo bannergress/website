@@ -145,6 +145,7 @@ class UserBannerList extends React.Component<
                     filter={filter}
                     onFilterChanged={this.onFilterChanged}
                     includeAddedList
+                    includeOfficial
                   />
                 </Row>
                 {bannersStatus === 'success' && (
