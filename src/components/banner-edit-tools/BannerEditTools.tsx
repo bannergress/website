@@ -1,11 +1,12 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { generatePath, useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { Button } from 'antd'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import { Banner, deleteBanner } from '../../features/banner'
 import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
+import { useCreatorPluginAvailable } from '../../hooks/CreatorPluginAvailable'
 
 import './banner-edit-tools.less'
 
@@ -14,6 +15,7 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
   const { authenticated } = useUserLoggedIn('manage-banners')
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const creatorPluginAvailable = useCreatorPluginAvailable()
   const owner = banner?.owner === true
 
   const onEditBanner = () => {
@@ -34,31 +36,32 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
     }
   }
 
+  const buttons = []
+  if (creatorPluginAvailable) {
+    buttons.push(
+      <Button className="positive-action-button" onClick={onRefreshBanner}>
+        {t('buttons.refresh')}
+      </Button>
+    )
+  }
+  if (owner || authenticated) {
+    buttons.push(
+      <Button className="positive-action-button" onClick={onEditBanner}>
+        {t('buttons.edit')}
+      </Button>
+    )
+  }
   if (authenticated) {
-    return (
-      <div className="banner-edit-tools">
-        <Button className="positive-action-button" onClick={onRefreshBanner}>
-          {t('buttons.refresh')}
-        </Button>
-        <Button className="positive-action-button" onClick={onEditBanner}>
-          {t('buttons.edit')}
-        </Button>
-        <Button className="negative-action-button" onClick={onDeleteBanner}>
-          {t('buttons.delete')}
-        </Button>
-      </div>
+    buttons.push(
+      <Button className="negative-action-button" onClick={onDeleteBanner}>
+        {t('buttons.delete')}
+      </Button>
     )
   }
-  if (owner) {
-    return (
-      <div className="banner-edit-tools">
-        <Button className="positive-action-button" onClick={onEditBanner}>
-          {t('buttons.edit')}
-        </Button>
-      </div>
-    )
-  }
-  return null
+
+  return buttons.length ? (
+    <div className="banner-edit-tools">{buttons}</div>
+  ) : null
 }
 
 export interface BannerEditToolsProps {
