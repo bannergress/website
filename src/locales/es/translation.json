@@ -6,6 +6,7 @@
       "title": "Vincular cuenta de Ingress",
       "change": "Cambiar cuenta asociada",
       "unlink": "Desvincular cuenta",
+      "unlinkWarning": "Due to the shutdown of the Ingress Community Forum, you won't be able to link your account after April 1st, 2004. Continue anyway?",
       "link": "Vincular cuenta de Ingress",
       "none": "No tienes cuenta de Ingress asociada a la de Bannergress",
       "linked": "Cuenta asociada: <agent />",

@@ -109,17 +109,19 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
   }, [dispatchWithLoading, refreshToken, setIssues])
 
   const onUnlinkUser = useCallback(() => {
-    dispatchWithLoading(unlinkUser(), undefined, (err) =>
-      setIssues([
-        {
-          key: 'unlink',
-          message: err.message,
-          type: 'error',
-          field: 'verify',
-        },
-      ])
-    )
-  }, [dispatchWithLoading, setIssues])
+    if (confirm(t('account.linking.unlinkWarning'))) {
+      dispatchWithLoading(unlinkUser(), undefined, (err) =>
+        setIssues([
+          {
+            key: 'unlink',
+            message: err.message,
+            type: 'error',
+            field: 'verify',
+          },
+        ])
+      )
+    }
+  }, [dispatchWithLoading, setIssues, t])
 
   const onAbort = useCallback(() => {
     if (currentUser.verificationAgent) {

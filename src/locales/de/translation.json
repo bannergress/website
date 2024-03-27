@@ -6,6 +6,7 @@
       "title": "Ingress Account-Verknüpfung",
       "change": "Verknüpften Account ändern",
       "unlink": "Verknüpfung aufheben",
+      "unlinkWarning": "Da das Ingress Community Forum eingestellt wird, wirst du deinen Account ab dem 1. April 2024 nicht mehr mit deinem Bannergress-Profil verknüpfen können. Trotzdem fortfahren?",
       "link": "Ingress-Account verknüpfen",
       "none": "Kein Account mit deinem Bannergress-Profil verknüpft",
       "linked": "Verknüpfter Account: <agent />",
