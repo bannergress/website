@@ -266,7 +266,7 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
               {t('buttons.back')}
             </Button>
             <Button className="positive-action-button" onClick={onVerify}>
-              {t('buttons.verify')}
+              {t('account.linking.step4.action')}
             </Button>
           </div>
         </div>

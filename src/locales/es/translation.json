@@ -284,6 +284,7 @@
     "missing_other": "faltan {{count}}",
     "markedOffline": "Misión marcada como no disponible",
     "viewOnIntel": "Ver misión en el Intel de Ingress",
+    "viewInScanner": "View in Scanner",
     "inBanner": "Misiones en el banner",
     "placeholder": "Misión de relleno {{index}}",
     "notFound": "No se han encontrado misiones",

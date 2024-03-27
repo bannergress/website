@@ -282,7 +282,7 @@ const getInGameTime = (banner: Banner, t: TFunction) => {
       <div className="info-content">
         {totalTimeInMS === 0 ? (
           <Tooltip placement="right" title={i18n.t('banners.time.warning')}>
-            <span>{t('banners.missingData')}</span>
+            <span>{t('missingData')}</span>
           </Tooltip>
         ) : (
           <Duration durationMilliseconds={totalTimeInMS} />
