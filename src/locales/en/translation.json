@@ -6,7 +6,7 @@
       "title": "Ingress account linking",
       "change": "Change Linked Account",
       "unlink": "Unlink Account",
-      "unlinkWarning": "Due to the shutdown of the Ingress Community Forum, you won't be able to link your account after April 1st, 2004. Continue anyway?",
+      "unlinkWarning": "Due to the shutdown of the Ingress Community Forum, you won't be able to link your account after April 1st, 2024. Continue anyway?",
       "link": "Link Ingress Account",
       "none": "No account linked to your Bannergress profile",
       "linked": "Account linked: <agent />",
