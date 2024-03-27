@@ -20,6 +20,7 @@ export const AllQuestions: React.FC = () => {
         <Trans
           i18nKey="faqs.question1.answer"
           components={{
+            github: getLink('https://github.com/bannergress'),
             p: <p />,
             ul: <ul />,
             li: <li />,

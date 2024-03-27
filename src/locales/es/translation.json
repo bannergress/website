@@ -220,7 +220,7 @@
     "title": "Preguntas frecuentes",
     "question1": {
       "title": "What is bannergress.com?",
-      "answer": "<p>After the horrific loss of our favorite Ingress fan page, some agents came together to start this project.</p><ul><li>get everyone involved</li><li>be open source (soon™)</li><li>be the long-term solution for finding banners</li><li>never stop developing</li></ul>"
+      "answer": "<p>After the horrific loss of our favorite Ingress fan page, some agents came together to start this project. The aim of the project is to:</p><ul><li>get everyone involved</li><li>be <github>open source</github></li><li>be the long-term solution for finding banners</li><li>never stop developing</li></ul>"
     },
     "question2": {
       "title": "How do I get Ingress missions to bannergress.com? (Part 1: setup)",

@@ -244,7 +244,7 @@
     "title": "Häufig gefragt",
     "question1": {
       "title": "Was ist bannergress.com?",
-      "answer": "<p>Nach dem Verlust unserer beliebten Ingress-Fansite haben sich einige Agents zusammengetan, um dieses Projekt auf die Beine zu stellen.</p><ul><li>alle einbinden</li><li>Open Source werden (bald)</li><li>dauerhafte Bibliothek für Banner sein</li><li>nie aufhören, weiterzuentwickeln</li></ul>"
+      "answer": "<p>Nach dem Verlust unserer beliebten Ingress-Fansite haben sich einige Agents zusammengetan, um dieses Projekt auf die Beine zu stellen. Das Ziel dieses Projektes ist es: </p><ul><li>alle einzubinden</li><li><github>Open Source</github> zu sein</li><li>die dauerhafte Bibliothek für Banner sein</li><li>nie aufzuhören, weiterzuentwickeln</li></ul>"
     },
     "question2": {
       "title": "Wie bekomme ich Ingress-Missionen nach bannergress.com? (Teil 1: Installation)",
