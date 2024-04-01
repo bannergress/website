@@ -72,10 +72,10 @@
       "step3": {
         "title": "<0>3</0> Information",
         "bannerTitle": "Banner Title",
-        "description": "Description",
+        "description": "Description <icon />",
         "warning": {
-          "title": "Warning Text",
-          "subtitle": "Displays in a more noticeable color"
+          "title": "Warning Text <icon />",
+          "subtitle": "Displays in a more noticeable color."
         },
         "plannedOfflineDate": {
           "title": "Planned Offline Date",
@@ -91,6 +91,7 @@
         },
         "options": "Options",
         "help": {
+          "markdown": "<p>You can use basic Markdown in this field. The following formatting options are supported:</p><ul><li><b><code>**bold**</code></b></li><li><i><code>*italic*</code></i></li><li>paragraphs</li><li><a href='#'>[hyperlinks](https://example.org)</a></li><li>lists: <pre><code>- list entry\n- list entry</code></pre><pre><code>1. ordered list\n2. ordered list</code></pre></li></ul>",
           "banner": "<b>Banner:</b> Collection of missions that must be completed in sequence to complete the picture in your profile.",
           "collection": "<b>Collection:</b> Collection of missions that can be completed in any order as they don't form a picture."
         },

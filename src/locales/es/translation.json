@@ -72,9 +72,14 @@
       "step3": {
         "title": "<0>3</0> Información",
         "bannerTitle": "Título",
-        "description": "Descripción",
+        "description": "Descripción <icon />",
+        "warning": {
+          "title": "Texto de advertencia <icon />",
+          "subtitle": "Se muestra en un color más fácil de notar."
+        },
         "options": "Opciones",
         "help": {
+          "markdown": "<p>Puedes usar Markdown básico en este campo. Las siguientes opciones de formato están disponibles:</p><ul><li><b><code>**negrita**</code></b></li><li><i><code>*itálica*</code></i></li><li><a href='#'>[enlaces](https://example.org)</a></li><li>párrafos</li><li>listas: <pre><code>- entrada de lista\n- entrada de lista</code></pre><pre><code>1. lista ordenada\n2. lista ordenada</code></pre></li></ul>",
           "banner": "<b>Banner:</b> Colección de misiones que se han de completar seguidas para formar una imagen completa en tu perfil.",
           "collection": "<b>Colección:</b> Colección de misiones que se pueden completar en cualquier orden."
         },

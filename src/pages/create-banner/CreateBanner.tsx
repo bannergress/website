@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
 import { Beforeunload } from 'react-beforeunload'
-import { Input, InputNumber, Button } from 'antd'
+import { Input, InputNumber, Button, Tooltip } from 'antd'
 import { Helmet } from 'react-helmet'
 import _ from 'underscore'
 import Scrollbars from 'react-custom-scrollbars-2'
@@ -47,6 +47,7 @@ import { IssuesList } from '../../components/Issues-list'
 import LoginRequired from '../../components/login/login-required'
 import SVGRightArrow from '../../img/icons/right_arrow.svg?react'
 import SVGCross from '../../img/icons/cross.svg?react'
+import SVGHelp from '../../img/icons/help-round.svg?react'
 import { getBannerIssues, MAX_MISSIONS } from './getBannerIssues'
 
 import './create-banner.less'
@@ -775,6 +776,20 @@ class CreateBanner extends React.Component<
       bannerTitle,
       detectedLength
     )
+    const markdownHelp = (
+      <Trans
+        i18nKey="banners.creation.step3.help.markdown"
+        components={{
+          b: <b />,
+          code: <code />,
+          pre: <pre />,
+          p: <p />,
+          ul: <ul />,
+          li: <li />,
+          a: <a />,
+        }}
+      />
+    )
 
     return (
       <div className="create-banner">
@@ -953,11 +968,18 @@ class CreateBanner extends React.Component<
                   this.onInputChange(e.target.value, 'bannerTitle')
                 }
               />
-              <h3>
-                <Trans i18nKey="banners.creation.step3.description">
-                  Description
-                </Trans>
-              </h3>
+              <Tooltip placement="right" title={markdownHelp}>
+                <h3>
+                  <Trans
+                    i18nKey="banners.creation.step3.description"
+                    components={{
+                      icon: <SVGHelp />,
+                    }}
+                  >
+                    Description
+                  </Trans>
+                </h3>
+              </Tooltip>
               <Input.TextArea
                 placeholder={i18n?.t('placeholders.startTyping')}
                 value={bannerDescription}
@@ -971,14 +993,21 @@ class CreateBanner extends React.Component<
               />
               {isEdit && (
                 <>
-                  <h3>
-                    <Trans i18nKey="banners.creation.step3.warning.title">
-                      Warning Text
-                    </Trans>
-                  </h3>
+                  <Tooltip placement="right" title={markdownHelp}>
+                    <h3>
+                      <Trans
+                        i18nKey="banners.creation.step3.warning.title"
+                        components={{
+                          icon: <SVGHelp />,
+                        }}
+                      >
+                        Warning Text
+                      </Trans>
+                    </h3>
+                  </Tooltip>
                   <span className="subtitle">
                     <Trans i18nKey="banners.creation.step3.warning.subtitle">
-                      Displays in a more noticeable color
+                      Displays in a more noticeable color. Markdown supported.
                     </Trans>
                   </span>
                   <Input.TextArea

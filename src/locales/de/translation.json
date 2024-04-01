@@ -72,10 +72,10 @@
       "step3": {
         "title": "<0>3</0> Informationen",
         "bannerTitle": "Banner-Titel",
-        "description": "Beschreibung",
+        "description": "Beschreibung <icon />",
         "warning": {
-          "title": "Warnungstext",
-          "subtitle": "Wird in einer auffallenderen Farbe angezeigt"
+          "title": "Warnungstext <icon />",
+          "subtitle": "Wird in einer auffallenderen Farbe angezeigt. Markdown wird unterstützt."
         },
         "plannedOfflineDate": {
           "title": "Geplantes Offline-Datum",
@@ -91,6 +91,7 @@
         },
         "options": "Optionen",
         "help": {
+          "markdown": "<p>Dieses Feld unterstützt einfaches Markdown. Die folgenden Formattierungsoptionen sind möglich:</p><ul><li><b><code>**fett**</code></b></li><li><i><code>*kursiv*</code></i></li><li>Absätze</li><li><a href='#'>[Links](https://example.org)</a></li><li>Listen: <pre><code>- Listenelement\n- Listenelement</code></pre><pre><code>1. numerierte Liste\n2. numerierte Liste</code></pre></li></ul>",
           "banner": "<b>Banner:</b> Menge von Missionen, die in der richtigen Reihenfolge abgeschlossen werden muss, um ein Gesamtbild in deinem Scanner zu erzeugen.",
           "collection": "<b>Sammlung:</b> Menge von Missionen, die in einer beliebigen Reihenfolge abgeschlossen werden kann, weil sie kein Gesamtbild darstellen."
         },
