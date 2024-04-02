@@ -39,21 +39,33 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
   const buttons = []
   if (creatorPluginAvailable) {
     buttons.push(
-      <Button className="positive-action-button" onClick={onRefreshBanner}>
+      <Button
+        key="refresh"
+        className="positive-action-button"
+        onClick={onRefreshBanner}
+      >
         {t('buttons.refresh')}
       </Button>
     )
   }
   if (owner || authenticated) {
     buttons.push(
-      <Button className="positive-action-button" onClick={onEditBanner}>
+      <Button
+        key="edit"
+        className="positive-action-button"
+        onClick={onEditBanner}
+      >
         {t('buttons.edit')}
       </Button>
     )
   }
   if (authenticated) {
     buttons.push(
-      <Button className="negative-action-button" onClick={onDeleteBanner}>
+      <Button
+        key="delete"
+        className="negative-action-button"
+        onClick={onDeleteBanner}
+      >
         {t('buttons.delete')}
       </Button>
     )
