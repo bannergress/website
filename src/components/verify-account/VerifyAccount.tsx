@@ -154,6 +154,7 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
           <Button
             className="button-default"
             onClick={() => setIsClaiming(true)}
+            hidden
           >
             {t('account.linking.change')}
           </Button>
@@ -168,6 +169,7 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
         <Button
           className="positive-action-button"
           onClick={() => setIsClaiming(true)}
+          hidden
         >
           {t('account.linking.link')}
         </Button>
