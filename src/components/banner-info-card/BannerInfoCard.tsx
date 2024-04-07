@@ -1,6 +1,7 @@
 import React, { FC, Fragment } from 'react'
 import _ from 'underscore'
 import { LatLng } from 'leaflet'
+import Markdown from 'react-markdown'
 import { Trans, useTranslation } from 'react-i18next'
 import { TFunction } from 'i18next'
 import { Tooltip } from 'antd'
@@ -399,11 +400,34 @@ const getStartPointButton = (banner: Banner, t: TFunction) => {
 
 const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
   const { t } = useTranslation()
+  const allowedElements = [
+    'p',
+    'br',
+    'b',
+    'strong',
+    'em',
+    'ul',
+    'ol',
+    'li',
+    'a',
+  ]
   return (
     <div className="banner-info-card">
       {getEvent(banner, t)}
-      {banner.warning && <p className="warning-text">{banner.warning}</p>}
-      {banner.description && <p>{banner.description}</p>}
+      {banner.warning && (
+        <Markdown
+          className={'warning-text'}
+          allowedElements={allowedElements}
+          unwrapDisallowed={true}
+        >
+          {banner.warning}
+        </Markdown>
+      )}
+      {banner.description && (
+        <Markdown allowedElements={allowedElements} unwrapDisallowed={true}>
+          {banner.description}
+        </Markdown>
+      )}
       <IfUserLoggedIn>{getCreatedBy(banner, t)}</IfUserLoggedIn>
       <IfUserLoggedOut>
         <p>
