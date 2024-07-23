@@ -1,6 +1,8 @@
 @import url(../../App.less);
 
-// Start Temporary styles for list types. Not final yet. 
+@mobile-l-detection: ~" screen and (min-width: 426px) ";
+
+// Start Temporary styles for list types. Not final yet.
 
 .list-style-background() {
   content: " ";
@@ -137,6 +139,10 @@
   position: relative;
   display: flex;
 
+  @media only @mobile-l-detection {
+    height: 200px;
+  }
+
   .offline-overlay{
     font-size: 24px;
     line-height: 18px;
@@ -152,8 +158,8 @@
     flex-direction: column;
     justify-content: center;
 
-    pointer-events: none;    
-    
+    pointer-events: none;
+
    .offline-overlay-line {
       justify-content: center;
       align-items: center;
@@ -255,7 +261,7 @@
 }
 
 
-// Support for browsers that don't support aspect-ratio yet. 
+// Support for browsers that don't support aspect-ratio yet.
 // Can be removed once this feature is implemented in all major browsers
 
 @supports (aspect-ratio: 1/1) {
