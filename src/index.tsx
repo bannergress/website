@@ -6,7 +6,7 @@ import App from './App'
 import { store, persistor } from './store'
 
 import './index.less'
-import './mobile.less'
+import './assets/style/mobile.less'
 
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/400-italic.css'

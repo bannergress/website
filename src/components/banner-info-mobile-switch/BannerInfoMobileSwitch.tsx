@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 
-import SVGBackArrow from '../../img/icons/back-arrow.svg?react'
+import SVGBackArrow from '../../assets/img/icons/back-arrow.svg?react'
 
 import './banner-info-mobile-switch.less'
 
