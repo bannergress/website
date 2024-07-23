@@ -4,7 +4,7 @@ import { Mission } from '../../features/mission'
 import MissionImage from '../mission-image/MissionImage'
 import StepList from '../step-list'
 import MissionInfo from '../mission-info'
-import SVGChevron from '../../img/icons/chevron.svg?react'
+import SVGChevron from '../../assets/img/icons/chevron.svg?react'
 
 import './mission-card.less'
 

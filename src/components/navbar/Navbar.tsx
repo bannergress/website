@@ -7,8 +7,8 @@ import { withTranslation, WithTranslationProps } from 'react-i18next'
 import LoginInNavbar from '../login/login-in-navbar'
 import SearchInput from '../search-input'
 import MenuMain from '../menu-main'
-import Logo from '../../img/logo/logo64.png'
-import SVGSearch from '../../img/icons/search.svg?react'
+import Logo from '../../assets/img/logo/logo64.png'
+import SVGSearch from '../../assets/img/icons/search.svg?react'
 
 import './Navbar.less'
 

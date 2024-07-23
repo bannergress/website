@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { Banner } from '../../features/banner'
 import BannerCard from '../banner-card'
 import BannerList from '../banner-list'
-import SVGTriangle from '../../img/icons/triangle.svg?react'
+import SVGTriangle from '../../assets/img/icons/triangle.svg?react'
 
 import './banners-accordion.less'
 import BannerOrderChooser from '../banner-order-chooser'

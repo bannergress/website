@@ -45,9 +45,9 @@ import {
 import AdvancedOptions from '../../components/advanced-options'
 import { IssuesList } from '../../components/Issues-list'
 import LoginRequired from '../../components/login/login-required'
-import SVGRightArrow from '../../img/icons/right_arrow.svg?react'
-import SVGCross from '../../img/icons/cross.svg?react'
-import SVGHelp from '../../img/icons/help-round.svg?react'
+import SVGRightArrow from '../../assets/img/icons/right_arrow.svg?react'
+import SVGCross from '../../assets/img/icons/cross.svg?react'
+import SVGHelp from '../../assets/img/icons/help-round.svg?react'
 import { getBannerIssues, MAX_MISSIONS } from './getBannerIssues'
 
 import './create-banner.less'

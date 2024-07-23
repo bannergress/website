@@ -5,7 +5,7 @@ import { Place } from '../../features/place'
 import PlaceEntry from '../place-list/PlaceEntry'
 
 import './place-accordion-entry.less'
-import SVGArea from '../../img/icons/area.svg?react'
+import SVGArea from '../../assets/img/icons/area.svg?react'
 
 export const PlaceAccordionEntry: FC<PlaceAccordionEntryProps> = ({
   place,
