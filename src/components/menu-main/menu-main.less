@@ -6,31 +6,31 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #eaeaea;
+    color: var(--color-white-light);
     padding: 5px;
     min-width: 70px;
-    transition: background-color .3s;
-  
-    & > .icon {
-      fill: #eaeaea;
-    }
-  }
+    transition: background-color 0.3s;
 
-  & > a.active {
-    color: #0ca589;
-  
+    &.active {
+      color: var(--color-active-green);
+
+      & > .icon {
+        fill: var(--color-active-green);
+      }
+    }
+
     & > .icon {
-      fill: #0ca589;
+      fill: var(--color-white-light);
     }
   }
 
   @media (hover: hover) and (pointer: fine) {
     & a:hover {
-      background: rgba(29,165,122,.3);
-      color: white;
-    
+      background: rgba(29, 165, 122, 0.3);
+      color: var(--color-white);
+
       & > .icon {
-        fill: white;
+        fill: var(--color-white);
       }
     }
   }
@@ -39,9 +39,10 @@
     width: 24px;
     height: 24px;
   }
-
 }
 
-.bottom-menu .menu-main > a {
+.bottom-menu {
+  .menu-main > a {
     flex-grow: 1;
+  }
 }

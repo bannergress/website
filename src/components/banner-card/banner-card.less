@@ -1,6 +1,6 @@
 @import url(../../App.less);
 
-// Start Temporary styles for list types. Not final yet. 
+// Start Temporary styles for list types. Not final yet.
 
 .list-style-background() {
   content: " ";
@@ -17,20 +17,20 @@
 
 .banner-card.list-style-todo:after {
   .list-style-background();
-  background: rgba(@color-todo, 0.05);
-  border: 1px solid @color-todo;
+  background: rgba(var(--color-todo), 0.05);
+  border: 1px solid var(--color-todo);
 }
 
 .banner-card.list-style-done:after {
   .list-style-background();
-  background: rgba(@color-done, 0.05);
-  border: 1px solid @color-done;
+  background: rgba(var(--color-done), 0.05);
+  border: 1px solid var(--color-done);
 }
 
 .banner-card.list-style-blacklist:after {
   .list-style-background();
-  background: rgba(@color-blacklist, 0.05);
-  border: 1px solid @color-blacklist;
+  background: rgba(var(--color-blacklist), 0.05);
+  border: 1px solid var(--color-blacklist);
 }
 
 // End temporary Styles ^^
@@ -42,21 +42,21 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: grey;
+  background-color: var(--color-gray);
   margin-right: 8px;
   margin-top: 8px;
 }
 
 .banner-card {
-  background: #2e2e2e;
+  background: var(--color-dark-gray);
   border-radius: 5px;
-  border: #2e2e2e 2px solid;
+  border: var(--color-dark-gray) 2px solid;
   padding: 18px;
-  color: white;
+  color: var(--color-white);
   position: relative;
 
   &.selected {
-    border-color: #16d4b2;
+    border-color: var(--color-positive-green-light);
   }
 
   .icon {
@@ -73,7 +73,7 @@
     height: 100%;
     width: 100%;
     display: flex;
-    background-color: #2e2e2e;
+    background-color: var(--color-dark-gray);
 
     .ant-modal-body {
       width: 100%;
@@ -114,11 +114,11 @@
     .close-button {
       position: absolute;
       bottom: 15px;
-      background-color: #2e2e2e;
+      background-color: var(--color-dark-gray);
       right: 15px;
       border: none;
       line-height: 1em;
-      color: white !important;
+      color: var(--color-white) !important;
 
       svg,
       span {
@@ -140,7 +140,7 @@
   .offline-overlay{
     font-size: 24px;
     line-height: 18px;
-    color: #DDDDDD;
+    color: var(--color-light-gray);
 
     position: absolute;
     left: -20px;
@@ -152,8 +152,8 @@
     flex-direction: column;
     justify-content: center;
 
-    pointer-events: none;    
-    
+    pointer-events: none;
+
    .offline-overlay-line {
       justify-content: center;
       align-items: center;
@@ -181,7 +181,7 @@
 .banner-info-item {
   font-size: 14px;
   line-height: 18px;
-  color: #DDDDDD;
+  color: var(--color-light-gray);
   margin-top: 4px;
   display: flex;
 
@@ -195,7 +195,7 @@
 }
 
 .banner-info-item.warning {
-  color: @color-blacklist;
+  color: var(--color-blacklist);
 }
 
 
@@ -245,17 +245,17 @@
   margin-top: 10px;
 
   a {
-    border: 1px solid white;
+    border: 1px solid var(--color-white);
     box-sizing: border-box;
     border-radius: 4px;
     padding: 5px 10px;
     font-size: 14px;
-    color: white;
+    color: var(--color-white);
   }
 }
 
 
-// Support for browsers that don't support aspect-ratio yet. 
+// Support for browsers that don't support aspect-ratio yet.
 // Can be removed once this feature is implemented in all major browsers
 
 @supports (aspect-ratio: 1/1) {

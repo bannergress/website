@@ -9,7 +9,6 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    width: 100%;
     padding-right: 4px;
     width: 370px;
 
@@ -24,12 +23,12 @@
     // Hide line below the buttons
     .ant-tabs-nav::before {
       border: none;
-    } 
+    }
 
-    // Hide overflow button. We don't need it. 
-    // The screen is never too small to show both buttons 
+    // Hide overflow button. We don't need it.
+    // The screen is never too small to show both buttons
     // If we leave it, the screen flackers when resizing the window
-    // because it is constantly shown and hidden. An alternative would be to 
+    // because it is constantly shown and hidden. An alternative would be to
     // make the width of the ant-tabs-nav-list smaller or givt it a right margin
     // or padding
     .ant-tabs-nav-more {
@@ -38,7 +37,7 @@
 
     .ant-tabs-nav-list {
       width: 100%;
-      background-color: #2e2e2e;
+      background-color: var(--color-dark-gray);
 
       .ant-tabs-ink-bar {
         display: none;
@@ -46,31 +45,29 @@
 
       .ant-tabs-tab {
         margin: 0 !important;
-        background-color: #2e2e2e;
-        border: none;
+        background-color: var(--color-dark-gray);
         border-radius: 4px;
         width: 100%;
-        box-shadow: 0 0 2px 0 rgba(157, 96, 212, 0.5) !important;
         border: solid 2px transparent !important;
         background-origin: border-box !important;
         background-clip: content-box, border-box !important;
-        box-shadow: 2px 1000px 1px #2e2e2e inset !important;
+        box-shadow: 2px 1000px 1px var(--color-dark-gray) inset !important;
         transition: linear-gradient ease 0.6s;
         font-size: 16px;
 
         .ant-tabs-tab-btn {
           text-align: center;
-          color: white;
+          color: var(--color-white);
           width: 100%;
         }
       }
 
       .ant-tabs-tab-active {
-        background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(180deg, #109393, #15D4B2) !important;
+        background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(180deg, var(--color-border-dark), var(--color-border-light)) !important;
 
         @media (hover: hover) and (pointer: fine) {
           &:hover {
-            background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(0deg, #109393, #15D4B2) !important;
+            background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(0deg, var(--color-border-dark), var(--color-border-light)) !important;
           }
         }
       }

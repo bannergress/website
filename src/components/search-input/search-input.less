@@ -1,5 +1,5 @@
 .search-input-button-highlighted() {
-    background: #077561;
+    background: var(--color-positive-green);
     fill: white;
 }
 
@@ -11,15 +11,15 @@
     .search-input {
         padding:5px;
         padding-left: 10px;
-        background: #404040;
+        background: var(--color-panel-bg);
         border-radius: 4px 0px 0px 4px;
         border: none;
         width: 100%;
 
         &:focus {
-            background: #6A6A6A;
+            background: var(--color-gray);
             outline: none;
-            color: white;
+            color: var(--color-white);
         }
 
         &:focus + .search-input-button {
@@ -27,7 +27,7 @@
         }
 
         &::placeholder {
-            color: #AAAAAA;
+            color: var(--color-light-gray);
             font-size: 12px;
         }
     }
