@@ -1,17 +1,22 @@
+@mobile-detection: ~' screen and (max-width: 880px) ';
+
 .home {
-    align-items: center;
+  align-items: center;
 
-    .user-banner-list-preview {
-        margin-top: 2em;
+  .user-banner-list-preview {
+    margin-top: 2em;
 
-        .banner-list {
-            justify-content: center;
-          }
+    .banner-list {
+      justify-content: center;
     }
-
+  }
 }
 
 .announcement-and-recent-banners {
-    max-width: 1120px;
-    margin: 2em;
+  max-width: 1120px;
+  margin: 2em;
+
+  @media only @mobile-detection {
+    margin: 0.4rem;
+  }
 }

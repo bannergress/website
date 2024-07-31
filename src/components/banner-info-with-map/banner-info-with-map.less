@@ -1,3 +1,5 @@
+@mobile-detection: ~' screen and (max-width: 880px) ';
+
 .banner-info-with-map-container {
   height: 100%;
   display: flex;
@@ -5,6 +7,82 @@
   padding-left: 40px;
   padding-bottom: 40px;
   padding-right: 40px;
+
+  @media only @mobile-detection {
+    display: flex !important;
+    flex-direction: column !important;
+    height: inherit !important;
+    padding: 0 !important;
+  }
+
+  .banner-info-with-map {
+    @media only @mobile-detection {
+      margin: 0 !important;
+      padding: 0 !important;
+      justify-content: center !important;
+      height: 100% !important;
+      overflow-y: auto !important;
+    }
+
+    .banner-info {
+      @media only @mobile-detection {
+        min-height: 0 !important;
+        padding: 0.6em !important;
+        width: 100% !important;
+        max-width: 864px !important;
+        min-width: 320px !important;
+        height: auto !important;
+        overflow-y: unset !important;
+      }
+    }
+
+    .banner-info-left-pane-missions {
+      .banner-card {
+        @media only @mobile-detection {
+          display: none !important;
+        }
+      }
+    }
+
+    .mission-card {
+      @media only @mobile-detection {
+        max-width: none !important;
+      }
+    }
+
+    .banner-info-additional {
+      @media only @mobile-detection {
+        height: 100% !important;
+      }
+    }
+
+    .leaflet-container {
+      @media only @mobile-detection {
+        height: 100% !important;
+        width: 100% !important;
+        min-height: 0 !important;
+      }
+    }
+  }
+
+  .banner-info-card {
+    @media only @mobile-detection {
+      margin-top: 0 !important;
+    }
+  }
+
+  .ant-tabs-nav {
+    @media only @mobile-detection {
+      display: none !important;
+      margin: none !important;
+    }
+  }
+
+  .ant-tabs-tabpane {
+    @media only @mobile-detection {
+      margin-top: 0;
+    }
+  }
 }
 
 .banner-info-with-map-goback {
