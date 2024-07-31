@@ -1,22 +1,9 @@
 @import 'antd/dist/antd.compact.less';
 @import 'antd/dist/antd.dark.less';
 
-@primary-color: #1DA57A;
-@link-color: #1DA57A;
-@body-background: #0b0c0d;
-@card-head-padding: 0.6rem;
-@card-padding-base: 0.6rem;
-@border-color-base: #004f4a;
+@import './assets/style/variables.less';
 
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #969696;
-}
+@mobile-detection: ~' screen and (max-width: 880px) ';
 
 .mt-1 {
   margin-top: 1rem;
@@ -30,24 +17,14 @@
   padding-right: 1rem;
 }
 
-.footer-main {
-  text-align: center;
-  background-color: #000;
-  padding: 1.5rem 0;
-  width: 100%;
-}
-
 .leaflet-container {
   margin: unset;
-}
-
-.leaflet-container {
   height: 100%;
 }
 
 body,
 .ant-layout {
-  background: #1B1B1B;
+  background: var(--color-light-black);
 }
 
 body,
@@ -61,7 +38,7 @@ body,
 #root {
   height: 100%;
 
-  &>.ant-layout {
+  & > .ant-layout {
     height: 100%;
   }
 }
@@ -69,7 +46,7 @@ body,
 .main {
   height: 100%;
 
-  &>.container {
+  & > .container {
     height: 100%;
     overflow: auto;
   }
@@ -94,10 +71,23 @@ h3 {
   margin: 1em 0 0.05em;
 }
 
-.top-menu,
 .bottom-menu {
-  background: black;
+  background: var(--color-black);
   padding: 5px 10px;
+  display: none;
+
+  @media only @mobile-detection {
+    display: block;
+  }
+
+  .menu-main {
+    a {
+      @media only @mobile-detection {
+        flex: 1;
+        min-width: 0 !important;
+      }
+    }
+  }
 
   .brand-menu {
     max-width: 329px;
@@ -116,20 +106,13 @@ h3 {
 }
 
 .warning-text {
-  color: @color-warning;
+  color: var(--color-warning);
 }
 
 .error-text {
-  color: @color-error;
+  color: var(--color-error);
 }
 
 .subtitle {
-  color: #888888;
+  color: var(--color-gray);
 }
-
-@color-todo:  #FFE381;
-@color-done:  #70C03F;
-@color-blacklist:  #EF5555;
-@color-pin: #6832DA;
-@color-warning: #FFB21D;
-@color-error: #EF5555;

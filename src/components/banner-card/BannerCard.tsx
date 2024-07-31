@@ -10,9 +10,9 @@ import {
 import { createBrowseUri } from '../../features/place'
 import { Distance } from '../distance/Distance'
 import BannerPicture from './BannerPicture'
-import SVGExplorer from '../../img/icons/explorer.svg?react'
-import SVGWarningTriangle from '../../img/icons/warningtriangle.svg?react'
-import SVGPointer from '../../img/icons/pointer.svg?react'
+import SVGExplorer from '../../assets/img/icons/explorer.svg?react'
+import SVGWarningTriangle from '../../assets/img/icons/warningtriangle.svg?react'
+import SVGPointer from '../../assets/img/icons/pointer.svg?react'
 
 import './banner-card.less'
 

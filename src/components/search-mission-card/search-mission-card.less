@@ -1,10 +1,8 @@
-@import "../../index";
+@import '../../index';
 
 .search-mission-card {
   margin-top: 1rem;
-  background-color: @color-panel-bg;
-  margin-top: 1rem;
-  background-color: #404040;
+  background-color: var(--color-panel-bg);
   border-radius: 5px;
   display: flex;
   column-gap: 15px;
@@ -25,12 +23,15 @@
     word-break: break-word;
 
     &.placeholder {
-      color: #808080;
+      color: var(--color-gray);
     }
   }
 
   .mission-agent {
     font-size: 14px;
+    border: none;
+    text-align: left;
+    padding: 0;
   }
 
   .icon {
@@ -57,11 +58,5 @@
     fill: white;
     cursor: pointer;
     flex-shrink: 0;
-  }
-
-  .mission-agent {
-    border: none;
-    text-align: left;
-    padding: 0;
   }
 }

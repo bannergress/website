@@ -5,7 +5,7 @@
   align-items: center;
   height: calc(100% - 5px);
 
-  &>h1 {
+  & > h1 {
     width: 100%;
   }
 
@@ -29,7 +29,7 @@
         width: 36px;
         height: 36px;
         padding: 0;
-        border: 2px solid white;
+        border: 2px solid var(--color-white);
         text-align: center;
         display: block;
         line-height: 30px;
@@ -43,12 +43,12 @@
 
       svg {
         path {
-          fill: white;
+          fill: var(--color-white);
         }
       }
     }
 
-    &>div {
+    & > div {
       flex-grow: 1;
       flex-basis: 10%;
       min-width: 300px;
@@ -59,7 +59,6 @@
       min-height: 750px;
       display: flex;
       flex-direction: column;
-
     }
 
     .missions-search .search-mission-list {
@@ -71,11 +70,11 @@
     }
 
     .create-banner-preview {
-      background: #2e2e2e;
+      background: var(--color-dark-gray);
       border-radius: 5px;
       padding: 15px;
       margin: 10px 0 30px;
-      border: 1px solid white;
+      border: 1px solid var(--color-white);
 
       & .banner-image {
         margin: auto;
@@ -83,7 +82,7 @@
     }
 
     .adv-options-container {
-      border: 1px solid white;
+      border: 1px solid var(--color-white);
       border-radius: 4px;
       padding: 5px 20px;
       margin-top: 10px;
@@ -111,21 +110,20 @@
 
     input,
     textarea {
-      background-color: #B9B9B9;
+      background-color: var(--color-gray);
       border-radius: 4px;
       border: none;
-      color: #000;
+      color: var(--color-black);
       font-size: 14px;
       padding: 8px 10px;
 
       &::placeholder {
-        color: #555;
+        color: var(--color-light-black);
       }
     }
 
     .missions-search,
     .create-banner-info {
-
       input,
       textarea {
         margin-top: 5px;
@@ -144,9 +142,9 @@
       }
 
       button {
-        border-color: white;
+        border-color: var(--color-white);
         border-radius: 4px;
-        color: white;
+        color: var(--color-white);
         width: 100px;
       }
     }
@@ -156,7 +154,7 @@
 
       svg {
         path {
-          fill: white;
+          fill: var(--color-white);
         }
       }
 
@@ -170,24 +168,31 @@
 
       button {
         margin: 0 !important;
-        background-color: #2e2e2e;
-        border: none;
+        background-color: var(--color-dark-gray);
+
         display: block;
         border-radius: 4px;
         width: 100%;
-        box-shadow: 0 0 2px 0 rgba(157, 96, 212, 0.5) !important;
         border: solid 2px transparent !important;
         background-origin: border-box !important;
         background-clip: content-box, border-box !important;
-        box-shadow: 2px 1000px 1px #1B1B1B inset !important;
+        box-shadow: 2px 1000px 1px var(--color-light-black) inset !important;
         transition: linear-gradient ease 0.6s;
         text-align: center;
-        color: white;
-        background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(180deg, #109393, #15D4B2) !important;
+        color: var(--color-white);
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0)
+          ),
+          linear-gradient(180deg, var(--color-border-dark), var(--color-border-light)) !important;
 
         @media (hover: hover) and (pointer: fine) {
           &:hover {
-            background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(0deg, #109393, #15D4B2) !important;
+            background-image: linear-gradient(
+                rgba(255, 255, 255, 0),
+                rgba(255, 255, 255, 0)
+              ),
+              linear-gradient(0deg, var(--color-border-dark), var(--color-border-light)) !important;
           }
         }
       }
@@ -202,36 +207,35 @@
 
   .button-review {
     width: 100%;
-    color: white;
+    color: var(--color-white);
   }
 
   .ant-radio-group {
-    color: white;
+    color: var(--color-white);
     display: flex;
     column-gap: 5px;
 
     label {
-      color: white !important;
+      color: var(--color-white) !important;
       text-align: center;
       border: none;
       border-radius: 5px;
-      background-color: white;
+      background-color: var(--color-white);
       padding: 1px;
       display: flex;
       cursor: pointer;
 
-
       &.ant-radio-button-wrapper-checked {
-        background-image: linear-gradient(180deg, #109393, #15D4B2);
+        background-image: linear-gradient(180deg, var(--color-border-dark), var(--color-border-light));
         padding: 2px;
 
-        >span:nth-child(2) {
+        > span:nth-child(2) {
           line-height: 24px;
         }
       }
 
-      >span:nth-child(2) {
-        background-color: #1B1B1B;
+      > span:nth-child(2) {
+        background-color: var(--color-light-black);
         border-radius: 4px;
         padding: 0 10px;
         flex: 1;
@@ -239,7 +243,9 @@
     }
   }
 
-  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+  .ant-radio-button-wrapper-checked:not(
+      .ant-radio-button-wrapper-disabled
+    )::before {
     background: none !important;
   }
 }
