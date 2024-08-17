@@ -291,6 +291,10 @@
       }
     }
   },
+  "error": {
+    "title": "Error the page was not found",
+    "newestBanners": "Try to start with the newest banners"
+  },
   "search": {
     "title": "Search for {{searchTerm}}",
     "button": "Search",

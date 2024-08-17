@@ -78,7 +78,7 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
             hasMoreBanners={hasMoreBanners}
             onSelectBanner={onSelectBannerCallback}
             loadMoreBanners={loadMoreBanners}
-            applyBannerListStlyes
+            applyBannerListStyles
             hideBlacklisted
             showDetailsButton
           />

@@ -57,7 +57,7 @@ export const RecentBanners: FC<RecentBannersProps> = ({
       <BannerList
         banners={banners}
         hasMoreBanners={false}
-        applyBannerListStlyes
+        applyBannerListStyles
         hideBlacklisted
         showDetailsButton={false}
       />

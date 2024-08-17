@@ -157,7 +157,7 @@ class UserBannerList extends React.Component<
                             banners={banners}
                             hasMoreBanners={hasMoreBanners}
                             loadMoreBanners={this.onLoadMoreBanners}
-                            applyBannerListStlyes
+                            applyBannerListStyles
                             hideBlacklisted={false}
                             showDetailsButton={false}
                           />
