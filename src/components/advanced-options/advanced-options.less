@@ -1,37 +1,25 @@
 .banner-advanced-options {
-
-  h4 {
-    display: flex;
+  &__title {
+    align-items: center;
     column-gap: 5px;
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+  }
 
-    svg {
-      align-self: flex-start;
-
-      path {
-        fill: white;
-      }
+  &__title-icon {
+    path {
+      fill: white;
     }
   }
 
-  .ant-col {
+  &__column {
     align-self: center;
   }
 
-  label {
-    width: 100%;
-  }
-
-  .date-picker-hidden {
-    position: absolute;
-    visibility: hidden;
-    width: 0;
-    height: 0;
-    right: 0;
-    top: 0;
-  }
-
-  .date-picker-visible {
-    width: 100%;
-    margin-bottom: 5px;
+  &__banner-type {
+    &-label {
+      width: 100%;
+    }
   }
 }
