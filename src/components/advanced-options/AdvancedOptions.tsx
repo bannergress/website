@@ -12,10 +12,16 @@ import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
 const typeHelp = (
   <>
     <p>
-      <Trans i18nKey="banners.creation.step3.help.banner" components={{ b: <b />, }} />
+      <Trans
+        i18nKey="banners.creation.step3.help.banner"
+        components={{ b: <b /> }}
+      />
     </p>
     <p>
-      <Trans i18nKey="banners.creation.step3.help.collection" components={{ b: <b />, }} />
+      <Trans
+        i18nKey="banners.creation.step3.help.collection"
+        components={{ b: <b /> }}
+      />
     </p>
   </>
 )
@@ -36,10 +42,13 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
     <Row className="banner-advanced-options">
       <Col span={12} className="banner-advanced-options__column">
         <Tooltip placement="right" title={typeHelp}>
-          <h4 className='banner-advanced-options__title'>
-            <Trans i18nKey="banners.creation.step3.type"
+          <h4 className="banner-advanced-options__title">
+            <Trans
+              i18nKey="banners.creation.step3.type"
               components={{
-                icon: <SVGHelp className='banner-advanced-options__title-icon' />,
+                icon: (
+                  <SVGHelp className="banner-advanced-options__title-icon" />
+                ),
               }}
             />
           </h4>
@@ -47,27 +56,52 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
       </Col>
 
       <Col span={12} className="banner-advanced-options__column">
-        <Radio.Group className='banner-advanced-options__banner-type' value={type} onChange={(e) => onChange(e.target.value, 'bannerType')}>
-          <Radio.Button className='banner-advanced-options__banner-type-label' value="sequential">{t('banners.banner')}</Radio.Button>
-          <Radio.Button className='banner-advanced-options__banner-type-label' value="anyOrder">{t('banners.collection')}</Radio.Button>
+        <Radio.Group
+          className="banner-advanced-options__banner-type"
+          value={type}
+          onChange={(e) => onChange(e.target.value, 'bannerType')}
+        >
+          <Radio.Button
+            className="banner-advanced-options__banner-type-label"
+            value="sequential"
+          >
+            {t('banners.banner')}
+          </Radio.Button>
+          <Radio.Button
+            className="banner-advanced-options__banner-type-label"
+            value="anyOrder"
+          >
+            {t('banners.collection')}
+          </Radio.Button>
         </Radio.Group>
       </Col>
 
       <Col span={12} className="banner-advanced-options__column">
-        <h4 className='banner-advanced-options__title'>{t('banners.width')}</h4>
+        <h4 className="banner-advanced-options__title">{t('banners.width')}</h4>
       </Col>
 
       <Col span={12} className="banner-advanced-options__column">
-        <Slider min={1} max={6} onChange={(val: number) => onChange(val, 'bannerWidth')} value={width} />
+        <Slider
+          min={1}
+          max={6}
+          onChange={(val: number) => onChange(val, 'bannerWidth')}
+          value={width}
+        />
       </Col>
 
       {(isEdit || manageBannersRole) && (
         <>
           <Col span={12} className="banner-advanced-options__column">
-            <h4 className='banner-advanced-options__title'>{t('banners.creation.step3.plannedOfflineDate.title')}</h4>
+            <h4 className="banner-advanced-options__title">
+              {t('banners.creation.step3.plannedOfflineDate.title')}
+            </h4>
           </Col>
 
-          <Col span={12} className="banner-advanced-options__column" style={{ textAlign: 'right' }}>
+          <Col
+            span={12}
+            className="banner-advanced-options__column"
+            style={{ textAlign: 'right' }}
+          >
             <DatePicker
               onChange={(value: string | undefined) =>
                 onChange(value, 'bannerPlannedOfflineDate')
@@ -82,10 +116,16 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
       {manageBannersRole && (
         <>
           <Col span={12} className="banner-advanced-options__column">
-            <h4 className='banner-advanced-options__title'>{t('banners.creation.step3.eventStartDate.title')}</h4>
+            <h4 className="banner-advanced-options__title">
+              {t('banners.creation.step3.eventStartDate.title')}
+            </h4>
           </Col>
 
-          <Col span={12} className="banner-advanced-options__column" style={{ textAlign: 'right' }}>
+          <Col
+            span={12}
+            className="banner-advanced-options__column"
+            style={{ textAlign: 'right' }}
+          >
             <DatePicker
               onChange={(value: string | undefined) =>
                 onChange(value, 'bannerEventStartDate')
@@ -96,10 +136,16 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
           </Col>
 
           <Col span={12} className="banner-advanced-options__column">
-            <h4 className='banner-advanced-options__title'>{t('banners.creation.step3.eventEndDate.title')}</h4>
+            <h4 className="banner-advanced-options__title">
+              {t('banners.creation.step3.eventEndDate.title')}
+            </h4>
           </Col>
 
-          <Col span={12} className="banner-advanced-options__column" style={{ textAlign: 'right' }}>
+          <Col
+            span={12}
+            className="banner-advanced-options__column"
+            style={{ textAlign: 'right' }}
+          >
             <DatePicker
               onChange={(value: string | undefined) =>
                 onChange(value, 'bannerEventEndDate')

@@ -33,16 +33,16 @@ const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
   return (
     <div className="algo-detection-chooser">
       <Tooltip placement="right" title={extractionHelp}>
-        <h3>
+        <h3 className='algo-detection-chooser__title'>
           <Trans
             i18nKey="banners.creation.algorithm.detection"
             components={{
-              icon: <SVGHelp />,
+              icon: <SVGHelp className='algo-detection-chooser__icon' />,
             }}
           />
         </h3>
       </Tooltip>
-      <div className={`lds-ellipsis display-${loading}`}>
+      <div className={`algo-detection-chooser__lds-ellipsis algo-detection-chooser--display-${loading}`}>
         <div />
         <div />
         <div />

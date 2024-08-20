@@ -6,7 +6,7 @@ import { createAgentUri } from '../../features/user'
 import './agent.less'
 
 const getInnerSpan = (agent: NamedAgent) => (
-  <span className={`faction-${agent.faction}`}>{agent.name}</span>
+  <span className={`faction__${agent.faction}`}>{agent.name}</span>
 )
 
 export const Agent: FC<AgentProps> = ({ agent, linkToAgentProfile }) => {

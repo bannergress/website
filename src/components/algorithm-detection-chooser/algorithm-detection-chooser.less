@@ -4,65 +4,23 @@
   justify-content: space-between;
   flex-wrap: wrap-reverse;
 
-  h3 {
+  &__title {
     display: flex;
     column-gap: 5px;
+  }
 
-    svg {
-      align-self: flex-start;
+  &__icon {
+    align-self: flex-start;
 
-      path {
-        fill: white;
-      }
+    path {
+      fill: white;
     }
-  }
-
-  .lds-ellipsis {
-    display: inline-block;
-    position: relative;
-    width: 50px;
-    height: 20px;
-
-    &.display-false {
-      display: none;
-    }
-  }
-
-  .lds-ellipsis div {
-    position: absolute;
-    top: 0px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #fff;
-    animation-timing-function: cubic-bezier(0, 1, 1, 0);
-  }
-
-  .lds-ellipsis div:nth-child(1) {
-    left: 0px;
-    animation: lds-ellipsis1 0.6s infinite;
-  }
-
-  .lds-ellipsis div:nth-child(2) {
-    left: 0px;
-    animation: lds-ellipsis2 0.6s infinite;
-  }
-
-  .lds-ellipsis div:nth-child(3) {
-    left: 16px;
-    animation: lds-ellipsis2 0.6s infinite;
-  }
-
-  .lds-ellipsis div:nth-child(4) {
-    left: 32px;
-    animation: lds-ellipsis3 0.6s infinite;
   }
 
   @keyframes lds-ellipsis1 {
     0% {
       transform: scale(0);
     }
-
     100% {
       transform: scale(1);
     }
@@ -72,7 +30,6 @@
     0% {
       transform: scale(1);
     }
-
     100% {
       transform: scale(0);
     }
@@ -82,9 +39,62 @@
     0% {
       transform: translate(0, 0);
     }
-
     100% {
       transform: translate(16px, 0);
     }
+  }
+
+  &__lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 50px;
+    height: 20px;
+
+    div {
+      animation-timing-function: cubic-bezier(0, 1, 1, 0);
+      background: #fff;
+      border-radius: 50%;
+      height: 8px;
+      position: absolute;
+      top: 0px;
+      width: 8px;
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: none;
+      }
+
+      &:nth-child(1) {
+        animation: lds-ellipsis1 0.6s infinite;
+        left: 0px;
+      }
+
+      &:nth-child(2) {
+        animation: lds-ellipsis2 0.6s infinite;
+        left: 0px;
+      }
+
+      &:nth-child(3) {
+        animation: lds-ellipsis2 0.6s infinite;
+        left: 16px;
+      }
+
+      &:nth-child(4) {
+        animation: lds-ellipsis3 0.6s infinite;
+        left: 32px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        &:nth-child(1),
+        &:nth-child(2),
+        &:nth-child(3),
+        &:nth-child(4) {
+          animation: none;
+        }
+      }
+    }
+  }
+
+  &--display-false {
+    display: none;
   }
 }
