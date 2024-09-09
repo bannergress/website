@@ -96,7 +96,7 @@ class UserBannerListPreview extends React.Component<
                   <BannerList
                     banners={banners}
                     hasMoreBanners={false}
-                    applyBannerListStlyes
+                    applyBannerListStyles
                     hideBlacklisted={false}
                     showDetailsButton={false}
                   />

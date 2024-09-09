@@ -290,6 +290,10 @@
       }
     }
   },
+  "error": {
+    "title": "Fehler die Seite wurde nicht gefunden",
+    "newestBanners": "Versuche mit den neuesten Bannern zu beginnen"
+  },
   "search": {
     "title": "Suche nach: {{searchTerm}}",
     "button": "Suchen",

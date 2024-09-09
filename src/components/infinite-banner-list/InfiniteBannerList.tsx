@@ -38,7 +38,7 @@ const InfiniteBannerList: FC<InfiniteBannerListProps> = ({
               setMaxPages(maxPages + 1)
             }
           }}
-          applyBannerListStlyes
+          applyBannerListStyles
           hideBlacklisted={false}
           showDetailsButton={false}
         />
