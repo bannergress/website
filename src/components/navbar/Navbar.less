@@ -1,8 +1,12 @@
+@mobile-detection: ~' screen and (max-width: 880px) ';
+
 .top-menu {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  background: var(--color-black);
+  padding: 5px 10px;
 
   > div {
     display: flex;
@@ -12,6 +16,17 @@
       margin-right: 45px;
       width: 250px;
     }
+  }
+
+  .menu-main {
+    @media only @mobile-detection {
+      display: none;
+    }
+  }
+
+  .brand-menu {
+    max-width: 329px;
+    flex: 1;
   }
 }
 
@@ -23,6 +38,10 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: left center;
+
+  @media only @mobile-detection {
+    width: 50vw;
+  }
 }
 
 .mobile-search-bar {
@@ -33,11 +52,11 @@
   display: flex;
 }
 
-.mobile-search-button-container{
+.mobile-search-button-container {
   display: flex;
   min-width: 70px;
   height: 60px;
-  transition: background-color .3s;
+  transition: background-color 0.3s;
 
   .mobile-search-button {
     background: none;
@@ -51,30 +70,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  
+
     height: 100%;
     width: 100%;
-    
-    .search-button-icon
-    {
+
+    .search-button-icon {
       width: 24px;
       height: 24px;
-      fill: #eaeaea;
-    } 
- } 
+      fill: var(--color-white-light);
+    }
+  }
 }
 
 .mobile-search-button-container.active {
-   .search-button-icon{
-    fill: #0ca589;
+  .search-button-icon {
+    fill: var(--color-active-green);
   }
 }
 
 @media (hover: hover) and (pointer: fine) {
   .mobile-search-button-container:hover {
-    background: rgba(29,165,122,.3);
-    .search-button-icon{
-    fill: white;
+    background: rgba(29, 165, 122, 0.3);
+    .search-button-icon {
+      fill: white;
     }
   }
 }

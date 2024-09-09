@@ -4,8 +4,8 @@ import { Place } from '../../features/place'
 
 import './place-entry.less'
 
-import SVGLocality from '../../img/icons/locality.svg?react'
-import SVGArea from '../../img/icons/area.svg?react'
+import SVGLocality from '../../assets/img/icons/locality.svg?react'
+import SVGArea from '../../assets/img/icons/area.svg?react'
 
 const PlaceEntry: FC<PlaceProps> = ({
   place,

@@ -34,8 +34,8 @@
     <title>Bannergress</title>
     <script>
       // When promises are not supported, show the legacy notice
-      function showLegacyNotice(){
-        elem = document.getElementById('legacy_browser');
+      function showLegacyNotice() {
+        let elem = document.getElementById('legacy_browser');
         if(elem) elem.style.display = 'block';
       }
       if(!window.Promise){
