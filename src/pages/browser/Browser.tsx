@@ -26,7 +26,7 @@ import BannerList from '../../components/banner-list'
 import BannerOrderChooser from '../../components/banner-order-chooser'
 import FooterMain from '../../components/footer-main'
 import { PlaceAccordion } from '../../components/place-accordion/PlaceAccordion'
-import SVGMap from '../../img/icons/map.svg?react'
+import SVGMap from '../../assets/img/icons/map.svg?react'
 
 import './browser.less'
 import LoadingOverlay from '../../components/loading-overlay'

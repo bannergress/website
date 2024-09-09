@@ -5,18 +5,18 @@
 }
 
 .issue-card {
-  background: rgba(46, 46, 46, 0.9);
+  background: rgba(var(--color-dark-gray), 0.9);
   border-radius: 4px;
   padding: 10px 20px;
   font-size: 14px;
   line-height: 2.5;
-  
+
   &.issue-error {
-    color: #FF2F2F;
+    color: var(--color-error);
   }
 
   &.issue-warning {
-    color: #FFB21D;
+    color: var(--color-warning);
   }
 
   button {
@@ -25,7 +25,7 @@
     padding: 10px 0;
 
     path {
-      fill: lightgrey;
+      fill: var(--color-light-gray);
     }
   }
 }

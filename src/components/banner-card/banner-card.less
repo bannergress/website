@@ -1,11 +1,11 @@
 @import url(../../App.less);
-
-@mobile-l-detection: ~" screen and (min-width: 426px) ";
+@mobile-detection: ~' screen and (max-width: 880px) ';
+@mobile-l-detection: ~' screen and (min-width: 426px) ';
 
 // Start Temporary styles for list types. Not final yet.
 
 .list-style-background() {
-  content: " ";
+  content: ' ';
   z-index: 10;
   display: block;
   position: absolute;
@@ -17,24 +17,6 @@
   border-radius: 5px;
 }
 
-.banner-card.list-style-todo:after {
-  .list-style-background();
-  background: rgba(@color-todo, 0.05);
-  border: 1px solid @color-todo;
-}
-
-.banner-card.list-style-done:after {
-  .list-style-background();
-  background: rgba(@color-done, 0.05);
-  border: 1px solid @color-done;
-}
-
-.banner-card.list-style-blacklist:after {
-  .list-style-background();
-  background: rgba(@color-blacklist, 0.05);
-  border: 1px solid @color-blacklist;
-}
-
 // End temporary Styles ^^
 
 .banner-circle {
@@ -44,28 +26,53 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: grey;
+  background-color: var(--color-gray);
   margin-right: 8px;
   margin-top: 8px;
 }
 
 .banner-card {
-  background: #2e2e2e;
+  background: var(--color-dark-gray);
   border-radius: 5px;
-  border: #2e2e2e 2px solid;
+  border: var(--color-dark-gray) 2px solid;
   padding: 18px;
-  color: white;
+  color: var(--color-white);
   position: relative;
 
   &.selected {
-    border-color: #16d4b2;
+    border-color: var(--color-positive-green-light);
+  }
+
+  &.list-style {
+    &-todo {
+      &:after {
+        .list-style-background();
+        background: rgba(var(--color-todo), 0.05);
+        border: 1px solid var(--color-todo);
+      }
+    }
+
+    &-done {
+      &:after {
+        .list-style-background();
+        background: rgba(var(--color-done), 0.05);
+        border: 1px solid var(--color-done);
+      }
+    }
+
+    &-blacklist {
+      &:after {
+        .list-style-background();
+        background: rgba(var(--color-blacklist), 0.05);
+        border: 1px solid var(--color-blacklist);
+      }
+    }
   }
 
   .icon {
     width: 0.9rem;
     height: 0.9rem;
   }
-
 }
 
 .banner-card-modal {
@@ -75,7 +82,7 @@
     height: 100%;
     width: 100%;
     display: flex;
-    background-color: #2e2e2e;
+    background-color: var(--color-dark-gray);
 
     .ant-modal-body {
       width: 100%;
@@ -116,11 +123,11 @@
     .close-button {
       position: absolute;
       bottom: 15px;
-      background-color: #2e2e2e;
+      background-color: var(--color-dark-gray);
       right: 15px;
       border: none;
       line-height: 1em;
-      color: white !important;
+      color: var(--color-white) !important;
 
       svg,
       span {
@@ -135,7 +142,7 @@
   }
 }
 
-.banner-card-picture-container{
+.banner-card-picture-container {
   position: relative;
   display: flex;
 
@@ -143,10 +150,10 @@
     height: 200px;
   }
 
-  .offline-overlay{
+  .offline-overlay {
     font-size: 24px;
     line-height: 18px;
-    color: #DDDDDD;
+    color: #dddddd;
 
     position: absolute;
     left: -20px;
@@ -154,26 +161,37 @@
     width: calc(100% + 2 * 20px);
     height: 100%;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    pointer-events: none;
-
-   .offline-overlay-line {
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 3.5em;
+    .offline-overlay {
+      color: var(--color-light-gray);
       display: flex;
-      flex-direction: row;
-      background-color: rgba(0, 0, 0, 0.7);
+      flex-direction: column;
+      font-size: 24px;
+      height: 100%;
+      justify-content: center;
+      left: -20px;
+      line-height: 18px;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      width: calc(100% + 2 * 20px);
 
-      svg{
-        height: 1em;
-        width:1em;
-        fill: currentColor;
-        margin-right: 0.5em;
+      pointer-events: none;
+
+      .offline-overlay-line {
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 3.5em;
+        display: flex;
+        flex-direction: row;
+        background-color: rgba(var(--color-black), 0.7);
+
+        svg {
+          height: 1em;
+          width: 1em;
+          fill: currentColor;
+          margin-right: 0.5em;
+        }
       }
     }
   }
@@ -187,7 +205,7 @@
 .banner-info-item {
   font-size: 14px;
   line-height: 18px;
-  color: #DDDDDD;
+  color: var(--color-light-gray);
   margin-top: 4px;
   display: flex;
 
@@ -201,9 +219,8 @@
 }
 
 .banner-info-item.warning {
-  color: @color-blacklist;
+  color: var(--color-blacklist);
 }
-
 
 .banner-card-picture {
   margin: 20px 0;
@@ -212,13 +229,42 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  @media only @mobile-detection {
+    height: auto;
+    aspect-ratio: 2;
+  }
+  &.banner-lines-1 {
+    @media only @mobile-detection {
+      aspect-ratio: 6;
+    }
+  }
+
+  &.banner-lines-2 {
+    @media only @mobile-detection {
+      aspect-ratio: 3;
+    }
+  }
 }
 
 .banner-card-picture-inner {
   max-height: 100%;
   max-width: 100%;
 
-  &>img {
+  // Support for browsers that don't support aspect-ratio yet.
+  // Can be removed once this feature is implemented in all major browsers
+  @supports (aspect-ratio: 1/1) {
+    .banner-card-picture {
+      aspect-ratio: 2 / 1;
+    }
+  }
+
+  @supports not (aspect-ratio: 1/1) {
+    .banner-card-picture {
+      height: 160px; // 160 Pixel is half of width of .banner-card minus padding
+    }
+  }
+
+  & > img {
     max-width: 100%;
   }
 
@@ -247,11 +293,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  padding: 0px;
+  padding: 0;
   margin-top: 10px;
 
   a {
-    border: 1px solid white;
+    border: 1px solid var(--color-white);
     box-sizing: border-box;
     border-radius: 4px;
     padding: 5px 10px;
@@ -259,7 +305,6 @@
     color: white;
   }
 }
-
 
 // Support for browsers that don't support aspect-ratio yet.
 // Can be removed once this feature is implemented in all major browsers

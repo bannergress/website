@@ -1,3 +1,6 @@
+@mobile-xs-detection: ~' screen and (max-width: 321px) ';
+@mobile-detection: ~' screen and (max-width: 880px) ';
+
 .banner-list {
   display: flex;
   align-content: flex-start;
@@ -7,9 +10,25 @@
   column-gap: 20px;
   row-gap: 20px;
 
+  @media only @mobile-xs-detection {
+    justify-content: center;
+  }
+
+  @media only @mobile-detection {
+    justify-content: center;
+  }
+
   .banner-list-entry {
     max-width: 90vw;
     width: 360px;
+
+    @media only @mobile-xs-detection {
+      width: 296px;
+    }
+
+    @media only @mobile-detection {
+      width: 360px;
+    }
   }
 
   .banner-card-link {

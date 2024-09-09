@@ -1,59 +1,67 @@
+@import '../../assets/style/variables.less';
 @import '../../App.less';
 
 .banner-list-type-control {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    padding: 5px;
-    gap: 1em;
+background: crimson !important;
 
-   .banner-list-type {
-      flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  padding: 5px;
+  width: 100%;
 
-      text-align: center;
-      vertical-align: middle;
+  .banner-list-type {
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex: 1;
+    outline: none;
+    text-align: center;
+    vertical-align: middle;
 
-      cursor: pointer;
-
-      background: none;
-      outline: none;
-      border: none;
-
-      svg {
-        height: 1.1em;
-        width:1.1em;
-        margin-right: 5px;
-        align-self: center; 
-        
-        position: relative;
-        top: .125em; 
-      }
-   }
-
-  .banner-list-type-todo.active  {
-     color: @color-todo;
-   }
-
-  .banner-list-type-done.active  {
-    color: @color-done;
-  }
-
-  .banner-list-type-blacklist.active  {
-    color: @color-blacklist;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .banner-list-type-todo:hover  {
-      color: @color-todo;
+    svg {
+      align-self: center;
+      height: 1.1em;
+      margin-right: 5px;
+      position: relative;
+      top: 0.125em;
+      width: 1.1em;
     }
- 
-    .banner-list-type-done:hover  {
-     color: @color-done;
-   }
- 
-   .banner-list-type-blacklist:hover  {
-     color: @color-blacklist;
-   }
- 
+  }
+
+  .banner-list-type-todo {
+    &:hover {
+      @media (hover: hover) and (pointer: fine) {
+        color: var(--color-todo);
+      }
+    }
+
+    &.active {
+      color: var(--color-todo);
+    }
+  }
+
+  .banner-list-type-done {
+    &:hover {
+      @media (hover: hover) and (pointer: fine) {
+        color: var(--color-done);
+      }
+    }
+
+    &.active {
+      color: var(--color-done);
+    }
+  }
+
+  .banner-list-type-blacklist {
+    &:hover {
+      @media (hover: hover) and (pointer: fine) {
+        color: var(--color-blacklist);
+      }
+    }
+
+    &.active {
+      color: var(--color-blacklist);
+    }
   }
 }
