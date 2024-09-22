@@ -35,7 +35,7 @@
     <script>
       // When promises are not supported, show the legacy notice
       function showLegacyNotice() {
-        let elem = document.getElementById('legacy_browser');
+        var elem = document.getElementById('legacy_browser');
         if(elem) elem.style.display = 'block';
       }
       if(!window.Promise){
