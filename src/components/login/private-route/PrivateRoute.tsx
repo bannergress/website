@@ -20,14 +20,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
       {...rest}
       render={(props) => {
         if (!initialized) {
-          return (
-            <LoadingOverlay
-              active
-              spinner
-              text={t('login.checking')}
-              fadeSpeed={500}
-            />
-          )
+          return <LoadingOverlay active text={t('login.checking')} />
         }
         if (authenticated) {
           return <Component {...props} admin={admin} />

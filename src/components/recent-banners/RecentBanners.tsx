@@ -45,12 +45,7 @@ export const RecentBanners: FC<RecentBannersProps> = ({
 
   return (
     <div className="recent-banners">
-      <LoadingOverlay
-        active={loading}
-        spinner
-        fadeSpeed={500}
-        text={t('loadingRecent')}
-      />
+      <LoadingOverlay active={loading} text={t('loadingRecent')} />
       <div className="recent-banners-title">
         <h1>{titleList}</h1>
       </div>
