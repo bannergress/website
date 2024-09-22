@@ -178,14 +178,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     const { filter, selectedPlaceId, status } = this.state
 
     if (status === 'initial') {
-      return (
-        <LoadingOverlay
-          text={i18n!.t('loading')}
-          fadeSpeed={500}
-          active
-          spinner={true}
-        />
-      )
+      return <LoadingOverlay text={i18n!.t('loading')} active />
     }
 
     let administrativeAreas: Array<Place> | null = null

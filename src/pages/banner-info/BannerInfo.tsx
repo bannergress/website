@@ -66,14 +66,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
       )
     }
     if (status !== 'error') {
-      return (
-        <LoadingOverlay
-          active
-          spinner
-          text={i18n!.t('loading')}
-          fadeSpeed={500}
-        />
-      )
+      return <LoadingOverlay active text={i18n!.t('loading')} />
     }
     return (
       <Trans i18nKey="banners.noneWithId">No banners found with that id</Trans>
