@@ -18,4 +18,5 @@ export type BannerFilter = {
   maxEventTimestamp?: string
   proximityLatitude?: number
   proximityLongitude?: number
+  author?: string
 }
