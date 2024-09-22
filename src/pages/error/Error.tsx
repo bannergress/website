@@ -9,7 +9,7 @@ import RecentBanners from '../../components/recent-banners'
 import './error.less'
 
 const Error: React.FC = () => {
-  const [ issues, setIssues] = useState<Array<Issue>>([])
+  const [issues, setIssues] = useState<Array<Issue>>([])
   const { t } = useTranslation()
   const titleList: string = t('error.newestBanners')
   const addIssues = useCallback(
