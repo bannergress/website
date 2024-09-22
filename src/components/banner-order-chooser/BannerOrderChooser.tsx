@@ -19,7 +19,6 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false)
   const [loadingLocation, setLoadingLocation] = useState<boolean>(false)
-  const [currentFilter, setCurrentFilter] = useState<BannerFilter>(filter)
   const { t } = useTranslation()
   useEffect(() => {
     if (loadingLocation) {
@@ -27,7 +26,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
         (pos) => {
           setLoadingLocation(false)
           updateFilter({
-            ...currentFilter,
+            ...filter,
             orderBy: 'proximityStartPoint',
             orderDirection: 'ASC',
             proximityLatitude: pos.coords.latitude,
@@ -40,7 +39,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
         { maximumAge: 0, enableHighAccuracy: true }
       )
     }
-  })
+  }, [loadingLocation, setLoadingLocation, filter])
 
   const show = () => {
     setOpen(true)
@@ -52,7 +51,6 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
   }
 
   const updateFilter = (newFilter: BannerFilter) => {
-    setCurrentFilter(newFilter)
     onFilterChanged(newFilter)
   }
 
@@ -68,51 +66,51 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
   }
 
   const onOrderClicked = (type: BannerOrder) => {
-    if (type !== currentFilter.orderBy) {
+    if (type !== filter.orderBy) {
       if (type === 'proximityStartPoint') {
         setLoadingLocation(true)
       } else {
         updateFilter({
-          ...currentFilter,
+          ...filter,
           orderBy: type,
           orderDirection: getDefaultDirection(type),
           proximityLatitude: undefined,
           proximityLongitude: undefined,
         })
       }
-    } else if (hasBothDirections(currentFilter.orderBy)) {
+    } else if (hasBothDirections(filter.orderBy)) {
       updateFilter({
-        ...currentFilter,
-        orderDirection: currentFilter.orderDirection === 'ASC' ? 'DESC' : 'ASC',
+        ...filter,
+        orderDirection: filter.orderDirection === 'ASC' ? 'DESC' : 'ASC',
       })
     }
   }
 
   const onOfficialChanged = (includeUnofficial: boolean) => {
     updateFilter({
-      ...currentFilter,
+      ...filter,
       onlyOfficialMissions: includeUnofficial ? undefined : true,
     })
   }
 
   const onOnlineChanged = (showOffline: boolean) => {
     updateFilter({
-      ...currentFilter,
+      ...filter,
       online: showOffline ? undefined : true,
     })
   }
 
   const getButtonClass = (type: BannerOrder) => {
     let classNames = 'order-button'
-    if (type === currentFilter.orderBy) {
+    if (type === filter.orderBy) {
       classNames += ' selected'
     }
     return classNames
   }
 
   const getButtonDirection = (type: BannerOrder) => {
-    return type === currentFilter.orderBy
-      ? currentFilter.orderDirection
+    return type === filter.orderBy
+      ? filter.orderDirection
       : getDefaultDirection(type)
   }
 
@@ -147,16 +145,13 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
           </h2>
           <div className="filter-and-sort-switch-row">
             <h3>{t('order.showOfflineBanners')}</h3>
-            <Switch
-              checked={!currentFilter.online}
-              onChange={onOnlineChanged}
-            />
+            <Switch checked={!filter.online} onChange={onOnlineChanged} />
           </div>
           {includeOfficial && (
             <div className="filter-and-sort-switch-row">
               <h3>{t('order.showUnofficialBanners')}</h3>
               <Switch
-                checked={!currentFilter.onlyOfficialMissions}
+                checked={!filter.onlyOfficialMissions}
                 onChange={onOfficialChanged}
               />
             </div>
@@ -190,8 +185,8 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
               components={{
                 order: (
                   <Order
-                    orderBy={currentFilter.orderBy}
-                    orderDirection={currentFilter.orderDirection}
+                    orderBy={filter.orderBy}
+                    orderDirection={filter.orderDirection}
                   />
                 ),
               }}
@@ -199,10 +194,10 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
             {' / '}
           </>
         )}
-        {currentFilter.online
+        {filter.online
           ? t('order.text.excludeOffline')
           : t('order.text.includeOffline')}
-        {currentFilter.onlyOfficialMissions && (
+        {filter.onlyOfficialMissions && (
           <>
             {' / '}
             {t('order.onlyOfficial')}

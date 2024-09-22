@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { BannerFilter } from '../../features/banner/filter'
 import { useBannerList } from '../../features/banner/hooks'
 import BannerList from '../banner-list'
@@ -18,6 +18,10 @@ const InfiniteBannerList: FC<InfiniteBannerListProps> = ({
     setFilter(newFilter)
     setMaxPages(1)
   }
+
+  useEffect(() => {
+    onFilterChanged(initialFilter)
+  }, [initialFilter])
 
   return (
     <div>

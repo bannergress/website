@@ -1,3 +1,5 @@
+import { BannerListType } from './types'
+
 export type BannerOrder =
   | 'relevance'
   | 'listAdded'
@@ -19,4 +21,5 @@ export type BannerFilter = {
   proximityLatitude?: number
   proximityLongitude?: number
   author?: string
+  listTypes?: BannerListType
 }
