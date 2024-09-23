@@ -9,6 +9,7 @@ import { BannerOrder, BannerOrderDirection } from '../../features/banner/filter'
 export const hasBothDirections = (type: BannerOrder) => {
   switch (type) {
     case 'relevance':
+    case 'proximityStartPoint':
       return false
     default:
       return true
