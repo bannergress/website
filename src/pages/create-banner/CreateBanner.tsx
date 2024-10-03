@@ -802,8 +802,6 @@ class CreateBanner extends React.Component<
         <LoadingOverlay
           active={status === 'loading'}
           text={i18n!.t('banners.creation.preview.generating')}
-          spinner
-          fadeSpeed={500}
         />
         <h1>{title}</h1>
 

@@ -290,12 +290,7 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
 
   return (
     <div className="account-linking">
-      <LoadingOverlay
-        active={loading}
-        fadeSpeed={300}
-        spinner
-        text={t('account.loading')}
-      />
+      <LoadingOverlay active={loading} text={t('account.loading')} />
       <div>
         <h3>{t('account.linking.title')}</h3>
         {!isAccountLinked(currentUser) && <p>{t('account.linking.none')}</p>}

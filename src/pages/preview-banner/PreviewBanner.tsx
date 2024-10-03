@@ -90,8 +90,6 @@ class PreviewBanner extends React.Component<
           <LoadingOverlay
             active={status === 'loading'}
             text={i18n!.t('banners.review.saving')}
-            spinner
-            fadeSpeed={500}
           />
           <BannerInfoWithMap
             banner={banner}

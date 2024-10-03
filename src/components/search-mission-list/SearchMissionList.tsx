@@ -57,12 +57,7 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
     <Fragment>
       {hasMoreMissions && !initial && (
         <Col>
-          <LoadingOverlay
-            active
-            spinner
-            fadeSpeed={500}
-            text={t('missions.searching')}
-          />
+          <LoadingOverlay active text={t('missions.searching')} />
         </Col>
       )}
     </Fragment>
