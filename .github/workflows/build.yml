@@ -22,5 +22,8 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm run test
-      - name: Bild project
+      - name: Build project
         run: npm run build --if-present
+        env:
+          VITE_API_BASE_URL: dummy
+          VITE_KEYCLOAK_URL: dummy
