@@ -19,7 +19,7 @@
     "keycloak-js": "^26.0.0",
     "leaflet": "^1.9.4",
     "leaflet-loading": "^0.1.24",
-    "leaflet.locatecontrol": "^0.79.0",
+    "leaflet.locatecontrol": "^0.81.1",
     "leaflet.markercluster": "^1.5.3",
     "react": "^18.2.0",
     "react-beforeunload": "^2.6.0",
@@ -55,10 +55,10 @@
     "extends": "react-app"
   },
   "devDependencies": {
-    "@types/leaflet": "^1.9.7",
-    "@types/leaflet-loading": "^0.1.3",
-    "@types/leaflet.locatecontrol": "^0.74.3",
-    "@types/leaflet.markercluster": "^1.5.3",
+    "@types/leaflet": "^1.9.12",
+    "@types/leaflet-loading": "^0.1.4",
+    "@types/leaflet.locatecontrol": "^0.74.6",
+    "@types/leaflet.markercluster": "^1.5.4",
     "@types/node": "^20.11.19",
     "@types/react": "^18.2.34",
     "@types/react-dom": "^18.2.14",
