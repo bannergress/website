@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react'
+import { FC, Fragment, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
@@ -15,12 +15,15 @@ const Agent: FC = () => {
   const { t } = useTranslation()
   const title = `Agent ${agentName}`
 
-  const initialFilter: BannerFilter = {
-    author: agentName,
-    orderBy: 'created',
-    orderDirection: 'DESC',
-    online: true,
-  }
+  const initialFilter: BannerFilter = useMemo(
+    () => ({
+      author: agentName,
+      orderBy: 'created',
+      orderDirection: 'DESC',
+      online: true,
+    }),
+    [agentName]
+  )
 
   return (
     <Fragment>

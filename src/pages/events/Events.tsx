@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 import FooterMain from '../../components/footer-main'
@@ -9,15 +9,18 @@ const Events: FC = () => {
   const { t } = useTranslation()
   const title = t('events.title')
 
-  const currentTimestamp = new Date().toISOString()
+  const currentTimestamp = useMemo(() => new Date().toISOString(), [])
 
-  const initialFilter: BannerFilter = {
-    minEventTimestamp: currentTimestamp,
-    maxEventTimestamp: currentTimestamp,
-    orderBy: 'created',
-    orderDirection: 'DESC',
-    online: true,
-  }
+  const initialFilter: BannerFilter = useMemo(
+    () => ({
+      minEventTimestamp: currentTimestamp,
+      maxEventTimestamp: currentTimestamp,
+      orderBy: 'created',
+      orderDirection: 'DESC',
+      online: true,
+    }),
+    [currentTimestamp]
+  )
 
   return (
     <>

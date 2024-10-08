@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react'
+import { FC, Fragment, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
@@ -18,12 +18,15 @@ const UserBannerList: FC = () => {
   const { t } = useTranslation()
   const title = t('banners.mine', { type: getBannerListTypeText(listType) })
 
-  const initialFilter: BannerFilter = {
-    listTypes: listType,
-    orderBy: 'listAdded',
-    orderDirection: 'DESC',
-    online: undefined,
-  }
+  const initialFilter: BannerFilter = useMemo(
+    () => ({
+      listTypes: listType,
+      orderBy: 'listAdded',
+      orderDirection: 'DESC',
+      online: undefined,
+    }),
+    [listType]
+  )
 
   return (
     <Fragment>
