@@ -12,8 +12,12 @@ const toPrecisionByFactor = (x: number, base: number, precision: number) => {
 }
 
 const roundDuration = (durationSeconds: number) => {
+  if (durationSeconds < 100) {
+    // Less than 100 seconds
+    return toPrecisionByFactor(durationSeconds, 1, 1)
+  }
   if (durationSeconds < SECONDS_IN_MINUTE * 10) {
-    // Less than 10 minutes
+    // Between 100 seconds and 10 minutes
     return toPrecisionByFactor(durationSeconds, 1, 2)
   }
   if (durationSeconds < SECONDS_IN_HOUR * 10) {
