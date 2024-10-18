@@ -142,7 +142,7 @@
   }
 }
 
-.banner-card-picture-container{
+.banner-card-picture-container {
   position: relative;
   display: flex;
 
@@ -150,7 +150,7 @@
     height: 200px;
   }
 
-  .offline-overlay{
+  .offline-overlay {
     font-size: 24px;
     line-height: 18px;
     color: var(--color-light-gray);
@@ -176,9 +176,9 @@
       flex-direction: row;
       background-color: rgba(0, 0, 0, 0.7);
 
-      svg{
+      svg {
         height: 1em;
-        width:1em;
+        width: 1em;
         fill: currentColor;
         margin-right: 0.5em;
       }
@@ -211,7 +211,6 @@
   color: var(--color-blacklist);
 }
 
-
 .banner-card-picture {
   margin: 20px 0;
   display: flex;
@@ -219,10 +218,21 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  width: 100%;
+
   @media only @mobile-detection {
     height: auto;
     aspect-ratio: 2;
   }
+
+  @supports (aspect-ratio: 1/1) {
+    aspect-ratio: 2 / 1;
+  }
+
+  @supports not (aspect-ratio: 1/1) {
+    height: 160px; // 160 Pixel is half of width of .banner-card minus padding
+  }
+
   &.banner-lines-1 {
     @media only @mobile-detection {
       aspect-ratio: 6;
@@ -240,7 +250,7 @@
   max-height: 100%;
   max-width: 100%;
 
-  &>img {
+  & > img {
     max-width: 100%;
   }
 
@@ -284,18 +294,6 @@
 
 // Support for browsers that don't support aspect-ratio yet.
 // Can be removed once this feature is implemented in all major browsers
-
-@supports (aspect-ratio: 1/1) {
-  .banner-card-picture {
-    aspect-ratio: 2 / 1;
-  }
-}
-
-@supports not (aspect-ratio: 1/1) {
-  .banner-card-picture {
-    height: 160px; // 160 Pixel is half of width of .banner-card minus padding
-  }
-}
 
 .banner-card-title,
 .banner-info-item {
