@@ -60,7 +60,7 @@
     "@types/leaflet-loading": "^0.1.4",
     "@types/leaflet.locatecontrol": "^0.74.6",
     "@types/leaflet.markercluster": "^1.5.4",
-    "@types/node": "^20.11.19",
+    "@types/node": "^22.7.7",
     "@types/react": "^18.2.34",
     "@types/react-dom": "^18.2.14",
     "@types/react-helmet": "^6.1.1",
