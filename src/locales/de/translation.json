@@ -6,7 +6,6 @@
       "title": "Ingress Account-Verknüpfung",
       "change": "Verknüpften Account ändern",
       "unlink": "Verknüpfung aufheben",
-      "unlinkWarning": "Da das Ingress Community Forum eingestellt wird, wirst du deinen Account ab dem 1. April 2024 nicht mehr mit deinem Bannergress-Profil verknüpfen können. Trotzdem fortfahren?",
       "link": "Ingress-Account verknüpfen",
       "none": "Kein Account mit deinem Bannergress-Profil verknüpft",
       "linked": "Verknüpfter Account: <agent />",
@@ -16,20 +15,13 @@
         "action": "Weiter"
       },
       "step2": {
-        "title": "2. Code kopieren",
-        "description": "Wir haben einen Code für dich generiert, der dir ermöglicht, \"<span>{{agent}}</span>\" mit deinem Profil zu verknüpfen. Du musst den Code für den nächsten Schritt kopieren.",
+        "title": "2. Nachricht kopieren",
+        "description": "Wir haben eine Nachricht für dich generiert, die dir ermöglicht, \"<span>{{agent}}</span>\" mit deinem Profil zu verknüpfen. Du musst die Nachricht für den nächsten Schritt kopieren.",
         "action": "Kopieren und weiter"
       },
       "step3": {
-        "title": "3. Code posten",
-        "description": "Du musst den Code im Ingress-Community-Forum als Aktivität posten. (Achte darauf, dass du dort angemeldet bist!)",
-        "action": "Weiter zum Forum",
-        "link": "//community.ingress.com/en/activity"
-      },
-      "step4": {
-        "title": "4. Prüfung abschließen",
-        "description": "Hast du deinen Code bereits gepostet? Dann können wir ihn prüfen.",
-        "action": "Prüfen"
+        "title": "3. Nachricht senden",
+        "description": "Du musst die Nachricht in Ingress im fraktionsübergreifenden Chat senden. Danach kann es einige Zeit dauern, bis die Verlinkung abgeschlossen ist. Bitte habe etwas Geduld."
       }
     }
   },
