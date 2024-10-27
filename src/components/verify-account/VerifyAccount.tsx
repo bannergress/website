@@ -82,7 +82,7 @@ const VerifyAccount: FC = () => {
         await handleApiRequest(getUser())
         } catch (e) {
         }
-      }, 10_000)
+      }, 120_000)
       return () => clearTimeout(id)
     }
   }, [verificationMessage, isCopied, handleApiRequest])
