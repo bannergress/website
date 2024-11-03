@@ -1,193 +1,123 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { Button, Carousel, Input } from 'antd'
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { Button, Carousel } from 'antd'
 import { CarouselRef } from 'antd/lib/carousel'
-import { ThunkDispatch, ThunkAction } from 'redux-thunk'
 import { Trans, useTranslation } from 'react-i18next'
 
-import {
-  abortClaimUser,
-  claimUser,
-  unlinkUser,
-  User,
-  verifyUser,
-} from '../../features/user'
-import { UserActionTypes } from '../../features/user/actionTypes'
-import { RootState } from '../../storeTypes'
-import { useRefreshToken } from '../../hooks/RefreshToken'
 import { Agent } from '../agent'
-import { Issue } from '../Issues-list'
 import LoadingOverlay from '../loading-overlay'
 
 import './verify-account.less'
+import { Step1 } from './Step1'
+import { Step2 } from './Step2'
+import { User } from '../../features/user'
+import { ApiResponse } from '../../api'
+import {
+  abortClaimUser,
+  claimUser,
+  getUser,
+  unlinkUser,
+} from '../../features/user/api'
+import { Step3 } from './Step3'
 
-type AppDispatch = ThunkDispatch<RootState, any, UserActionTypes>
-type AppAction = ThunkAction<Promise<any>, RootState, any, UserActionTypes>
+type Status = 'pending' | 'resolved' | 'rejected'
 
-const isAccountLinked = (user: User) => user && user.agent
-const isVerifying = (user: User) => !!user.verificationToken
-
-const VerifyAccount: React.FC<VerifyAccountProps> = ({
-  currentUser,
-  setIssues,
-}) => {
-  const dispatch: AppDispatch = useDispatch()
+const VerifyAccount: FC = () => {
   const slider = useRef<CarouselRef | null>()
+  const [user, setUser] = useState<User>()
+  const [status, setStatus] = useState<Status>('pending')
   const [isClaiming, setIsClaiming] = useState(false)
-  const [agent, setAgent] = useState<string>(currentUser?.verificationAgent)
-  const [loading, setLoading] = useState(false)
-  const refreshToken = useRefreshToken()
+  const [isCopied, setIsCopied] = useState(false)
   const { t } = useTranslation()
 
-  useEffect(() => {
-    if (currentUser.verificationAgent) {
-      setAgent(currentUser.verificationAgent)
-      setIsClaiming(true)
-      if (slider.current) {
-        slider.current.goTo(1)
-      }
-    }
-  }, [currentUser, setAgent, setIsClaiming])
+  const verificationMessage = user?.verificationMessage
+  const verificationAgent = user?.verificationAgent
 
-  const dispatchWithLoading = useCallback(
-    (
-      action: AppAction,
-      onSuccess?: () => void,
-      onError?: (err: any) => void
-    ) => {
-      setLoading(true)
-      dispatch(action)
-        .then(() => {
-          if (onSuccess) onSuccess()
-        })
-        .catch((err) => {
-          if (onError) onError(err)
-        })
-        .finally(() => setLoading(false))
+  const handleApiRequest = useCallback(
+    async (promise: Promise<ApiResponse<User>>) => {
+      setStatus('pending')
+      const result = await promise
+      if (result.ok) {
+        setStatus('resolved')
+        setUser(result.data)
+        setIsClaiming(Boolean(result.data.verificationMessage))
+        if (!result.data.verificationMessage) {
+          setIsCopied(false)
+        }
+      } else {
+        setStatus('rejected')
+      }
     },
-    [dispatch]
+    []
   )
 
-  const onClaim = useCallback(() => {
-    if (currentUser.verificationAgent !== agent) {
-      dispatchWithLoading(
-        claimUser(agent),
-        () => slider.current?.next(),
-        (err) =>
-          setIssues([
-            {
-              key: 'claim',
-              message: err.message,
-              type: 'error',
-              field: 'verify',
-            },
-          ])
-      )
-    } else {
-      slider.current?.next()
-    }
-  }, [currentUser.verificationAgent, agent, dispatchWithLoading, setIssues])
+  const onUnlink = useCallback(
+    () => handleApiRequest(unlinkUser()),
+    [handleApiRequest]
+  )
 
-  const onVerify = useCallback(() => {
-    dispatchWithLoading(
-      verifyUser(),
-      () => {
-        setIsClaiming(false)
-        refreshToken()
-      },
-      (err) =>
-        setIssues([
-          {
-            key: 'verify',
-            message: err.message,
-            type: 'error',
-            field: 'verify',
-          },
-        ])
+  const onStep1Abort = useCallback(() => setIsClaiming(false), [setIsClaiming])
+
+  const onStep1Claim = useCallback(
+    (agent: string) => handleApiRequest(claimUser(agent)),
+    [handleApiRequest]
+  )
+
+  const onStep2Abort = useCallback(
+    () => handleApiRequest(abortClaimUser()),
+    [handleApiRequest]
+  )
+
+  const onStep2Next = useCallback(() => setIsCopied(true), [setIsCopied])
+
+  const onStep3Back = useCallback(() => setIsCopied(false), [setIsCopied])
+
+  useEffect(() => {
+    handleApiRequest(getUser())
+  }, [handleApiRequest])
+
+  useEffect(() => {
+    if (verificationMessage && isCopied) {
+      const id = setInterval(async () => {
+        try {
+        await handleApiRequest(getUser())
+        } catch (e) {
+        }
+      }, 120_000)
+      return () => clearTimeout(id)
+    }
+  }, [verificationMessage, isCopied, handleApiRequest])
+
+  useEffect(() => {
+    if (isClaiming && slider.current) {
+      let page
+      if (verificationMessage && isCopied) {
+        page = 2
+      } else if (verificationMessage) {
+        page = 1
+      } else {
+        page = 0
+      }
+      slider.current.goTo(page)
+    }
+  }, [isClaiming, slider, isCopied, verificationMessage])
+
+  let linkedAccount
+  if (user?.agent) {
+    linkedAccount = (
+      <Trans
+        i18nKey="account.linking.linked"
+        components={{
+          agent: <Agent agent={user.agent} linkToAgentProfile={false} />,
+        }}
+      />
     )
-  }, [dispatchWithLoading, refreshToken, setIssues])
+  } else {
+    linkedAccount = t('account.linking.none')
+  }
 
-  const onUnlinkUser = useCallback(() => {
-    if (confirm(t('account.linking.unlinkWarning'))) {
-      dispatchWithLoading(unlinkUser(), undefined, (err) =>
-        setIssues([
-          {
-            key: 'unlink',
-            message: err.message,
-            type: 'error',
-            field: 'verify',
-          },
-        ])
-      )
-    }
-  }, [dispatchWithLoading, setIssues, t])
-
-  const onAbort = useCallback(() => {
-    if (currentUser.verificationAgent) {
-      dispatchWithLoading(
-        abortClaimUser(currentUser.verificationAgent),
-        () => {
-          setIsClaiming(false)
-          setAgent('')
-        },
-        (err) =>
-          setIssues([
-            {
-              key: 'claim',
-              message: err.message,
-              type: 'error',
-              field: 'verify',
-            },
-          ])
-      )
-    } else {
-      setIsClaiming(false)
-      setAgent('')
-    }
-  }, [currentUser.verificationAgent, dispatchWithLoading, setIssues])
-
-  const getClaimButtons = useCallback(() => {
-    if (isAccountLinked(currentUser)) {
-      return (
-        <div className="change-verification-buttons">
-          <Button
-            className="button-default"
-            onClick={() => setIsClaiming(true)}
-            hidden
-          >
-            {t('account.linking.change')}
-          </Button>
-          <Button className="button-default" onClick={onUnlinkUser}>
-            {t('account.linking.unlink')}
-          </Button>
-        </div>
-      )
-    }
-    return (
-      <div>
-        <Button
-          className="positive-action-button"
-          onClick={() => setIsClaiming(true)}
-          hidden
-        >
-          {t('account.linking.link')}
-        </Button>
-      </div>
-    )
-  }, [currentUser, onUnlinkUser, t])
-
-  const onNext = useCallback(() => slider.current?.next(), [])
-
-  const onBack = useCallback(() => slider.current?.prev(), [])
-
-  const onCopyToken = useCallback(() => {
-    navigator.clipboard.writeText(currentUser.verificationToken)
-    onNext()
-  }, [currentUser.verificationToken, onNext])
-
-  const getCarousel = useCallback(
-    () => (
+  let actions
+  if (isClaiming) {
+    actions = (
       <Carousel
         ref={(c) => {
           slider.current = c
@@ -196,126 +126,56 @@ const VerifyAccount: React.FC<VerifyAccountProps> = ({
         swipe={false}
         draggable={false}
       >
-        <div>
-          {(isClaiming || isVerifying(currentUser)) && (
-            <>
-              <h3>{t('account.linking.step1.title')}</h3>
-              <p>{t('account.linking.step1.description')}</p>
-              <div className="input-agent-name">
-                <Input
-                  value={agent}
-                  onChange={(e) => setAgent(e.target.value)}
-                />
-              </div>
-              <div className="verify-steps-buttons">
-                <Button className="button-default" onClick={onAbort}>
-                  {t('buttons.abort')}
-                </Button>
-                <Button
-                  className="claim-button"
-                  onClick={onClaim}
-                  disabled={!agent || agent.length < 3}
-                >
-                  {t('account.linking.step1.action')}
-                </Button>
-              </div>
-            </>
-          )}
-        </div>
-        <div>
-          <h3>{t('account.linking.step2.title')}</h3>
-          <p>
-            <Trans
-              i18nKey="account.linking.step2.description"
-              values={{ agent: currentUser.verificationAgent }}
-              components={{ span: <span className="verify-account-agent" /> }}
-            />
-          </p>
-          <div className="input-agent-token">
-            <Input value={currentUser.verificationToken} disabled />
-          </div>
-          <div className="verify-steps-buttons">
-            <Button className="button-default" onClick={onBack}>
-              {t('buttons.back')}
-            </Button>
-            <Button className="positive-action-button" onClick={onCopyToken}>
-              {t('account.linking.step2.action')}
-            </Button>
-          </div>
-        </div>
-        <div>
-          <h3>{t('account.linking.step3.title')}</h3>
-          <p>{t('account.linking.step3.description')}</p>
-          <div className="verify-steps-buttons">
-            <Button className="button-default" onClick={onBack}>
-              {t('buttons.back')}
-            </Button>
-            <Link
-              className="forum-link"
-              to={t('account.linking.step3.link')}
-              target="_blank"
-              onClick={onNext}
-            >
-              {t('account.linking.step3.action')}
-            </Link>
-          </div>
-        </div>
-        <div>
-          <h3>{t('account.linking.step4.title')}</h3>
-          <p>{t('account.linking.step4.description')}</p>
-          <div className="verify-steps-buttons">
-            <Button className="button-default" onClick={onBack}>
-              {t('buttons.back')}
-            </Button>
-            <Button className="positive-action-button" onClick={onVerify}>
-              {t('account.linking.step4.action')}
-            </Button>
-          </div>
-        </div>
+        <Step1 onClaim={onStep1Claim} onAbort={onStep1Abort} />
+        <Step2
+          verificationMessage={verificationMessage}
+          verificationAgent={verificationAgent}
+          onNext={onStep2Next}
+          onAbort={onStep2Abort}
+        />
+        <Step3 onBack={onStep3Back} />
       </Carousel>
-    ),
-    [
-      agent,
-      currentUser,
-      isClaiming,
-      onAbort,
-      onBack,
-      onClaim,
-      onCopyToken,
-      onNext,
-      onVerify,
-      t,
-    ]
-  )
+    )
+  } else if (user?.agent) {
+    actions = (
+      <div className="change-verification-buttons">
+        <Button
+          className="button-default"
+          onClick={() => setIsClaiming(true)}
+        >
+          {t('account.linking.change')}
+        </Button>
+        <Button className="button-default" onClick={onUnlink}>
+          {t('account.linking.unlink')}
+        </Button>
+      </div>
+    )
+  } else {
+    actions = (
+      <div>
+        <Button
+          className="positive-action-button"
+          onClick={() => setIsClaiming(true)}
+        >
+          {t('account.linking.link')}
+        </Button>
+      </div>
+    )
+  }
 
   return (
     <div className="account-linking">
-      <LoadingOverlay active={loading} text={t('account.loading')} />
+      <LoadingOverlay
+        active={status === 'pending'}
+        text={t('account.loading')}
+      />
       <div>
         <h3>{t('account.linking.title')}</h3>
-        {!isAccountLinked(currentUser) && <p>{t('account.linking.none')}</p>}
-        {isAccountLinked(currentUser) && (
-          <p>
-            <Trans
-              i18nKey="account.linking.linked"
-              components={{
-                agent: (
-                  <Agent agent={currentUser.agent} linkToAgentProfile={false} />
-                ),
-              }}
-            />
-          </p>
-        )}
-        {!isClaiming && !isVerifying(currentUser) && getClaimButtons()}
-        {isClaiming && getCarousel()}
+        <p>{linkedAccount}</p>
+        {actions}
       </div>
     </div>
   )
-}
-
-export interface VerifyAccountProps {
-  currentUser: User
-  setIssues: (issues: Array<Issue>) => void
 }
 
 export default VerifyAccount

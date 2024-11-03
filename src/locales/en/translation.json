@@ -6,7 +6,6 @@
       "title": "Ingress account linking",
       "change": "Change Linked Account",
       "unlink": "Unlink Account",
-      "unlinkWarning": "Due to the shutdown of the Ingress Community Forum, you won't be able to link your account after April 1st, 2024. Continue anyway?",
       "link": "Link Ingress Account",
       "none": "No account linked to your Bannergress profile",
       "linked": "Account linked: <agent />",
@@ -16,20 +15,13 @@
         "action": "Continue"
       },
       "step2": {
-        "title": "2. Copy the token",
-        "description": "We have generated a token for you that allows to link \"<span>{{agent}}</span>\" to your account. You need to copy this token for the next step.",
+        "title": "2. Copy the message",
+        "description": "We have generated a message for you that allows to link \"<span>{{agent}}</span>\" to your account. You need to copy this message for the next step.",
         "action": "Copy and continue"
       },
       "step3": {
-        "title": "3. Post the token",
-        "description": "You need to post the token as an activity on the Ingress Community Forum. (Make sure you are logged in there!)",
-        "action": "Take me there and continue",
-        "link": "//community.ingress.com/en/activity"
-      },
-      "step4": {
-        "title": "4. Complete verification",
-        "description": "Have you posted your token yet? Let us check.",
-        "action": "Verify"
+        "title": "3. Send the message",
+        "description": "You need to send the message to the Ingress in-game cross-faction chat. After that, it may take some time until the account linking is complete. Please be patient."
       }
     }
   },
