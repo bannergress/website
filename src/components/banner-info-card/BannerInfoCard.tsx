@@ -411,6 +411,9 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
     'li',
     'a',
   ]
+  const descriptionSeparated = banner?.description?.split(' ')
+  const descriptionLength = banner?.description?.length
+
   return (
     <div className="banner-info-card">
       {getEvent(banner, t)}
@@ -423,10 +426,26 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
           {banner.warning}
         </Markdown>
       )}
-      {banner.description && (
-        <Markdown allowedElements={allowedElements} unwrapDisallowed={true}>
-          {banner.description}
-        </Markdown>
+
+      {banner.description && (descriptionLength as number) >= 12 && (
+        <details className={'banner-info-card__mission-description'}>
+          <summary className={'banner-info-card__start-text'}>
+            {descriptionSeparated?.slice(0, 12).join(' ')}
+            <span className={'banner-info-card__mission-description-dots'}> ...</span>
+            <p className={'banner-info-card__mission-description-show-more'}>
+              <Trans i18nKey="banners.showMore" />
+            </p>
+            <p className={'banner-info-card__mission-description-show-less'}>
+              <Trans i18nKey="banners.showLess" />
+            </p>
+          </summary>
+          <p className={'banner-info-card__end-text'}>
+            &nbsp;
+            {descriptionSeparated
+              ?.slice(12, descriptionSeparated.length)
+              .join(' ')}
+          </p>
+        </details>
       )}
       <IfUserLoggedIn>{getCreatedBy(banner, t)}</IfUserLoggedIn>
       <IfUserLoggedOut>
