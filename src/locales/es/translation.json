@@ -40,6 +40,8 @@
     "exitFullscreen": "<icon /> Minimizar",
     "confirmDelete": "¿Estás seguro de que quieres borrar este banner?",
     "confirmNotDone": "¿Realmente eliminar la marca de completados?",
+    "showMore": "Mostrar más...",
+    "showLess": "Mostrar menos...",
     "creation": {
       "edit": "Editar banner",
       "new": "Crear banner",

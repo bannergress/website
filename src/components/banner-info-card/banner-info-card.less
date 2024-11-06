@@ -19,9 +19,70 @@
     width: auto;
   }
 
-
   p {
     white-space: pre-wrap;
+  }
+
+  &__mission-description {
+    display: inline;
+    position: relative;
+    margin-bottom: 45px;
+    width: 100%;
+
+    &[open] {
+      .banner-info-card__mission-description-dots,
+      .banner-info-card__mission-description-show-more {
+        display: none;
+      }
+
+      .banner-info-card__mission-description-show-less {
+        display: block;
+      }
+    }
+  }
+
+  &__mission-description-show-less {
+    display: none;
+  }
+
+  &__mission-description-show-less,
+  &__mission-description-show-more {
+    cursor: pointer;
+    position: absolute;
+    float: right;
+    margin: initial;
+    bottom: -37px;
+    right: 0;
+    font-size: 12px;
+    padding: 3px 7px;
+    background-color: var(--color-dark-gray);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    box-shadow: 2px 1000px 1px var(--color-black) inset;
+    transition: linear-gradient ease 0.6s;
+    text-align: center;
+    color: var(--color-white);
+    background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(180deg, var(--color-border-dark), var(--color-border-light));
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: #165996;
+      }
+    }
+  }
+
+  &__start-text {
+    display: inline;
+  }
+
+  &__end-text {
+    display: inline;
   }
 
   .info-row,
