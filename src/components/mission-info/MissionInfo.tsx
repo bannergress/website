@@ -14,7 +14,7 @@ import SVGExplorer from '../../assets/img/icons/explorer.svg?react'
 import SVGTimer from '../../assets/img/icons/timer.svg?react'
 import SVGIntel from '../../assets/img/icons/intel.svg?react'
 
-import './mission-info.less'
+import './MissionInfo.scss'
 import { isMobile } from '../../features/utils/os'
 
 const MissionList: React.FC<MissionInfoProps> = ({ mission }) => {

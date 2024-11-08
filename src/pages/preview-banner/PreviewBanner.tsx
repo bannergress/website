@@ -16,7 +16,7 @@ import {
 import LoadingOverlay from '../../components/loading-overlay'
 import { BannerInfoWithMap } from '../../components/banner-info-with-map'
 
-import './preview-banner.less'
+import './PreviewBanner.scss'
 
 class PreviewBanner extends React.Component<
   PreviewBannerProps,

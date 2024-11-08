@@ -1,0 +1,29 @@
+@use "src/assets/style/helper/mixins" as *;
+
+.banner-list {
+  align-content: flex-start;
+  align-items: flex-start;
+  column-gap: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 20px;
+
+  .banner-list-entry {
+    max-width: 90vw;
+
+    @include media-max-md {
+      width: 360px;
+    }
+  }
+
+  .banner-card-link {
+    height: 100%;
+    width: 100%;
+    border: none;
+    background: none;
+    text-align: initial;
+    font-size: initial;
+  }
+}

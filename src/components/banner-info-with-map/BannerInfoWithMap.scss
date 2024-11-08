@@ -1,4 +1,4 @@
-@mobile-detection: ~' screen and (max-width: 880px) ';
+@import "src/assets/style/helper/mixins";
 
 .banner-info-with-map-container {
   height: 100%;
@@ -8,7 +8,7 @@
   padding-bottom: 40px;
   padding-right: 40px;
 
-  @media only @mobile-detection {
+  @include media-max-md {
     display: flex !important;
     flex-direction: column !important;
     height: inherit !important;
@@ -16,7 +16,7 @@
   }
 
   .banner-info-with-map {
-    @media only @mobile-detection {
+    @include media-max-md {
       margin: 0 !important;
       padding: 0 !important;
       justify-content: center !important;
@@ -25,7 +25,7 @@
     }
 
     .banner-info {
-      @media only @mobile-detection {
+      @include media-max-md {
         min-height: 0 !important;
         padding: 0.6em !important;
         width: 100% !important;
@@ -38,26 +38,26 @@
 
     .banner-info-left-pane-missions {
       .banner-card {
-        @media only @mobile-detection {
+        @include media-max-md {
           display: none !important;
         }
       }
     }
 
     .mission-card {
-      @media only @mobile-detection {
+      @include media-max-md {
         max-width: none !important;
       }
     }
 
     .banner-info-additional {
-      @media only @mobile-detection {
+      @include media-max-md {
         height: 100% !important;
       }
     }
 
     .leaflet-container {
-      @media only @mobile-detection {
+      @include media-max-md {
         height: 100% !important;
         width: 100% !important;
         min-height: 0 !important;
@@ -66,20 +66,20 @@
   }
 
   .banner-info-card {
-    @media only @mobile-detection {
+    @include media-max-md {
       margin-top: 0 !important;
     }
   }
 
   .ant-tabs-nav {
-    @media only @mobile-detection {
+    @include media-max-md {
       display: none !important;
       margin: none !important;
     }
   }
 
   .ant-tabs-tabpane {
-    @media only @mobile-detection {
+    @include media-max-md {
       margin-top: 0;
     }
   }

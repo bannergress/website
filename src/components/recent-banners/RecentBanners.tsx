@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import BannerList from '../banner-list'
 import LoadingOverlay from '../loading-overlay'
 
-import './recent-banners.less'
+import './RecentBanners.scss'
 import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
 import { useBannerList } from '../../features/banner/hooks'
 import { BannerFilter } from '../../features/banner/filter'

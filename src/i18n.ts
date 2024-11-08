@@ -2,7 +2,7 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
 
-const supportedLngs = {
+const supportedLanguages = {
   de: /^de(?:-.*)?$/,
   en: /^en(?:-.*)?$/,
   es: /^es(?:-.*)?$/,
@@ -11,7 +11,7 @@ const supportedLngs = {
 const getLanguageToUse = () => {
   const languages = navigator.languages
   for (const language of languages) {
-    for (const pair of Object.entries(supportedLngs)) {
+    for (const pair of Object.entries(supportedLanguages)) {
       const code = pair[0]
       const regex = pair[1]
       if (language.match(regex)) return code

@@ -1,4 +1,4 @@
-@mobile-detection: ~" screen and (max-width: 880px) ";
+@import "src/assets/style/helper/mixins";
 
 .browser-icon {
   color: var(--color-white-light);
@@ -15,7 +15,7 @@
     flex: 1;
     max-width: 400px;
 
-    @media only @mobile-detection {
+    @include media-max-md {
       display: none;
     }
   }
@@ -23,7 +23,7 @@
   .place-accordion {
     display: none;
 
-    @media only @mobile-detection {
+    @include media-max-md {
       display: block;
     }
   }

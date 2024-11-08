@@ -6,7 +6,7 @@ import { getExternalLinkAttributes } from '../../features/utils'
 import SVGTelegram from '../../assets/img/icons/telegram-bg.svg?react'
 import SVGIngress from '../../assets/img/icons/intel.svg?react'
 
-import './footer.less'
+import './FooterMain.scss'
 
 const FooterMain: React.FC = () => (
   <div className="footer-main">

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Place } from '../../features/place'
 import PlaceEntry from '../place-list/PlaceEntry'
 
-import './place-accordion-entry.less'
+import './PlaceAccordionEntry.scss'
 import SVGArea from '../../assets/img/icons/area.svg?react'
 
 export const PlaceAccordionEntry: FC<PlaceAccordionEntryProps> = ({

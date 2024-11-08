@@ -14,7 +14,7 @@ import SVGExplorer from '../../assets/img/icons/explorer.svg?react'
 import SVGWarningTriangle from '../../assets/img/icons/warningtriangle.svg?react'
 import SVGPointer from '../../assets/img/icons/pointer.svg?react'
 
-import './banner-card.less'
+import './BannerCard.scss'
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL
 

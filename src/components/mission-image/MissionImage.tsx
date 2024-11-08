@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { isPlaceholder, Mission } from '../../features/mission'
 import { getSizedImageUrl } from '../../features/utils'
 
-import './mission-image.less'
+import './MissionImage.scss'
 
 const MissionImage: FC<MissionImageProps> = ({ mission }) => {
   return (

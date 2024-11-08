@@ -8,7 +8,7 @@ import SVGMap from '../../assets/img/icons/map.svg?react'
 import SVGHelp from '../../assets/img/icons/help.svg?react'
 import SVGAdd from '../../assets/img/icons/add.svg?react'
 
-import './menu-main.less'
+import './MenuMain.scss'
 
 const MenuMain: React.FC = () => {
   const { t } = useTranslation(undefined, { keyPrefix: 'menu' })

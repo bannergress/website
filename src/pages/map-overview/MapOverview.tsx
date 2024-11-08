@@ -21,7 +21,7 @@ import BannerList from '../../components/banner-list'
 import BannersMap from '../../components/banners-map'
 import BannersAccordion from '../../components/banners-accordion'
 
-import './map.less'
+import './MapOverview.scss'
 import { BannerFilter } from '../../features/banner/filter'
 import BannerOrderChooser from '../../components/banner-order-chooser'
 import { SettingsState } from '../../features/settings/types'

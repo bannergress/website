@@ -5,7 +5,7 @@ import UserPicture from '../../components/login/user-picture'
 import UserName from '../../components/login/user-name'
 import { VerifyAccount } from '../../components/verify-account'
 
-import './account.less'
+import './Account.scss'
 
 const Account: FC = () => {
   const { t } = useTranslation()

@@ -18,7 +18,7 @@ import BannerListTypeNavigation from '../banner-list-type-navigation'
 import BannerList from '../banner-list'
 import IfUserLoggedIn from '../login/if-user-logged-in'
 
-import './user-banner-list-preview.less'
+import './UserBannerListPreview.scss'
 import { BannerFilter } from '../../features/banner/filter'
 
 class UserBannerListPreview extends React.Component<

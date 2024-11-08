@@ -3,7 +3,7 @@ import { Place, PlaceSortOrder } from '../../features/place'
 
 import { PlaceAccordionPage } from './PlaceAccordionPage'
 
-import './place-accordion.less'
+import './PlaceAccordion.scss'
 
 export const PlaceAccordion: FC<PlaceAccordionProps> = ({
   selectedPlaces,

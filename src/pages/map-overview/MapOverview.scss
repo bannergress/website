@@ -1,4 +1,4 @@
-@mobile-detection: ~" screen and (max-width: 880px) ";
+@import "src/assets/style/helper/mixins";
 
 .map-overview {
   height: 100%;
@@ -16,7 +16,7 @@
   .map-explorer {
     width: calc(100% - 420px);
 
-    @media only @mobile-detection {
+    @include media-max-md {
       width: 100% !important;
       height: 100%;
       display: flex;

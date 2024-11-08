@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Step } from '../../features/mission'
 import StepCard from '../step-card'
 
-import './step-list.less'
+import './StepList.scss'
 
 const StepList: FC<StepListProps> = ({ steps }) => {
   const { t } = useTranslation()

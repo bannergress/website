@@ -1,19 +1,19 @@
-@mobile-detection: ~' screen and (max-width: 880px) ';
+@use "helper/mixins" as *;
 
 .hide-on-mobile {
-  @media only @mobile-detection {
+  @include media-max-md {
     display: none !important;
   }
 }
 
 .banner-count-place {
-  @media only @mobile-detection {
+  @include media-max-md {
     display: none;
   }
 }
 
 .hide-on-desktop {
-  @media not @mobile-detection {
+  @include media-min-md {
     display: none !important;
   }
 }

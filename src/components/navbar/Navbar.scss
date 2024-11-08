@@ -1,4 +1,4 @@
-@mobile-detection: ~' screen and (max-width: 880px) ';
+@import "src/assets/style/helper/mixins";
 
 .top-menu {
   display: flex;
@@ -19,7 +19,7 @@
   }
 
   .menu-main {
-    @media only @mobile-detection {
+    @include media-max-md {
       display: none;
     }
   }
@@ -39,7 +39,7 @@
   background-repeat: no-repeat;
   background-position: left center;
 
-  @media only @mobile-detection {
+  @include media-max-md {
     width: 50vw;
   }
 }

@@ -1,11 +1,7 @@
-@import url(../../App.less);
+@import "src/assets/style/helper/mixins";
 
-@mobile-detection: ~' screen and (max-width: 880px) ';
-@mobile-l-detection: ~' screen and (min-width: 426px) ';
-
-// Start Temporary styles for list types. Not final yet.
-
-.list-style-background() {
+/*Start Temporary styles for list types. Not final yet.*/
+@mixin list-style-background {
   content: ' ';
   z-index: 10;
   display: block;
@@ -18,8 +14,7 @@
   border-radius: 5px;
 }
 
-// End temporary Styles ^^
-
+/*End temporary Styles*/
 .banner-circle {
   display: flex;
   align-items: center;
@@ -47,7 +42,7 @@
   &.list-style {
     &-todo {
       &:after {
-        .list-style-background();
+        @include list-style-background;
         background: rgba(var(--color-todo), 0.05);
         border: 1px solid var(--color-todo);
       }
@@ -55,7 +50,7 @@
 
     &-done {
       &:after {
-        .list-style-background();
+        @include list-style-background;
         background: rgba(var(--color-done), 0.05);
         border: 1px solid var(--color-done);
       }
@@ -63,7 +58,7 @@
 
     &-blacklist {
       &:after {
-        .list-style-background();
+        @include list-style-background;
         background: rgba(var(--color-blacklist), 0.05);
         border: 1px solid var(--color-blacklist);
       }
@@ -147,7 +142,7 @@
   display: flex;
   justify-content: center;
 
-  @media only @mobile-l-detection {
+  @include media-min-xs {
     height: 200px;
   }
 
@@ -226,21 +221,22 @@
   }
 
   @supports not (aspect-ratio: 1/1) {
-    height: 160px; // 160 Pixel is half of width of .banner-card minus padding
+    /*160 Pixel is half of width of .banner-card minus padding*/
+    height: 160px;
   }
 
-  @media only @mobile-detection {
+  @include media-max-md {
     height: auto;
     aspect-ratio: 2;
   }
   &.banner-lines-1 {
-    @media only @mobile-detection {
+    @include media-max-md {
       aspect-ratio: 6;
     }
   }
 
   &.banner-lines-2 {
-    @media only @mobile-detection {
+    @include media-max-md {
       aspect-ratio: 3;
     }
   }

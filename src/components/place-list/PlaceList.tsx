@@ -5,7 +5,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Place, PlaceSortOrder, sortPlaces } from '../../features/place'
 import PlaceEntry from './PlaceEntry'
 
-import './place-list.less'
+import './PlaceList.scss'
 
 const PlaceList: FC<PlaceListProps> = ({
   title,

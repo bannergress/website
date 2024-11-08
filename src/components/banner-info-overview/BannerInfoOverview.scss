@@ -20,17 +20,17 @@
       margin-top: 15px;
     }
 
-    // Hide line below the buttons
+    /*Hide line below the buttons*/
     .ant-tabs-nav::before {
       border: none;
     }
 
-    // Hide overflow button. We don't need it.
-    // The screen is never too small to show both buttons
-    // If we leave it, the screen flackers when resizing the window
-    // because it is constantly shown and hidden. An alternative would be to
-    // make the width of the ant-tabs-nav-list smaller or givt it a right margin
-    // or padding
+    /*Hide overflow button. We don't need it.*/
+    /*The screen is never too small to show both buttons*/
+    /*If we leave it, the screen flackers when resizing the window*/
+    /*because it is constantly shown and hidden. An alternative would be to*/
+    /*make the width of the ant-tabs-nav-list smaller or givt it a right margin*/
+    /*or padding*/
     .ant-tabs-nav-more {
       display: none;
     }

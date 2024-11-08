@@ -27,7 +27,7 @@ import MenuMain from './components/menu-main'
 import Navbar from './components/navbar'
 
 import './i18n'
-import './App.less'
+import './App.scss'
 import Events from './pages/events/Events'
 
 const App: React.FC = () => {

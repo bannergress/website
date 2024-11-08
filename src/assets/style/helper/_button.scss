@@ -42,9 +42,13 @@
         linear-gradient(0deg, var(--color-border-dark), var(--color-border-light)) !important;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
-.positive-action-button {
+@mixin positive-action-button {
   background: var(--color-positive-green) !important;
   color: var(--color-white) !important;
   padding: 0.5em 2em;

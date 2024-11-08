@@ -1,4 +1,4 @@
-@mobile-detection: ~' screen and (max-width: 880px) ';
+@use "src/assets/style/helper/mixins" as *;
 
 .home {
   align-items: center;
@@ -16,7 +16,7 @@
   max-width: 1120px;
   margin: 2em;
 
-  @media only @mobile-detection {
+  @include media-max-md {
     margin: 0.4rem;
   }
 }

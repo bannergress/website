@@ -5,7 +5,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { BannerType } from '../../features/banner'
 import SVGHelp from '../../assets/img/icons/help-round.svg?react'
 
-import './advanced-options.less'
+import './AdvancedOptions.scss'
 import { DatePicker } from '../date-picker/DatePicker'
 import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
 

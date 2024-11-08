@@ -3,7 +3,7 @@ import { FC, useEffect, useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
 import Spinner from './Spinner'
-import './loading-overlay.less'
+import './LoadingOverlay.scss'
 
 export const LoadingOverlay: FC<LoadingOverlayProps> = ({ active, text }) => {
   const ref = useRef<HTMLDivElement>(null)

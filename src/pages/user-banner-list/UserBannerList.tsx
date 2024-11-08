@@ -11,7 +11,7 @@ import FooterMain from '../../components/footer-main'
 import LoginRequired from '../../components/login/login-required'
 import InfiniteBannerList from '../../components/infinite-banner-list/InfiniteBannerList'
 
-import './user-banner-list.less'
+import './UserBannerList.scss'
 
 const UserBannerList: FC = () => {
   const { listType } = useParams<{ listType: BannerListType }>()

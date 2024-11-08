@@ -50,7 +50,7 @@ import SVGCross from '../../assets/img/icons/cross.svg?react'
 import SVGHelp from '../../assets/img/icons/help-round.svg?react'
 import { getBannerIssues, MAX_MISSIONS } from './getBannerIssues'
 
-import './create-banner.less'
+import './CreateBanner.scss'
 import { MissionFilter } from '../../features/mission/filter'
 
 class CreateBanner extends React.Component<

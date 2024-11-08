@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import UserPicture from '../login/user-picture'
 import SVGUpArrow from '../../assets/img/icons/up-arrow.svg?react'
 
-import './menu-user.less'
+import './MenuUser.scss'
 
 const MenuUser: React.FC<MenuUserProps> = ({ logout }) => {
   const history = useHistory()

@@ -1,0 +1,151 @@
+:root {
+  @property --color-white {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #fff;
+  }
+  @property --color-white-light {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #eaeaea;
+  }
+  @property --color-black {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #000;
+  }
+  @property --color-light-black {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #1b1b1b;
+  }
+  @property --color-gray {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #888888;
+  }
+  @property --color-light-gray {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #d3d3d3;
+  }
+  @property --color-dark-gray {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #2e2e2e;
+  }
+  @property --color-todo {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #ffe381;
+  }
+  @property --color-done {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #70c03f;
+  }
+  @property --color-blacklist {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #ef5555;
+  }
+
+  @property --color-pin {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #6832da;
+  }
+
+  @property --color-warning {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #ffb21d;
+  }
+  @property --color-error {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #ef5555;
+  }
+  @property --color-missing {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #ff2f2f;
+  }
+  @property --primary-color {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #1da57a;
+  }
+
+  @property --link-color {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #1da57a;
+  }
+  @property --color-active-green {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #0ca589;
+  }
+  @property --body-background {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #0b0c0d;
+  }
+  @property --border-color-base {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #004f4a;
+  }
+  @property --scrollbar-color {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #969696;
+  }
+  @property --color-panel-bg {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #404040;
+  }
+  @property --color-border-dark {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #109393;
+  }
+  @property --color-positive-green {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #077561;
+  }
+  @property --color-border-light {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #15d4b2;
+  }
+  @property --color-positive-green-light {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #16d4b2;
+  }
+  @property --color-enlightened {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #02bf02;
+  }
+  @property --color-resistance {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #0492d0;
+  }
+
+  @property --card-head-padding {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: 0.6rem;
+  }
+  @property --card-padding-base {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: 0.6rem;
+  }
+}

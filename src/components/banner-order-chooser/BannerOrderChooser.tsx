@@ -4,7 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 
 import SVGBackArrowSmall from '../../assets/img/icons/back-arrow-small.svg?react'
 
-import './banner-order-chooser.less'
+import './BannerOrderChooser.scss'
 import { BannerFilter, BannerOrder } from '../../features/banner/filter'
 import Order, { hasBothDirections } from './Order'
 import Switch from '../switch/Switch'

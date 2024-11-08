@@ -9,7 +9,7 @@ import { getExternalLinkAttributes } from '../../features/utils'
 
 import SVGTelegram from '../../assets/img/icons/telegram.svg?react'
 
-import './help.less'
+import './Help.scss'
 
 const Help: React.FC = () => {
   const { t } = useTranslation()

@@ -18,7 +18,7 @@ import {
 import LoadingOverlay from '../../components/loading-overlay'
 import { BannerInfoWithMap } from '../../components/banner-info-with-map'
 
-import './banner-info.less'
+import './BannerInfo.scss'
 
 class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
   constructor(props: BannerInfoProps) {

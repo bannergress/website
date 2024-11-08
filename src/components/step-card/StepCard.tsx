@@ -7,7 +7,7 @@ import {
   getExternalLinkAttributes,
 } from '../../features/utils'
 
-import './step-card.less'
+import './StepCard.scss'
 
 const getStepNameLink = (title: string, poi?: POI) => {
   if (poi && poi.type !== 'unavailable') {
