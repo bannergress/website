@@ -1,14 +1,13 @@
 .banner-advanced-options {
-
   h4 {
-    display: flex;
     column-gap: 5px;
+    display: flex;
 
     svg {
       align-self: flex-start;
 
       path {
-        fill: white;
+        fill: var(--color-white);
       }
     }
   }
@@ -22,16 +21,16 @@
   }
 
   .date-picker-hidden {
-    position: absolute;
-    visibility: hidden;
-    width: 0;
     height: 0;
+    position: absolute;
     right: 0;
     top: 0;
+    visibility: hidden;
+    width: 0;
   }
 
   .date-picker-visible {
-    width: 100%;
     margin-bottom: 5px;
+    width: 100%;
   }
 }

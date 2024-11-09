@@ -1,40 +1,39 @@
-@import '../../index';
-@import '../../assets/style/helper/button';
+@use '/src/assets/style/helper/button' as *;
 
 .account-linking {
-  width: 100%;
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
-  align-items: left;
   margin-top: 20px;
   row-gap: 10px;
+  width: 100%;
 
   >div {
     max-width: 500px;
   }
 
   p {
-    margin: 0;
     font-size: 16px;
+    margin: 0;
   }
 
   .change-verification-buttons {
+    column-gap: 10px;
     display: flex;
     flex-direction: row;
-    column-gap: 10px;
     margin-top: 10px;
   }
 
   .input-agent-name,
   .input-agent-token {
+    column-gap: 10px;
     display: flex;
     flex-direction: row;
-    column-gap: 10px;
     margin-top: 10px;
 
     input {
-      width: 100%;
       height: 36px;
+      width: 100%;
     }
   }
 
@@ -46,10 +45,10 @@
   }
 
   .verify-steps-buttons {
-    margin-top: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-top: 20px;
   }
 
   .verify-account-agent {

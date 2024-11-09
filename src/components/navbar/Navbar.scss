@@ -1,16 +1,16 @@
-@import "src/assets/style/helper/mixins";
+@use "/src/assets/style/helper/mixins" as *;
 
 .top-menu {
+  align-items: center;
+  background: var(--color-black);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  background: var(--color-black);
   padding: 5px 10px;
 
   > div {
-    display: flex;
     align-items: center;
+    display: flex;
 
     .search-bar {
       margin-right: 45px;
@@ -25,19 +25,19 @@
   }
 
   .brand-menu {
-    max-width: 329px;
     flex: 1;
+    max-width: 329px;
   }
 }
 
 .brand-logo {
-  display: flex;
-  height: 57px;
-  flex-grow: 1;
-  min-width: 150px;
-  background-size: contain;
-  background-repeat: no-repeat;
   background-position: left center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: flex;
+  flex-grow: 1;
+  height: 57px;
+  min-width: 150px;
 
   @include media-max-md {
     width: 50vw;
@@ -45,39 +45,34 @@
 }
 
 .mobile-search-bar {
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-left: 2em;
-  padding-right: 2em;
   display: flex;
+  padding: 0.5em 2em;
 }
 
 .mobile-search-button-container {
   display: flex;
-  min-width: 70px;
   height: 60px;
+  min-width: 70px;
   transition: background-color 0.3s;
 
   .mobile-search-button {
-    background: none;
-    color: inherit;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-
-    display: flex;
-    justify-content: center;
     align-items: center;
-
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    font: inherit;
     height: 100%;
+    justify-content: center;
+    outline: inherit;
+    padding: 0;
     width: 100%;
 
     .search-button-icon {
-      width: 24px;
-      height: 24px;
       fill: var(--color-white-light);
+      height: 24px;
+      width: 24px;
     }
   }
 }
@@ -90,7 +85,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   .mobile-search-button-container:hover {
-    background: rgba(29, 165, 122, 0.3);
+    background: rgb(29 165 122 / 0.3);
+
     .search-button-icon {
       fill: white;
     }

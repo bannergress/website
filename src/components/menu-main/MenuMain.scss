@@ -1,34 +1,16 @@
-@import "src/assets/style/helper/mixins";
+@use "/src/assets/style/helper/mixins" as *;
 
 .menu-main {
   display: flex;
 
-  & > a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-white-light);
-    padding: 5px;
-    min-width: 70px;
-    transition: background-color 0.3s;
-
-    &.active {
-      color: var(--color-active-green);
-
-      & > .icon {
-        fill: var(--color-active-green);
-      }
-    }
-
-    & > .icon {
-      fill: var(--color-white-light);
-    }
+  .icon {
+    height: 24px;
+    width: 24px;
   }
 
-  @media (hover: hover) and (pointer: fine) {
+  @media (hover: hover) and (pointer: fine) { /* stylelint-disable-line */
     & a:hover {
-      background: rgba(29, 165, 122, 0.3);
+      background: rgb(29 165 122 / 0.3);
       color: var(--color-white);
 
       & > .icon {
@@ -37,16 +19,34 @@
     }
   }
 
-  .icon {
-    width: 24px;
-    height: 24px;
+  & > a {
+    align-items: center;
+    color: var(--color-white-light);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 70px;
+    padding: 5px;
+    transition: background-color 0.3s;
+
+    & > .icon {
+      fill: var(--color-white-light);
+    }
+
+    &.active {
+      color: var(--color-active-green);
+
+      & > .icon {
+        fill: var(--color-active-green);
+      }
+    }
   }
 }
 
 .bottom-menu {
   background: var(--color-black);
-  padding: 5px 10px;
   display: none;
+  padding: 5px 10px;
 
   @include media-max-md {
     display: block;
@@ -60,13 +60,13 @@
     a {
       @include media-max-md {
         flex: 1;
-        min-width: 0 !important;
+        min-width: 0 !important; /* stylelint-disable-line */
       }
     }
   }
 
   .brand-menu {
-    max-width: 329px;
     flex: 1;
+    max-width: 329px;
   }
 }

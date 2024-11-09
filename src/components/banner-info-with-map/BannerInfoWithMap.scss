@@ -1,80 +1,103 @@
-@import "src/assets/style/helper/mixins";
+.banner-info-with-map {
+  column-gap: 40px;
+  display: flex;
+  flex: 0 1 100%;
+  flex-direction: row;
+  min-height: 1px;
+
+  .banner-info {
+    height: 100%;
+    max-width: 50vw;
+    min-height: 320px;
+    min-width: 370px;
+    overflow: hidden auto;
+    scrollbar-width: thin;
+  }
+
+  .banner-info-additional {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    row-gap: 30px;
+    width: 100%;
+  }
+
+  .leaflet-container {
+    height: 100%;
+    min-height: 500px;
+    width: 100%;
+  }
+}
 
 .banner-info-with-map-container {
-  height: 100%;
   display: flex;
   flex-direction: column;
-  padding-left: 40px;
+  height: 100%;
   padding-bottom: 40px;
+  padding-left: 40px;
   padding-right: 40px;
 
   @include media-max-md {
-    display: flex !important;
-    flex-direction: column !important;
-    height: inherit !important;
-    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+    padding: 0;
   }
 
   .banner-info-with-map {
     @include media-max-md {
-      margin: 0 !important;
-      padding: 0 !important;
-      justify-content: center !important;
-      height: 100% !important;
-      overflow-y: auto !important;
+      height: 100%;
+      justify-content: center;
+      margin: 0;
+      overflow-y: auto;
+      padding: 0;
     }
 
     .banner-info {
       @include media-max-md {
-        min-height: 0 !important;
-        padding: 0.6em !important;
-        width: 100% !important;
-        max-width: 864px !important;
-        min-width: 320px !important;
-        height: auto !important;
-        overflow-y: unset !important;
+        height: auto;
+        max-width: 864px;
+        min-height: 0;
+        min-width: 320px;
+        overflow-y: unset;
+        padding: 0.6em;
+        width: 100%;
       }
     }
 
     .banner-info-left-pane-missions {
       .banner-card {
         @include media-max-md {
-          display: none !important;
+          display: none;
         }
       }
     }
 
     .mission-card {
       @include media-max-md {
-        max-width: none !important;
-      }
-    }
-
-    .banner-info-additional {
-      @include media-max-md {
-        height: 100% !important;
+        max-width: none;
       }
     }
 
     .leaflet-container {
       @include media-max-md {
-        height: 100% !important;
-        width: 100% !important;
-        min-height: 0 !important;
+        height: 100%;
+        min-height: 0;
+        width: 100%;
       }
     }
   }
 
   .banner-info-card {
     @include media-max-md {
-      margin-top: 0 !important;
+      margin-top: 0;
     }
   }
 
   .ant-tabs-nav {
     @include media-max-md {
-      display: none !important;
-      margin: none !important;
+      display: none !important; /* stylelint-disable-line */
+      margin: 0 !important; /* stylelint-disable-line */
     }
   }
 
@@ -86,67 +109,33 @@
 }
 
 .banner-info-with-map-goback {
-  display: flex;
-  flex-direction: row;
-  flex: 0 0 content;
-  column-gap: 20px;
   align-items: center;
-  padding-top: 20px;
+  column-gap: 20px;
+  display: flex;
+  flex: 0 0 content;
+  flex-direction: row;
   padding-bottom: 20px;
+  padding-top: 20px;
 
   .back-button {
-    width: 30px;
-    height: 100%;
     background: none;
     border: none;
-    font-size: 2em;
-    line-height: 2em;
     cursor: pointer;
+    font-size: 2em;
+    height: 100%;
+    line-height: 2em;
     margin-bottom: -6px;
+    width: 30px;
   }
 
   h1 {
-    vertical-align: middle;
+    flex: 1;
     line-height: 2em;
     margin: auto 0;
-    flex: 1;
+    vertical-align: middle;
   }
 
   .banner-info-with-map-submit {
     width: calc(100% - 370px - 40px);
-  }
-}
-
-.banner-info-with-map {
-  display: flex;
-  flex-grow: 0;
-  flex-shrink: 1;
-  flex-basis: 100%;
-  flex-direction: row;
-  column-gap: 40px;
-  min-height: 1px;
-
-  .banner-info {
-    height: 100%;
-    min-height: 320px;
-    overflow-y: auto;
-    min-width: 370px;
-    max-width: 50vw;
-    overflow-x: hidden;
-    scrollbar-width: thin;
-  }
-
-  .banner-info-additional {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 30px;
-  }
-
-  .leaflet-container {
-    width: 100%;
-    height: 100%;
-    min-height: 500px;
   }
 }

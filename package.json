@@ -11,10 +11,8 @@
     "start": "vite",
     "stylelint": "stylelint '**/*.{css,scss}' --quiet",
     "stylelint:fix": "stylelint $(git diff --name-only HEAD --diff-filter=M | grep -E '.(css|scss)') --fix --quiet",
-    "test": "vitest"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "npm lint-staged"
+    "test": "vitest",
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{css,scss}": "npm stylelint:fix",
@@ -41,7 +39,6 @@
     "leaflet-loading": "^0.1.24",
     "leaflet.locatecontrol": "^0.81.1",
     "leaflet.markercluster": "^1.5.3",
-    "lint-staged": "^15.2.10",
     "react": "^18.2.0",
     "react-beforeunload": "^2.6.0",
     "react-custom-scrollbars-2": "^4.5.0",
@@ -90,8 +87,11 @@
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
     "prettier": "^3.0.3",
     "sass": "^1.80.6",
+    "sass-embedded": "^1.80.6",
     "stylelint": "^16.10.0",
     "stylelint-config-standard-scss": "^13.1.0",
     "stylelint-order": "^6.0.4",

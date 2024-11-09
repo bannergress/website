@@ -1,13 +1,11 @@
-@import '../../App.scss';
-
 .banner-list-type-navigation {
   margin-bottom: 20px;
 
   button {
-    border: none;
-    outline: none;
     background-color: transparent;
+    border: none;
     cursor: pointer;
+    outline: none;
   }
 
   a:any-link {
@@ -20,12 +18,12 @@
   }
 
   .active {
-    font-size: 36px;
     color: var(--color-white);
+    font-size: 36px;
   }
 
   .inactive {
-    font-size: 28px;
     color: var(--color-light-gray);
+    font-size: 28px;
   }
 }

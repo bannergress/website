@@ -13,8 +13,8 @@
 }
 
 .announcement-and-recent-banners {
-  max-width: 1120px;
   margin: 2em;
+  max-width: 70rem;
 
   @include media-max-md {
     margin: 0.4rem;

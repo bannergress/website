@@ -1,15 +1,15 @@
-@import "src/assets/style/helper/mixins";
+@use "/src/assets/style/helper/mixins" as *;
 
 .map-overview {
   height: 100%;
   overflow: hidden;
 
   .map-banners {
+    padding: 30px 10px 0;
     width: 380px;
-    padding: 30px 10px 0 10px;
 
     .banners-scroll {
-      height: calc(100% - 45px) !important;
+      height: calc(100% - 45px) !important; /* stylelint-disable-line */
     }
   }
 
@@ -17,10 +17,10 @@
     width: calc(100% - 420px);
 
     @include media-max-md {
-      width: 100% !important;
-      height: 100%;
       display: flex;
       flex-direction: column;
+      height: 100%;
+      width: 100% !important; /* stylelint-disable-line */
     }
   }
 }

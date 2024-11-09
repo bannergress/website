@@ -1,14 +1,11 @@
-@use "src/assets/style/helper/mixins" as *;
+@use "/src/assets/style/helper/mixins";
 
 .banner-list {
-  align-content: flex-start;
   align-items: flex-start;
-  column-gap: 20px;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  row-gap: 20px;
+  flex-flow: row wrap;
+  gap: 20px;
+  place-content: flex-start center;
 
   .banner-list-entry {
     max-width: 90vw;
@@ -19,11 +16,11 @@
   }
 
   .banner-card-link {
-    height: 100%;
-    width: 100%;
-    border: none;
     background: none;
-    text-align: initial;
+    border: none;
     font-size: initial;
+    height: 100%;
+    text-align: initial;
+    width: 100%;
   }
 }

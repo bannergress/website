@@ -1,4 +1,4 @@
-@import "src/assets/style/helper/mixins";
+@use "/src/assets/style/helper/mixins" as *;
 
 .banner-info-page {
   height: 100%;
@@ -9,7 +9,7 @@
 
   .banner-card-title {
     @include media-max-md {
-      display: none !important;
+      display: none !important; /* stylelint-disable-line */
     }
   }
 

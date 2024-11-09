@@ -39,7 +39,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
         { maximumAge: 0, enableHighAccuracy: true }
       )
     }
-  }, [loadingLocation, setLoadingLocation, filter])
+  }, [loadingLocation, setLoadingLocation, filter]) /* eslint-disable-line */
 
   const show = () => {
     setOpen(true)

@@ -1,9 +1,9 @@
 .create-banner {
-  margin: 0 5%;
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   height: calc(100% - 5px);
+  margin: 0 5%;
 
   & > h1 {
     width: 100%;
@@ -12,29 +12,28 @@
   .create-banner-steps {
     display: flex;
     flex-wrap: wrap;
-    column-gap: 50px;
-    row-gap: 20px;
-    width: 100%;
+    gap: 20px 50px;
     height: 100%;
+    width: 100%;
 
     h1 {
-      vertical-align: middle;
-      display: flex;
       column-gap: 10px;
+      display: flex;
       font-size: 36px;
       line-height: 40px;
+      vertical-align: middle;
 
       .ellipse {
-        border-radius: 50%;
-        width: 36px;
-        height: 36px;
-        padding: 0;
         border: 2px solid var(--color-white);
-        text-align: center;
+        border-radius: 50%;
         display: block;
-        line-height: 30px;
         font-size: 24px;
+        height: 36px;
+        line-height: 30px;
         margin-top: 3px;
+        padding: 0;
+        text-align: center;
+        width: 36px;
       }
     }
 
@@ -49,32 +48,24 @@
     }
 
     & > div {
-      flex-grow: 1;
       flex-basis: 10%;
+      flex-grow: 1;
       min-width: 300px;
     }
 
     .missions-search,
     .missions-arrange {
-      min-height: 750px;
       display: flex;
       flex-direction: column;
-    }
-
-    .missions-search .search-mission-list {
-      height: 100% !important;
-    }
-
-    .missions-arrange .search-mission-list {
-      height: 100% !important;
+      min-height: 750px;
     }
 
     .create-banner-preview {
       background: var(--color-dark-gray);
-      border-radius: 5px;
-      padding: 15px;
-      margin: 10px 0 30px;
       border: 1px solid var(--color-white);
+      border-radius: 5px;
+      margin: 10px 0 30px;
+      padding: 15px;
 
       & .banner-image {
         margin: auto;
@@ -84,8 +75,8 @@
     .adv-options-container {
       border: 1px solid var(--color-white);
       border-radius: 4px;
-      padding: 5px 20px;
       margin-top: 10px;
+      padding: 5px 20px;
 
       h4 {
         margin-top: 10px;
@@ -93,8 +84,8 @@
 
       .ant-select,
       .ant-input-number {
-        width: 100%;
         margin-top: 10px;
+        width: 100%;
       }
     }
 
@@ -111,8 +102,8 @@
     input,
     textarea {
       background-color: var(--color-gray);
-      border-radius: 4px;
       border: none;
+      border-radius: 4px;
       color: var(--color-black);
       font-size: 14px;
       padding: 8px 10px;
@@ -166,33 +157,34 @@
     .incomplete-chooser {
       margin-bottom: 10px;
 
+      // TODO: find if the button exist???
       button {
-        margin: 0 !important;
+        background-clip: content-box, border-box !important; /* stylelint-disable-line */
         background-color: var(--color-dark-gray);
-
-        display: block;
-        border-radius: 4px;
-        width: 100%;
-        border: solid 2px transparent !important;
-        background-origin: border-box !important;
-        background-clip: content-box, border-box !important;
-        box-shadow: 2px 1000px 1px var(--color-light-black) inset !important;
-        transition: linear-gradient ease 0.6s;
-        text-align: center;
-        color: var(--color-white);
         background-image: linear-gradient(
-            rgba(255, 255, 255, 0),
-            rgba(255, 255, 255, 0)
+            rgb(255 255 255 / 0),
+            rgb(255 255 255 / 0)
           ),
-          linear-gradient(180deg, var(--color-border-dark), var(--color-border-light)) !important;
+          linear-gradient(180deg, var(--color-border-dark), var(--color-border-light)) !important; /* stylelint-disable-line */
+        background-origin: border-box !important; /* stylelint-disable-line */
+        border: solid 2px transparent !important; /* stylelint-disable-line */
+        border-radius: 4px;
+        box-shadow: 2px 1000px 1px var(--color-light-black) inset !important; /* stylelint-disable-line */
+        color: var(--color-white);
+        display: block;
+        margin: 0 !important; /* stylelint-disable-line */
+        text-align: center;
+        transition: linear-gradient ease 0.6s;
+        width: 100%;
 
         @media (hover: hover) and (pointer: fine) {
           &:hover {
+            background-color: green;
             background-image: linear-gradient(
-                rgba(255, 255, 255, 0),
-                rgba(255, 255, 255, 0)
+                rgb(255 255 255 / 0),
+                rgb(255 255 255 / 0)
               ),
-              linear-gradient(0deg, var(--color-border-dark), var(--color-border-light)) !important;
+              linear-gradient(0deg, var(--color-border-dark), var(--color-border-light)) !important; /* stylelint-disable-line */
           }
         }
       }
@@ -200,45 +192,48 @@
 
     .mission-error {
       input {
-        background-color: tomato;
+        background-color: var(--color-error);
       }
     }
   }
 
   .button-review {
-    width: 100%;
     color: var(--color-white);
+    width: 100%;
   }
 
   .ant-radio-group {
     color: var(--color-white);
-    display: flex;
     column-gap: 5px;
+    display: flex;
 
     label {
-      color: var(--color-white) !important;
-      text-align: center;
+      background-color: var(--color-white);
       border: none;
       border-radius: 5px;
-      background-color: var(--color-white);
-      padding: 1px;
-      display: flex;
+      color: var(--color-white);
       cursor: pointer;
+      display: flex;
+      padding: 1px;
+      text-align: center;
+
+      > span:nth-child(2) {
+        background-color: var(--color-light-black);
+        border-radius: 4px;
+        flex: 1;
+        padding: 0 10px;
+      }
 
       &.ant-radio-button-wrapper-checked {
         background-image: linear-gradient(180deg, var(--color-border-dark), var(--color-border-light));
         padding: 2px;
 
         > span:nth-child(2) {
+          align-items: center;
+          display: flex;
+          justify-content: center;
           line-height: 24px;
         }
-      }
-
-      > span:nth-child(2) {
-        background-color: var(--color-light-black);
-        border-radius: 4px;
-        padding: 0 10px;
-        flex: 1;
       }
     }
   }
@@ -246,7 +241,7 @@
   .ant-radio-button-wrapper-checked:not(
       .ant-radio-button-wrapper-disabled
     )::before {
-    background: none !important;
+    background: none !important; /* stylelint-disable-line */
   }
 }
 
@@ -257,7 +252,7 @@
 }
 
 .placeholder-card {
-  .ant-input-number {
-    margin-right: 87px !important;
+  .ant-input-number { /* stylelint-disable-line */
+    margin-right: 87px !important; /* stylelint-disable-line */
   }
 }

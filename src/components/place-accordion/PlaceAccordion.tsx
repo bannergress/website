@@ -22,7 +22,7 @@ export const PlaceAccordion: FC<PlaceAccordionProps> = ({
         const parentPlace = hierarchy[index - 1]
         return (
           <PlaceAccordionPage
-            key={index} // eslint-disable-line react/no-array-index-key
+            key={index}  /* eslint-disable-line */
             expanded={index === expandedLevel}
             currentPlace={place}
             parentPlace={parentPlace}
