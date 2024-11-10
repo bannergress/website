@@ -1,4 +1,4 @@
-@use "/src/assets/style/helper/mixins";
+@use "@/assets/style/helper/mixins" as *;
 
 .banner-list {
   align-items: flex-start;

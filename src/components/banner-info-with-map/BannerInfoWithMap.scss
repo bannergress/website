@@ -1,3 +1,5 @@
+@use "@/assets/style/helper/mixins" as *;
+
 .banner-info-with-map {
   column-gap: 40px;
   display: flex;
