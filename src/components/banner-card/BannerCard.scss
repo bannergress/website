@@ -1,5 +1,5 @@
-@use "/src/assets/style/helper/mixins" as *;
-@use "/src/assets/style/variables" as *;
+@use "/src/assets/stylesheets/base/mixins" as *;
+@use "/src/assets/stylesheets/base/variables" as *;
 
 /* Start Temporary styles for list types. Not final yet. */
 @mixin list-style-background {

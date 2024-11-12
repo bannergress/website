@@ -1,6 +1,4 @@
-@use "antd/dist/antd.compact.min.css" as *;
-@use "antd/dist/antd.dark.min.css" as *;
-@use "assets/style/main" as *;
+@use "/src/assets/stylesheets/main" as *;
 
 #root { /* stylelint-disable-line */
   height: 100%;

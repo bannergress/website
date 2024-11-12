@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+// 1. Vendors & Framework
+@use "antd/dist/antd.compact.min.css" as *;
+@use "antd/dist/antd.dark.min.css" as *;
+
+// 2. Framework overrides
+@use "override/ant-override";
+
+// 3. Base
+@use "base/variables";
+@use 'base/class';
+@use 'base/typography';
+@use "base/mixins";
+
+// 4. Layout-related sections
+//@use 'layout/footer';
+//@use 'layout/header';
+
+// 5. Components
+@use 'components/button';
+
+// 6. Pages
+//@use 'pages/home';
+
+// 7. Themes

@@ -1,4 +1,4 @@
-@use '/src/assets/style/helper/button' as *;
+@use '/src/assets/stylesheets/components/button' as *;
 
 .account-linking {
   align-items: flex-start;
@@ -8,7 +8,7 @@
   row-gap: 10px;
   width: 100%;
 
-  >div {
+  > div {
     max-width: 500px;
   }
 
