@@ -6,7 +6,7 @@ import SVGTodo from '../../assets/img/icons/todo.svg?react'
 import SVGDone from '../../assets/img/icons/done.svg?react'
 import SVGBlacklist from '../../assets/img/icons/blacklist.svg?react'
 
-import './banner-list-type-control.less'
+import './BannerListTypeControl.scss'
 
 const BannerListTypeControl: FC<BannerListTypeControlProps> = ({
   bannerListType,

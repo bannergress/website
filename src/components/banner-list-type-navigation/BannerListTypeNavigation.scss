@@ -1,0 +1,29 @@
+.banner-list-type-navigation {
+  margin-bottom: 20px;
+
+  button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+
+  a:any-link {
+    color: inherit;
+  }
+
+  .banner-list-type {
+    line-height: 40px;
+    margin-right: 21px;
+  }
+
+  .active {
+    color: var(--color-white);
+    font-size: 36px;
+  }
+
+  .inactive {
+    color: var(--color-light-gray);
+    font-size: 28px;
+  }
+}

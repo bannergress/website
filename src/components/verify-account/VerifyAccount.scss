@@ -1,0 +1,61 @@
+@use '/src/assets/stylesheets/components/button' as *;
+
+.account-linking {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  row-gap: 10px;
+  width: 100%;
+
+  > div {
+    max-width: 500px;
+  }
+
+  p {
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .change-verification-buttons {
+    column-gap: 10px;
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+  }
+
+  .input-agent-name,
+  .input-agent-token {
+    column-gap: 10px;
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+
+    input {
+      height: 36px;
+      width: 100%;
+    }
+  }
+
+  .forum-link {
+    @include positive-action-button;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .verify-steps-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
+  .verify-account-agent {
+    font-weight: bold;
+  }
+
+  .claim-button {
+    @include positive-action-button;
+  }
+}

@@ -1,0 +1,296 @@
+@use "/src/assets/stylesheets/base/mixins" as *;
+@use "/src/assets/stylesheets/base/variables" as *;
+
+/* Start Temporary styles for list types. Not final yet. */
+@mixin list-style-background {
+  border-radius: 5px;
+  content: ' ';
+  display: block;
+  height: 100%;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+
+/* End temporary Styles */
+.banner-circle {
+  align-items: center;
+  background-color: var(--color-gray);
+  border-radius: 50%;
+  display: flex;
+  height: 60px;
+  justify-content: center;
+  margin-right: 8px;
+  margin-top: 8px;
+  width: 60px;
+}
+
+.banner-card {
+  background: var(--color-dark-gray);
+  border: var(--color-dark-gray) 2px solid;
+  border-radius: 5px;
+  color: var(--color-white);
+  padding: 18px;
+  position: relative;
+
+  &.selected {
+    border-color: var(--color-positive-green-light);
+  }
+
+  &.list-style {
+    &-todo {
+      &::after {
+        @include list-style-background;
+        background: rgba(var(--color-todo), 0.05);
+        border: 1px solid var(--color-todo);
+      }
+    }
+
+    &-done {
+      &::after {
+        @include list-style-background;
+        background: rgba(var(--color-done), 0.05);
+        border: 1px solid var(--color-done);
+      }
+    }
+
+    &-blacklist {
+      &::after {
+        @include list-style-background;
+        background: rgba(var(--color-blacklist), 0.05);
+        border: 1px solid var(--color-blacklist);
+      }
+    }
+  }
+
+  .icon {
+    height: 0.9rem;
+    width: 0.9rem;
+  }
+}
+
+.banner-card-modal {
+  height: 95%;
+
+  .ant-modal-content {
+    background-color: var(--color-dark-gray);
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    .ant-modal-body {
+      width: 100%;
+    }
+
+    .ant-modal-close {
+      display: none;
+    }
+
+    .modal-image {
+      background: none;
+      border: none;
+      cursor: default;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+
+      div {
+        display: flex;
+        margin: 0;
+      }
+
+      img {
+        margin: auto;
+        max-height: 100%;
+        max-width: 100%;
+      }
+
+      &.full-size {
+        img {
+          max-height: initial;
+        }
+      }
+    }
+
+    .close-button {
+      background-color: var(--color-dark-gray);
+      border: none;
+      bottom: 15px;
+      color: var(--color-white);
+      line-height: 1em;
+      position: absolute;
+      right: 15px;
+
+      svg,
+      span {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      svg {
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+.banner-card-picture-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+
+  @include media-min-xs {
+    height: 200px;
+  }
+
+  .offline-overlay {
+    color: var(--color-light-gray);
+    display: flex;
+    flex-direction: column;
+    font-size: 24px;
+    height: 100%;
+    justify-content: center;
+    left: -20px;
+    line-height: 18px;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: calc(100% + 2 * 20px);
+
+    .offline-overlay-line {
+      align-items: center;
+      background-color: rgba(var(--color-black), 0.7);
+      display: flex;
+      flex-direction: row;
+      height: 3.5em;
+      justify-content: center;
+      width: 100%;
+
+      svg {
+        fill: currentcolor;
+        height: 1em;
+        margin-right: 0.5em;
+        width: 1em;
+      }
+    }
+  }
+}
+
+.banner-card-title {
+  font-size: 20px;
+  line-height: 21px;
+}
+
+.banner-info-item {
+  color: var(--color-light-gray);
+  display: flex;
+  font-size: 14px;
+  line-height: 18px;
+  margin-top: 4px;
+
+  .banner-info-item-icon {
+    width: 20px;
+
+    .icon {
+      fill: currentcolor;
+    }
+  }
+
+  &.warning {
+    color: var(--color-blacklist);
+  }
+}
+
+.banner-card-picture {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  max-width: 100%;
+  overflow: hidden;
+  width: 100%;
+
+  @supports (aspect-ratio: 1/1) { /* stylelint-disable-line */
+    aspect-ratio: 2 / 1;
+  }
+
+  @supports not (aspect-ratio: 1/1) { /* stylelint-disable-line */
+    /* 160 Pixel is half of width of .banner-card minus padding */
+    height: 160px;
+  }
+
+  @include media-max-md {
+    aspect-ratio: 2;
+    height: auto;
+  }
+
+  &.banner-lines-1 {
+    @include media-max-md {
+      aspect-ratio: 6;
+    }
+  }
+
+  &.banner-lines-2 {
+    @include media-max-md {
+      aspect-ratio: 3;
+    }
+  }
+}
+
+.banner-card-picture-inner {
+  display: table;
+  max-height: 100%;
+  max-width: 100%;
+
+  & > img { /* stylelint-disable-line */
+    max-width: 100%;
+  }
+
+  &.picture-size-1 {
+    max-width: 17%;
+  }
+
+  &.picture-size-2 {
+    max-width: 33%;
+  }
+
+  &.picture-size-3 {
+    max-width: 50%;
+  }
+
+  &.picture-size-4 {
+    max-width: 67%;
+  }
+
+  &.picture-size-5 {
+    max-width: 85%;
+  }
+}
+
+.banner-info-details {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  padding: 0;
+
+  a {
+    border: 1px solid var(--color-white);
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: var(--color-white);
+    font-size: 14px;
+    padding: 5px 10px;
+  }
+}
+
+.banner-card-title,
+.banner-info-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -6,7 +6,7 @@ import StepList from '../step-list'
 import MissionInfo from '../mission-info'
 import SVGChevron from '../../assets/img/icons/chevron.svg?react'
 
-import './mission-card.less'
+import './MissionCard.scss'
 
 const MissionCard: React.FC<MissionCardProps> = ({
   mission,

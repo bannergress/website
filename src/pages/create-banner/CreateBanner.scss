@@ -1,0 +1,258 @@
+.create-banner {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 5px);
+  margin: 0 5%;
+
+  & > h1 {
+    width: 100%;
+  }
+
+  .create-banner-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 50px;
+    height: 100%;
+    width: 100%;
+
+    h1 {
+      column-gap: 10px;
+      display: flex;
+      font-size: 36px;
+      line-height: 40px;
+      vertical-align: middle;
+
+      .ellipse {
+        border: 2px solid var(--color-white);
+        border-radius: 50%;
+        display: block;
+        font-size: 24px;
+        height: 36px;
+        line-height: 30px;
+        margin-top: 3px;
+        padding: 0;
+        text-align: center;
+        width: 36px;
+      }
+    }
+
+    h3 {
+      margin-top: 10px;
+
+      svg {
+        path {
+          fill: var(--color-white);
+        }
+      }
+    }
+
+    & > div {
+      flex-basis: 10%;
+      flex-grow: 1;
+      min-width: 300px;
+    }
+
+    .missions-search,
+    .missions-arrange {
+      display: flex;
+      flex-direction: column;
+      min-height: 750px;
+    }
+
+    .create-banner-preview {
+      background: var(--color-dark-gray);
+      border: 1px solid var(--color-white);
+      border-radius: 5px;
+      margin: 10px 0 30px;
+      padding: 15px;
+
+      & .banner-image {
+        margin: auto;
+      }
+    }
+
+    .adv-options-container {
+      border: 1px solid var(--color-white);
+      border-radius: 4px;
+      margin-top: 10px;
+      padding: 5px 20px;
+
+      h4 {
+        margin-top: 10px;
+      }
+
+      .ant-select,
+      .ant-input-number {
+        margin-top: 10px;
+        width: 100%;
+      }
+    }
+
+    .positive-action-button {
+      margin-bottom: 10px;
+    }
+
+    .search-mission-card {
+      .ant-input-number {
+        width: 65px;
+      }
+    }
+
+    input,
+    textarea {
+      background-color: var(--color-gray);
+      border: none;
+      border-radius: 4px;
+      color: var(--color-black);
+      font-size: 14px;
+      padding: 8px 10px;
+
+      &::placeholder {
+        color: var(--color-light-black);
+      }
+    }
+
+    .missions-search,
+    .create-banner-info {
+      input,
+      textarea {
+        margin-top: 5px;
+      }
+    }
+
+    .results-title,
+    .algorithm {
+      display: flex;
+      flex-wrap: wrap-reverse;
+      justify-content: space-between;
+      margin: 10px 0;
+
+      h3 {
+        margin: 0;
+      }
+
+      button {
+        border-color: var(--color-white);
+        border-radius: 4px;
+        color: var(--color-white);
+        width: 100px;
+      }
+    }
+
+    .algorithm {
+      margin-top: 20px;
+
+      svg {
+        path {
+          fill: var(--color-white);
+        }
+      }
+
+      .ant-select {
+        width: 100px;
+      }
+    }
+
+    .incomplete-chooser {
+      margin-bottom: 10px;
+
+      // TODO: find if the button exist???
+      button {
+        background-clip: content-box, border-box !important; /* stylelint-disable-line */
+        background-color: var(--color-dark-gray);
+        background-image: linear-gradient(
+            rgb(255 255 255 / 0),
+            rgb(255 255 255 / 0)
+          ),
+          linear-gradient(180deg, var(--color-border-dark), var(--color-border-light)) !important; /* stylelint-disable-line */
+        background-origin: border-box !important; /* stylelint-disable-line */
+        border: solid 2px transparent !important; /* stylelint-disable-line */
+        border-radius: 4px;
+        box-shadow: 2px 1000px 1px var(--color-light-black) inset !important; /* stylelint-disable-line */
+        color: var(--color-white);
+        display: block;
+        margin: 0 !important; /* stylelint-disable-line */
+        text-align: center;
+        transition: linear-gradient ease 0.6s;
+        width: 100%;
+
+        @media (hover: hover) and (pointer: fine) {
+          &:hover {
+            background-color: green;
+            background-image: linear-gradient(
+                rgb(255 255 255 / 0),
+                rgb(255 255 255 / 0)
+              ),
+              linear-gradient(0deg, var(--color-border-dark), var(--color-border-light)) !important; /* stylelint-disable-line */
+          }
+        }
+      }
+    }
+
+    .mission-error {
+      input {
+        background-color: var(--color-error);
+      }
+    }
+  }
+
+  .button-review {
+    color: var(--color-white);
+    width: 100%;
+  }
+
+  .ant-radio-group {
+    color: var(--color-white);
+    column-gap: 5px;
+    display: flex;
+
+    label {
+      background-color: var(--color-white);
+      border: none;
+      border-radius: 5px;
+      color: var(--color-white);
+      cursor: pointer;
+      display: flex;
+      padding: 1px;
+      text-align: center;
+
+      > span:nth-child(2) {
+        background-color: var(--color-light-black);
+        border-radius: 4px;
+        flex: 1;
+        padding: 0 10px;
+      }
+
+      &.ant-radio-button-wrapper-checked {
+        background-image: linear-gradient(180deg, var(--color-border-dark), var(--color-border-light));
+        padding: 2px;
+
+        > span:nth-child(2) {
+          align-items: center;
+          display: flex;
+          justify-content: center;
+          line-height: 24px;
+        }
+      }
+    }
+  }
+
+  .ant-radio-button-wrapper-checked:not(
+      .ant-radio-button-wrapper-disabled
+    )::before {
+    background: none !important; /* stylelint-disable-line */
+  }
+}
+
+.mobile-switch-submit-button {
+  flex-grow: 0;
+  white-space: nowrap;
+  width: auto;
+}
+
+.placeholder-card {
+  .ant-input-number { /* stylelint-disable-line */
+    margin-right: 87px !important; /* stylelint-disable-line */
+  }
+}

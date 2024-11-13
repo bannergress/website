@@ -9,7 +9,7 @@ import MenuMain from '../menu-main'
 import Logo from '../../assets/img/logo/logo64.png'
 import SVGSearch from '../../assets/img/icons/search.svg?react'
 
-import './Navbar.less'
+import './Navbar.scss'
 
 const Navbar: FC<NavBarProps> = ({ className }) => {
   const [mobileSearchBarActive, setMobileSearchBarActive] = useState(false)

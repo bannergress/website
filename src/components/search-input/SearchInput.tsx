@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import SVGSearch from '../../assets/img/icons/search.svg?react'
 
-import './search-input.less'
+import './SearchInput.scss'
 
 const SearchInput: FC<SearchInputProps> = ({ autoFocus, onSearch }) => {
   const textInput = useRef<HTMLInputElement>(null)

@@ -7,9 +7,10 @@ export default defineConfig({
   plugins: [react(), svgr()],
   css: {
     preprocessorOptions: {
-      less: {
-        javascriptEnabled: true,
+      scss: {
+        api: 'modern-compiler',
+        additionalData: `@use "/src/assets/stylesheets/base/_variables.scss";`
       },
     },
-  },
+  }
 })

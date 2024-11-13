@@ -4,7 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 
 import LoginInNavbar from '../login-in-navbar'
 
-import './login-required.less'
+import './LoginRequired.scss'
 
 const LoginRequired: React.FC<LoginRequiredProps> = (props) => {
   const { keycloak, initialized: keycloakInitialized } = useKeycloak()

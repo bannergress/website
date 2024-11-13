@@ -1,0 +1,68 @@
+@use "/src/assets/stylesheets/base/mixins" as *;
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.p-1 {
+  padding: 1rem;
+}
+
+.pl-1 {
+  padding-left: 1rem;
+}
+
+.pr-1 {
+  padding-right: 1rem;
+}
+
+.px1 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.nobr {
+  white-space: nowrap;
+}
+
+.page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.warning-text {
+  color: var(--color-warning);
+}
+
+.error-text {
+  color: var(--color-error);
+}
+
+.subtitle {
+  color: var(--color-gray);
+}
+
+
+.hide-on-mobile {
+  @include media-max-md {
+    display: none !important;
+  }
+}
+
+.hide-on-desktop {
+  @include media-min-md {
+    display: none !important;
+  }
+}
+
+.banner-count-place {
+  @include media-max-md {
+    display: none;
+  }
+}

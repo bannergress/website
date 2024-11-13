@@ -6,7 +6,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Agent } from '../agent'
 import LoadingOverlay from '../loading-overlay'
 
-import './verify-account.less'
+import './VerifyAccount.scss'
 import { Step1 } from './Step1'
 import { Step2 } from './Step2'
 import { User } from '../../features/user'
@@ -79,9 +79,8 @@ const VerifyAccount: FC = () => {
     if (verificationMessage && isCopied) {
       const id = setInterval(async () => {
         try {
-        await handleApiRequest(getUser())
-        } catch (e) {
-        }
+          await handleApiRequest(getUser())
+        } catch (e) {}
       }, 120_000)
       return () => clearTimeout(id)
     }
@@ -139,10 +138,7 @@ const VerifyAccount: FC = () => {
   } else if (user?.agent) {
     actions = (
       <div className="change-verification-buttons">
-        <Button
-          className="button-default"
-          onClick={() => setIsClaiming(true)}
-        >
+        <Button className="button-default" onClick={() => setIsClaiming(true)}>
           {t('account.linking.change')}
         </Button>
         <Button className="button-default" onClick={onUnlink}>

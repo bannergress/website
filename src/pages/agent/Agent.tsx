@@ -8,7 +8,7 @@ import LoginRequired from '../../components/login/login-required'
 import InfiniteBannerList from '../../components/infinite-banner-list/InfiniteBannerList'
 import { BannerFilter } from '../../features/banner/filter'
 
-import './agent.less'
+import './Agent.scss'
 
 const Agent: FC = () => {
   const { agentName } = useParams<{ agentName: string }>()

@@ -1,0 +1,63 @@
+// TODO: test if we need all the !important rules
+
+@mixin positive-action-button {
+  background: var(--color-positive-green) !important; /* stylelint-disable-line */
+  border: none;
+  border-radius: 5px;
+  color: var(--color-white) !important; /* stylelint-disable-line */
+  cursor: pointer;
+  padding: 0.5em 2em;
+
+  &:disabled {
+    background: var(--color-gray);
+    color: var(--color-light-gray);
+    cursor: not-allowed;
+  }
+}
+
+.bg-button {
+  align-items: center;
+  background-clip: content-box, border-box !important; /* stylelint-disable-line */
+  background-origin: border-box !important; /* stylelint-disable-line */
+  border: solid 2px transparent !important; /* stylelint-disable-line */
+  box-shadow: 2px 1000px 1px var(--color-black) inset !important; /* stylelint-disable-line */
+  display: flex;
+  justify-content: center;
+  transition: linear-gradient ease 0.6s;
+
+  &.bg-button-default {
+    background-image: linear-gradient(rgb(255 255 255 / 0), rgb(255 255 255 / 0)), linear-gradient(180deg, var(--color-border-dark), var(--color-border-light)) !important; /* stylelint-disable-line */
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(0deg, var(--color-border-dark), var(--color-border-light)) !important; /* stylelint-disable-line */
+      }
+    }
+  }
+}
+
+.button-default {
+  background-clip: content-box, border-box !important; /* stylelint-disable-line */
+  background-color: var(--color-dark-gray);
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(180deg, var(--color-border-dark), var(--color-border-light)) !important; /* stylelint-disable-line */
+  background-origin: border-box !important; /* stylelint-disable-line */
+  border-radius: 4px;
+  border: solid 2px transparent !important; /* stylelint-disable-line */
+  box-shadow: 2px 1000px 1px var(--color-light-black) inset !important; /* stylelint-disable-line */
+  color: var(--color-white) !important; /* stylelint-disable-line */
+  display: block;
+  margin: 0 !important; /* stylelint-disable-line */
+  text-align: center;
+  transition: linear-gradient ease 0.6s;
+  width: 100%;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(0deg, var(--color-border-dark), var(--color-border-light)) !important; /* stylelint-disable-line */
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}

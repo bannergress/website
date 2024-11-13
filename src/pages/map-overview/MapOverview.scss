@@ -1,0 +1,26 @@
+@use "/src/assets/stylesheets/base/mixins" as *;
+
+.map-overview {
+  height: 100%;
+  overflow: hidden;
+
+  .map-banners {
+    padding: 30px 10px 0;
+    width: 380px;
+
+    .banners-scroll {
+      height: calc(100% - 45px) !important; /* stylelint-disable-line */
+    }
+  }
+
+  .map-explorer {
+    width: calc(100% - 420px);
+
+    @include media-max-md {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100% !important; /* stylelint-disable-line */
+    }
+  }
+}

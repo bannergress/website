@@ -4,7 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 
 import SVGHelp from '../../assets/img/icons/help-round.svg?react'
 
-import './algorithm-detection-chooser.less'
+import './AlgorithmDetectionChooser.scss'
 
 const extractionHelp = (
   <Trans

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Place, createBrowseUri } from '../../features/place'
 import PlaceEntry from '../place-list/PlaceEntry'
 
-import './place-card.less'
+import './PlaceCard.scss'
 
 const PlaceCard: FC<PlaceProps> = ({ place }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'places.types' })

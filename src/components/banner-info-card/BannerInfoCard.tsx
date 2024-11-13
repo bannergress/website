@@ -35,7 +35,7 @@ import SVGChecked from '../../assets/img/icons/checked.svg?react'
 import SVGOffline from '../../assets/img/icons/offline.svg?react'
 import i18n from '../../i18n'
 
-import './banner-info-card.less'
+import './BannerInfoCard.scss'
 import { PlainDate } from '../plain-date'
 
 const getAgentList = (banner: Banner) =>

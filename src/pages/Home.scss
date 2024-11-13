@@ -1,0 +1,22 @@
+@use "/src/assets/stylesheets/base/mixins" as *;
+
+.home {
+  align-items: center;
+
+  .user-banner-list-preview {
+    margin-top: 2em;
+
+    .banner-list {
+      justify-content: center;
+    }
+  }
+}
+
+.announcement-and-recent-banners {
+  margin: 2em;
+  max-width: 70rem;
+
+  @include media-max-md {
+    margin: 0.4rem;
+  }
+}

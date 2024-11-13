@@ -19,7 +19,7 @@ import { LocateControl } from '../locate'
 import { MapLoadingControl } from '../map-loading-control'
 import { MapZoomControl } from '../map-zoom-control'
 
-import './banners-map.less'
+import './BannersMap.scss'
 import 'leaflet/dist/leaflet.css'
 import i18n from '../../i18n'
 

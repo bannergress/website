@@ -3,7 +3,7 @@ import { Trans, useTranslation } from 'react-i18next'
 
 import SVGUpArrow from '../../assets/img/icons/up-arrow.svg?react'
 
-import './order.less'
+import './Order.scss'
 import { BannerOrder, BannerOrderDirection } from '../../features/banner/filter'
 
 export const hasBothDirections = (type: BannerOrder) => {

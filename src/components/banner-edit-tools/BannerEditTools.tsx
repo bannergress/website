@@ -8,7 +8,7 @@ import { Banner, deleteBanner } from '../../features/banner'
 import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
 import { useCreatorPluginAvailable } from '../../hooks/CreatorPluginAvailable'
 
-import './banner-edit-tools.less'
+import './BannerEditTools.scss'
 
 export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
   const history = useHistory()

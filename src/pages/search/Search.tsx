@@ -24,7 +24,7 @@ import BannerList from '../../components/banner-list'
 import PlaceListFlat from '../../components/place-list-flat'
 import FooterMain from '../../components/footer-main'
 
-import './search.less'
+import './Search.scss'
 import { BannerFilter } from '../../features/banner/filter'
 import { SettingsState } from '../../features/settings/types'
 import { getDefaultOnline } from '../../features/settings/selectors'

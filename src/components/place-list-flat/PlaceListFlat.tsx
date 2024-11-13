@@ -6,7 +6,7 @@ import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
 import { Place } from '../../features/place'
 import PlaceCard from './PlaceCard'
 
-import './place-list-flat.less'
+import './PlaceListFlat.scss'
 
 const PlaceListFlat: FC<PlaceListFlatProps> = ({
   places,

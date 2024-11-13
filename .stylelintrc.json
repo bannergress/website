@@ -1,0 +1,31 @@
+{
+  "extends": ["stylelint-config-standard-scss"],
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "alpha-value-notation": "number",
+    "at-rule-no-unknown": null,
+    "declaration-empty-line-before": "never",
+    "declaration-no-important": true,
+    "function-name-case": "lower",
+    "media-feature-range-notation": "prefix",
+    "order/properties-alphabetical-order": true,
+    "order/order": [
+      "custom-properties",
+      "dollar-variables",
+      {
+        "type": "at-rule",
+        "name": "include",
+        "hasBlock": false
+      },
+      "declarations",
+      "at-variables",
+      "at-rules",
+      "rules"
+    ],
+    "color-function-notation": "modern",
+    "scss/double-slash-comment-empty-line-before": null,
+    "scss/at-rule-no-unknown": null,
+    "selector-max-id": 0,
+    "unit-allowed-list": [ "%", "em", "fr", "deg", "ms", "px", "rem", "s", "vh", "vw"]
+  }
+}

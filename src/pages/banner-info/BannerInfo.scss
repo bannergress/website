@@ -1,0 +1,24 @@
+@use "/src/assets/stylesheets/base/mixins" as *;
+
+.banner-info-page {
+  height: 100%;
+
+  @include media-max-md {
+    height: 100%;
+  }
+
+  .banner-card-title {
+    @include media-max-md {
+      display: none !important; /* stylelint-disable-line */
+    }
+  }
+
+  .banner-info-overview {
+    .banner-info-container {
+      @include media-max-md {
+        padding-right: unset;
+        width: 320px;
+      }
+    }
+  }
+}

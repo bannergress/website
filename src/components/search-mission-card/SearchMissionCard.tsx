@@ -8,7 +8,7 @@ import MissionImage from '../mission-image/MissionImage'
 import PlaceHolderMission from './PlaceHolderMission'
 import SVGIntel from '../../assets/img/icons/intel.svg?react'
 
-import './search-mission-card.less'
+import './SearchMissionCard.scss'
 
 const getMissionIntelLink = (mission: Mission) => {
   if (mission.id) {

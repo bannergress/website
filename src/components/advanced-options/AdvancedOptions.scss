@@ -1,0 +1,36 @@
+.banner-advanced-options {
+  h4 {
+    column-gap: 5px;
+    display: flex;
+
+    svg {
+      align-self: flex-start;
+
+      path {
+        fill: var(--color-white);
+      }
+    }
+  }
+
+  .ant-col {
+    align-self: center;
+  }
+
+  label {
+    width: 100%;
+  }
+
+  .date-picker-hidden {
+    height: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    visibility: hidden;
+    width: 0;
+  }
+
+  .date-picker-visible {
+    margin-bottom: 5px;
+    width: 100%;
+  }
+}

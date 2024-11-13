@@ -4,7 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import FaqQuestion from '../../components/faq-question/FaqQuestion'
 import { getExternalLinkAttributes } from '../../features/utils'
 
-import './all-questions.less'
+import './AllQuestions.scss'
 
 const getLink = (url: string) => (
   // eslint-disable-next-line jsx-a11y/anchor-has-content
