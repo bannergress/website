@@ -70,7 +70,7 @@
     "@typescript-eslint/eslint-plugin": "^6.9.1",
     "@typescript-eslint/parser": "^6.9.1",
     "@vitejs/plugin-react-swc": "^3.7.1",
-    "eslint": "^8.52.0",
+    "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-i18next": "^6.1.0",
     "eslint-plugin-import": "^2.31.0",
