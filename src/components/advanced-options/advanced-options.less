@@ -1,5 +1,4 @@
 .banner-advanced-options {
-
   h4 {
     display: flex;
     column-gap: 5px;
@@ -8,13 +7,22 @@
       align-self: flex-start;
 
       path {
-        fill: white;
+        fill: var(--color-white);
       }
     }
   }
 
-  .ant-col {
-    align-self: center;
+  .ant {
+    &-col {
+      align-self: center;
+    }
+
+    &-slider {
+      &-track,
+      &-handle {
+        background-color: var(--link-color) !important;
+      }
+    }
   }
 
   label {
@@ -22,16 +30,16 @@
   }
 
   .date-picker-hidden {
-    position: absolute;
-    visibility: hidden;
-    width: 0;
     height: 0;
+    position: absolute;
     right: 0;
     top: 0;
+    visibility: hidden;
+    width: 0;
   }
 
   .date-picker-visible {
-    width: 100%;
     margin-bottom: 5px;
+    width: 100%;
   }
 }
