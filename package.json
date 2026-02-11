@@ -16,7 +16,7 @@
     "history": "^4.10.1",
     "i18next": "^23.15.2",
     "i18next-resources-to-backend": "^1.2.1",
-    "keycloak-js": "^26.0.0",
+    "keycloak-js": "^26.2.3",
     "leaflet": "^1.9.4",
     "leaflet-loading": "^0.1.24",
     "leaflet.locatecontrol": "^0.81.1",
