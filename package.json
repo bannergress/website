@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@fontsource/roboto": "^5.1.0",
+    "@fontsource/roboto": "^5.2.9",
     "@react-keycloak/core": "^3.2.0",
     "@react-keycloak/web": "^3.4.0",
     "@types/react-beforeunload": "^2.1.0",
