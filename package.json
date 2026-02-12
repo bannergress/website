@@ -26,7 +26,7 @@
     "react-custom-scrollbars-2": "^4.5.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
-    "react-hotkeys-hook": "^3.3.2",
+    "react-hotkeys-hook": "^5.2.4",
     "react-i18next": "^15.0.2",
     "react-intersection-observer": "^10.0.2",
     "react-leaflet": "^4.2.1",
