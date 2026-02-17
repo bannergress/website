@@ -2,28 +2,40 @@ name: Vite Tests
 
 on: [push, pull_request]
 
+env:
+  VITE_KEYCLOAK_URL: https://login.bannergress.com/auth/
+  VITE_KEYCLOAK_CLIENT_ID: bannergress-website
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [24.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        environment:
+          - label: test
+            VITE_API_BASE_URL: https://test.api.bannergress.com/
+            VITE_KEYCLOAK_REALM: bannergress-test
+          - label: production
+            VITE_API_BASE_URL: https://api.bannergress.com/
+            VITE_KEYCLOAK_REALM: bannergress
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 24
           cache: "npm"
       - name: Install dependencies
         run: npm ci
       - name: Run tests
         run: npm run test
       - name: Build project
-        run: npm run build --if-present
+        run: npm run build
         env:
-          VITE_API_BASE_URL: dummy
-          VITE_KEYCLOAK_URL: dummy
+          VITE_API_BASE_URL: ${{ matrix.environment.VITE_API_BASE_URL }}
+          VITE_KEYCLOAK_REALM: ${{ matrix.environment.VITE_KEYCLOAK_REALM }}
+      - uses: actions/upload-artifact@v6
+        with:
+          name: ${{ matrix.environment.label }}
+          path: dist/
