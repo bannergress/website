@@ -29,8 +29,18 @@ import { BannerFilter } from '../../features/banner/filter'
 import { SettingsState } from '../../features/settings/types'
 import { getDefaultOnline } from '../../features/settings/selectors'
 import { updateSettingsAction } from '../../features/settings/actions'
+import { ScrollRestoration } from '../../features/scroll-restoration'
 
 class Search extends React.Component<SearchProps, SearchState> {
+  scrollRestoration = new ScrollRestoration({
+    key: 'searchScrollPosition',
+    preserveOn: (pathname) =>
+      pathname.startsWith('/banner/') || pathname.startsWith('/browse/'),
+  })
+  getLastSearchTerm = () => sessionStorage.getItem('searchLastTerm')
+  setLastSearchTerm = (term: string) =>
+    sessionStorage.setItem('searchLastTerm', term)
+
   constructor(props: SearchProps) {
     super(props)
     this.state = {
@@ -67,19 +77,45 @@ class Search extends React.Component<SearchProps, SearchState> {
   }
 
   componentDidMount() {
-    const { filter, searchTerm } = this.state
+    const { searchTerm } = this.state
+    const { banners, places } = this.props
+    const lastTerm = this.getLastSearchTerm()
+
+    this.scrollRestoration.mount(this.props.history)
+
+    const { filter } = this.state
+
+    if (lastTerm === searchTerm && (banners.length > 0 || places.length > 0)) {
+      this.setState({
+        bannersStatus: 'success',
+        placesStatus: 'success',
+      })
+      return
+    }
+
+    this.setLastSearchTerm(searchTerm)
 
     this.doFetchBanners(searchTerm, filter, 0)
     this.doFetchPlaces(searchTerm, 0)
   }
 
+  componentWillUnmount() {
+    this.scrollRestoration.unmount()
+  }
+
   componentDidUpdate(prevProps: SearchProps, prevState: SearchState) {
     const { searchTerm: prevSearchTerm } = prevState
-    const { searchTerm, filter } = this.state
+    const { searchTerm, filter, bannersStatus, placesStatus } = this.state
 
     if (prevSearchTerm !== searchTerm) {
+      this.scrollRestoration.invalidate(true)
+      this.setLastSearchTerm(searchTerm)
       this.doFetchBanners(searchTerm, filter, 0)
       this.doFetchPlaces(searchTerm, 0)
+    }
+
+    if (bannersStatus === 'success' || placesStatus === 'success') {
+      this.scrollRestoration.restore()
     }
   }
 
@@ -90,6 +126,7 @@ class Search extends React.Component<SearchProps, SearchState> {
       filter,
       pageBanners: 0,
     })
+    this.scrollRestoration.invalidate()
     updateSettings({
       defaultOnline: filter.online,
     })
