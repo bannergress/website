@@ -1,0 +1,42 @@
+name: Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        type: environment
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm run test
+      - name: Build project
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+          VITE_KEYCLOAK_URL: ${{ vars.VITE_KEYCLOAK_URL }}
+          VITE_KEYCLOAK_REALM: ${{ vars.VITE_KEYCLOAK_REALM }}
+          VITE_KEYCLOAK_CLIENT_ID: ${{ vars.VITE_KEYCLOAK_CLIENT_ID }}
+      - name: Install ssh files
+        run: |
+          echo "$SCP_PRIVATE_KEY" > keyfile
+          chmod go-rw keyfile
+          echo "$SCP_FINGERPRINT" > known_hosts_file
+        env:
+          SCP_PRIVATE_KEY: ${{ secrets.SCP_PRIVATE_KEY }}
+          SCP_FINGERPRINT: ${{ secrets.SCP_FINGERPRINT }}
+      - name: Deploy
+        run: scp -P ${{ secrets.SCP_TARGET_PORT }} -r -i keyfile -o UserKnownHostsFile=known_hosts_file dist/* ${{ secrets.SCP_TARGET }}

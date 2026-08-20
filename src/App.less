@@ -1,6 +1,16 @@
 @import 'antd/dist/antd.compact.less';
 @import 'antd/dist/antd.dark.less';
 
+// Ant Design's own components are compiled against these Less variables, so
+// the CSS custom properties in variables.less (used at runtime) can't theme
+// them - keep these in sync with --primary-color/--link-color/etc. there.
+@primary-color: #1da57a;
+@link-color: #1da57a;
+@body-background: #0b0c0d;
+@card-head-padding: 0.6rem;
+@card-padding-base: 0.6rem;
+@border-color-base: #004f4a;
+
 @import './assets/style/variables.less';
 @import './assets/style/helper.less';
 @import './assets/style/ant-override.less';

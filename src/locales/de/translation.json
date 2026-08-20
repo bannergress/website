@@ -40,6 +40,8 @@
     "exitFullscreen": "<icon /> Vollbildmodus verlassen",
     "confirmDelete": "Möchtest du das Banner wirklich löschen?",
     "confirmNotDone": "Erledigt-Markierung wirklich entfernen?",
+    "showMore": "Mehr zeigen...",
+    "showLess": "Weniger zeigen...",
     "creation": {
       "edit": "Banner bearbeiten",
       "new": "Neues Banner",
