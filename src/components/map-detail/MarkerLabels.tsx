@@ -7,8 +7,8 @@ import {
   getMarkerData,
   isHiddenMission,
 } from './MarkerData'
-import CheckeredFlagSVG from '../../img/icons/checkered-flag.svg?react'
-import EyeOffSVG from '../../img/icons/eye-off-outline.svg?react'
+import CheckeredFlagSVG from '../../assets/img/icons/checkered-flag.svg?react'
+import EyeOffSVG from '../../assets/img/icons/eye-off-outline.svg?react'
 
 const getEndMarkerLabel = () => {
   return (

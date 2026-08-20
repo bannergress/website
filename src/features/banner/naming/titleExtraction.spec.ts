@@ -1026,4 +1026,15 @@ describe('features > banner > naming > titleExtraction', () => {
       total: undefined,
     })
   })
+  it(`handles il cittone dejavu (issue #309, lowercase 'di' misdetected as roman numeral)`, () => {
+    const input = Array.from(
+      { length: 12 },
+      (unused, index) => `il cittone dejavu (${index + 1} di 12)`
+    )
+    const result = extract(input)
+    expect(result.total).toEqual(12)
+    expect(result.results.map((r) => r.missionMarker?.parsed)).toEqual([
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+    ])
+  })
 })
