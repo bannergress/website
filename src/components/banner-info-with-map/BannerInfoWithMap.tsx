@@ -12,7 +12,7 @@ import {
 } from '../banner-info-mobile-switch'
 import { MapDetail } from '../map-detail'
 import { IssuesList, Issue } from '../Issues-list'
-import SVGBackArrow from '../../img/icons/back-arrow.svg?react'
+import SVGBackArrow from '../../assets/img/icons/back-arrow.svg?react'
 
 import './banner-info-with-map.less'
 
@@ -64,7 +64,7 @@ class BannerInfoWithMap extends React.Component<
       this.setState({ expanded: false, expandedMissionIndexes: [] })
     } else {
       let missionIndexes: Array<number> = []
-      if (banner && banner.missions) {
+      if (banner?.missions) {
         missionIndexes = mapMissions(
           banner.missions,
           (mission, index) => mission && index
@@ -120,13 +120,13 @@ class BannerInfoWithMap extends React.Component<
       desktopView,
     } = this.state
 
-    const infoPaneClassName = mobileView !== 'map' ? '' : 'hide-on-mobile'
+    const infoPaneClassName = mobileView === 'map' ? 'hide-on-mobile' : ''
     const infoPaneViewClassName = `banner-info-left-pane-${mobileView}`
     const mapPaneClassName = mobileView === 'map' ? '' : 'hide-on-mobile'
 
     this.viewWasMapBefore = this.viewWasMapBefore || mobileView === 'map'
 
-    if (banner && banner.missions) {
+    if (banner?.missions) {
       const bounds = getBannerBounds(banner)
       const issues: Array<Issue> = []
       if (!bounds) {
