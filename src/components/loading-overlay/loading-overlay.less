@@ -1,4 +1,3 @@
-
 .loading-overlay {
   .overlay {
     max-width: initial;
@@ -10,8 +9,8 @@
     display: flex;
     text-align: center;
     font-size: 1.2em;
-    color: #FFF;
-    background: rgba(0, 0, 0, 0.7);
+    color: var(--color-white);
+    background: rgba(var(--color-black), 0.7);
     z-index: 2000;
     transition: 1 500ms ease-in;
   }
@@ -24,11 +23,13 @@
     margin: 0 auto 10px auto;
     width: 50px;
     max-height: 100%;
+
     &:before {
-      content: "";
+      content: '';
       display: block;
       padding-top: 100%;
     }
+
     & svg {
       animation: rotate(0deg) 2s linear infinite;
       height: 100%;
@@ -40,12 +41,13 @@
       left: 0;
       right: 0;
       margin: auto;
+
       & circle {
         animation: spinnerDash 1.5s ease-in-out infinite;
-        stroke-dasharray: 1,200;
+        stroke-dasharray: 1, 200;
         stroke-dashoffset: 0;
         stroke-linecap: round;
-        stroke: #FFF;
+        stroke: var(--color-white);
       }
     }
   }
@@ -53,30 +55,30 @@
 
 @keyframes spinnerDash {
   0% {
-    stroke-dasharray: 1,200;
+    stroke-dasharray: 1, 200;
     stroke-dashoffset: 0;
   }
   50% {
-    stroke-dasharray: 89,200;
+    stroke-dasharray: 89, 200;
     stroke-dashoffset: -35px;
   }
   100% {
-    stroke-dasharray: 89,200;
+    stroke-dasharray: 89, 200;
     stroke-dashoffset: -124px;
   }
 }
 
 @-webkit-keyframes spinnerDash {
   0% {
-    stroke-dasharray: 1,200;
+    stroke-dasharray: 1, 200;
     stroke-dashoffset: 0;
   }
   50% {
-    stroke-dasharray: 89,200;
+    stroke-dasharray: 89, 200;
     stroke-dashoffset: -35px;
   }
   100% {
-    stroke-dasharray: 89,200;
+    stroke-dasharray: 89, 200;
     stroke-dashoffset: -124px;
   }
 }
