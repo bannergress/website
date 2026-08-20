@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom'
-import { Helmet } from 'react-helmet'
+import { withRouter, RouteComponentProps, Link } from 'react-router-dom'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
+import { Helmet } from 'react-helmet'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -10,6 +10,7 @@ import {
   getBrowsedBanners,
   loadBrowsedBanners as loadBrowsedBannersAction,
   getHasMoreBrowsedBanners,
+  resetBrowsedBanners as resetBrowsedBannersAction,
 } from '../../features/banner'
 import {
   getCountries,
@@ -41,8 +42,15 @@ import {
 } from '../../features/settings/selectors'
 import { updateSettingsAction } from '../../features/settings/actions'
 import { SettingsState } from '../../features/settings/types'
+import { ScrollRestoration } from '../../features/scroll-restoration'
 
 class Browser extends React.Component<BrowserProps, BrowserState> {
+  scrollRestoration = new ScrollRestoration({
+    key: 'browseScrollPosition',
+    preserveOn: (pathname) => pathname.startsWith('/banner/'),
+    onDiscard: () => this.props.resetBrowsedBanners(),
+  })
+
   constructor(props: BrowserProps) {
     super(props)
     this.state = {
@@ -58,23 +66,27 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    this.scrollRestoration.mount(this.props.history)
+
     const { fetchBanners, fetchPlace, match } = this.props
     const { filter } = this.state
     const { placeId } = match.params
 
-    const promises: Array<Promise<any>> = []
-
     if (placeId) {
-      promises.push(fetchPlace(placeId))
+      await fetchPlace(placeId)
     }
-    promises.push(this.fetchChildren(placeId))
+    await this.fetchChildren(placeId)
 
-    Promise.all(promises)
-      .then(() => this.setState({ status: 'success' }))
-      .catch(() => this.setState({ status: 'error' }))
+    if (this.props.banners.length === 0) {
+      await fetchBanners(placeId, filter, 0)
+    }
 
-    fetchBanners(placeId, filter, 0)
+    this.setState({ status: 'success' })
+  }
+
+  componentWillUnmount() {
+    this.scrollRestoration.unmount()
   }
 
   static getDerivedStateFromProps(
@@ -88,11 +100,26 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
   }
 
   componentDidUpdate(prevProps: BrowserProps) {
-    const { fetchBanners, match } = this.props
-    const { placeId } = match.params
-    const { filter } = this.state
-    if (placeId !== prevProps.match.params.placeId) {
-      fetchBanners(placeId, filter, 0)
+    if (this.props.banners.length > 0) this.scrollRestoration.restore()
+  }
+
+  fetchChildren = async (
+    placeId: string | undefined,
+    forceLoad: boolean = true
+  ) => {
+    const {
+      fetchAdministrativeAreas,
+      fetchCountries,
+      getAdministrativeAreas,
+      countries,
+    } = this.props
+
+    if (placeId) {
+      if (forceLoad || (getAdministrativeAreas(placeId) ?? []).length === 0) {
+        await fetchAdministrativeAreas(placeId)
+      }
+    } else if (forceLoad || countries.length === 0) {
+      await fetchCountries()
     }
   }
 
@@ -104,6 +131,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
       filter,
       page: 0,
     })
+    this.scrollRestoration.invalidate()
     updateSettings({
       defaultOnline: filter.online,
       defaultOrderBy: filter.orderBy,
@@ -126,44 +154,25 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
       page: 0,
       status: 'success',
     })
+    this.scrollRestoration.invalidate()
+
     history.push(`/browse/${newPlaceId || ''}`)
-  }
-
-  // By calling with forceLoad false, we could
-  // skip loading lists of places if already loaded
-  // during this session
-  // We use true for now so that new places are shown when
-  // banners were added by yourself or someone else while browsing
-  fetchChildren = async (
-    placeId: string | undefined,
-    forceLoad: boolean = true
-  ) => {
-    const {
-      fetchAdministrativeAreas,
-      fetchCountries,
-      getAdministrativeAreas,
-      countries,
-    } = this.props
-
-    if (placeId) {
-      if (forceLoad || (getAdministrativeAreas(placeId) ?? []).length === 0) {
-        await fetchAdministrativeAreas(placeId)
-      }
-    } else if (forceLoad || countries.length === 0) {
-      await fetchCountries()
-    }
   }
 
   onPlaceExpanded = async (place: Place | undefined) => {
     this.fetchChildren(place?.id)
   }
 
-  onLoadMoreBanners = () => {
-    const { fetchBanners, match } = this.props
-    const { placeId } = match.params
-    const { filter, page } = this.state
-    this.setState({ page: page + 1 })
-    return fetchBanners(placeId, filter, page + 1)
+  onLoadMoreBanners = async () => {
+    if (!this.props.hasMore) return
+
+    const nextPage = this.state.page + 1
+    await this.props.fetchBanners(
+      this.props.match.params.placeId,
+      this.state.filter,
+      nextPage
+    )
+    this.setState({ page: nextPage })
   }
 
   render() {
@@ -192,11 +201,9 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
         administrativeAreas = getAdministrativeAreas(selectedPlaceId) || []
         selectedPlaces = [selectedPlace]
 
-        // Get parent path
         let currentParentPlace: Place | null = selectedPlace
         while (currentParentPlace?.parentPlaceId) {
           currentParentPlace = getPlace(currentParentPlace?.parentPlaceId)
-
           if (currentParentPlace) {
             selectedPlaces.push(currentParentPlace)
           }
@@ -297,7 +304,7 @@ export type BrowserProps = {
   defaultProximityLongitude: number | undefined
   banners: Array<Banner>
   countries: Array<Place>
-  hasMore: Boolean
+  hasMore: boolean
   getAdministrativeAreas: (parentPlaceId: string) => Array<Place>
   getPlace: (placeID: string) => Place | null
   fetchCountries: () => Promise<void>
@@ -309,6 +316,7 @@ export type BrowserProps = {
     page: number
   ) => Promise<void>
   updateSettings: (settings: Partial<SettingsState>) => void
+  resetBrowsedBanners: () => void
 } & RouteComponentProps<{ placeId: string }> &
   WithTranslationProps
 
@@ -325,7 +333,7 @@ const mapStateToProps = (state: RootState) => ({
   getAdministrativeAreas: (parentPlaceId: string) =>
     getAdministrativeAreasSelector(state, parentPlaceId),
   getPlace: (placeId: string) => getPlaceSelector(state, placeId),
-  hasMore: getHasMoreBrowsedBanners(state),
+  hasMore: !!getHasMoreBrowsedBanners(state),
   defaultOnline: getDefaultOnline(state),
   ...getDefaultOrder(state),
 })
@@ -336,6 +344,7 @@ const mapDispatchToProps = {
   fetchAdministrativeAreas: loadAdministrativeAreasAction,
   fetchPlace: loadPlaceAction,
   updateSettings: updateSettingsAction,
+  resetBrowsedBanners: resetBrowsedBannersAction,
 }
 
 export default connect(
