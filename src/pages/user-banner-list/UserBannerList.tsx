@@ -24,11 +24,26 @@ import FooterMain from '../../components/footer-main'
 import LoginRequired from '../../components/login/login-required'
 import './user-banner-list.less'
 import { BannerFilter } from '../../features/banner/filter'
+import { ScrollRestoration } from '../../features/scroll-restoration'
 
 class UserBannerList extends React.Component<
   UserBannerListProps,
   UserBannerListState
 > {
+  getScrollKey = (listType: BannerListType) =>
+    `userBannerListScrollPosition:${listType}`
+
+  scrollRestoration = new ScrollRestoration({
+    key: () => this.getScrollKey(this.state.listType),
+    preserveOn: (pathname) => pathname.startsWith('/banner/'),
+  })
+
+  getLastListType = () =>
+    sessionStorage.getItem('userBannerListLastType') as BannerListType | null
+
+  setLastListType = (listType: BannerListType) =>
+    sessionStorage.setItem('userBannerListLastType', listType)
+
   constructor(props: UserBannerListProps) {
     super(props)
     this.state = {
@@ -63,8 +78,23 @@ class UserBannerList extends React.Component<
 
   componentDidMount() {
     const { filter, listType } = this.state
+    const { banners, authenticated } = this.props
+    const lastListType = this.getLastListType()
+
+    this.scrollRestoration.mount(this.props.history)
+
+    if (authenticated && lastListType === listType && banners.length > 0) {
+      this.setState({ bannersStatus: 'success' })
+      return
+    }
+
+    this.setLastListType(listType)
 
     this.doFetchBanners(listType, filter, 0)
+  }
+
+  componentWillUnmount() {
+    this.scrollRestoration.unmount()
   }
 
   componentDidUpdate(
@@ -75,11 +105,15 @@ class UserBannerList extends React.Component<
     const { authenticated } = this.props
 
     const { listType: prevListType } = prevState
-    const { listType, filter } = this.state
+    const { listType, filter, bannersStatus } = this.state
 
     if (prevListType !== listType || prevAuthenticated !== authenticated) {
+      this.scrollRestoration.invalidate(true, this.getScrollKey(prevListType))
+      this.setLastListType(listType)
       this.doFetchBanners(listType, filter, 0)
     }
+
+    if (bannersStatus === 'success') this.scrollRestoration.restore()
   }
 
   onFilterChanged = (filter: BannerFilter) => {
@@ -88,6 +122,7 @@ class UserBannerList extends React.Component<
       filter,
       pageBanners: 0,
     })
+    this.scrollRestoration.invalidate(true)
     this.doFetchBanners(listType, filter, 0)
   }
 
@@ -157,7 +192,7 @@ class UserBannerList extends React.Component<
                             banners={banners}
                             hasMoreBanners={hasMoreBanners}
                             loadMoreBanners={this.onLoadMoreBanners}
-                            applyBannerListStlyes
+                            applyBannerListStyles
                             hideBlacklisted={false}
                             showDetailsButton={false}
                           />

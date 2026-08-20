@@ -21,6 +21,7 @@ import { CreateBanner } from './pages/create-banner'
 import { PreviewBanner } from './pages/preview-banner'
 import { PrivateRoute } from './components/login/private-route'
 import { Help } from './pages/help'
+import { Error } from './pages/error'
 import { Account } from './pages/account'
 import MenuMain from './components/menu-main'
 import Navbar from './components/navbar'
@@ -80,6 +81,7 @@ const App: React.FC = () => {
                   />
                   <Redirect path="/user/banners" to="/user/banners/todo" />
                   <Route path="/help" component={Help} />
+                  <Route path="/error" component={Error} />
                   <Route path="/new-banner" component={CreateBanner} />
                   <PrivateRoute
                     path="/edit-banner/:id"
