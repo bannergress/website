@@ -19,7 +19,7 @@ import {
   createExternalNavigationUri,
   getExternalLinkAttributes,
 } from '../../features/utils'
-import { Agent } from '../agent/Agent'
+import { Agent } from '../agent'
 import { Distance } from '../distance/Distance'
 import { Duration } from '../duration/Duration'
 import IfUserLoggedIn from '../login/if-user-logged-in'
