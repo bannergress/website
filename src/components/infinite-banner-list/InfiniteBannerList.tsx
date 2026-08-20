@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { BannerFilter } from '../../features/banner/filter'
 import { useBannerList } from '../../features/banner/hooks'
 import BannerList from '../banner-list'
@@ -19,6 +19,10 @@ const InfiniteBannerList: FC<InfiniteBannerListProps> = ({
     setMaxPages(1)
   }
 
+  useEffect(() => {
+    onFilterChanged(initialFilter)
+  }, [initialFilter])
+
   return (
     <div>
       <BannerOrderChooser
@@ -38,7 +42,7 @@ const InfiniteBannerList: FC<InfiniteBannerListProps> = ({
               setMaxPages(maxPages + 1)
             }
           }}
-          applyBannerListStlyes
+          applyBannerListStyles
           hideBlacklisted={false}
           showDetailsButton={false}
         />
