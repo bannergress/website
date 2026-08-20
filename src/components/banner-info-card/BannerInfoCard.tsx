@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react'
+import React, { FC, Fragment, useLayoutEffect, useRef, useState } from 'react'
 import _ from 'underscore'
 import { LatLng } from 'leaflet'
 import Markdown from 'react-markdown'
@@ -37,6 +37,11 @@ import i18n from '../../i18n'
 
 import './banner-info-card.less'
 import { PlainDate } from '../plain-date'
+
+// Roughly how much vertical space a description can take up before it no
+// longer fits alongside the rest of the info card on common desktop window
+// heights.
+const DESCRIPTION_COLLAPSED_HEIGHT_PX = 480
 
 const getAgentList = (banner: Banner) =>
   _(mapMissions(banner.missions, (mission) => mission?.author))
@@ -411,8 +416,19 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
     'li',
     'a',
   ]
-  const descriptionSeparated = banner?.description?.split(' ')
-  const descriptionLength = banner?.description?.length
+
+  const descriptionRef = useRef<HTMLDivElement>(null)
+  const [isDescriptionOverflowing, setIsDescriptionOverflowing] =
+    useState(false)
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
+
+  useLayoutEffect(() => {
+    setIsDescriptionExpanded(false)
+    setIsDescriptionOverflowing(
+      (descriptionRef.current?.scrollHeight ?? 0) >
+        DESCRIPTION_COLLAPSED_HEIGHT_PX
+    )
+  }, [banner.description])
 
   return (
     <div className="banner-info-card">
@@ -427,25 +443,34 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
         </Markdown>
       )}
 
-      {banner.description && (descriptionLength as number) >= 12 && (
-        <details className={'banner-info-card__mission-description'}>
-          <summary className={'banner-info-card__start-text'}>
-            {descriptionSeparated?.slice(0, 12).join(' ')}
-            <span className={'banner-info-card__mission-description-dots'}> ...</span>
-            <p className={'banner-info-card__mission-description-show-more'}>
-              <Trans i18nKey="banners.showMore" />
-            </p>
-            <p className={'banner-info-card__mission-description-show-less'}>
-              <Trans i18nKey="banners.showLess" />
-            </p>
-          </summary>
-          <p className={'banner-info-card__end-text'}>
-            &nbsp;
-            {descriptionSeparated
-              ?.slice(12, descriptionSeparated.length)
-              .join(' ')}
-          </p>
-        </details>
+      {banner.description && (
+        <div
+          className={`banner-info-card__description${
+            isDescriptionOverflowing && !isDescriptionExpanded
+              ? ' banner-info-card__description--collapsed'
+              : ''
+          }`}
+        >
+          <div
+            className="banner-info-card__description-content"
+            ref={descriptionRef}
+          >
+            <Markdown allowedElements={allowedElements} unwrapDisallowed={true}>
+              {banner.description}
+            </Markdown>
+          </div>
+          {isDescriptionOverflowing && (
+            <button
+              type="button"
+              className="button-as-link banner-info-card__description-toggle"
+              onClick={() => setIsDescriptionExpanded((expanded) => !expanded)}
+            >
+              {isDescriptionExpanded
+                ? t('banners.showLess')
+                : t('banners.showMore')}
+            </button>
+          )}
+        </div>
       )}
       <IfUserLoggedIn>{getCreatedBy(banner, t)}</IfUserLoggedIn>
       <IfUserLoggedOut>
