@@ -29,6 +29,7 @@ import {
   editBannerAction,
   deleteBannerAction,
   changeBannerSettingsAction,
+  resetBrowsedBannersAction,
 } from './actions'
 import {
   Banner,
@@ -75,9 +76,9 @@ export {
   resetMapBannersAction as resetMapBanners,
   loadMapBannersAction as loadMapBanners,
   removePendingBannerAction as removePendingBanner,
-  editBannerAction as editBanner,
   deleteBannerAction as deleteBanner,
   changeBannerSettingsAction as changeBannerSettings,
+  resetBrowsedBannersAction as resetBrowsedBanners,
 }
 export type { Banner, BannerType, BannerListType, BannerState, NumDictionary }
 export {

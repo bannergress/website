@@ -40,6 +40,8 @@
     "exitFullscreen": "<icon /> Exit Full Screen",
     "confirmDelete": "Do you really want to delete that banner?",
     "confirmNotDone": "Do you really want to remove the Done marker?",
+    "showMore": "Show more...",
+    "showLess": "Show less...",
     "creation": {
       "edit": "Edit Banner",
       "new": "New Banner",

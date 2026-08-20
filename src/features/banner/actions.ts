@@ -262,3 +262,10 @@ export const changeBannerSettingsAction =
       throw Error('Error while changing banner settings')
     }
   }
+
+export const resetBrowsedBannersAction =
+  () => (dispatch: Dispatch<BannerActionTypes>) => {
+    dispatch({
+      type: RESET_BROWSED_BANNERS,
+    })
+  }
