@@ -21,5 +21,5 @@ export type BannerFilter = {
   proximityLatitude?: number
   proximityLongitude?: number
   author?: string
-  listTypes?: BannerListType
+  listTypes?: BannerListType | BannerListType[]
 }
