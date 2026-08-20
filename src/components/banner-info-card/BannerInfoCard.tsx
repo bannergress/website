@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react'
+import React, { FC, Fragment, useLayoutEffect, useRef, useState } from 'react'
 import _ from 'underscore'
 import { LatLng } from 'leaflet'
 import Markdown from 'react-markdown'
@@ -37,6 +37,11 @@ import i18n from '../../i18n'
 
 import './banner-info-card.less'
 import { PlainDate } from '../plain-date'
+
+// Roughly how much vertical space a description can take up before it no
+// longer fits alongside the rest of the info card on common desktop window
+// heights.
+const DESCRIPTION_COLLAPSED_HEIGHT_PX = 300
 
 const getAgentList = (banner: Banner) =>
   _(mapMissions(banner.missions, (mission) => mission?.author))
@@ -411,6 +416,20 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
     'li',
     'a',
   ]
+
+  const descriptionRef = useRef<HTMLDivElement>(null)
+  const [isDescriptionOverflowing, setIsDescriptionOverflowing] =
+    useState(false)
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
+
+  useLayoutEffect(() => {
+    setIsDescriptionExpanded(false)
+    setIsDescriptionOverflowing(
+      (descriptionRef.current?.scrollHeight ?? 0) >
+        DESCRIPTION_COLLAPSED_HEIGHT_PX
+    )
+  }, [banner.description])
+
   return (
     <div className="banner-info-card">
       {getEvent(banner, t)}
@@ -423,10 +442,35 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
           {banner.warning}
         </Markdown>
       )}
+
       {banner.description && (
-        <Markdown allowedElements={allowedElements} unwrapDisallowed={true}>
-          {banner.description}
-        </Markdown>
+        <div
+          className={`banner-info-card__description${
+            isDescriptionOverflowing && !isDescriptionExpanded
+              ? ' banner-info-card__description--collapsed'
+              : ''
+          }`}
+        >
+          <div
+            className="banner-info-card__description-content"
+            ref={descriptionRef}
+          >
+            <Markdown allowedElements={allowedElements} unwrapDisallowed={true}>
+              {banner.description}
+            </Markdown>
+          </div>
+          {isDescriptionOverflowing && (
+            <button
+              type="button"
+              className="banner-info-card__description-toggle"
+              onClick={() => setIsDescriptionExpanded((expanded) => !expanded)}
+            >
+              {isDescriptionExpanded
+                ? t('banners.showLess')
+                : t('banners.showMore')}
+            </button>
+          )}
+        </div>
       )}
       <IfUserLoggedIn>{getCreatedBy(banner, t)}</IfUserLoggedIn>
       <IfUserLoggedOut>

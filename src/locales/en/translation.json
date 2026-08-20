@@ -6,7 +6,6 @@
       "title": "Ingress account linking",
       "change": "Change Linked Account",
       "unlink": "Unlink Account",
-      "unlinkWarning": "Due to the shutdown of the Ingress Community Forum, you won't be able to link your account after April 1st, 2024. Continue anyway?",
       "link": "Link Ingress Account",
       "none": "No account linked to your Bannergress profile",
       "linked": "Account linked: <agent />",
@@ -41,6 +40,8 @@
     "exitFullscreen": "<icon /> Exit Full Screen",
     "confirmDelete": "Do you really want to delete that banner?",
     "confirmNotDone": "Do you really want to remove the Done marker?",
+    "showMore": "Show more...",
+    "showLess": "Show less...",
     "creation": {
       "edit": "Edit Banner",
       "new": "New Banner",

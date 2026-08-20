@@ -6,7 +6,6 @@
       "title": "Vincular cuenta de Ingress",
       "change": "Cambiar cuenta asociada",
       "unlink": "Desvincular cuenta",
-      "unlinkWarning": "Debido al cierre de Foto de la Comunidad de Ingress, no podrás enlazar tu cuenta después del 1 de abril de 2024. ¿Quieres continuar igualmente?",
       "link": "Vincular cuenta de Ingress",
       "none": "No tienes cuenta de Ingress asociada a la de Bannergress",
       "linked": "Cuenta asociada: <agent />",
@@ -41,6 +40,8 @@
     "exitFullscreen": "<icon /> Minimizar",
     "confirmDelete": "¿Estás seguro de que quieres borrar este banner?",
     "confirmNotDone": "¿Realmente eliminar la marca de completados?",
+    "showMore": "Mostrar más...",
+    "showLess": "Mostrar menos...",
     "creation": {
       "edit": "Editar banner",
       "new": "Crear banner",
