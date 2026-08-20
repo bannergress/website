@@ -6,8 +6,8 @@ import { Place } from '../../features/place'
 import { RootState } from '../../storeTypes'
 import PlaceEntry from '../place-list/PlaceEntry'
 import { PlaceAccordionEntry } from './PlaceAccordionEntry'
-import TriangleUpSVG from '../../img/icons/triangle.svg?react'
-import TriangleDownSVG from '../../img/icons/triangle-down.svg?react'
+import TriangleUpSVG from '../../assets/img/icons/triangle.svg?react'
+import TriangleDownSVG from '../../assets/img/icons/triangle-down.svg?react'
 
 import './place-accordion-page.less'
 

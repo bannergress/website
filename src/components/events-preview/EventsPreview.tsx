@@ -26,7 +26,7 @@ const EventsPreview: React.FC = () => {
         hasMoreBanners={false}
         hideBlacklisted={false}
         showDetailsButton={false}
-        applyBannerListStlyes={true}
+        applyBannerListStyles={true}
       />
       {data.length >= 4 && (
         <div className="seeFullList">
