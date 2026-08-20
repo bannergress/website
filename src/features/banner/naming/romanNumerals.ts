@@ -4,7 +4,7 @@ function parsePart(part: string | undefined) {
   if (!part) {
     return 0
   }
-  switch (part) {
+  switch (part.toUpperCase()) {
     case 'I':
       return 1
     case 'II':
