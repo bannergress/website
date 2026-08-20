@@ -41,7 +41,7 @@ import { PlainDate } from '../plain-date'
 // Roughly how much vertical space a description can take up before it no
 // longer fits alongside the rest of the info card on common desktop window
 // heights.
-const DESCRIPTION_COLLAPSED_HEIGHT_PX = 480
+const DESCRIPTION_COLLAPSED_HEIGHT_PX = 300
 
 const getAgentList = (banner: Banner) =>
   _(mapMissions(banner.missions, (mission) => mission?.author))
@@ -462,7 +462,7 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
           {isDescriptionOverflowing && (
             <button
               type="button"
-              className="button-as-link banner-info-card__description-toggle"
+              className="banner-info-card__description-toggle"
               onClick={() => setIsDescriptionExpanded((expanded) => !expanded)}
             >
               {isDescriptionExpanded
