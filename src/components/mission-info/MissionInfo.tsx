@@ -10,9 +10,9 @@ import { getExternalLinkAttributes } from '../../features/utils'
 import { Duration } from '../duration/Duration'
 import { Distance } from '../distance/Distance'
 
-import SVGExplorer from '../../img/icons/explorer.svg?react'
-import SVGTimer from '../../img/icons/timer.svg?react'
-import SVGIntel from '../../img/icons/intel.svg?react'
+import SVGExplorer from '../../assets/img/icons/explorer.svg?react'
+import SVGTimer from '../../assets/img/icons/timer.svg?react'
+import SVGIntel from '../../assets/img/icons/intel.svg?react'
 
 import './mission-info.less'
 import { isMobile } from '../../features/utils/os'
