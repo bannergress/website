@@ -1,7 +1,7 @@
 import React from 'react'
-import { NewsItem } from '../../features/news'
 
 import './announcement.less'
+import { NewsItem } from '../../features/news/types'
 
 const Announcement: React.FC<AnnouncementProps> = ({ item }) => (
   <div className="announcement-item">{item.content}</div>
