@@ -40,7 +40,9 @@ class Api {
 
       const fullUrl = new URL(url, import.meta.env.VITE_API_BASE_URL)
       Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined) {
+        if (Array.isArray(value)) {
+          fullUrl.searchParams.set(key, value.join(','))
+        } else if (value !== undefined) {
           fullUrl.searchParams.set(key, String(value))
         }
       })

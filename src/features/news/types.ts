@@ -3,7 +3,3 @@ export interface NewsItem {
   content: string
   created: Date
 }
-
-export interface NewsState {
-  news: Array<NewsItem>
-}
