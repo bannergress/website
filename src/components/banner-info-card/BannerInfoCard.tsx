@@ -1,6 +1,7 @@
 import React, { FC, Fragment } from 'react'
 import _ from 'underscore'
 import { LatLng } from 'leaflet'
+import Markdown from 'react-markdown'
 import { Trans, useTranslation } from 'react-i18next'
 import { TFunction } from 'i18next'
 import { Tooltip } from 'antd'
@@ -25,13 +26,13 @@ import IfUserLoggedIn from '../login/if-user-logged-in'
 import IfUserLoggedOut from '../login/if-user-logged-out'
 import LoginButton from '../login/login-button'
 import { hasLatLng } from '../map-detail/showBannerRouteOnMap'
-import SVGList from '../../img/icons/list.svg?react'
-import SVGExplorer from '../../img/icons/explorer.svg?react'
-import SVGTimer from '../../img/icons/timer.svg?react'
-import SVGHand from '../../img/icons/hand.svg?react'
-import SVGCompass from '../../img/icons/compass.svg?react'
-import SVGChecked from '../../img/icons/checked.svg?react'
-import SVGOffline from '../../img/icons/offline.svg?react'
+import SVGList from '../../assets/img/icons/list.svg?react'
+import SVGExplorer from '../../assets/img/icons/explorer.svg?react'
+import SVGTimer from '../../assets/img/icons/timer.svg?react'
+import SVGHand from '../../assets/img/icons/hand.svg?react'
+import SVGCompass from '../../assets/img/icons/compass.svg?react'
+import SVGChecked from '../../assets/img/icons/checked.svg?react'
+import SVGOffline from '../../assets/img/icons/offline.svg?react'
 import i18n from '../../i18n'
 
 import './banner-info-card.less'
@@ -399,11 +400,34 @@ const getStartPointButton = (banner: Banner, t: TFunction) => {
 
 const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
   const { t } = useTranslation()
+  const allowedElements = [
+    'p',
+    'br',
+    'b',
+    'strong',
+    'em',
+    'ul',
+    'ol',
+    'li',
+    'a',
+  ]
   return (
     <div className="banner-info-card">
       {getEvent(banner, t)}
-      {banner.warning && <p className="warning-text">{banner.warning}</p>}
-      {banner.description && <p>{banner.description}</p>}
+      {banner.warning && (
+        <Markdown
+          className={'warning-text'}
+          allowedElements={allowedElements}
+          unwrapDisallowed={true}
+        >
+          {banner.warning}
+        </Markdown>
+      )}
+      {banner.description && (
+        <Markdown allowedElements={allowedElements} unwrapDisallowed={true}>
+          {banner.description}
+        </Markdown>
+      )}
       <IfUserLoggedIn>{getCreatedBy(banner, t)}</IfUserLoggedIn>
       <IfUserLoggedOut>
         <p>

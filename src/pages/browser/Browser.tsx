@@ -27,7 +27,7 @@ import BannerList from '../../components/banner-list'
 import BannerOrderChooser from '../../components/banner-order-chooser'
 import FooterMain from '../../components/footer-main'
 import { PlaceAccordion } from '../../components/place-accordion/PlaceAccordion'
-import SVGMap from '../../img/icons/map.svg?react'
+import SVGMap from '../../assets/img/icons/map.svg?react'
 
 import './browser.less'
 import LoadingOverlay from '../../components/loading-overlay'
@@ -281,7 +281,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
                     banners={banners}
                     hasMoreBanners={hasMore}
                     loadMoreBanners={this.onLoadMoreBanners}
-                    applyBannerListStlyes
+                    applyBannerListStyles
                     hideBlacklisted
                     showDetailsButton={false}
                   />
