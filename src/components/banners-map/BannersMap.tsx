@@ -23,6 +23,22 @@ import './banners-map.less'
 import 'leaflet/dist/leaflet.css'
 import i18n from '../../i18n'
 
+const RefSetup: React.FC<{
+  onMapReady: (map: LeafletMap) => void
+  onMapDraggedOrZoomed: () => void
+  onMapClicked: () => void
+}> = ({ onMapReady, onMapDraggedOrZoomed, onMapClicked }) => {
+  const map = useMap()
+  onMapReady(map)
+  map.addEventListener('dragend', onMapDraggedOrZoomed)
+  map.addEventListener('zoomend', onMapDraggedOrZoomed)
+  map.addEventListener('click', onMapClicked)
+  useEffect(() => {
+    onMapDraggedOrZoomed()
+  })
+  return null
+}
+
 class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   private map: LeafletMap | undefined = undefined
 
@@ -145,18 +161,6 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     }
   }
 
-  RefSetup: React.FC = () => {
-    const map = useMap()
-    this.map = map
-    map.addEventListener('dragend', this.onMapDraggedOrZoomed)
-    map.addEventListener('zoomend', this.onMapDraggedOrZoomed)
-    map.addEventListener('click', this.onMapClicked)
-    useEffect(() => {
-      this.onMapDraggedOrZoomed()
-    })
-    return null
-  }
-
   onSelectBanner = (banner: Banner) => {
     const { onSelectBanner } = this.props
     onSelectBanner(banner)
@@ -248,7 +252,13 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     return (
       <Fragment>
         <MapContainer {...startParams} minZoom={3} worldCopyJump>
-          <this.RefSetup />
+          <RefSetup
+            onMapReady={(map) => {
+              this.map = map
+            }}
+            onMapDraggedOrZoomed={this.onMapDraggedOrZoomed}
+            onMapClicked={this.onMapClicked}
+          />
           <MapZoomControl />
           <LocateControl />
           <MapLoadingControl />

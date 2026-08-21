@@ -1,7 +1,6 @@
-import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { persistStore, persistReducer } from 'redux-persist'
-import storageSession from 'redux-persist/lib/storage/session'
-import thunk from 'redux-thunk'
+import storageSession from 'redux-persist/es/storage/session'
 
 import { BannerReducer } from './features/banner'
 import { PlaceReducer } from './features/place'
@@ -24,6 +23,7 @@ const rootReducer = combineReducers({
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-// export default store
-export const store = createStore(persistedReducer, {}, applyMiddleware(thunk))
+export const store = configureStore({
+  reducer: persistedReducer,
+})
 export const persistor = persistStore(store)

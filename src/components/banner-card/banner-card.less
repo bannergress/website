@@ -27,7 +27,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: var(--color-gray);
+  background-color: var(--color-medium-gray);
   margin-right: 8px;
   margin-top: 8px;
 }
@@ -48,7 +48,7 @@
     &-todo {
       &:after {
         .list-style-background();
-        background: rgba(var(--color-todo), 0.05);
+        background: color-mix(in srgb, var(--color-todo) 5%, transparent);
         border: 1px solid var(--color-todo);
       }
     }
@@ -56,7 +56,7 @@
     &-done {
       &:after {
         .list-style-background();
-        background: rgba(var(--color-done), 0.05);
+        background: color-mix(in srgb, var(--color-done) 5%, transparent);
         border: 1px solid var(--color-done);
       }
     }
@@ -64,7 +64,7 @@
     &-blacklist {
       &:after {
         .list-style-background();
-        background: rgba(var(--color-blacklist), 0.05);
+        background: color-mix(in srgb, var(--color-blacklist) 5%, transparent);
         border: 1px solid var(--color-blacklist);
       }
     }
@@ -154,7 +154,7 @@
   .offline-overlay {
     font-size: 24px;
     line-height: 18px;
-    color: var(--color-light-gray);
+    color: var(--color-secondary-text);
 
     position: absolute;
     left: -20px;
@@ -195,7 +195,7 @@
 .banner-info-item {
   font-size: 14px;
   line-height: 18px;
-  color: var(--color-light-gray);
+  color: var(--color-secondary-text);
   margin-top: 4px;
   display: flex;
 
