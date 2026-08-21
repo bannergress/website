@@ -4,7 +4,7 @@ import { RouteComponentProps, withRouter } from '../../hocs/withRouter'
 import { Helmet } from 'react-helmet'
 import { Col, Row } from 'antd'
 import { LatLngBounds } from 'leaflet'
-import Scrollbars from 'react-custom-scrollbars-2'
+import { Scrollbars } from 'react-custom-scrollbars-2'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
