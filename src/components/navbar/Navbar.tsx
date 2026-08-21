@@ -1,6 +1,10 @@
 import { FC, useEffect, useState } from 'react'
-import { generatePath, useHistory, useLocation } from 'react-router'
-import { NavLink } from 'react-router-dom'
+import {
+  generatePath,
+  NavLink,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import LoginInNavbar from '../login/login-in-navbar'
@@ -14,7 +18,7 @@ import './Navbar.less'
 const Navbar: FC<NavBarProps> = ({ className }) => {
   const [mobileSearchBarActive, setMobileSearchBarActive] = useState(false)
   const { t } = useTranslation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const location = useLocation()
   const mobileSearchBarActiveClassName = mobileSearchBarActive ? 'active' : ''
   const insideSearch = location.pathname.startsWith('/search/')
@@ -29,7 +33,7 @@ const Navbar: FC<NavBarProps> = ({ className }) => {
 
     if (trimmedValue !== '') {
       const path = generatePath('/search/:term', { term: trimmedValue })
-      history.push(path)
+      navigate(path)
     }
   }
 

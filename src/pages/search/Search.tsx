@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Row, Layout, Divider } from 'antd'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { withRouter, RouteComponentProps } from '../../hocs/withRouter'
 import { Helmet } from 'react-helmet'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import { Button, Dropdown, Menu } from 'antd'
 import { useTranslation } from 'react-i18next'
 
@@ -9,7 +9,7 @@ import SVGUpArrow from '../../assets/img/icons/up-arrow.svg?react'
 import './menu-user.less'
 
 const MenuUser: React.FC<MenuUserProps> = ({ logout }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const { t } = useTranslation()
 
   const handleMenuClick = (e: { key: React.Key }) => {
@@ -18,10 +18,10 @@ const MenuUser: React.FC<MenuUserProps> = ({ logout }) => {
         logout()
         break
       case 'banners':
-        history.push('/user/banners/')
+        navigate('/user/banners/')
         break
       case 'account':
-        history.push('/account')
+        navigate('/account')
         break
       default:
         break

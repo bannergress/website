@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { RouteComponentProps, withRouter } from '../../hocs/withRouter'
 import { Helmet } from 'react-helmet'
 import { Col, Row } from 'antd'
 import { LatLngBounds } from 'leaflet'

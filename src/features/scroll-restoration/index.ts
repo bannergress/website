@@ -1,4 +1,8 @@
-import { History } from 'history'
+export interface ScrollRestorationHistory {
+  listen: (
+    callback: (location: { pathname: string }, action: string) => void
+  ) => () => void
+}
 
 export interface ScrollTarget {
   getScrollTop: () => number | undefined
@@ -48,7 +52,7 @@ export class ScrollRestoration {
     this.onDiscard = onDiscard
   }
 
-  mount(history: History) {
+  mount(history: ScrollRestorationHistory) {
     this.unlisten = history.listen((location, action) => {
       if (action !== 'PUSH') return
 
