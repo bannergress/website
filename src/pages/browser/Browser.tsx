@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter, RouteComponentProps, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { withRouter, RouteComponentProps } from '../../hocs/withRouter'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 
@@ -156,7 +157,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     })
     this.scrollRestoration.invalidate()
 
-    history.push(`/browse/${newPlaceId || ''}`)
+    history.push(newPlaceId ? `/browse/${newPlaceId}` : '/browse')
   }
 
   onPlaceExpanded = async (place: Place | undefined) => {

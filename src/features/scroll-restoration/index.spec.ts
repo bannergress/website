@@ -1,7 +1,9 @@
-import { History, Location, Action } from 'history'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { ScrollRestoration, ScrollTarget } from '.'
+import { ScrollRestoration, ScrollRestorationHistory, ScrollTarget } from '.'
+
+type Location = { pathname: string }
+type Action = string
 
 const createStorage = (): Storage => {
   const values = new Map<string, string>()
@@ -20,12 +22,12 @@ const createStorage = (): Storage => {
 const createHistory = () => {
   let listener: ((location: Location, action: Action) => void) | undefined
   const unlisten = vi.fn()
-  const history = {
+  const history: ScrollRestorationHistory = {
     listen: vi.fn((nextListener) => {
       listener = nextListener
       return unlisten
     }),
-  } as unknown as History
+  }
 
   return {
     history,
