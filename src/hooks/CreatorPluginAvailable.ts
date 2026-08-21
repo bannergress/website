@@ -4,9 +4,8 @@ const getCurrentValue = () =>
   Boolean(document.body.dataset.creatorPluginAvailable)
 
 export const useCreatorPluginAvailable = () => {
-  const [creatorPluginAvailable, setCreatorPluginAvailable] = useState(
-    getCurrentValue()
-  )
+  const [creatorPluginAvailable, setCreatorPluginAvailable] =
+    useState(getCurrentValue())
   useEffect(() => {
     const observer = new MutationObserver(() =>
       setCreatorPluginAvailable(getCurrentValue())

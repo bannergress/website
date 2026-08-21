@@ -247,7 +247,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
 
     return (
       <Fragment>
-        <MapContainer {...startParams} minZoom={3} worldCopyJump tap={false}>
+        <MapContainer {...startParams} minZoom={3} worldCopyJump>
           <this.RefSetup />
           <MapZoomControl />
           <LocateControl />
