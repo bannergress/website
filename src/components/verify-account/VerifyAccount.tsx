@@ -79,9 +79,8 @@ const VerifyAccount: FC = () => {
     if (verificationMessage && isCopied) {
       const id = setInterval(async () => {
         try {
-        await handleApiRequest(getUser())
-        } catch (e) {
-        }
+          await handleApiRequest(getUser())
+        } catch (e) {}
       }, 120_000)
       return () => clearTimeout(id)
     }
@@ -139,10 +138,7 @@ const VerifyAccount: FC = () => {
   } else if (user?.agent) {
     actions = (
       <div className="change-verification-buttons">
-        <Button
-          className="button-default"
-          onClick={() => setIsClaiming(true)}
-        >
+        <Button className="button-default" onClick={() => setIsClaiming(true)}>
           {t('account.linking.change')}
         </Button>
         <Button className="button-default" onClick={onUnlink}>

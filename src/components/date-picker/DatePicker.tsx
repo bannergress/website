@@ -27,7 +27,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       {useShowPicker ? (
         <div
           onClick={onTriggerPicker}
-          onKeyPress={(e) => e.key === 'Enter' && onTriggerPicker()}
+          onKeyDown={(e) => e.key === 'Enter' && onTriggerPicker()}
           role="button"
           tabIndex={0}
           style={{ cursor: 'pointer' }}

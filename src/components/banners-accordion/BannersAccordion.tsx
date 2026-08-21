@@ -49,9 +49,7 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
           role="button"
           title={selectedBanner.title}
           onClick={() => onSelectBanner(selectedBanner)}
-          onKeyPress={(e) =>
-            e.key === 'Enter' && onSelectBanner(selectedBanner)
-          }
+          onKeyDown={(e) => e.key === 'Enter' && onSelectBanner(selectedBanner)}
           className="banner-card-link"
           tabIndex={0}
         >

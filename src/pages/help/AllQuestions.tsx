@@ -7,7 +7,6 @@ import { getExternalLinkAttributes } from '../../features/utils'
 import './all-questions.less'
 
 const getLink = (url: string) => (
-  // eslint-disable-next-line jsx-a11y/anchor-has-content
   <a href={url} {...getExternalLinkAttributes()} />
 )
 

@@ -1,0 +1,76 @@
+import tseslint from 'typescript-eslint'
+import reactHooks from 'eslint-plugin-react-hooks'
+import i18next from 'eslint-plugin-i18next'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
+import importPlugin from 'eslint-plugin-import'
+import prettierPlugin from 'eslint-plugin-prettier'
+import prettierConfig from 'eslint-config-prettier'
+
+export default [
+  {
+    ignores: ['dist/**', 'public/**', 'coverage/**'],
+  },
+  tseslint.configs.base,
+  tseslint.configs.eslintRecommended,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parserOptions: {
+        ecmaVersion: 12,
+        project: ['./tsconfig.json'],
+      },
+    },
+  },
+  {
+    files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
+    plugins: {
+      'react-hooks': reactHooks,
+      i18next,
+      'jsx-a11y': jsxA11y,
+      import: importPlugin,
+      prettier: prettierPlugin,
+    },
+    rules: {
+      ...prettierConfig.rules,
+      // Make prettier code formatting suggestions more verbose.
+      'prettier/prettier': 'warn',
+      'arrow-body-style': 'off',
+      'prefer-arrow-callback': 'off',
+      // Disable <Fragment> => <> replacement. Feel free to change
+      'react/jsx-fragments': 'off',
+      // Disable prefer default export
+      'import/prefer-default-export': 'off',
+      'no-console': 'off',
+      'react/jsx-props-no-spreading': 'off',
+      'react/prop-types': 0,
+      'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
+      'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
+      'i18next/no-literal-string': [
+        'warn',
+        {
+          markupOnly: true,
+          ignore: [
+            'button',
+            'numberOfBanners',
+            '_blank',
+            'sequential',
+            'anyOrder',
+            '/.*',
+            'start',
+            'right',
+            'top',
+            'center',
+            'info',
+            '\\w+Pane',
+            'poi',
+            '#[0-9ABCDEF]+',
+            'currentColor',
+            'longName',
+            'formattedAddress',
+          ],
+        },
+      ],
+      'react/sort-comp': 'off',
+    },
+  },
+]

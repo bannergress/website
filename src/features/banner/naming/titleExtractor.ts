@@ -38,7 +38,6 @@ export class TitleExtractor {
         next.push(newItem)
       }
       if (prev && prev.length) {
-        // eslint-disable-next-line @typescript-eslint/no-loop-func
         prev.forEach((p) => {
           const newVal = `${p.val}${val}`
           const added = this.dictionary[newVal.toLowerCase()]
@@ -68,7 +67,6 @@ export class TitleExtractor {
     const includes = this.titles.filter((t) => t.missions.includes(mission.id))
     includes.forEach((title) => {
       if (title.missions.length > 1) {
-        // eslint-disable-next-line no-param-reassign
         title.missions = _(title.missions).without(mission.id)
       } else {
         this.titles = _(this.titles).without(title)

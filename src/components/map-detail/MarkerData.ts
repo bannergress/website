@@ -54,7 +54,6 @@ export const setMarkerData = (
   // So, we have to use explicit setting of parameter value
 
   if (marker && data) {
-    // eslint-disable-next-line no-param-reassign
     marker.markerData = data
   }
 }

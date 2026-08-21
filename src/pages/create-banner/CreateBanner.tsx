@@ -568,7 +568,6 @@ class CreateBanner extends React.Component<
       return (
         <InputNumber
           value={mission.index}
-          // eslint-disable-next-line i18next/no-literal-string
           inputMode="numeric"
           max={9999}
           min={1}
@@ -838,7 +837,7 @@ class CreateBanner extends React.Component<
                 onChange={(e) =>
                   this.onInputChange(e.target.value, 'searchText')
                 }
-                onKeyPress={(k) =>
+                onKeyDown={(k) =>
                   k.key === 'Enter' ? this.onSearchForced() : null
                 }
               />
