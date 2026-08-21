@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom'
+import { withRouter, RouteComponentProps } from '../../hocs/withRouter'
 import { Beforeunload } from 'react-beforeunload'
 import { Input, InputNumber, Button, Tooltip } from 'antd'
 import { Helmet } from 'react-helmet'
@@ -44,6 +44,7 @@ import {
 } from '../../components/algorithm-detection-chooser'
 import AdvancedOptions from '../../components/advanced-options'
 import { IssuesList } from '../../components/Issues-list'
+import { NavigationPrompt } from '../../components/navigation-prompt'
 import LoginRequired from '../../components/login/login-required'
 import SVGRightArrow from '../../assets/img/icons/right_arrow.svg?react'
 import SVGCross from '../../assets/img/icons/cross.svg?react'
@@ -797,7 +798,7 @@ class CreateBanner extends React.Component<
           <title>{title}</title>
         </Helmet>
 
-        <Prompt message={this.getPromptMessage} />
+        <NavigationPrompt getMessage={this.getPromptMessage} />
         <Beforeunload onBeforeunload={this.getPromptMessage} />
         <LoadingOverlay
           active={status === 'loading'}

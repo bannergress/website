@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { RouteComponentProps, withRouter } from '../../hocs/withRouter'
 import {
   divIcon,
   LatLng,
