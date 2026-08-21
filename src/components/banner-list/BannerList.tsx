@@ -15,7 +15,7 @@ const BannerList: FC<BannerListProps> = ({
   loadMoreBanners,
   selectedBannerId,
   onSelectBanner,
-  applyBannerListStlyes,
+  applyBannerListStyles,
   hideBlacklisted,
   showDetailsButton,
 }) => {
@@ -47,7 +47,7 @@ const BannerList: FC<BannerListProps> = ({
         role="button"
         title={banner.title}
         onClick={() => onSelectBanner(banner)}
-        onKeyPress={(e) => e.key === 'Enter' && onSelectBanner(banner)}
+        onKeyDown={(e) => e.key === 'Enter' && onSelectBanner(banner)}
         className="banner-card-link"
         tabIndex={0}
       >
@@ -84,7 +84,7 @@ const BannerList: FC<BannerListProps> = ({
                     : undefined
                 }
                 linkStartPlace={false}
-                applyBannerListStlye={applyBannerListStlyes}
+                applyBannerListStlye={applyBannerListStyles}
               />
             )
             return (
@@ -117,7 +117,7 @@ export interface BannerListProps {
   selectedBannerId?: string
   loadMoreBanners?: () => Promise<void>
   onSelectBanner?: (banner: Banner) => void
-  applyBannerListStlyes: boolean
+  applyBannerListStyles: boolean
   hideBlacklisted: boolean
   showDetailsButton: boolean
 }

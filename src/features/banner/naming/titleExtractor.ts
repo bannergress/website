@@ -2,6 +2,11 @@ import _ from 'underscore'
 import { Mission } from '../../mission'
 import { Title, TitleDictionary } from './types'
 
+// Leftover marker punctuation (brackets, hashes, underscores, dashes...) that
+// can dangle at the edges of a detected title once the numbering itself has
+// been stripped out.
+export const boundarySeparatorsRegex = /^[\s\-/\])#_]+|[\s\-/[(,#_]+$/gi
+
 export class TitleExtractor {
   private titles: Array<Title> = []
 
@@ -33,7 +38,6 @@ export class TitleExtractor {
         next.push(newItem)
       }
       if (prev && prev.length) {
-        // eslint-disable-next-line @typescript-eslint/no-loop-func
         prev.forEach((p) => {
           const newVal = `${p.val}${val}`
           const added = this.dictionary[newVal.toLowerCase()]
@@ -63,7 +67,6 @@ export class TitleExtractor {
     const includes = this.titles.filter((t) => t.missions.includes(mission.id))
     includes.forEach((title) => {
       if (title.missions.length > 1) {
-        // eslint-disable-next-line no-param-reassign
         title.missions = _(title.missions).without(mission.id)
       } else {
         this.titles = _(this.titles).without(title)
@@ -87,7 +90,7 @@ export class TitleExtractor {
 
   bestTitleClean = () => {
     const title = this.bestTitle()
-    return title?.val.replace(/^[\s\-/\])]+|[\s\-/[(,]+$/gi, '')
+    return title?.val.replace(boundarySeparatorsRegex, '')
   }
 
   bestCombinedTitle = (total: number | undefined): [string, string] => {
@@ -127,8 +130,8 @@ export class TitleExtractor {
       }
     }
     return [
-      part1.replace(/^[\s\-/\])]+|[\s\-/[(,]+$/gi, ''),
-      part2.replace(/^[\s\-/\])]+|[\s\-/[(,]+$/gi, ''),
+      part1.replace(boundarySeparatorsRegex, ''),
+      part2.replace(boundarySeparatorsRegex, ''),
     ]
   }
 }

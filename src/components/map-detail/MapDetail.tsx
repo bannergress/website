@@ -53,7 +53,6 @@ export class MapDetail extends React.Component<MapDetailProps> {
   RefSetup: React.FC = () => {
     const map = useMap()
     this.mapRef = map
-    // eslint-disable-next-line no-param-reassign
     map.zoomControl.options.zoomInText = i18n!.t('map.zoomIn')
     return null
   }

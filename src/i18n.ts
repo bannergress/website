@@ -10,18 +10,13 @@ const supportedLngs = {
 
 const getLanguageToUse = () => {
   const languages = navigator.languages
-  console.log('preferred language order:', JSON.stringify(languages))
   for (const language of languages) {
     for (const pair of Object.entries(supportedLngs)) {
       const code = pair[0]
       const regex = pair[1]
-      if (regex.test(language)) {
-        console.log('using language:', code)
-        return code
-      }
+      if (language.match(regex)) return code
     }
   }
-  console.log('using fallback language: en')
   return 'en'
 }
 

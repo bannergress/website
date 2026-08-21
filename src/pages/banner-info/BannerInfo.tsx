@@ -1,11 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {
-  withRouter,
-  RouteComponentProps,
-  generatePath,
-  Redirect,
-} from 'react-router-dom'
+import { generatePath, Navigate } from 'react-router-dom'
+import { withRouter, RouteComponentProps } from '../../hocs/withRouter'
 import { Helmet } from 'react-helmet'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
@@ -50,7 +46,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
       }) !== 0
     ) {
       const url = generatePath('/banner/:id', { id: banner.id })
-      return <Redirect to={url} />
+      return <Navigate to={url} replace />
     }
 
     if (banner && banner.missions) {

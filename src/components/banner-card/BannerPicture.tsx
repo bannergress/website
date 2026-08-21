@@ -5,7 +5,7 @@ import Scrollbars from 'react-custom-scrollbars-2'
 import { Trans } from 'react-i18next'
 
 import { useLoaded } from '../../hooks/Loaded'
-import SVGMinimize from '../../img/icons/minimize.svg?react'
+import SVGMinimize from '../../assets/img/icons/minimize.svg?react'
 
 const getImageAnimation = (
   innerDiv: HTMLDivElement | null,
@@ -120,7 +120,7 @@ const BannerPicture: FC<BannerPictureProps> = ({
         ref={ref}
         className={`banner-card-picture banner-lines-${lines}`}
         onClick={() => setModalOpened(showFullImage)}
-        onKeyPress={(e) =>
+        onKeyDown={(e) =>
           e.key === 'Enter' ? setModalOpened(showFullImage) : null
         }
         role="button"

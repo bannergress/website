@@ -1,17 +1,18 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-import SVGHome from '../../img/icons/home.svg?react'
-import SVGBrowse from '../../img/icons/browse.svg?react'
-import SVGMap from '../../img/icons/map.svg?react'
-import SVGHelp from '../../img/icons/help.svg?react'
-import SVGAdd from '../../img/icons/add.svg?react'
+import SVGHome from '../../assets/img/icons/home.svg?react'
+import SVGBrowse from '../../assets/img/icons/browse.svg?react'
+import SVGMap from '../../assets/img/icons/map.svg?react'
+import SVGHelp from '../../assets/img/icons/help.svg?react'
+import SVGAdd from '../../assets/img/icons/add.svg?react'
 
 import './menu-main.less'
 
 const MenuMain: React.FC = () => {
   const { t } = useTranslation(undefined, { keyPrefix: 'menu' })
+  const location = useLocation()
 
   const menuItems = [
     {
@@ -54,11 +55,17 @@ const MenuMain: React.FC = () => {
   return (
     <div className="menu-main">
       {menuItems.map((item) => {
+        const isActive = !!location.pathname.match(item.regExp)
         return (
           <NavLink
             key={item.key}
             to={item.path}
-            isActive={(_, location) => !!location.pathname.match(item.regExp)}
+            // NavLink still appends its own built-in active class based on
+            // its "to" prefix match even with a plain string className, so
+            // the function form is used here to fully replace that
+            // detection with our own regExp-based one (matching v5's
+            // isActive override behavior).
+            className={() => (isActive ? 'active' : '')}
           >
             {item.icon}
             {item.title}

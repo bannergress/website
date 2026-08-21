@@ -1,15 +1,15 @@
 .bg-switch {
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--color-white);
   padding: 1px;
   width: 48px;
   height: 28px;
 
   .ant-switch {
-    background-color: #1f1f1f;
+    background-color: var(--color-dark-gray);
     border-radius: 3px;
     border: 1px solid;
-    border-color: #1f1f1f;
+    border-color: var(--color-dark-gray);
     width: 46px;
     height: 26px;
     }
@@ -18,11 +18,11 @@
     border-radius: 1px;
     width: 16px;
     height: 20px;
-    background-color: #808080;
+    background-color: var(--color-gray);
   }
 
   &.bg-switch-selected {
-    background-image: linear-gradient(180deg, #109393, #15D4B2);
+    background-image: linear-gradient(180deg, var(--color-border-dark), var(--color-border-light));
 
     .ant-switch {
       border-color: transparent;
@@ -30,7 +30,7 @@
     }
 
     .ant-switch-handle::before {
-      background-color: #15D4B2;
+      background-color: var(--color-border-light);
     }
   }
 }

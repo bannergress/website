@@ -1,6 +1,11 @@
-/* eslint-disable i18next/no-literal-string */
 import React, { Suspense } from 'react'
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
+import {
+  createBrowserRouter,
+  Navigate,
+  Outlet,
+  RouterProvider,
+  useMatch,
+} from 'react-router-dom'
 import { Layout } from 'antd'
 import { Helmet } from 'react-helmet'
 import { ReactKeycloakProvider } from '@react-keycloak/web'
@@ -21,6 +26,7 @@ import { CreateBanner } from './pages/create-banner'
 import { PreviewBanner } from './pages/preview-banner'
 import { PrivateRoute } from './components/login/private-route'
 import { Help } from './pages/help'
+import { Error } from './pages/error'
 import { Account } from './pages/account'
 import MenuMain from './components/menu-main'
 import Navbar from './components/navbar'
@@ -28,6 +34,67 @@ import Navbar from './components/navbar'
 import './i18n'
 import './App.less'
 import Events from './pages/events/Events'
+
+const useHideNavbarOnMobile = () => {
+  // The Navbar should be hidden in mobile mode but only on some pages.
+  const bannerMatch = useMatch('/banner/:id')
+  const previewMatch = useMatch('/preview-banner')
+  return Boolean(bannerMatch || previewMatch)
+}
+
+const Root: React.FC = () => {
+  const hideOnMobile = useHideNavbarOnMobile()
+
+  return (
+    <>
+      <Navbar className={hideOnMobile ? 'hide-on-mobile' : undefined} />
+      <Layout className="main">
+        <div className="container">
+          <Outlet />
+        </div>
+      </Layout>
+      <div className="bottom-menu">
+        <MenuMain />
+      </div>
+    </>
+  )
+}
+
+const router = createBrowserRouter([
+  {
+    element: <Root />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'map', element: <MapOverview /> },
+      { path: 'events', element: <Events /> },
+      { path: 'browse', element: <Browser /> },
+      { path: 'browse/:placeId', element: <Browser /> },
+      { path: 'banner/:id', element: <BannerInfo /> },
+      { path: 'search/:term', element: <Search /> },
+      { path: 'agent/:agentName', element: <Agent /> },
+      { path: 'user/banners/:listType', element: <UserBannerList /> },
+      {
+        path: 'user/banners',
+        element: <Navigate to="/user/banners/todo" replace />,
+      },
+      { path: 'help', element: <Help /> },
+      { path: 'error', element: <Error /> },
+      { path: 'new-banner', element: <CreateBanner /> },
+      {
+        path: 'edit-banner/:id',
+        element: (
+          <PrivateRoute component={CreateBanner} adminRoles="manage-banners" />
+        ),
+      },
+      {
+        path: 'preview-banner',
+        element: <PrivateRoute component={PreviewBanner} />,
+      },
+      { path: 'account', element: <PrivateRoute component={Account} /> },
+      { path: '*', element: <Home /> },
+    ],
+  },
+])
 
 const App: React.FC = () => {
   patchDOMForGoogleTranslate()
@@ -53,52 +120,7 @@ const App: React.FC = () => {
           titleTemplate="%s - Bannergress"
         />
         <Layout>
-          <BrowserRouter>
-            {/* The Navbar should be hidden in mobile mode but only on some pages. */}
-            {/* So we add a class to it if we are on those pages */}
-            <Switch>
-              <Route path={['/banner/:id', '/preview-banner']}>
-                <Navbar className="hide-on-mobile" />
-              </Route>
-              <Route>
-                <Navbar />
-              </Route>
-            </Switch>
-            <Layout className="main">
-              <div className="container">
-                <Switch>
-                  <Route path="/" component={Home} exact />
-                  <Route path="/map" component={MapOverview} />
-                  <Route path="/events" component={Events} />
-                  <Route path="/browse/:placeId?" component={Browser} />
-                  <Route path="/banner/:id" component={BannerInfo} />
-                  <Route path="/search/:term" component={Search} />
-                  <Route path="/agent/:agentName" component={Agent} />
-                  <Route
-                    path="/user/banners/:listType"
-                    component={UserBannerList}
-                  />
-                  <Redirect path="/user/banners" to="/user/banners/todo" />
-                  <Route path="/help" component={Help} />
-                  <Route path="/new-banner" component={CreateBanner} />
-                  <PrivateRoute
-                    path="/edit-banner/:id"
-                    component={CreateBanner}
-                    adminRoles="manage-banners"
-                  />
-                  <PrivateRoute
-                    path="/preview-banner"
-                    component={PreviewBanner}
-                  />
-                  <PrivateRoute path="/account" component={Account} />
-                  <Route component={Home} />
-                </Switch>
-              </div>
-            </Layout>
-            <div className="bottom-menu">
-              <MenuMain />
-            </div>
-          </BrowserRouter>
+          <RouterProvider router={router} />
         </Layout>
       </ReactKeycloakProvider>
     </Suspense>

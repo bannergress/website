@@ -2,7 +2,7 @@ import React, { FormEvent, Fragment, FC, useRef } from 'react'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
 
-import SVGSearch from '../../img/icons/search.svg?react'
+import SVGSearch from '../../assets/img/icons/search.svg?react'
 
 import './search-input.less'
 
@@ -41,7 +41,6 @@ const SearchInput: FC<SearchInputProps> = ({ autoFocus, onSearch }) => {
           type="search"
           className="search-input"
           maxLength={200}
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={autoFocus || false}
           ref={textInput}
         />

@@ -1,4 +1,3 @@
-/* eslint-disable i18next/no-literal-string */
 import { FC, useEffect, useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
