@@ -1,5 +1,14 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import { persistStore, persistReducer } from 'redux-persist'
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+  persistStore,
+  persistReducer,
+} from 'redux-persist'
 import storageSession from 'redux-persist/es/storage/session'
 
 import { BannerReducer } from './features/banner'
@@ -25,5 +34,11 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
   reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE],
+      },
+    }),
 })
 export const persistor = persistStore(store)
