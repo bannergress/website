@@ -288,12 +288,21 @@
   margin-top: 10px;
 
   a {
-    border: 1px solid var(--color-white);
     box-sizing: border-box;
     border-radius: 4px;
     padding: 5px 10px;
     font-size: 14px;
     color: white;
+    // .bg-button-default's inset shadow assumes a black backdrop; override it
+    // to match this card's own (lighter) background instead.
+    box-shadow: 2px 1000px 1px var(--color-dark-gray) inset !important;
+
+    // Outweighs the global a:hover rule in ant-override.less, which ties
+    // with this selector's specificity and would otherwise win the cascade.
+    &:hover,
+    &:active {
+      color: white;
+    }
   }
 }
 

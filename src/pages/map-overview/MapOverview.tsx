@@ -78,7 +78,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
 
     this.state = {
       bounds: undefined,
-      selectedBannerId: undefined,
+      selectedBannerId: urlParams.get('banner') ?? undefined,
       selectedBounds: undefined,
       status: 'initial',
       filter: {
@@ -100,6 +100,11 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
       if (this.props.mapBannersCount === 0) {
         this.onLoadBanners(restoredBounds, this.state.filter)
       }
+    }
+
+    const { selectedBannerId } = this.state
+    if (selectedBannerId) {
+      this.props.fetchPreviewBanner(selectedBannerId)
     }
 
     this.scrollRestoration.mount(this.props.history)
@@ -154,9 +159,15 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 
   onSelectBanner = async (banner: Banner) => {
-    const { fetchPreviewBanner } = this.props
+    const { fetchPreviewBanner, location, history } = this.props
     const { selectedBannerId, bounds } = this.state
+    const urlParams = new URLSearchParams(location.search)
     if (selectedBannerId !== banner.id) {
+      urlParams.set('banner', banner.id)
+      history.replace({
+        pathname: location.pathname,
+        search: urlParams.toString(),
+      })
       this.setState({ status: 'loading' })
       await fetchPreviewBanner(banner.id)
       this.setState({
@@ -165,6 +176,11 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
         selectedBounds: bounds,
       })
     } else {
+      urlParams.delete('banner')
+      history.replace({
+        pathname: location.pathname,
+        search: urlParams.toString(),
+      })
       this.setState({ selectedBannerId: undefined, selectedBounds: undefined })
     }
   }
