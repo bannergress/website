@@ -1,8 +1,6 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Prompt, RouteComponentProps, withRouter } from 'react-router'
 import { Beforeunload } from 'react-beforeunload'
-import { Location } from 'history'
 import { Helmet } from 'react-helmet'
 import { withTranslation, WithTranslationProps } from 'react-i18next'
 
@@ -15,6 +13,8 @@ import {
 } from '../../features/banner'
 import LoadingOverlay from '../../components/loading-overlay'
 import { BannerInfoWithMap } from '../../components/banner-info-with-map'
+import { NavigationPrompt } from '../../components/navigation-prompt'
+import { withRouter, RouteComponentProps } from '../../hocs/withRouter'
 
 import './preview-banner.less'
 
@@ -54,12 +54,12 @@ class PreviewBanner extends React.Component<
       .catch(() => this.setState({ status: 'error' }))
   }
 
-  getPromptMessage = (location?: Location<unknown>) => {
+  getPromptMessage = (pathname?: string) => {
     const { status } = this.state
     if (
       status !== 'initial' ||
-      location?.pathname.includes('new-banner') ||
-      location?.pathname.includes('edit-banner')
+      pathname?.includes('new-banner') ||
+      pathname?.includes('edit-banner')
     ) {
       return true
     }
@@ -83,7 +83,7 @@ class PreviewBanner extends React.Component<
         <Helmet defer={false}>
           <title>{i18n?.t('banners.review.title')}</title>
         </Helmet>
-        <Prompt message={this.getPromptMessage} />
+        <NavigationPrompt getMessage={this.getPromptMessage} />
         <Beforeunload onBeforeunload={() => this.getPromptMessage()} />
 
         <div className="banner-preview-page">

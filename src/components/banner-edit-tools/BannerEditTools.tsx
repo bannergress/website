@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { generatePath, useHistory } from 'react-router'
+import { generatePath, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Button } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -11,7 +11,7 @@ import { useCreatorPluginAvailable } from '../../hooks/CreatorPluginAvailable'
 import './banner-edit-tools.less'
 
 export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const { authenticated } = useUserLoggedIn('manage-banners')
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -19,7 +19,7 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
   const owner = banner?.owner === true
 
   const onEditBanner = () => {
-    history.push(generatePath('/edit-banner/:id', { id: banner.id }))
+    navigate(generatePath('/edit-banner/:id', { id: banner.id }))
   }
   const onRefreshBanner = () => {
     window.open(
@@ -32,7 +32,7 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
     // eslint-disable-next-line no-alert
     if (window.confirm(t('banners.confirmDelete'))) {
       dispatch(deleteBanner(banner))
-      history.push('/')
+      navigate('/')
     }
   }
 
