@@ -41,7 +41,6 @@ const SearchInput: FC<SearchInputProps> = ({ autoFocus, onSearch }) => {
           type="search"
           className="search-input"
           maxLength={200}
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={autoFocus || false}
           ref={textInput}
         />

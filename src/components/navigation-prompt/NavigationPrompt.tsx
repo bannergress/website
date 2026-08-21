@@ -13,7 +13,6 @@ export const NavigationPrompt: React.FC<NavigationPromptProps> = ({
   useBlocker(({ nextLocation }) => {
     const message = getMessage(nextLocation.pathname)
     if (message === true) return false
-    // eslint-disable-next-line no-alert
     return !window.confirm(message)
   })
 

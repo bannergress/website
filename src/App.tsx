@@ -1,4 +1,3 @@
-/* eslint-disable i18next/no-literal-string */
 import React, { Suspense } from 'react'
 import {
   createBrowserRouter,

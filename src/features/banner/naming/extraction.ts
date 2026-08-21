@@ -418,8 +418,7 @@ export const cleanTitle = (
   if (finalTitle.match(/\d$/)) {
     const continuesWithNumber = missions.some((mission) => {
       const { title } = mission
-      return !!title.replace(finalTitle, '').match(/^\d/);
-
+      return !!title.replace(finalTitle, '').match(/^\d/)
     })
     if (continuesWithNumber) {
       finalTitle = finalTitle.replace(/\d+$/, '')

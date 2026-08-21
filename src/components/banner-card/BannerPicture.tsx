@@ -120,7 +120,7 @@ const BannerPicture: FC<BannerPictureProps> = ({
         ref={ref}
         className={`banner-card-picture banner-lines-${lines}`}
         onClick={() => setModalOpened(showFullImage)}
-        onKeyPress={(e) =>
+        onKeyDown={(e) =>
           e.key === 'Enter' ? setModalOpened(showFullImage) : null
         }
         role="button"

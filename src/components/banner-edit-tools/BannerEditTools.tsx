@@ -29,7 +29,6 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
   }
 
   const onDeleteBanner = async () => {
-    // eslint-disable-next-line no-alert
     if (window.confirm(t('banners.confirmDelete'))) {
       dispatch(deleteBanner(banner))
       navigate('/')
