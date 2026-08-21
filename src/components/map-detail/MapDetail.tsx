@@ -89,7 +89,7 @@ export class MapDetail extends React.Component<MapDetailProps> {
 
     return (
       <Fragment>
-        <MapContainer bounds={bounds} tap={false}>
+        <MapContainer bounds={bounds}>
           <this.RefSetup />
           <MapZoomControl />
           <LocateControl />
