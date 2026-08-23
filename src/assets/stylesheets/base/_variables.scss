@@ -34,6 +34,54 @@
   syntax: "<color>";
 }
 
+@property --color-input-background {
+  inherits: false;
+  initial-value: #b9b9b9;
+  syntax: "<color>";
+}
+
+@property --color-input-focus-background {
+  inherits: false;
+  initial-value: #6a6a6a;
+  syntax: "<color>";
+}
+
+@property --color-input-placeholder {
+  inherits: false;
+  initial-value: #555;
+  syntax: "<color>";
+}
+
+@property --color-search-input-placeholder {
+  inherits: false;
+  initial-value: #aaa;
+  syntax: "<color>";
+}
+
+@property --color-medium-gray {
+  inherits: false;
+  initial-value: #808080;
+  syntax: "<color>";
+}
+
+@property --color-disabled-text {
+  inherits: false;
+  initial-value: #6f6f6f;
+  syntax: "<color>";
+}
+
+@property --color-secondary-text {
+  inherits: false;
+  initial-value: #ddd;
+  syntax: "<color>";
+}
+
+@property --color-switch-track {
+  inherits: false;
+  initial-value: #1f1f1f;
+  syntax: "<color>";
+}
+
 @property --color-dark-gray {
   inherits: false;
   initial-value: #2e2e2e;

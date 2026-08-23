@@ -10,7 +10,7 @@ import romanNumerals from './romanNumerals'
 import latinLettersArabicNumeralsBase6 from './latinLettersArabicNumeralsBase6'
 import natoNumerals from './natoNumerals'
 import { Mission } from '../../mission'
-import { TitleExtractor } from './titleExtractor'
+import { TitleExtractor, boundarySeparatorsRegex } from './titleExtractor'
 
 const extractors: { [key: string]: NumberCandidateExtractor } = {
   arabicNumerals,
@@ -28,10 +28,14 @@ const totalRegex = (total: number) =>
 const numberingRegex = /\s+(nr?o?|part|ч)\.?$/gi
 
 const removeDates = (val: string) =>
-  val.replace(
-    /\b(((0[1-9]|1[012])[-/.](0?[1-9]|[12][0-9]|3[01])[-/.](?:20|)\d\d)|((0?[1-9]|[12][0-9]|3[01])[-/.](0[1-9]|1[012])[-/.](?:20|)\d\d)|((?:20|)\d\d[-/.](0?[1-9]|[12][0-9]|3[01])[-/.](0?[1-9]|1[012]))|((?:20|)\d\d[-/.](0?[1-9]|1[012])[-/.](0?[1-9]|[12][0-9]|3[01])))\b/,
-    ''
-  )
+  val
+    .replace(
+      /\b(((0[1-9]|1[012])[-/.](0?[1-9]|[12][0-9]|3[01])[-/.](?:20|)\d\d)|((0?[1-9]|[12][0-9]|3[01])[-/.](0[1-9]|1[012])[-/.](?:20|)\d\d)|((?:20|)\d\d[-/.](0?[1-9]|[12][0-9]|3[01])[-/.](0?[1-9]|1[012]))|((?:20|)\d\d[-/.](0?[1-9]|1[012])[-/.](0?[1-9]|[12][0-9]|3[01])))\b/g,
+      ''
+    )
+    // Standalone calendar years (e.g. "... November 2022") aren't mission
+    // numbering and would otherwise be picked up as a bogus index/total
+    .replace(/\b(?:19|20)\d\d\b/g, '')
 
 const extractCandidateNumbersWithExtractor = (
   input: string,
@@ -67,7 +71,16 @@ const extractCandidateNumbersForTitle = (input: string) => {
     )
     result.push(...candidates)
   })
-  return result.sort(
+  // Roman numerals, NATO words and letter-grid codes are only meaningful as
+  // a numbering scheme when a title doesn't already use plain digits: they
+  // are heuristic matches that can trigger on ordinary words (e.g. "di", a
+  // common connector word, reads as the roman numeral "DI") or on unrelated
+  // alphanumeric content, and plain digits are always the more reliable
+  // signal when both are present.
+  const filtered = result.some((marker) => marker.type === 'arabicNumerals')
+    ? result.filter((marker) => marker.type === 'arabicNumerals')
+    : result
+  return filtered.sort(
     (a, b) =>
       a.start - b.start ||
       a.raw.length - b.raw.length ||
@@ -405,16 +418,16 @@ export const cleanTitle = (
   if (finalTitle.match(/\d$/)) {
     const continuesWithNumber = missions.some((mission) => {
       const { title } = mission
-      if (title.replace(finalTitle, '').match(/^\d/)) {
-        return true
-      }
-      return false
+      return !!title.replace(finalTitle, '').match(/^\d/)
     })
     if (continuesWithNumber) {
       finalTitle = finalTitle.replace(/\d+$/, '')
     }
   }
-  return finalTitle
+  // Removing the total/numbering/leftover digits above can expose marker
+  // punctuation that was only meaningful next to the number (e.g. the "["
+  // in "Title [ 12" or the "#" in "Title #"), so trim it once more.
+  return finalTitle.replace(boundarySeparatorsRegex, '')
 }
 
 export const titleAndNumberingExtraction = (

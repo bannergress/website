@@ -1,21 +1,21 @@
 .menu-user {
-  height: 50px !important;
-  border: none !important;
-  display: flex !important;
+  border: none !important; /* stylelint-disable-line */
+  display: flex !important; /* stylelint-disable-line */
+  height: 50px !important; /* stylelint-disable-line */
 
   .user-picture {
+    background-color: white;
+    background-size: cover;
+    border-radius: 50%;
     height: 40px;
     width: 40px;
-    background-size: cover;
-    background-color: white;
-    border-radius: 50%;
   }
 
   .arrow-icon {
     height: 33px;
-    width: 10px;
     margin-left: 5px;
     transform: rotate(180deg);
+    width: 10px;
 
       path {
         fill: white;

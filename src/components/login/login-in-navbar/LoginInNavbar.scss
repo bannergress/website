@@ -1,12 +1,12 @@
 .sign-in-button {
-  width: 100px;
+  background-color: transparent;
+  border: 1px var(--color-active-green) solid;
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline;
   height: 34px;
   margin: 0;
   padding: 0;
-  border: 1px var(--color-active-green) solid;
-  border-radius: 2px;
-  background-color: transparent;
   text-align: center;
-  cursor: pointer;
-  display: inline;
+  width: 100px;
 }

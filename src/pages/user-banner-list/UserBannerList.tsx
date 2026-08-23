@@ -14,7 +14,7 @@ import InfiniteBannerList from '../../components/infinite-banner-list/InfiniteBa
 import './UserBannerList.scss'
 
 const UserBannerList: FC = () => {
-  const { listType } = useParams<{ listType: BannerListType }>()
+  const { listType = 'none' } = useParams<{ listType: BannerListType }>()
   const { t } = useTranslation()
   const title = t('banners.mine', { type: getBannerListTypeText(listType) })
 

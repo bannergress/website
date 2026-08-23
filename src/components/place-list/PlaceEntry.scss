@@ -1,14 +1,14 @@
 .place-flag {
-    font-family: 'NotoColorEmoji';
+    font-family: NotoColorEmoji, sans-serif;
 }
 
 .place-icon {
     fill: var(--color-white-light);
-    width: 1.1em;
     height: 1.1em;
+    width: 1.1em;
 }
 
 @font-face {
-    font-family: 'NotoColorEmoji';
-    src: local('NotoColorEmoji'), url(./../../assets/fonts/NotoColorEmoji.ttf) format('truetype');
+    font-family: NotoColorEmoji;
+    src: local('NotoColorEmoji'), url("./../../assets/fonts/NotoColorEmoji.ttf") format('truetype');
 }

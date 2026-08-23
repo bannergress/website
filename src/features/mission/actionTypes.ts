@@ -17,6 +17,4 @@ interface ResetSearchMissionsAction {
 }
 
 export type MissionActionTypes =
-  | SearchMissionsAction
-  | ResetSearchMissionsAction
-  | RehydrateAction
+  SearchMissionsAction | ResetSearchMissionsAction | RehydrateAction

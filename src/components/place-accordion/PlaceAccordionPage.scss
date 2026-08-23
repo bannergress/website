@@ -3,24 +3,24 @@
   flex-direction: column;
 
   .place-accordion-title {
+    background: none;
+    border: none;
+    cursor: pointer;
     display: flex;
     flex-direction: row;
-    border: none;
-    background: none;
-    text-align: left;
-    padding: 5px;
-    cursor: pointer;
     font-size: 20px;
     font-weight: bold;
+    padding: 5px;
+    text-align: left;
 
     div {
       flex: 1;
     }
 
     svg {
-      margin-top: auto;
       margin-bottom: auto;
       margin-right: 10px;
+      margin-top: auto;
     }
   }
 

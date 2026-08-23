@@ -1,19 +1,26 @@
 .filter-and-sort {
-  margin-bottom: 20px;
-  display: flex;
   align-items: center;
+  display: flex;
   flex-wrap: wrap;
-  row-gap: 10px;
-  column-gap: 10px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .order-button {
+  background-color: white;
   border: none;
   border-radius: 5px;
-  background-color: white;
-  padding: 1px;
-  display: flex;
   cursor: pointer;
+  display: flex;
+  padding: 1px;
+
+  .order-button-inner {
+    background-color: var(--color-light-black);
+    border-radius: 4px;
+    flex: 1;
+    font-size: 16px;
+    padding: 5px 10px;
+  }
 
   &.selected {
     background-image: linear-gradient(180deg, var(--color-border-dark), var(--color-border-light));
@@ -23,14 +30,6 @@
       padding: 4px 9px;
     }
   }
-
-  .order-button-inner {
-    background-color: var(--color-light-black);
-    border-radius: 4px;
-    flex: 1;
-    padding: 5px 10px;
-    font-size: 16px;
-  }
 }
 
 .order-chooser {
@@ -38,20 +37,19 @@
   overflow-x: auto;
 
   &>div {
-    margin-bottom: 0.5em;
-    column-gap: 15px;
-    row-gap: 15px;
+    align-items: baseline;
     display: flex;
     flex: 0 0 auto;
-    align-items: baseline;
     flex-wrap: nowrap;
+    gap: 15px;
+    margin-bottom: 0.5em;
   }
 }
 
 .filter-and-sort-modal {
   .ant-modal-body {
-    display: flex;
     align-items: flex-start;
+    display: flex;
   }
 
   .filter-and-sort-content {
@@ -64,8 +62,8 @@
 
   h3 {
     flex: 1;
-    margin-top: 4px;
     margin-bottom: 4px;
+    margin-top: 4px;
   }
 
   .back-button {
@@ -76,14 +74,13 @@
   }
 
   .filter-and-sort-switch-row {
-    display: flex;
     align-items: center;
+    display: flex;
   }
 
   .filter-and-sort-button-row {
     display: flex;
-    row-gap: 10px;
-    column-gap: 10px;
     flex-wrap: wrap;
+    gap: 10px;
   }
 }

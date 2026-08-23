@@ -122,7 +122,10 @@ const BannerCard: FC<BannerCardProps> = ({
         </div>
         {linkStartPlace && banner?.startPlaceId ? (
           <div>
-            <Link to={createBrowseUri(banner.startPlaceId)}>
+            <Link
+              to={createBrowseUri(banner.startPlaceId)}
+              onClick={(e) => e.stopPropagation()}
+            >
               {banner?.formattedAddress}
             </Link>
           </div>
@@ -132,7 +135,13 @@ const BannerCard: FC<BannerCardProps> = ({
       </div>
       {detailsUrl && (
         <div className="banner-info-details">
-          <Link to={detailsUrl}>{t('buttons.details')}</Link>
+          <Link
+            to={detailsUrl}
+            className="bg-button bg-button-default"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {t('buttons.details')}
+          </Link>
         </div>
       )}
     </div>

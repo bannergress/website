@@ -1,16 +1,16 @@
 .place-card {
   background: var(--color-dark-gray);
-  border-radius: 5px;
   border: var(--color-dark-gray) 2px solid;
-  padding: 15px;
+  border-radius: 5px;
   color: white;
+  padding: 15px;
 }
 
 .place-card-title {
-  display: flex;
-  white-space: nowrap;
   column-gap: 0.3em;
+  display: flex;
   font-weight: bold;
+  white-space: nowrap;
 
   .place-name {
     overflow: hidden;
@@ -26,10 +26,10 @@
 
 
 .place-card-name {
-  white-space: nowrap;
-  text-overflow: ellipsis;
   font-weight: 700;
   overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 
@@ -43,8 +43,8 @@
 }
 
 .place-card-formatted-address {
-  line-height: 1.5em;
   height: 3em;
+  line-height: 1.5em;
   margin-bottom: 0.5em;
 }
 
@@ -62,12 +62,12 @@
 .place-card-icon {
   color: var(--color-white-light);
   fill: var(--color-white-light);
-  margin-right: 1em;
   height: 1.5em;
+  margin-right: 1em;
 }
 
 .place-card-symbol {
+  font-size: 2em;
   margin-left: auto;
   vertical-align: middle;
-  font-size: 2em;
 }

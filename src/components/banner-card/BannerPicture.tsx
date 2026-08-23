@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { Button, Modal } from 'antd'
 import { useInView } from 'react-intersection-observer'
-import Scrollbars from 'react-custom-scrollbars-2'
+import { Scrollbars } from 'react-custom-scrollbars-2'
 import { Trans } from 'react-i18next'
 
 import { useLoaded } from '../../hooks/Loaded'
@@ -120,7 +120,7 @@ const BannerPicture: FC<BannerPictureProps> = ({
         ref={ref}
         className={`banner-card-picture banner-lines-${lines}`}
         onClick={() => setModalOpened(showFullImage)}
-        onKeyPress={(e) =>
+        onKeyDown={(e) =>
           e.key === 'Enter' ? setModalOpened(showFullImage) : null
         }
         role="button"

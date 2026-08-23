@@ -14,18 +14,17 @@
   }
 
   .mission-info-intel {
+    align-content: center;
+    color: var(--color-border-light);
     display: flex;
     flex-direction: row;
-    color: var(--color-border-light);
-
-    align-content: center;
 
     a {
-      color: var(--color-border-light);
-      text-decoration: underline;
-      display: flex;
       align-items: center;
+      color: var(--color-border-light);
+      display: flex;
       flex: 1;
+      text-decoration: underline;
     }
 
     svg {
@@ -41,8 +40,8 @@
 
   .mission-info-logo-and-text {
     display: flex;
-    flex-direction: row;
     flex: 1;
+    flex-direction: row;
 
     &  div {
       display: flex;

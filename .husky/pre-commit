@@ -1,2 +1,1 @@
-npm run stylelint:fix
-npm run eslint:fix
+npx lint-staged

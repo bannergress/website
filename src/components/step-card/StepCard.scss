@@ -1,15 +1,15 @@
 .step-card {
+  column-gap: 20px;
   display: flex;
   justify-content: space-between;
-  column-gap: 20px;
   margin-top: 5px;
 }
 
 .step-card-title {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
   flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   a:any-link {
     color: inherit;
@@ -23,8 +23,8 @@
 }
 
 .step-card-unavailable {
+  color: var(--color-disabled-text);
   text-decoration: line-through;
-  color: var(--color-gray);
 }
 
 .step-card-hidden {

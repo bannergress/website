@@ -6,7 +6,9 @@ import { Place, PlaceSortOrder } from './types'
 export const createMapUri = (place: Place) => {
   // syntax bounds=latLowerLeft,lngLowerLeft,latUpperRight,lngUpperRight
   const coordinates = `${place.boundaryMinLatitude},${place.boundaryMinLongitude},${place.boundaryMaxLatitude},${place.boundaryMaxLongitude}`
-  return generatePath('/map?bounds=:coords', { coords: coordinates })
+  // generatePath doesn't support params embedded in a query string, so the
+  // URL is built directly instead.
+  return `/map?bounds=${coordinates}`
 }
 
 export const createBrowseUri = (place: Place | string) => {

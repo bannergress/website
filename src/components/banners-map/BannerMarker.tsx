@@ -26,7 +26,6 @@ export const BannerMarker: FC<BannerMarkerProps> = ({
     // So, we have to use explicit setting of parameter value
 
     if (marker && banner) {
-      // eslint-disable-next-line no-param-reassign
       marker.banner = theBanner
     }
   }

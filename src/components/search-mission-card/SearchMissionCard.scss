@@ -1,12 +1,12 @@
 .search-mission-card {
-  margin-top: 1rem;
+  align-items: center;
   background-color: var(--color-panel-bg);
   border-radius: 5px;
-  display: flex;
   column-gap: 15px;
+  display: flex;
   justify-content: space-between;
+  margin-top: 1rem;
   padding: 10px;
-  align-items: center;
 
   .mission-image {
     flex-shrink: 0;
@@ -21,22 +21,22 @@
     word-break: break-word;
 
     &.placeholder {
-      color: var(--color-gray);
+      color: var(--color-medium-gray);
     }
   }
 
   .mission-agent {
-    font-size: 14px;
     border: none;
-    text-align: left;
+    font-size: 14px;
     padding: 0;
+    text-align: left;
   }
 
   .icon {
     cursor: pointer;
     height: 1.5rem;
-    width: 1.5rem;
     transition: transform ease 0.3s;
+    width: 1.5rem;
 
     &.open {
       transform: rotate(180deg);
@@ -49,12 +49,12 @@
   }
 
   .mission-button {
-    height: 50px;
-    width: 40px;
     background: none;
     border: none;
-    fill: white;
     cursor: pointer;
+    fill: white;
     flex-shrink: 0;
+    height: 50px;
+    width: 40px;
   }
 }

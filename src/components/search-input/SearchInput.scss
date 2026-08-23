@@ -10,17 +10,17 @@
   width: 100%;
 
   .search-input {
+    background: var(--color-panel-bg);
+    border: none;
+    border-radius: 4px 0 0 4px;
     padding: 5px;
     padding-left: 10px;
-    background: var(--color-panel-bg);
-    border-radius: 4px 0px 0px 4px;
-    border: none;
     width: 100%;
 
     &:focus {
-      background: var(--color-gray);
-      outline: none;
+      background: var(--color-input-focus-background);
       color: var(--color-white);
+      outline: none;
     }
 
     &:focus + .search-input-button {
@@ -28,23 +28,23 @@
     }
 
     &::placeholder {
-      color: var(--color-light-gray);
+      color: var(--color-search-input-placeholder);
       font-size: 12px;
     }
   }
 
   .search-input-button {
-    display: flex;
-    flex-direction: column;
-    background: var(--color-gray);
-    border-radius: 0px 4px 4px 0px;
-    border: none;
-    cursor: pointer;
-    justify-content: center;
     align-items: center;
+    background: var(--color-gray);
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    display: flex;
+    fill: var(--color-light-black);
+    flex-direction: column;
+    justify-content: center;
     padding-left: 12px;
     padding-right: 12px;
-    fill: var(--color-light-black);
 
     @media (hover: hover) and (pointer: fine) {
       &:hover {
@@ -59,7 +59,7 @@
 
   .search-input-icon {
     fill: inherit;
-    width: 17.49px;
     height: 17.49px;
+    width: 17.49px;
   }
 }

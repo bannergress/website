@@ -47,7 +47,7 @@ const BannerList: FC<BannerListProps> = ({
         role="button"
         title={banner.title}
         onClick={() => onSelectBanner(banner)}
-        onKeyPress={(e) => e.key === 'Enter' && onSelectBanner(banner)}
+        onKeyDown={(e) => e.key === 'Enter' && onSelectBanner(banner)}
         className="banner-card-link"
         tabIndex={0}
       >

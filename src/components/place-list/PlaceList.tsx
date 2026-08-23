@@ -16,7 +16,7 @@ const PlaceList: FC<PlaceListProps> = ({
 }) => {
   const { t } = useTranslation()
 
-  const onKeyPress = (event: React.KeyboardEvent<Element>, place: Place) => {
+  const onKeyDown = (event: React.KeyboardEvent<Element>, place: Place) => {
     if (event.key === 'Enter') {
       onSelectPlace(place)
     }
@@ -40,7 +40,7 @@ const PlaceList: FC<PlaceListProps> = ({
             <span
               key={place.id}
               onClick={() => onSelectPlace(selectedPlaces[index - 1])}
-              onKeyPress={(e) => onKeyPress(e, place)}
+              onKeyDown={(e) => onKeyDown(e, place)}
               role="button"
               tabIndex={0}
             >
@@ -65,7 +65,7 @@ const PlaceList: FC<PlaceListProps> = ({
             key={place.id}
             className="places-list-item places-list-child"
             onClick={() => onSelectPlace(place)}
-            onKeyPress={(e) => onKeyPress(e, place)}
+            onKeyDown={(e) => onKeyDown(e, place)}
             role="button"
             tabIndex={0}
           >

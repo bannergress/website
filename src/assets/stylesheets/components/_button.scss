@@ -15,6 +15,10 @@
   }
 }
 
+.positive-action-button {
+  @include positive-action-button;
+}
+
 .bg-button {
   align-items: center;
   background-clip: content-box, border-box !important; /* stylelint-disable-line */

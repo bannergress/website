@@ -101,7 +101,7 @@ class UserBannerListPreview extends React.Component<
                     showDetailsButton={false}
                   />
 
-                  <div className="seeFullList">
+                  <div className="see-full-list">
                     <Link to={`/user/banners/${listType}`}>
                       <Trans i18nKey="banners.full">See Full List</Trans>
                     </Link>

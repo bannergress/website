@@ -1,25 +1,25 @@
 .help-page {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin: 15px;
 
   h1 {
-    width: 100%;
     max-width: 1200px;
+    width: 100%;
   }
 
   .help-page-content {
-    width: 100%;
-    max-width: 800px;
     display: flex;
     flex-direction: column;
+    max-width: 800px;
     row-gap: 15px;
+    width: 100%;
   }
 
   .faq-question-link {
-    display: flex;
-    column-gap: 15px;
     align-items: center;
+    column-gap: 15px;
+    display: flex;
   }
 }

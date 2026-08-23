@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 
 import SVGBackArrow from '../../assets/img/icons/back-arrow.svg?react'
 
@@ -16,10 +16,10 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
   onSubmitButtonClicked,
   onGoBack,
 }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const { t } = useTranslation()
 
-  const showGoBack = onGoBack || history.length > 1
+  const showGoBack = onGoBack || window.history.length > 1
 
   const toggleBannerInfo = (newView: BannerInfoMobileView) => {
     if (newView !== selectedView) {
@@ -31,7 +31,7 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
     if (onGoBack) {
       onGoBack()
     } else {
-      history?.goBack()
+      navigate(-1)
     }
   }
 

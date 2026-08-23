@@ -12,3 +12,12 @@
 .ant-card {
   border-radius: 5px;
 }
+
+a {
+  color: var(--link-color);
+
+  &:active,
+  &:hover {
+    color: var(--link-color);
+  }
+}

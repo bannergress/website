@@ -5,21 +5,20 @@
   display: flex;
   flex: 0 1 100%;
   flex-direction: row;
-  min-height: 1px;
+  padding-bottom: 40px;
 
   .banner-info {
     height: 100%;
     max-width: 50vw;
     min-height: 320px;
     min-width: 370px;
-    overflow: hidden auto;
-    scrollbar-width: thin;
   }
 
   .banner-info-additional {
     display: flex;
     flex-direction: column;
     height: 100%;
+    max-height: 94rem;
     row-gap: 30px;
     width: 100%;
   }

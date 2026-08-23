@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { RouteComponentProps, withRouter } from '../../hocs/withRouter'
 import { Helmet } from 'react-helmet'
 import { Col, Row } from 'antd'
 import { LatLngBounds } from 'leaflet'
-import Scrollbars from 'react-custom-scrollbars-2'
+import { Scrollbars } from 'react-custom-scrollbars-2'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
@@ -27,8 +27,48 @@ import BannerOrderChooser from '../../components/banner-order-chooser'
 import { SettingsState } from '../../features/settings/types'
 import { updateSettingsAction } from '../../features/settings/actions'
 import { getDefaultOnline } from '../../features/settings/selectors'
+import { ScrollRestoration } from '../../features/scroll-restoration'
 
 class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
+  scrollbarsRef = React.createRef<Scrollbars>()
+  scrollRestoration = new ScrollRestoration({
+    key: 'mapScrollPosition',
+    preserveOn: (pathname) => pathname.startsWith('/banner/'),
+    target: {
+      getScrollTop: () => this.scrollbarsRef.current?.getScrollTop(),
+      setScrollTop: (scrollTop) => {
+        const target = this.scrollbarsRef.current
+        if (!target) return false
+        target.scrollTop(scrollTop)
+        return true
+      },
+    },
+  })
+
+  saveBounds = (bounds: LatLngBounds) => {
+    const northEast = bounds.getNorthEast()
+    const southWest = bounds.getSouthWest()
+    sessionStorage.setItem(
+      'mapBounds',
+      JSON.stringify({
+        northEast: { lat: northEast.lat, lng: northEast.lng },
+        southWest: { lat: southWest.lat, lng: southWest.lng },
+      })
+    )
+  }
+
+  loadBounds = (): LatLngBounds | undefined => {
+    const serialized = sessionStorage.getItem('mapBounds')
+    if (!serialized) return undefined
+    try {
+      const parsed = JSON.parse(serialized)
+      if (!parsed?.northEast || !parsed?.southWest) return undefined
+      return new LatLngBounds(parsed.southWest, parsed.northEast)
+    } catch {
+      return undefined
+    }
+  }
+
   constructor(props: MapOverviewProps) {
     super(props)
 
@@ -38,7 +78,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
 
     this.state = {
       bounds: undefined,
-      selectedBannerId: undefined,
+      selectedBannerId: urlParams.get('banner') ?? undefined,
       selectedBounds: undefined,
       status: 'initial',
       filter: {
@@ -50,9 +90,45 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     }
   }
 
+  componentDidMount() {
+    const restoredBounds = this.loadBounds()
+    if (restoredBounds) {
+      this.setState({
+        bounds: restoredBounds,
+        status: this.props.mapBannersCount > 0 ? 'ready' : 'initial',
+      })
+      if (this.props.mapBannersCount === 0) {
+        this.onLoadBanners(restoredBounds, this.state.filter)
+      }
+    }
+
+    const { selectedBannerId } = this.state
+    if (selectedBannerId) {
+      this.props.fetchPreviewBanner(selectedBannerId)
+    }
+
+    this.scrollRestoration.mount(this.props.history)
+  }
+
+  componentDidUpdate(prevProps: MapOverviewProps, prevState: MapOverviewState) {
+    if (
+      this.state.status === 'ready' &&
+      (this.state.bounds !== prevState.bounds ||
+        this.state.status !== prevState.status)
+    ) {
+      this.scrollRestoration.restore()
+    }
+  }
+
+  componentWillUnmount() {
+    this.scrollRestoration.unmount()
+  }
+
   onMapChanged = (bounds: LatLngBounds) => {
     const { filter } = this.state
+    this.saveBounds(bounds)
     this.setState({ bounds })
+    this.scrollRestoration.invalidate()
     this.onLoadBanners(bounds, filter)
   }
 
@@ -73,6 +149,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     })
 
     this.setState({ filter })
+    this.scrollRestoration.invalidate()
 
     updateSettings({
       defaultOnline: filter.online,
@@ -82,9 +159,15 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 
   onSelectBanner = async (banner: Banner) => {
-    const { fetchPreviewBanner } = this.props
+    const { fetchPreviewBanner, location, history } = this.props
     const { selectedBannerId, bounds } = this.state
+    const urlParams = new URLSearchParams(location.search)
     if (selectedBannerId !== banner.id) {
+      urlParams.set('banner', banner.id)
+      history.replace({
+        pathname: location.pathname,
+        search: urlParams.toString(),
+      })
       this.setState({ status: 'loading' })
       await fetchPreviewBanner(banner.id)
       this.setState({
@@ -93,6 +176,11 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
         selectedBounds: bounds,
       })
     } else {
+      urlParams.delete('banner')
+      history.replace({
+        pathname: location.pathname,
+        search: urlParams.toString(),
+      })
       this.setState({ selectedBannerId: undefined, selectedBounds: undefined })
     }
   }
@@ -189,7 +277,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
               includeOfficial
               includeSorting={false}
             />
-            <Scrollbars className="banners-scroll">
+            <Scrollbars className="banners-scroll" ref={this.scrollbarsRef}>
               <BannerList
                 banners={banners}
                 hasMoreBanners={false}
@@ -230,6 +318,7 @@ export type MapOverviewProps = {
     bottomLeftLat: number,
     bottomLeftLng: number
   ) => Array<Banner>
+  mapBannersCount: number
   resetBanners: () => void
   fetchBanners: (
     topRightLat: number,
@@ -269,6 +358,7 @@ const mapStateToProps = (state: RootState) => ({
     ),
   getBanner: (bannerId: string) => getBannerSelector(state, bannerId),
   defaultOnline: getDefaultOnline(state),
+  mapBannersCount: state.banner.mapBanners.length,
 })
 
 const mapDispatchToProps = {
