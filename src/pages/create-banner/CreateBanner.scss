@@ -215,7 +215,7 @@
       background-color: var(--color-white);
       border: none;
       border-radius: 5px;
-      color: var(--color-white);
+      color: var(--color-white) !important; /* stylelint-disable-line */
       cursor: pointer;
       display: flex;
       padding: 1px;
