@@ -5,14 +5,14 @@
 }
 
 .issue-card {
-  background: rgba(var(--color-dark-gray), 0.9);
+  background: color-mix(in srgb, var(--color-dark-gray) 90%, transparent);
   border-radius: 4px;
   padding: 10px 20px;
   font-size: 14px;
   line-height: 2.5;
 
   &.issue-error {
-    color: var(--color-error);
+    color: var(--color-missing);
   }
 
   &.issue-warning {

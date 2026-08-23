@@ -5,7 +5,7 @@ import { Beforeunload } from 'react-beforeunload'
 import { Input, InputNumber, Button, Tooltip } from 'antd'
 import { Helmet } from 'react-helmet'
 import _ from 'underscore'
-import Scrollbars from 'react-custom-scrollbars-2'
+import { Scrollbars } from 'react-custom-scrollbars-2'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'

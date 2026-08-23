@@ -13,6 +13,15 @@ import { MapLoadingControl } from '../map-loading-control'
 import { MapZoomControl } from '../map-zoom-control'
 import i18n from '../../i18n'
 
+const RefSetup: React.FC<{ onMapReady: (map: Map) => void }> = ({
+  onMapReady,
+}) => {
+  const map = useMap()
+  onMapReady(map)
+  map.zoomControl.options.zoomInText = i18n!.t('map.zoomIn')
+  return null
+}
+
 export class MapDetail extends React.Component<MapDetailProps> {
   mapRef: Map | undefined
 
@@ -50,13 +59,6 @@ export class MapDetail extends React.Component<MapDetailProps> {
     }
   }
 
-  RefSetup: React.FC = () => {
-    const map = useMap()
-    this.mapRef = map
-    map.zoomControl.options.zoomInText = i18n!.t('map.zoomIn')
-    return null
-  }
-
   /**
    * Tell the map to recalculate its size.
    * Use if the map was resized while it was invisible
@@ -90,7 +92,11 @@ export class MapDetail extends React.Component<MapDetailProps> {
     return (
       <Fragment>
         <MapContainer bounds={bounds}>
-          <this.RefSetup />
+          <RefSetup
+            onMapReady={(map) => {
+              this.mapRef = map
+            }}
+          />
           <MapZoomControl />
           <LocateControl />
           <MapLoadingControl />
