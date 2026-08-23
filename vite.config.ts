@@ -11,7 +11,6 @@ export default defineConfig({
         javascriptEnabled: true,
       },
       scss: {
-        api: 'modern-compiler',
         additionalData: `@use "/src/assets/stylesheets/base/_variables.scss";`,
       },
     },
