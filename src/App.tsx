@@ -14,6 +14,7 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import keycloak from './keycloak'
 
 import { updateApiState } from './api'
+import { setRouter } from './router-instance'
 import patchDOMForGoogleTranslate from './features/utils/patchGoogleTranslate'
 import { Home } from './pages/Home'
 import { MapOverview } from './pages/map-overview'
@@ -96,6 +97,8 @@ const router = createBrowserRouter([
     ],
   },
 ])
+
+setRouter(router)
 
 const App: React.FC = () => {
   patchDOMForGoogleTranslate()

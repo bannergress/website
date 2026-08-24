@@ -34,13 +34,26 @@ const RefSetup: React.FC<{
   map.addEventListener('zoomend', onMapDraggedOrZoomed)
   map.addEventListener('click', onMapClicked)
   useEffect(() => {
+    // Only on mount: populates the url with the map's initial view.
+    // Real view changes (including programmatic ones, e.g. selecting a
+    // banner) are already covered by the dragend/zoomend listeners above -
+    // running this on every render would immediately overwrite any view
+    // change still in progress (e.g. a browser back navigation restoring
+    // a previous view) with the map's current, not-yet-updated position.
     onMapDraggedOrZoomed()
-  })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return null
 }
 
 class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   private map: LeafletMap | undefined = undefined
+
+  /** search string this component itself last wrote via history.replace, so
+   * componentDidUpdate can tell that navigation apart from external
+   * navigation (e.g. the browser back/forward buttons) that requires the
+   * leaflet view to be re-synced from the url. */
+  private lastAppliedSearch: string | undefined = undefined
 
   private onlyOfficialText = i18n.t('map.niaOnly', {
     default: 'Show only official Niantic mission collections',
@@ -60,13 +73,22 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
       center: new LatLng(lat, lng),
       zoom,
     }
+    this.lastAppliedSearch = location.search
   }
 
   shouldComponentUpdate(nextProps: Readonly<BannersMapProps>) {
-    const { banners, loading, selectedBannerId } = this.props
+    const { banners, loading, selectedBannerId, location } = this.props
 
     if (this.map && loading !== nextProps.loading) {
       this.map.fireEvent(nextProps.loading ? 'dataloading' : 'dataload')
+    }
+
+    // Ensures componentDidUpdate always runs when the url changes (e.g. via
+    // the browser back/forward buttons), so it can sync the leaflet view -
+    // returning false here would still silently update this.props without
+    // giving componentDidUpdate a chance to notice.
+    if (location.search !== nextProps.location.search) {
+      return true
     }
 
     if (selectedBannerId !== nextProps.selectedBannerId) {
@@ -96,6 +118,12 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
       return true
     }
     return false
+  }
+
+  componentDidUpdate(prevProps: Readonly<BannersMapProps>) {
+    if (prevProps.location.search !== this.props.location.search) {
+      this.syncViewFromLocation(this.props.location)
+    }
   }
 
   static getBoundsFromUrlParameters(urlParams: URLSearchParams) {
@@ -140,9 +168,10 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     urlParams.set('lng', center.lng.toString())
     urlParams.set('zoom', zoom.toString())
     urlParams.delete('bounds')
+    this.lastAppliedSearch = urlParams.toString()
     history.replace({
       pathname: location.pathname,
-      search: urlParams.toString(),
+      search: this.lastAppliedSearch,
     })
     this.setState({
       center,
@@ -150,6 +179,32 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
       initialBounds: null,
     })
     onMapChanged(this.map!.getBounds())
+  }
+
+  /** brings the leaflet view in line with the url after navigation this
+   * component didn't itself cause (e.g. the browser back/forward buttons) */
+  syncViewFromLocation = (location: BannersMapProps['location']) => {
+    if (!this.map || location.search === this.lastAppliedSearch) {
+      return
+    }
+    this.lastAppliedSearch = location.search
+    const urlParams = new URLSearchParams(location.search)
+    const bounds = BannersMap.getBoundsFromUrlParameters(urlParams)
+    if (bounds) {
+      this.map.fitBounds(bounds, { animate: true })
+      return
+    }
+    const lat = Number(urlParams.get('lat')) || 0
+    const lng = Number(urlParams.get('lng')) || 0
+    const zoom = Number(urlParams.get('zoom')) || 3
+    const center = this.map.getCenter()
+    if (
+      Math.abs(center.lat - lat) > 1e-6 ||
+      Math.abs(center.lng - lng) > 1e-6 ||
+      this.map.getZoom() !== zoom
+    ) {
+      this.map.setView(new LatLng(lat, lng), zoom, { animate: true })
+    }
   }
 
   /** unselects an banner overview route, when clicked outside the starting point */

@@ -48,7 +48,12 @@ import { ScrollRestoration } from '../../features/scroll-restoration'
 class Browser extends React.Component<BrowserProps, BrowserState> {
   scrollRestoration = new ScrollRestoration({
     key: 'browseScrollPosition',
-    preserveOn: (pathname) => pathname.startsWith('/banner/'),
+    // navigating to a banner's details, or to another place within /browse
+    // itself (e.g. selecting a country), isn't leaving the browse flow -
+    // Browser already manages its own banner list refresh for those; only
+    // discard when navigating away to something else entirely.
+    preserveOn: (pathname) =>
+      pathname.startsWith('/banner/') || pathname.startsWith('/browse'),
     onDiscard: () => this.props.resetBrowsedBanners(),
   })
 
@@ -144,11 +149,15 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
   }
 
   onPlaceSelected = async (place: Place | undefined) => {
-    const { history } = this.props
+    const { fetchBanners, history } = this.props
+    const { filter } = this.state
 
     const newPlaceId = place?.id
 
-    await this.fetchChildren(newPlaceId)
+    await Promise.all([
+      this.fetchChildren(newPlaceId),
+      fetchBanners(newPlaceId ?? null, filter, 0),
+    ])
 
     this.setState({
       selectedPlaceId: newPlaceId,
