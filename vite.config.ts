@@ -13,10 +13,7 @@ export default defineConfig({
     preprocessorOptions: {
       less: {
         javascriptEnabled: true,
-      },
-      scss: {
-        additionalData: `@use "/src/assets/stylesheets/base/_variables.scss";`,
-      },
+      }
     },
   },
 })
