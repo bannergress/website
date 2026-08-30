@@ -108,7 +108,7 @@
 .square-marker-pin {
   align-items: center;
   background-clip: padding-box;
-  background-color: var(--color-positive-green-light);
+  background-color: var(--color-map-legend-green);
   border: 2px solid color-mix(in srgb, var(--color-black) 40%, transparent);
   display: flex;
   font-size: 12px;
@@ -121,7 +121,7 @@
 }
 
 .color-green {
-  background-color: var(--color-positive-green-light);
+  background-color: var(--color-map-legend-green);
 }
 
 .color-blue {

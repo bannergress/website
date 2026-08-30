@@ -9,7 +9,7 @@
   padding: 0.5em 2em;
 
   &:disabled {
-    background: var(--color-gray);
+    background: var(--color-medium-gray);
     color: var(--color-light-gray);
     cursor: not-allowed;
   }

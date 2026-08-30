@@ -9,7 +9,8 @@
   }
 
   @media (hover: hover) and (pointer: fine) { /* stylelint-disable-line */
-    & a:hover {
+    & a:hover,
+    & a.active:hover {
       background: rgb(29 165 122 / 0.3);
       color: var(--color-white);
 

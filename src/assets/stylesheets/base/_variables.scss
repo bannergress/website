@@ -118,9 +118,21 @@
   syntax: "<color>";
 }
 
+@property --color-mission-image-border {
+  inherits: false;
+  initial-value: #f19e24;
+  syntax: "<color>";
+}
+
 @property --color-error {
   inherits: false;
   initial-value: #ef5555;
+  syntax: "<color>";
+}
+
+@property --color-invalid-input {
+  inherits: false;
+  initial-value: #ff6347;
   syntax: "<color>";
 }
 
@@ -139,6 +151,18 @@
 @property --link-color {
   inherits: false;
   initial-value: #1da57a;
+  syntax: "<color>";
+}
+
+@property --link-hover-color {
+  inherits: false;
+  initial-value: #1a7256;
+  syntax: "<color>";
+}
+
+@property --link-active-color {
+  inherits: false;
+  initial-value: #39a37d;
   syntax: "<color>";
 }
 
@@ -196,6 +220,12 @@
   syntax: "<color>";
 }
 
+@property --color-map-legend-green {
+  inherits: false;
+  initial-value: #16d4b1;
+  syntax: "<color>";
+}
+
 @property --color-enlightened {
   inherits: false;
   initial-value: #02bf02;
@@ -219,4 +249,3 @@
   initial-value: 0.6rem;
   syntax: "<length>";
 }
-

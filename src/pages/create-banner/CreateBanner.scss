@@ -183,7 +183,6 @@
 
         @media (hover: hover) and (pointer: fine) {
           &:hover {
-            background-color: green;
             background-image: linear-gradient(
                 rgb(255 255 255 / 0),
                 rgb(255 255 255 / 0)
@@ -196,7 +195,7 @@
 
     .mission-error {
       input {
-        background-color: var(--color-error);
+        background-color: var(--color-invalid-input);
       }
     }
   }
