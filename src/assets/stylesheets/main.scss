@@ -1,23 +1,23 @@
 @charset "UTF-8";
 
 // 1. Framework overrides
-// antd itself is imported from App.less (as Less), since its own
-// components are compiled against Less theme variables set there.
+// antd itself is imported as Less in App.tsx; its components are compiled
+// against Less theme variables set via modifyVars in vite.config.ts.
 @use "override/ant-override";
 @use "override/leaflet_override";
 
 // 2. Base
 @use "base/variables";
-@use 'base/class';
-@use 'base/typography';
+@use "base/class";
+@use "base/typography";
 @use "base/mixins";
 
 // 3. Layout-related sections
-// @use 'layout/footer';
-// @use 'layout/header';
+// @use "layout/footer";
+// @use "layout/header";
 
 // 4. Components
-@use 'components/button';
+@use "components/button";
 
 // 5. Pages
-// @use 'pages/home';
+// @use "pages/home";

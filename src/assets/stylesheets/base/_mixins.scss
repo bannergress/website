@@ -1,3 +1,5 @@
+@use 'sass:string';
+
 $media-breakpoint-xs: 480px;
 $media-breakpoint-md: 880px;
 $media-breakpoint-xl: 1200px;
@@ -37,5 +39,17 @@ $media-breakpoint-xl: 1200px;
 @mixin media-max-xl($value: 0) {
   @media (max-width: ($media-breakpoint-xl + $value)) {
     @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce), (update: slow) {
+    *,
+    ::before,
+    ::after {
+      animation-delay: -1ms !important; /* stylelint-disable-line */
+      animation-duration: 1ms !important; /* stylelint-disable-line */
+      animation-iteration-count: 1 !important; /* stylelint-disable-line */
+    }
   }
 }
