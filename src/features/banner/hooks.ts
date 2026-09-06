@@ -1,3 +1,4 @@
+import { handlePromise } from '../utils/async'
 import { useEffect, useRef, useState } from 'react'
 import { getBannerList } from './api'
 import { BannerFilter } from './filter'
@@ -6,7 +7,7 @@ import { Banner } from './types'
 const DEFAULT_PAGE_SIZE = 20
 
 const usePrevious = function <T>(value: T) {
-  const ref = useRef<T>()
+  const ref = useRef<T | undefined>(undefined)
   useEffect(() => {
     ref.current = value
   }, [value])
@@ -51,12 +52,14 @@ const loadMissingPage = async (
           }
           setState(currentState)
         } else {
-          throw new Error()
+          currentState = { ...currentState, status: 'rejected' }
+          setState(currentState)
         }
       }
-    } catch (e) {
+    } catch {
       if (isRunning()) {
         currentState = { ...currentState, status: 'rejected' }
+        setState(currentState)
       }
     }
   }
@@ -96,13 +99,15 @@ export const useBannerList = function (
       }
       setState(newState)
     } else {
-      loadMissingPage(
-        filter,
-        maxPages,
-        pageSize,
-        newState,
-        setState,
-        () => running
+      handlePromise(
+        loadMissingPage(
+          filter,
+          maxPages,
+          pageSize,
+          newState,
+          setState,
+          () => running
+        )
       )
     }
     return () => {

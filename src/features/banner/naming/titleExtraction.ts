@@ -1,9 +1,9 @@
 import {
-  IntermediateExtractionResult,
-  NumberMarker,
-  NumberCandidateExtractor,
-  PositionMarker,
   ExtractionResult,
+  IntermediateExtractionResult,
+  NumberCandidateExtractor,
+  NumberMarker,
+  PositionMarker,
 } from './types'
 import arabicNumerals from './arabicNumerals'
 import romanNumerals from './romanNumerals'
@@ -155,7 +155,7 @@ function scoreAsTotal(
 }
 
 function toTitleCandidate(
-  title: String,
+  title: string,
   trimStart: boolean,
   trimEnd: boolean,
   start: number,
@@ -389,6 +389,5 @@ export function extract(titles: string[]): ExtractionResult {
   const resultStep6 = extractBestTitle(resultStep5)
   // Find best matches for titles and remove them
   const resultStep7 = extractTitles(resultStep6)
-  const result = cleanResult(resultStep7)
-  return result
+  return cleanResult(resultStep7)
 }

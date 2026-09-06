@@ -30,7 +30,10 @@ const rootReducer = combineReducers({
   settings: SettingsReducer,
 })
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer<ReturnType<typeof rootReducer>>(
+  persistConfig,
+  rootReducer
+)
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -42,3 +45,5 @@ export const store = configureStore({
     }),
 })
 export const persistor = persistStore(store)
+
+export type AppDispatch = typeof store.dispatch

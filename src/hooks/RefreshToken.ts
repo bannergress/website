@@ -1,9 +1,10 @@
+import { handlePromise } from '../features/utils/async'
 import { useKeycloak } from '@react-keycloak/web'
 
-export const useRefreshToken = (): Function => {
+export const useRefreshToken = () => {
   const { keycloak } = useKeycloak()
 
   return () => {
-    keycloak.updateToken(-1)
+    handlePromise(keycloak.updateToken(-1))
   }
 }

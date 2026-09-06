@@ -66,7 +66,7 @@ export interface Mission {
 
 export interface MissionState {
   searchedMissions: Array<Mission>
-  canSearchMore: Boolean
+  canSearchMore: boolean
 }
 
 export interface NamedAgent {

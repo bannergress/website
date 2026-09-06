@@ -39,7 +39,7 @@ const PlaceListFlat: FC<PlaceListFlatProps> = ({
 
 export interface PlaceListFlatProps {
   places: Array<Place> | undefined
-  hasMorePlaces: Boolean
+  hasMorePlaces: boolean
   loadMorePlaces?: () => Promise<void>
 }
 

@@ -29,7 +29,7 @@ export interface PlaceState {
   countries: Array<Place>
   administrativeAreas: Dictionary<Array<Place>>
   searchPlaces: Array<Place>
-  canSearchMore: Boolean
+  canSearchMore: boolean
 }
 
 export type PlaceSortOrder = 'name' | 'numberOfBanners'

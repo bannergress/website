@@ -1,4 +1,4 @@
-import { Mission } from '../mission/types'
+import { Mission } from '../mission'
 
 export interface NumDictionary<T> {
   [n: number]: T
@@ -23,7 +23,7 @@ export interface Banner {
   width?: number
   averageDurationMilliseconds?: number
   startPlaceId?: string
-  owner?: Boolean
+  owner?: boolean
   warning?: string
   plannedOfflineDate?: string
   eventStartDate?: string
@@ -39,10 +39,10 @@ export interface BannerState {
   agentBanners: Array<Banner>
   userBannerListBanners: Array<Banner>
   mapBanners: Array<Banner>
-  canBrowseMore: Boolean
-  canSearchMore: Boolean
-  hasMoreAgentBanners: Boolean
-  hasMoreUserBannerListBanners: Boolean
+  canBrowseMore: boolean
+  canSearchMore: boolean
+  hasMoreAgentBanners: boolean
+  hasMoreUserBannerListBanners: boolean
   createdBanner: Banner | undefined
 }
 

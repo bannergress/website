@@ -59,7 +59,11 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
       <Col span={12}>
         <Radio.Group
           value={type}
-          onChange={(e) => onChange(e.target.value, 'bannerType')}
+          onChange={(e) => {
+            const value: unknown = e.target.value
+            if (value === 'sequential' || value === 'anyOrder')
+              onChange(value, 'bannerType')
+          }}
         >
           <Radio.Button value="sequential">{t('banners.banner')}</Radio.Button>
           <Radio.Button value="anyOrder">

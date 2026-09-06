@@ -1,8 +1,7 @@
 import { FC, useEffect } from 'react'
-import L from 'leaflet'
 import { useLeafletContext } from '@react-leaflet/core'
 import { useTranslation } from 'react-i18next'
-import 'leaflet.locatecontrol'
+import { LocateControl as LeafletLocateControl } from 'leaflet.locatecontrol'
 import 'leaflet.locatecontrol/dist/L.Control.Locate.css'
 
 import './LocateControl.scss'
@@ -12,12 +11,13 @@ const LocateControl: FC = () => {
   const { t } = useTranslation()
 
   useEffect(() => {
-    L.control
-      .locate({
-        showCompass: false,
-        strings: { title: t('map.locate') },
-      } as any)
-      .addTo(context.map)
+    const control = new LeafletLocateControl({
+      showCompass: false,
+      strings: { title: t('map.locate') },
+    }).addTo(context.map)
+    return () => {
+      control.remove()
+    }
   }, [context.map, t])
 
   return null

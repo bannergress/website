@@ -1,3 +1,4 @@
+import { handlePromise } from '../../features/utils/async'
 import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -31,7 +32,7 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
     if (onGoBack) {
       onGoBack()
     } else {
-      navigate(-1)
+      handlePromise(navigate(-1))
     }
   }
 

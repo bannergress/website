@@ -1,0 +1,8 @@
+.scrollbars {
+  height: 100%;
+  overflow: auto;
+  position: relative;
+  scrollbar-color: var(--scrollbar-color) transparent;
+  scrollbar-width: thin;
+  width: 100%;
+}

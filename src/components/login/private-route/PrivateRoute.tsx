@@ -24,7 +24,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
 }
 
 export interface PrivateRouteProps {
-  component: React.ComponentType<any>
+  component: React.ComponentType | React.ComponentType<{ admin: boolean }>
   roles?: string
   adminRoles?: string
 }

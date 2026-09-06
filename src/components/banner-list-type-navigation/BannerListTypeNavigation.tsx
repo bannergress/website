@@ -1,3 +1,4 @@
+import { handleAsync } from '../../features/utils/async'
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -29,7 +30,7 @@ const BannerListTypeNavigation: FC<BannerListTypeNavigationProps> = ({
         <button
           type="button"
           className={`banner-list-type  ${activeClass}`}
-          onClick={() => onClickListType(listType)}
+          onClick={handleAsync(() => onClickListType(listType))}
         >
           {getBannerListTypeText(listType)}
         </button>
@@ -55,7 +56,7 @@ const BannerListTypeNavigation: FC<BannerListTypeNavigationProps> = ({
 export interface BannerListTypeNavigationProps {
   bannerListType: BannerListType
   baseUrl?: string
-  onClickListType?: (bannerListType: BannerListType) => Promise<void>
+  onClickListType?: (bannerListType: BannerListType) => void | Promise<void>
 }
 
 export default BannerListTypeNavigation

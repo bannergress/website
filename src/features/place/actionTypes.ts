@@ -12,7 +12,7 @@ export const RESET_SEARCH_PLACES = 'RESET_SEARCH_PLACES'
 
 interface LoadCountriesAction {
   type: typeof LOAD_COUNTRIES
-  payload: Array<Partial<Place>>
+  payload: Array<Place>
 }
 
 interface LoadCountriesErrorAction {
@@ -23,7 +23,7 @@ interface LoadAdministrativeAreasAction {
   type: typeof LOAD_ADMINISTRATIVE_AREAS
   payload: {
     placeId: string
-    administrativeAreas: Array<Partial<Place>>
+    administrativeAreas: Array<Place>
   }
 }
 
@@ -33,7 +33,7 @@ interface LoadAdministrativeAreasErrorAction {
 
 interface LoadPlaceAction {
   type: typeof LOAD_PLACE
-  payload: Partial<Place>
+  payload: Place
 }
 
 interface LoadPlaceErrorAction {
@@ -44,7 +44,7 @@ interface SearchPlacesAction {
   type: typeof SEARCH_PLACES
   payload: {
     places: Array<Place>
-    hasMore: Boolean
+    hasMore: boolean
   }
 }
 

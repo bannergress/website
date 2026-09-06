@@ -2,8 +2,13 @@
 
 #root { /* stylelint-disable-line */
   height: 100%;
+}
 
-  & > .ant-layout { /* stylelint-disable-line */
+.ant-app {
+  font-size: 16px;
+  height: 100%;
+
+  & > .ant-layout {
     height: 100%;
   }
 }

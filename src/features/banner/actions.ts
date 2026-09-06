@@ -186,7 +186,7 @@ export const submitBannerAction =
   }
 
 export const resetMapBannersAction =
-  () => async (dispatch: Dispatch<BannerActionTypes>) => {
+  () => (dispatch: Dispatch<BannerActionTypes>) => {
     dispatch({
       type: RESET_MAP_BANNERS,
     })
@@ -238,12 +238,11 @@ export const editBannerAction =
 export const deleteBannerAction =
   (banner: Banner) => async (dispatch: Dispatch<BannerActionTypes>) => {
     const response = await api.deleteBanner(banner)
-    if (response.ok) {
-      dispatch({
-        type: DELETE_BANNER,
-        payload: banner,
-      })
-    }
+    if (!response.ok) throw new Error('Error while deleting banner')
+    dispatch({
+      type: DELETE_BANNER,
+      payload: banner,
+    })
   }
 
 export const changeBannerSettingsAction =

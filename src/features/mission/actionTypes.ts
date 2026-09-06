@@ -7,8 +7,8 @@ export const RESET_SEARCH_MISSIONS = 'RESET_SEARCH_MISSIONS'
 interface SearchMissionsAction {
   type: typeof SEARCH_MISSIONS
   payload: {
-    missions: Array<Partial<Mission>>
-    hasMore: Boolean
+    missions: Array<Mission>
+    hasMore: boolean
   }
 }
 

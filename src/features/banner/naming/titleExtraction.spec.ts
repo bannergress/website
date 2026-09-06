@@ -634,30 +634,29 @@ describe('features > banner > naming > titleExtraction', () => {
     expect(result.results[0].missionMarker?.parsed).toEqual(1151)
   })
   it(`handles West 300 Tour`, () => {
-    const input = new Array(60)
-      .fill(0)
-      .map(
-        (unused, index) =>
-          `West 300 Tour ${String(index + 1).padStart(2, '0')}/60`
-      )
+    const input = Array.from(
+      { length: 60 },
+      (unused, index) =>
+        `West 300 Tour ${String(index + 1).padStart(2, '0')}/60`
+    )
     const result = extract(input)
     expect(result.title).toEqual('West 300 Tour')
   })
   it(`handles #MP COVID-19 Theme Prague, Czech Republic`, () => {
-    const input = new Array(6)
-      .fill(0)
-      .map(
-        (unused, index) =>
-          `#MP COVID-19 Theme ${index + 1}/6 Prague, Czech Republic`
-      )
+    const input = Array.from(
+      { length: 6 },
+      (unused, index) =>
+        `#MP COVID-19 Theme ${index + 1}/6 Prague, Czech Republic`
+    )
     const result = extract(input)
     expect(result.total).toEqual(6)
     expect(result.title).toEqual('#MP COVID-19 Theme / Prague, Czech Republic')
   })
   it(`handles Treuchtlingen Nr. 1`, () => {
-    const input = new Array(6)
-      .fill(0)
-      .map((unused, index) => `Treuchtlingen Nr. ${index + 1}`)
+    const input = Array.from(
+      { length: 6 },
+      (unused, index) => `Treuchtlingen Nr. ${index + 1}`
+    )
     const result = extract(input)
     expect(result.title).toEqual('Treuchtlingen')
   })
@@ -671,12 +670,11 @@ describe('features > banner > naming > titleExtraction', () => {
     expect(result.title).toEqual('MD 2019: Nuremberg')
   })
   it(`handles Source des Célestins`, () => {
-    const input = new Array(60)
-      .fill(0)
-      .map(
-        (unused, index) =>
-          `${String(index + 1).padStart(2, '0')} - Source des Célestins`
-      )
+    const input = Array.from(
+      { length: 60 },
+      (unused, index) =>
+        `${String(index + 1).padStart(2, '0')} - Source des Célestins`
+    )
     const result = extract(input)
     expect(result.title).toEqual('Source des Célestins')
   })

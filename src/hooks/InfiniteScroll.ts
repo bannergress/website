@@ -1,12 +1,13 @@
+import { handlePromise, reportError } from '../features/utils/async'
 import { useCallback, useRef, useState } from 'react'
 
 interface Options {
-  callback?: () => Promise<unknown>
+  callback?: () => void | Promise<unknown>
 }
 
 export const useInfiniteScroll = ({ callback }: Options) => {
   const [isFetching, setIsFetching] = useState(false)
-  const observer = useRef<IntersectionObserver>()
+  const observer = useRef<IntersectionObserver | undefined>(undefined)
   const ref = useRef<Element | null>(null)
 
   const setRef = useCallback(
@@ -20,9 +21,12 @@ export const useInfiniteScroll = ({ callback }: Options) => {
           (entries) => {
             if (!isFetching && entries[0].isIntersecting) {
               setIsFetching(true)
-              callback()
-                .catch()
-                .finally(() => setIsFetching(false))
+              handlePromise(
+                Promise.resolve()
+                  .then(callback)
+                  .catch(reportError)
+                  .finally(() => setIsFetching(false))
+              )
             }
           },
           {

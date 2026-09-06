@@ -40,7 +40,10 @@ const BannerList: FC<BannerListProps> = ({
 
   const { t } = useTranslation()
 
-  const getBannerCardWithLink = (banner: Banner, contents: JSX.Element) =>
+  const getBannerCardWithLink = (
+    banner: Banner,
+    contents: React.JSX.Element
+  ) =>
     onSelectBanner ? (
       <div
         key={banner.id}
@@ -113,9 +116,9 @@ const BannerList: FC<BannerListProps> = ({
 
 export interface BannerListProps {
   banners: Array<Banner> | undefined
-  hasMoreBanners: Boolean
+  hasMoreBanners: boolean
   selectedBannerId?: string
-  loadMoreBanners?: () => Promise<void>
+  loadMoreBanners?: () => void | Promise<void>
   onSelectBanner?: (banner: Banner) => void
   applyBannerListStyles: boolean
   hideBlacklisted: boolean

@@ -5,15 +5,21 @@
   overflow: hidden;
 
   .map-banners {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     padding: 30px 10px 0;
     width: 380px;
 
     .banners-scroll {
-      height: calc(100% - 45px) !important; /* stylelint-disable-line */
+      flex: 1;
+      height: auto;
+      min-height: 0;
     }
   }
 
   .map-explorer {
+    height: 100%;
     width: calc(100% - 420px);
 
     @include media-max-md {

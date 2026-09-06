@@ -1,3 +1,4 @@
+import { handleAsync } from '../../../features/utils/async'
 import React, { Fragment } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
 import { useTranslation } from 'react-i18next'
@@ -17,7 +18,7 @@ const LoginInNavbar: React.FC = () => {
   return (
     <Fragment>
       <IfUserLoggedIn>
-        <MenuUser logout={() => keycloak.logout()} />
+        <MenuUser logout={handleAsync(() => keycloak.logout())} />
       </IfUserLoggedIn>
 
       <IfUserLoggedOut>

@@ -39,7 +39,7 @@ const createClusterLabel = (markerData: MarkerData[]) => {
     : []
   const endLabel = endMarker ? [getMarkerDataLabel(endMarker)] : []
 
-  let otherLabels: Array<JSX.Element | undefined> = []
+  let otherLabels: Array<React.JSX.Element | undefined>
   if (markerData.length > 2) {
     otherLabels = [
       <div
@@ -139,16 +139,14 @@ const createClusterCustomIcon = (cluster: MarkerCluster) => {
   return singularMarker.getIcon()
 }
 
-const MapCluster: FC<MapClusterProps> = ({ pane, children }) => {
-  const options: any = {
+const MapCluster: FC<MapClusterProps> = ({ pane = 'markerPane', children }) => {
+  const options = {
     maxClusterRadius: 25,
     singleMarkerMode: true,
     showCoverageOnHover: false,
     iconCreateFunction: createClusterCustomIcon,
-  }
-  if (pane) {
-    options.clusterPane = pane
-    options.pane = pane
+    clusterPane: pane,
+    pane,
   }
   return <MarkerClusterGroup {...options}>{children}</MarkerClusterGroup>
 }

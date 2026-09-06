@@ -1,8 +1,9 @@
+import { handlePromise } from '../../features/utils/async'
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Row, Layout, Divider } from 'antd'
 import { withRouter, RouteComponentProps } from '../../hocs/withRouter'
-import { Helmet } from 'react-helmet'
+import { PageTitle } from '../../components/page-title/PageTitle'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
@@ -95,8 +96,8 @@ class Search extends React.Component<SearchProps, SearchState> {
 
     this.setLastSearchTerm(searchTerm)
 
-    this.doFetchBanners(searchTerm, filter, 0)
-    this.doFetchPlaces(searchTerm, 0)
+    handlePromise(this.doFetchBanners(searchTerm, filter, 0))
+    handlePromise(this.doFetchPlaces(searchTerm, 0))
   }
 
   componentWillUnmount() {
@@ -110,8 +111,8 @@ class Search extends React.Component<SearchProps, SearchState> {
     if (prevSearchTerm !== searchTerm) {
       this.scrollRestoration.invalidate(true)
       this.setLastSearchTerm(searchTerm)
-      this.doFetchBanners(searchTerm, filter, 0)
-      this.doFetchPlaces(searchTerm, 0)
+      handlePromise(this.doFetchBanners(searchTerm, filter, 0))
+      handlePromise(this.doFetchPlaces(searchTerm, 0))
     }
 
     if (bannersStatus === 'success' || placesStatus === 'success') {
@@ -130,7 +131,7 @@ class Search extends React.Component<SearchProps, SearchState> {
     updateSettings({
       defaultOnline: filter.online,
     })
-    this.doFetchBanners(searchTerm, filter, 0)
+    handlePromise(this.doFetchBanners(searchTerm, filter, 0))
   }
 
   onLoadMoreBanners = () => {
@@ -178,9 +179,7 @@ class Search extends React.Component<SearchProps, SearchState> {
 
     return (
       <Fragment>
-        <Helmet defer={false}>
-          <title>{title}</title>
-        </Helmet>
+        <PageTitle title={title} />
         <div className="search-page page-container">
           <div className="search-content">
             <h1>{title}</h1>
@@ -221,7 +220,7 @@ class Search extends React.Component<SearchProps, SearchState> {
               )}
             </Layout>
 
-            <Divider type="horizontal" />
+            <Divider orientation="horizontal" />
 
             <h2>
               <Trans i18nKey="banners.title">Banners</Trans>
@@ -281,8 +280,8 @@ class Search extends React.Component<SearchProps, SearchState> {
 export type SearchProps = {
   banners: Array<Banner>
   places: Array<Place>
-  hasMoreBanners: Boolean
-  hasMorePlaces: Boolean
+  hasMoreBanners: boolean
+  hasMorePlaces: boolean
   fetchBanners: (
     searchTerm: string,
     filter: BannerFilter,
