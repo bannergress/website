@@ -12,7 +12,7 @@ const BannerImage: FC<BannerImageProps> = ({ missions, width, useIndex }) => {
         <MissionImage key={mission.id} mission={mission} />
       ))
     }
-    const result: Array<JSX.Element> = []
+    const result: Array<React.JSX.Element> = []
     let i = 0
     let j = 1
     while (i < missions.length) {

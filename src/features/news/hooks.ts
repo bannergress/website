@@ -1,3 +1,4 @@
+import { handlePromise } from '../utils/async'
 import { useEffect, useState } from 'react'
 import { getNews } from './api'
 import { NewsItem } from './types'
@@ -27,7 +28,7 @@ export const useNewsList = function () {
         })
       }
     }
-    fetchData()
+    handlePromise(fetchData())
   }, [setState])
   return state
 }

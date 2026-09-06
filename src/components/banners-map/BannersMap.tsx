@@ -21,7 +21,6 @@ import { MapZoomControl } from '../map-zoom-control'
 
 import './BannersMap.scss'
 import 'leaflet/dist/leaflet.css'
-import i18n from '../../i18n'
 
 const RefSetup: React.FC<{
   onMapReady: (map: LeafletMap) => void
@@ -29,20 +28,16 @@ const RefSetup: React.FC<{
   onMapClicked: () => void
 }> = ({ onMapReady, onMapDraggedOrZoomed, onMapClicked }) => {
   const map = useMap()
-  onMapReady(map)
-  map.addEventListener('dragend', onMapDraggedOrZoomed)
-  map.addEventListener('zoomend', onMapDraggedOrZoomed)
-  map.addEventListener('click', onMapClicked)
   useEffect(() => {
-    // Only on mount: populates the url with the map's initial view.
-    // Real view changes (including programmatic ones, e.g. selecting a
-    // banner) are already covered by the dragend/zoomend listeners above -
-    // running this on every render would immediately overwrite any view
-    // change still in progress (e.g. a browser back navigation restoring
-    // a previous view) with the map's current, not-yet-updated position.
+    onMapReady(map)
+    map.on('dragend zoomend', onMapDraggedOrZoomed)
+    map.on('click', onMapClicked)
     onMapDraggedOrZoomed()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    return () => {
+      map.off('dragend zoomend', onMapDraggedOrZoomed)
+      map.off('click', onMapClicked)
+    }
+  }, [map, onMapReady, onMapDraggedOrZoomed, onMapClicked])
   return null
 }
 
@@ -54,10 +49,6 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
    * navigation (e.g. the browser back/forward buttons) that requires the
    * leaflet view to be re-synced from the url. */
   private lastAppliedSearch: string | undefined = undefined
-
-  private onlyOfficialText = i18n.t('map.niaOnly', {
-    default: 'Show only official Niantic mission collections',
-  })
 
   constructor(props: BannersMapProps) {
     super(props)
@@ -76,53 +67,46 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     this.lastAppliedSearch = location.search
   }
 
+  onMapReady = (map: LeafletMap) => {
+    this.map = map
+  }
+
   shouldComponentUpdate(nextProps: Readonly<BannersMapProps>) {
     const { banners, loading, selectedBannerId, location } = this.props
-
-    if (this.map && loading !== nextProps.loading) {
-      this.map.fireEvent(nextProps.loading ? 'dataloading' : 'dataload')
-    }
-
-    // Ensures componentDidUpdate always runs when the url changes (e.g. via
-    // the browser back/forward buttons), so it can sync the leaflet view -
-    // returning false here would still silently update this.props without
-    // giving componentDidUpdate a chance to notice.
-    if (location.search !== nextProps.location.search) {
-      return true
-    }
-
-    if (selectedBannerId !== nextProps.selectedBannerId) {
-      const banner = banners.find((b) => b.id === nextProps.selectedBannerId)
-      if (banner) {
-        setTimeout(() => {
-          this.map!.invalidateSize()
-          const bounds = getBannerBounds(banner)
-          if (bounds) {
-            this.map!.fitBounds(new LatLngBounds(bounds), {
-              animate: true,
-              maxZoom: 15,
-            })
-          }
-        }, 100)
-      } else {
-        setTimeout(() => {
-          this.map!.invalidateSize()
-        }, 100)
-      }
-      return true
-    }
-    if (
-      nextProps.banners.length !== banners.length ||
+    return (
+      loading !== nextProps.loading ||
+      location.search !== nextProps.location.search ||
+      selectedBannerId !== nextProps.selectedBannerId ||
       !_.isEqual(nextProps.banners, banners)
-    ) {
-      return true
-    }
-    return false
+    )
   }
 
   componentDidUpdate(prevProps: Readonly<BannersMapProps>) {
-    if (prevProps.location.search !== this.props.location.search) {
-      this.syncViewFromLocation(this.props.location)
+    const { loading, selectedBannerId, banners, location } = this.props
+    if (prevProps.loading !== loading) {
+      this.map?.fireEvent(loading ? 'dataloading' : 'dataload')
+    }
+    if (prevProps.location.search !== location.search) {
+      this.syncViewFromLocation(location)
+    }
+
+    const selectedBanner = banners.find(
+      (banner) => banner.id === selectedBannerId
+    )
+    const previousBanner = prevProps.banners.find(
+      (banner) => banner.id === prevProps.selectedBannerId
+    )
+    if (
+      selectedBannerId !== prevProps.selectedBannerId ||
+      selectedBanner?.missions !== previousBanner?.missions
+    ) {
+      this.map?.invalidateSize()
+      const bounds = selectedBanner && getBannerBounds(selectedBanner)
+      if (bounds)
+        this.map?.fitBounds(new LatLngBounds(bounds), {
+          animate: true,
+          maxZoom: 15,
+        })
     }
   }
 
@@ -151,7 +135,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
             new LatLng(maxLat, maxLng)
           )
         }
-      } catch (error) {
+      } catch {
         // Just ignore bound if not in a valid format
         console.log('Invalid bounds', bounds)
       }
@@ -168,7 +152,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
     urlParams.set('lng', center.lng.toString())
     urlParams.set('zoom', zoom.toString())
     urlParams.delete('bounds')
-    this.lastAppliedSearch = urlParams.toString()
+    this.lastAppliedSearch = `?${urlParams.toString()}`
     history.replace({
       pathname: location.pathname,
       search: this.lastAppliedSearch,
@@ -308,9 +292,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
       <Fragment>
         <MapContainer {...startParams} minZoom={3} worldCopyJump>
           <RefSetup
-            onMapReady={(map) => {
-              this.map = map
-            }}
+            onMapReady={this.onMapReady}
             onMapDraggedOrZoomed={this.onMapDraggedOrZoomed}
             onMapClicked={this.onMapClicked}
           />

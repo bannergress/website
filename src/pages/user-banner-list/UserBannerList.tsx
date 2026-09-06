@@ -1,6 +1,6 @@
 import { FC, Fragment } from 'react'
 import { useParams } from 'react-router-dom'
-import { Helmet } from 'react-helmet'
+import { PageTitle } from '../../components/page-title/PageTitle'
 import { useTranslation } from 'react-i18next'
 
 import { BannerListType, getBannerListTypeText } from '../../features/banner'
@@ -27,9 +27,7 @@ const UserBannerList: FC = () => {
 
   return (
     <Fragment>
-      <Helmet defer={false}>
-        <title>{title}</title>
-      </Helmet>
+      <PageTitle title={title} />
       <div className="user-banner-list-page page-container">
         <div className="user-banner-list-content">
           <BannerListTypeNavigation

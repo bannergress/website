@@ -1,19 +1,8 @@
 import { api } from '../../api'
-import { Mission } from '../mission/types'
 import { BannerFilter } from './filter'
 import { Banner, BannerListType, BannerSettings } from './types'
 
 export const PAGE_SIZE = 9
-
-const getRandomInt = (max: number, multiplier: number, min: number) =>
-  Math.floor(Math.random() * (max + 1)) * multiplier + min
-
-const selectMissionType = (): Mission['type'] => {
-  const missionTypeInt = getRandomInt(3, 1, 0)
-  if (missionTypeInt === 1) return 'hidden'
-  if (missionTypeInt === 2) return 'anyOrder'
-  return 'sequential'
-}
 
 export const getBanner = (id: string) => api.get<Banner>(`bnrs/${id}`)
 

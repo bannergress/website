@@ -1,6 +1,6 @@
 import React from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet'
+import { PageTitle } from '../../components/page-title/PageTitle'
 
 import FooterMain from '../../components/footer-main'
 import { AllQuestions } from './AllQuestions'
@@ -16,9 +16,7 @@ const Help: React.FC = () => {
 
   return (
     <div className="page-container">
-      <Helmet defer={false}>
-        <title>{t('help.title')}</title>
-      </Helmet>
+      <PageTitle title={t('help.title')} />
       <div className="help-page">
         <h1>{t('help.title')}</h1>
         <div className="help-page-content">

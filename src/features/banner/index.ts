@@ -26,7 +26,6 @@ import {
   resetMapBannersAction,
   loadMapBannersAction,
   removePendingBannerAction,
-  editBannerAction,
   deleteBannerAction,
   changeBannerSettingsAction,
   resetBrowsedBannersAction,

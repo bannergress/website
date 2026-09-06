@@ -1,3 +1,4 @@
+import { Action } from 'redux'
 import { REHYDRATE } from 'redux-persist/es/constants'
 import {
   PlaceActionTypes,
@@ -10,10 +11,10 @@ import {
   SEARCH_PLACES,
   RESET_SEARCH_PLACES,
 } from './actionTypes'
-import { Dictionary, Place } from './types'
+import { Dictionary, Place, PlaceState } from './types'
 import { extend } from './helpers'
 
-const initialState = {
+const initialState: PlaceState = {
   allPlaces: {},
   countries: [],
   administrativeAreas: {},
@@ -21,11 +22,8 @@ const initialState = {
   canSearchMore: true,
 }
 
-function AddPlacesToDictionary(
-  places: Partial<Place>[],
-  dictionary: Dictionary<Partial<Place>>
-) {
-  const asDictionary = places.reduce<Dictionary<Partial<Place>>>(
+function AddPlacesToDictionary(places: Place[], dictionary: Dictionary<Place>) {
+  const asDictionary = places.reduce<Dictionary<Place>>(
     (accumulator, currentValue) => {
       accumulator[currentValue.id || ''] = currentValue
       return accumulator
@@ -40,8 +38,8 @@ function AddPlacesToDictionary(
 }
 
 function AddPlaceAndParentsToDictionary(
-  place: Partial<Place>,
-  dictionary: Dictionary<Partial<Place>>
+  place: Place,
+  dictionary: Dictionary<Place>
 ) {
   let currentPlace = place
   const places = [currentPlace]
@@ -54,7 +52,9 @@ function AddPlaceAndParentsToDictionary(
   return AddPlacesToDictionary(places, dictionary)
 }
 
-export default (state = initialState, action: PlaceActionTypes) => {
+export default (state = initialState, incomingAction: Action): PlaceState => {
+  // Unknown Redux actions fall through to the unchanged state.
+  const action = incomingAction as PlaceActionTypes
   switch (action.type) {
     case REHYDRATE:
       return {

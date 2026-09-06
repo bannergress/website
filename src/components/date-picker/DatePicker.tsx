@@ -14,8 +14,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const useShowPicker = 'showPicker' in HTMLInputElement.prototype
 
   const onTriggerPicker = () => {
-    const input: any = inputRef.current!
-    input.showPicker()
+    inputRef.current?.showPicker()
   }
 
   const onEditComplete = (event: ChangeEvent<HTMLInputElement>) => {

@@ -66,9 +66,8 @@ const getCreatedBy = (banner: Banner, t: TFunction) => {
   return undefined
 }
 
-const getEvent = (banner: Banner, t: TFunction) => {
+const getEvent = (banner: Banner) => {
   if (banner.eventStartDate) {
-    let text
     if (banner.eventEndDate === banner.eventStartDate) {
       return (
         <p>
@@ -93,7 +92,6 @@ const getEvent = (banner: Banner, t: TFunction) => {
         </p>
       )
     }
-    return <p>{text}</p>
   }
   return undefined
 }
@@ -432,15 +430,13 @@ const BannerInfoCard: FC<BannerInfoCardProps> = ({ banner }) => {
 
   return (
     <div className="banner-info-card">
-      {getEvent(banner, t)}
+      {getEvent(banner)}
       {banner.warning && (
-        <Markdown
-          className={'warning-text'}
-          allowedElements={allowedElements}
-          unwrapDisallowed={true}
-        >
-          {banner.warning}
-        </Markdown>
+        <div className="warning-text">
+          <Markdown allowedElements={allowedElements} unwrapDisallowed={true}>
+            {banner.warning}
+          </Markdown>
+        </div>
       )}
 
       {banner.description && (

@@ -1,5 +1,5 @@
 import React, { FormEvent, Fragment, FC, useRef } from 'react'
-import { message } from 'antd'
+import { App } from 'antd'
 import { useTranslation } from 'react-i18next'
 
 import SVGSearch from '../../assets/img/icons/search.svg?react'
@@ -7,6 +7,7 @@ import SVGSearch from '../../assets/img/icons/search.svg?react'
 import './SearchInput.scss'
 
 const SearchInput: FC<SearchInputProps> = ({ autoFocus, onSearch }) => {
+  const { message } = App.useApp()
   const textInput = useRef<HTMLInputElement>(null)
   const { t } = useTranslation(undefined, { keyPrefix: 'search' })
 

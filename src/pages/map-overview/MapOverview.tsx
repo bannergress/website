@@ -1,10 +1,11 @@
+import { handlePromise } from '../../features/utils/async'
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from '../../hocs/withRouter'
-import { Helmet } from 'react-helmet'
+import { PageTitle } from '../../components/page-title/PageTitle'
 import { Col, Row } from 'antd'
-import { LatLngBounds } from 'leaflet'
-import { Scrollbars } from 'react-custom-scrollbars-2'
+import { LatLngBounds, LatLngLiteral } from 'leaflet'
+import { Scrollbars } from '../../components/scrollbars/Scrollbars'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
@@ -29,17 +30,27 @@ import { updateSettingsAction } from '../../features/settings/actions'
 import { getDefaultOnline } from '../../features/settings/selectors'
 import { ScrollRestoration } from '../../features/scroll-restoration'
 
+const isCoordinate = (value: unknown): value is LatLngLiteral =>
+  typeof value === 'object' &&
+  value !== null &&
+  'lat' in value &&
+  typeof value.lat === 'number' &&
+  Number.isFinite(value.lat) &&
+  'lng' in value &&
+  typeof value.lng === 'number' &&
+  Number.isFinite(value.lng)
+
 class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
-  scrollbarsRef = React.createRef<Scrollbars>()
+  scrollbarsRef = React.createRef<HTMLDivElement>()
   scrollRestoration = new ScrollRestoration({
     key: 'mapScrollPosition',
     preserveOn: (pathname) => pathname.startsWith('/banner/'),
     target: {
-      getScrollTop: () => this.scrollbarsRef.current?.getScrollTop(),
+      getScrollTop: () => this.scrollbarsRef.current?.scrollTop,
       setScrollTop: (scrollTop) => {
         const target = this.scrollbarsRef.current
         if (!target) return false
-        target.scrollTop(scrollTop)
+        target.scrollTo({ top: scrollTop })
         return true
       },
     },
@@ -61,8 +72,16 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     const serialized = sessionStorage.getItem('mapBounds')
     if (!serialized) return undefined
     try {
-      const parsed = JSON.parse(serialized)
-      if (!parsed?.northEast || !parsed?.southWest) return undefined
+      const parsed: unknown = JSON.parse(serialized)
+      if (
+        typeof parsed !== 'object' ||
+        parsed === null ||
+        !('northEast' in parsed) ||
+        !isCoordinate(parsed.northEast) ||
+        !('southWest' in parsed) ||
+        !isCoordinate(parsed.southWest)
+      )
+        return undefined
       return new LatLngBounds(parsed.southWest, parsed.northEast)
     } catch {
       return undefined
@@ -75,11 +94,12 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     const { location, defaultOnline } = this.props
     const urlParams = new URLSearchParams(location.search)
     const onlyOfficial = urlParams.get('onlyOfficial') !== null
+    const restoredBounds = this.loadBounds()
 
     this.state = {
-      bounds: undefined,
+      bounds: restoredBounds,
       selectedBannerId: urlParams.get('banner') ?? undefined,
-      selectedBounds: undefined,
+      selectedBounds: urlParams.has('banner') ? restoredBounds : undefined,
       status: 'initial',
       filter: {
         orderBy: 'created',
@@ -98,13 +118,13 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
         status: this.props.mapBannersCount > 0 ? 'ready' : 'initial',
       })
       if (this.props.mapBannersCount === 0) {
-        this.onLoadBanners(restoredBounds, this.state.filter)
+        handlePromise(this.onLoadBanners(restoredBounds, this.state.filter))
       }
     }
 
     const { selectedBannerId } = this.state
     if (selectedBannerId) {
-      this.props.fetchPreviewBanner(selectedBannerId)
+      handlePromise(this.props.fetchPreviewBanner(selectedBannerId))
     }
 
     this.scrollRestoration.mount(this.props.history)
@@ -123,7 +143,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
       const urlParams = new URLSearchParams(this.props.location.search)
       const bannerId = urlParams.get('banner') ?? undefined
       if (bannerId !== this.state.selectedBannerId) {
-        this.applySelectedBanner(bannerId)
+        handlePromise(this.applySelectedBanner(bannerId))
       }
     }
   }
@@ -134,10 +154,10 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
 
   onMapChanged = (bounds: LatLngBounds) => {
     const { filter } = this.state
-    this.saveBounds(bounds)
+    this.saveBounds(this.state.selectedBounds ?? bounds)
     this.setState({ bounds })
     this.scrollRestoration.invalidate()
-    this.onLoadBanners(bounds, filter)
+    handlePromise(this.onLoadBanners(bounds, filter))
   }
 
   onFilterChanged = (filter: BannerFilter) => {
@@ -163,10 +183,10 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
       defaultOnline: filter.online,
     })
     resetBanners()
-    this.onLoadBanners(bounds!, filter)
+    handlePromise(this.onLoadBanners(bounds!, filter))
   }
 
-  onSelectBanner = async (banner: Banner) => {
+  onSelectBanner = (banner: Banner) => {
     const { location, history } = this.props
     const { selectedBannerId } = this.state
     const urlParams = new URLSearchParams(location.search)
@@ -176,31 +196,43 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
         pathname: location.pathname,
         search: urlParams.toString(),
       })
-      await this.applySelectedBanner(banner.id)
     } else {
       urlParams.delete('banner')
       history.replace({
         pathname: location.pathname,
         search: urlParams.toString(),
       })
-      await this.applySelectedBanner(undefined)
     }
   }
 
   /** Brings component state in line with the (possibly browser-navigated) `banner` url param */
   applySelectedBanner = async (bannerId: string | undefined) => {
     const { fetchPreviewBanner } = this.props
-    const { bounds } = this.state
+    const { bounds, selectedBounds } = this.state
     if (bannerId) {
-      this.setState({ status: 'loading' })
-      await fetchPreviewBanner(bannerId)
+      const listBounds = selectedBounds ?? bounds
       this.setState({
         selectedBannerId: bannerId,
-        status: 'ready',
-        selectedBounds: bounds,
+        status: 'loading',
+        selectedBounds: listBounds,
       })
+      if (listBounds) this.saveBounds(listBounds)
+      try {
+        await fetchPreviewBanner(bannerId)
+        if (this.state.selectedBannerId === bannerId)
+          this.setState({ status: 'ready' })
+      } catch (error) {
+        if (this.state.selectedBannerId === bannerId)
+          this.setState({ status: 'error' })
+        throw error
+      }
     } else {
-      this.setState({ selectedBannerId: undefined, selectedBounds: undefined })
+      this.setState({
+        selectedBannerId: undefined,
+        selectedBounds: undefined,
+        status: 'ready',
+      })
+      if (bounds) this.saveBounds(bounds)
     }
   }
 
@@ -282,9 +314,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     }
     return (
       <Fragment>
-        <Helmet defer>
-          <title>{i18n?.t('map.title')}</title>
-        </Helmet>
+        <PageTitle title={i18n?.t('map.title')} />
         <Row className="map-overview">
           <Col className="map-banners hide-on-mobile">
             <h2>

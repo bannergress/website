@@ -5,11 +5,24 @@ import {
   LOAD_COUNTRIES,
 } from './actionTypes'
 import bannerReducer from './reducer'
+import { Place } from './types'
+
+const place: Place = {
+  id: '1',
+  formattedAddress: 'Germany',
+  longName: 'Germany',
+  shortName: 'DE',
+  numberOfBanners: 0,
+  boundaryMinLatitude: 47,
+  boundaryMinLongitude: 5,
+  boundaryMaxLatitude: 55,
+  boundaryMaxLongitude: 15,
+}
 
 describe('features > place > placeReducer', () => {
   it(`load countries, if ${LOAD_COUNTRIES} action is provided`, () => {
     const initialState = {
-      allPlaces: [],
+      allPlaces: {},
       countries: [],
       administrativeAreas: {},
       searchPlaces: [],
@@ -17,23 +30,23 @@ describe('features > place > placeReducer', () => {
     }
 
     const expectedState = {
-      countries: [{ id: '1' }],
+      countries: [place],
       administrativeAreas: {},
-      allPlaces: { '1': { id: '1' } },
+      allPlaces: { '1': place },
       canSearchMore: false,
       searchPlaces: [],
     }
 
     const action: PlaceActionTypes = {
       type: LOAD_COUNTRIES,
-      payload: [{ id: '1' }],
+      payload: [place],
     }
 
     expect(bannerReducer(initialState, action)).toEqual(expectedState)
   })
   it(`load administrative areas, if ${LOAD_ADMINISTRATIVE_AREAS} action is provided`, () => {
     const initialState = {
-      allPlaces: [],
+      allPlaces: {},
       countries: [],
       administrativeAreas: {},
       searchPlaces: [],
@@ -41,16 +54,16 @@ describe('features > place > placeReducer', () => {
     }
 
     const expectedState = {
-      allPlaces: { '1': { id: '1' } },
+      allPlaces: { '1': place },
       countries: [],
-      administrativeAreas: { de: [{ id: '1' }] },
+      administrativeAreas: { de: [place] },
       searchPlaces: [],
       canSearchMore: false,
     }
 
     const action: PlaceActionTypes = {
       type: LOAD_ADMINISTRATIVE_AREAS,
-      payload: { placeId: 'de', administrativeAreas: [{ id: '1' }] },
+      payload: { placeId: 'de', administrativeAreas: [place] },
     }
 
     expect(bannerReducer(initialState, action)).toEqual(expectedState)

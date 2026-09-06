@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react'
+import { handlePromise } from '../../features/utils/async'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
@@ -35,7 +36,7 @@ class UserBannerListPreview extends React.Component<
 
   componentDidMount() {
     const { listType } = this.state
-    this.doFetchBanners(listType)
+    handlePromise(this.doFetchBanners(listType))
   }
 
   componentDidUpdate(
@@ -49,13 +50,13 @@ class UserBannerListPreview extends React.Component<
     const { listType } = this.state
 
     if (prevListType !== listType || prevAuthenticated !== authenticated) {
-      this.doFetchBanners(listType)
+      handlePromise(this.doFetchBanners(listType))
     }
   }
 
   onLoadMoreBanners = () => {}
 
-  listTypeChanged = async (listType: BannerListType) => {
+  listTypeChanged = (listType: BannerListType) => {
     this.setState({ listType })
   }
 
@@ -133,7 +134,7 @@ interface UserBannerListProps extends WithTranslationProps {
     filter: BannerFilter,
     pageBanners: number
   ) => Promise<void>
-  authenticated: Boolean
+  authenticated: boolean
 }
 
 interface UserBannerListState {

@@ -48,7 +48,19 @@ const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
         <div />
         <div />
       </div>
-      <Radio.Group value={selected} onChange={(e) => onChange(e.target.value)}>
+      <Radio.Group
+        value={selected}
+        onChange={(e) => {
+          const value: unknown = e.target.value
+          if (
+            value === 'none' ||
+            value === 'title' ||
+            value === 'simple' ||
+            value === 'advanced'
+          )
+            onChange(value)
+        }}
+      >
         {getOption('none', t('manual'))}
         {getOption('advanced', t('automatic'))}
       </Radio.Group>

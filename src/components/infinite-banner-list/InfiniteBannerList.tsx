@@ -37,7 +37,7 @@ const InfiniteBannerList: FC<InfiniteBannerListProps> = ({
         <BannerList
           banners={data}
           hasMoreBanners={hasMore}
-          loadMoreBanners={async () => {
+          loadMoreBanners={() => {
             if (status === 'resolved') {
               setMaxPages(maxPages + 1)
             }

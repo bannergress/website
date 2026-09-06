@@ -23,10 +23,12 @@ const createHistory = () => {
   let listener: ((location: Location, action: Action) => void) | undefined
   const unlisten = vi.fn()
   const history: ScrollRestorationHistory = {
-    listen: vi.fn((nextListener) => {
-      listener = nextListener
-      return unlisten
-    }),
+    listen: vi.fn(
+      (nextListener: (location: Location, action: Action) => void) => {
+        listener = nextListener
+        return unlisten
+      }
+    ),
   }
 
   return {

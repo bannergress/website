@@ -1,4 +1,5 @@
-import React, { ButtonHTMLAttributes, Fragment } from 'react'
+import { handlePromise } from '../../../features/utils/async'
+import React, { ButtonHTMLAttributes } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
 
 const LoginButton: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = (
@@ -7,7 +8,7 @@ const LoginButton: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = (
   const { keycloak } = useKeycloak()
 
   function openModal() {
-    keycloak.login({ idpHint: 'google' })
+    handlePromise(keycloak.login({ idpHint: 'google' }))
   }
 
   const { children } = attributes
