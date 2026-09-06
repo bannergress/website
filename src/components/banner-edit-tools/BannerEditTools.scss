@@ -1,0 +1,26 @@
+.banner-edit-tools {
+  column-gap: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  > button {
+    align-items: center;
+    color: white !important; /* stylelint-disable-line */
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    &.positive-action-button {
+      background-color: var(--color-positive-green);
+      border-color: transparent;
+    }
+
+    &.negative-action-button {
+      background-color: rgb(241 156 143 / 0.5);
+      border-color: transparent;
+      border-radius: 5px;
+    }
+  }
+}

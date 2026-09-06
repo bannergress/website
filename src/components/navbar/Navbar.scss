@@ -1,0 +1,94 @@
+@use "/src/assets/stylesheets/base/mixins" as *;
+
+.top-menu {
+  align-items: center;
+  background: var(--color-black);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px 10px;
+
+  > div {
+    align-items: center;
+    display: flex;
+
+    .search-bar {
+      margin-right: 45px;
+      width: 250px;
+    }
+  }
+
+  .menu-main {
+    @include media-max-md {
+      display: none;
+    }
+  }
+
+  .brand-menu {
+    flex: 1;
+    max-width: 329px;
+  }
+}
+
+.brand-logo {
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: flex;
+  flex-grow: 1;
+  height: 57px;
+  min-width: 150px;
+
+  @include media-max-md {
+    width: 50vw;
+  }
+}
+
+.mobile-search-bar {
+  display: flex;
+  padding: 0.5em 2em;
+}
+
+.mobile-search-button-container {
+  display: flex;
+  height: 60px;
+  min-width: 70px;
+  transition: background-color 0.3s;
+
+  .mobile-search-button {
+    align-items: center;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    font: inherit;
+    height: 100%;
+    justify-content: center;
+    outline: inherit;
+    padding: 0;
+    width: 100%;
+
+    .search-button-icon {
+      fill: var(--color-white-light);
+      height: 24px;
+      width: 24px;
+    }
+  }
+}
+
+.mobile-search-button-container.active {
+  .search-button-icon {
+    fill: var(--color-active-green);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mobile-search-button-container:hover {
+    background: rgb(29 165 122 / 0.3);
+
+    .search-button-icon {
+      fill: white;
+    }
+  }
+}

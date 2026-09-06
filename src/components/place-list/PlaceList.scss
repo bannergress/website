@@ -1,0 +1,41 @@
+.places-list-item {
+  column-gap: 0.3em;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.places-list {
+  padding-left: 2em;
+  padding-right: 1em;
+  padding-top: 5em;
+
+  h2 + h2 {
+    min-width: 270px;
+  }
+}
+
+.places-list-child {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 180px 50px;
+  margin-left: 1em;
+
+  .place-flag {
+    grid-column: 1 / 2;
+  }
+
+  .place-name {
+    grid-column: 2 / 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .place-number-of-banners {
+    grid-column: 3 / 3;
+  }
+
+  .place-name + .place-number-of-banners {
+    grid-column: 3 / 3;
+  }
+}

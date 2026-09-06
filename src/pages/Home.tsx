@@ -6,7 +6,7 @@ import RecentBanners from '../components/recent-banners'
 import { UserBannerListPreview } from '../components/user-banner-list-preview'
 import FooterMain from '../components/footer-main'
 
-import './home.less'
+import './Home.scss'
 import EventsPreview from '../components/events-preview/EventsPreview'
 
 export const Home: FC = () => {

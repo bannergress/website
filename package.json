@@ -3,6 +3,21 @@
   "version": "2.5.2",
   "private": true,
   "type": "module",
+  "scripts": {
+    "start": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "preview": "vite preview",
+    "lint": "eslint src",
+    "fix": "eslint src --fix",
+    "stylelint": "stylelint '**/*.{css,scss}' --quiet",
+    "stylelint:fix": "stylelint '**/*.{css,scss}' --fix --quiet",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{css,scss}": "stylelint --fix --quiet",
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
+  },
   "dependencies": {
     "@fontsource/roboto": "^5.2.9",
     "@react-keycloak/core": "^3.2.0",
@@ -43,14 +58,6 @@
     "ua-parser-js": "^0.7.33",
     "underscore": "^1.13.8"
   },
-  "scripts": {
-    "start": "vite",
-    "build": "tsc && vite build",
-    "test": "vitest",
-    "preview": "vite preview",
-    "lint": "eslint src",
-    "fix": "eslint src --fix"
-  },
   "devDependencies": {
     "@types/leaflet": "^1.9.12",
     "@types/leaflet-loading": "^0.1.4",
@@ -72,8 +79,15 @@
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.4.4",
+    "husky": "^9.1.6",
     "less": "^4.9.0",
+    "lint-staged": "^15.2.10",
     "prettier": "^3.0.3",
+    "sass": "^1.80.6",
+    "sass-embedded": "^1.80.6",
+    "stylelint": "^16.10.0",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-order": "^6.0.4",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.67.0",
     "vite": "^8.2.2",

@@ -7,7 +7,7 @@ import { getAttributionLayer } from './getAttributionLayer'
 import MissionStartMarkerList from './MissionStartMarkerList'
 import MissionPoiMarkerList from './MissionPoiMarkerList'
 
-import './map.less'
+import './MapDetail.scss'
 import { LocateControl } from '../locate'
 import { MapLoadingControl } from '../map-loading-control'
 import { MapZoomControl } from '../map-zoom-control'

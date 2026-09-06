@@ -1,0 +1,24 @@
+.recent-banners .banner-list {
+  justify-content: center;
+}
+
+.recent-banners .banner-card {
+  cursor: pointer;  
+}
+
+.recent-banners-title {
+  align-items: baseline;
+  column-gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 20px 0;
+
+  & > h1 {
+    flex-grow: 10000;
+  }
+
+  & > .submit-new-button {
+    flex-grow: 1;
+  }
+}

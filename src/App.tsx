@@ -14,6 +14,7 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import keycloak from './keycloak'
 
 import { updateApiState } from './api'
+import { setRouter } from './router-instance'
 import patchDOMForGoogleTranslate from './features/utils/patchGoogleTranslate'
 import { Home } from './pages/Home'
 import { MapOverview } from './pages/map-overview'
@@ -32,7 +33,9 @@ import MenuMain from './components/menu-main'
 import Navbar from './components/navbar'
 
 import './i18n'
-import './App.less'
+import 'antd/dist/antd.compact.less'
+import 'antd/dist/antd.dark.less'
+import './App.scss'
 import Events from './pages/events/Events'
 
 const useHideNavbarOnMobile = () => {
@@ -95,6 +98,8 @@ const router = createBrowserRouter([
     ],
   },
 ])
+
+setRouter(router)
 
 const App: React.FC = () => {
   patchDOMForGoogleTranslate()

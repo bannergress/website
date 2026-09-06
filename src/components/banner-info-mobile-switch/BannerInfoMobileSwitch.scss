@@ -1,0 +1,75 @@
+.banner-info-mobile-switch {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  font-weight: 400;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  .banner-info-mobile-switch-back {
+    flex: 0;
+
+    svg {
+      height: 1em;
+      margin-top: 5px;
+    }
+  }
+
+  .mobile-switch-title-row {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 5px;
+    padding-top: 5px;
+  }
+
+  .mobile-switch-tabs-row {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .mobile-switch-title {
+    font-size: 20px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    outline: none;
+    width: 33%;
+
+    &.active {
+      border: 2px solid var(--color-active-green) !important; /* stylelint-disable-line */
+      border-radius: 4px;
+    }
+  }
+
+  .positive-action-button {
+    background: var(--color-positive-green);
+    border: none;
+    border-radius: 5px;
+    color: var(--color-white);
+    cursor: pointer;
+    padding: 0.5em 2em;
+
+    &:disabled {
+      background: var(--color-medium-gray);
+      color: var(--color-light-gray);
+      cursor: not-allowed;
+    }
+  }
+
+  .mobile-switch-submit-button {
+    flex-grow: 0;
+    white-space: nowrap;
+    width: auto;
+  }
+}

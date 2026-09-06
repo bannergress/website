@@ -1,0 +1,36 @@
+.bg-switch {
+  background-color: var(--color-white);
+  border-radius: 4px;
+  height: 28px;
+  padding: 1px;
+  width: 48px;
+
+  .ant-switch {
+    background-color: var(--color-switch-track);
+    border: 1px solid;
+    border-color: var(--color-switch-track);
+    border-radius: 3px;
+    height: 26px;
+    width: 46px;
+    }
+
+  .ant-switch-handle::before {
+    background-color: var(--color-medium-gray);
+    border-radius: 1px;
+    height: 20px;
+    width: 16px;
+  }
+
+  &.bg-switch-selected {
+    background-image: linear-gradient(180deg, var(--color-border-dark), var(--color-border-light));
+
+    .ant-switch {
+      background-clip: padding-box;
+      border-color: transparent;
+    }
+
+    .ant-switch-handle::before {
+      background-color: var(--color-border-light);
+    }
+  }
+}

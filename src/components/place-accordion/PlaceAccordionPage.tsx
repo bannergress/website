@@ -9,7 +9,7 @@ import { PlaceAccordionEntry } from './PlaceAccordionEntry'
 import TriangleUpSVG from '../../assets/img/icons/triangle.svg?react'
 import TriangleDownSVG from '../../assets/img/icons/triangle-down.svg?react'
 
-import './place-accordion-page.less'
+import './PlaceAccordionPage.scss'
 
 export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
   parentPlace,

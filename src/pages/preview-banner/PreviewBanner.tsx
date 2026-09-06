@@ -16,7 +16,7 @@ import { BannerInfoWithMap } from '../../components/banner-info-with-map'
 import { NavigationPrompt } from '../../components/navigation-prompt'
 import { withRouter, RouteComponentProps } from '../../hocs/withRouter'
 
-import './preview-banner.less'
+import './PreviewBanner.scss'
 
 class PreviewBanner extends React.Component<
   PreviewBannerProps,

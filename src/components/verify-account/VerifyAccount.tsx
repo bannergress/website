@@ -6,7 +6,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Agent } from '../agent'
 import LoadingOverlay from '../loading-overlay'
 
-import './verify-account.less'
+import './VerifyAccount.scss'
 import { Step1 } from './Step1'
 import { Step2 } from './Step2'
 import { User } from '../../features/user'

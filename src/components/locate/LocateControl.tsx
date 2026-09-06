@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import 'leaflet.locatecontrol'
 import 'leaflet.locatecontrol/dist/L.Control.Locate.css'
 
-import './locate-control.less'
+import './LocateControl.scss'
 
 const LocateControl: FC = () => {
   const context = useLeafletContext()

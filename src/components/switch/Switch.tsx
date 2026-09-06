@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Switch as AntdSwitch } from 'antd'
-import './switch.less'
+import './Switch.scss'
 
 const Switch: FC<SwitchProps> = ({ checked, onChange }) => (
   <div className={checked ? 'bg-switch bg-switch-selected' : 'bg-switch'}>

@@ -1,0 +1,251 @@
+@property --color-white {
+  inherits: false;
+  initial-value: #fff;
+  syntax: "<color>";
+}
+
+@property --color-white-light {
+  inherits: false;
+  initial-value: #eaeaea;
+  syntax: "<color>";
+}
+
+@property --color-black {
+  inherits: false;
+  initial-value: #000;
+  syntax: "<color>";
+}
+
+@property --color-light-black {
+  inherits: false;
+  initial-value: #1b1b1b;
+  syntax: "<color>";
+}
+
+@property --color-gray {
+  inherits: false;
+  initial-value: #888;
+  syntax: "<color>";
+}
+
+@property --color-light-gray {
+  inherits: false;
+  initial-value: #d3d3d3;
+  syntax: "<color>";
+}
+
+@property --color-input-background {
+  inherits: false;
+  initial-value: #b9b9b9;
+  syntax: "<color>";
+}
+
+@property --color-input-focus-background {
+  inherits: false;
+  initial-value: #6a6a6a;
+  syntax: "<color>";
+}
+
+@property --color-input-placeholder {
+  inherits: false;
+  initial-value: #555;
+  syntax: "<color>";
+}
+
+@property --color-search-input-placeholder {
+  inherits: false;
+  initial-value: #aaa;
+  syntax: "<color>";
+}
+
+@property --color-medium-gray {
+  inherits: false;
+  initial-value: #808080;
+  syntax: "<color>";
+}
+
+@property --color-disabled-text {
+  inherits: false;
+  initial-value: #6f6f6f;
+  syntax: "<color>";
+}
+
+@property --color-secondary-text {
+  inherits: false;
+  initial-value: #ddd;
+  syntax: "<color>";
+}
+
+@property --color-switch-track {
+  inherits: false;
+  initial-value: #1f1f1f;
+  syntax: "<color>";
+}
+
+@property --color-dark-gray {
+  inherits: false;
+  initial-value: #2e2e2e;
+  syntax: "<color>";
+}
+
+@property --color-todo {
+  inherits: false;
+  initial-value: #ffe381;
+  syntax: "<color>";
+}
+
+@property --color-done {
+  inherits: false;
+  initial-value: #70c03f;
+  syntax: "<color>";
+}
+
+@property --color-blacklist {
+  inherits: false;
+  initial-value: #ef5555;
+  syntax: "<color>";
+}
+
+@property --color-pin {
+  inherits: false;
+  initial-value: #6832da;
+  syntax: "<color>";
+}
+
+@property --color-warning {
+  inherits: false;
+  initial-value: #ffb21d;
+  syntax: "<color>";
+}
+
+@property --color-mission-image-border {
+  inherits: false;
+  initial-value: #f19e24;
+  syntax: "<color>";
+}
+
+@property --color-error {
+  inherits: false;
+  initial-value: #ef5555;
+  syntax: "<color>";
+}
+
+@property --color-invalid-input {
+  inherits: false;
+  initial-value: #ff6347;
+  syntax: "<color>";
+}
+
+@property --color-missing {
+  inherits: false;
+  initial-value: #ff2f2f;
+  syntax: "<color>";
+}
+
+@property --primary-color {
+  inherits: false;
+  initial-value: #1da57a;
+  syntax: "<color>";
+}
+
+@property --link-color {
+  inherits: false;
+  initial-value: #1da57a;
+  syntax: "<color>";
+}
+
+@property --link-hover-color {
+  inherits: false;
+  initial-value: #1a7256;
+  syntax: "<color>";
+}
+
+@property --link-active-color {
+  inherits: false;
+  initial-value: #39a37d;
+  syntax: "<color>";
+}
+
+@property --color-active-green {
+  inherits: false;
+  initial-value: #0ca589;
+  syntax: "<color>";
+}
+
+@property --body-background {
+  inherits: false;
+  initial-value: #0b0c0d;
+  syntax: "<color>";
+}
+
+@property --border-color-base {
+  inherits: false;
+  initial-value: #004f4a;
+  syntax: "<color>";
+}
+
+@property --scrollbar-color {
+  inherits: false;
+  initial-value: #969696;
+  syntax: "<color>";
+}
+
+@property --color-panel-bg {
+  inherits: false;
+  initial-value: #404040;
+  syntax: "<color>";
+}
+
+@property --color-border-dark {
+  inherits: false;
+  initial-value: #109393;
+  syntax: "<color>";
+}
+
+@property --color-positive-green {
+  inherits: false;
+  initial-value: #077561;
+  syntax: "<color>";
+}
+
+@property --color-border-light {
+  inherits: false;
+  initial-value: #15d4b2;
+  syntax: "<color>";
+}
+
+@property --color-positive-green-light {
+  inherits: false;
+  initial-value: #16d4b2;
+  syntax: "<color>";
+}
+
+@property --color-map-legend-green {
+  inherits: false;
+  initial-value: #16d4b1;
+  syntax: "<color>";
+}
+
+@property --color-enlightened {
+  inherits: false;
+  initial-value: #02bf02;
+  syntax: "<color>";
+}
+
+@property --color-resistance {
+  inherits: false;
+  initial-value: #0492d0;
+  syntax: "<color>";
+}
+
+@property --card-head-padding {
+  inherits: false;
+  initial-value: 0.6rem;
+  syntax: "<length>";
+}
+
+@property --card-padding-base {
+  inherits: false;
+  initial-value: 0.6rem;
+  syntax: "<length>";
+}

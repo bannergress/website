@@ -1,0 +1,17 @@
+.place-accordion-entry {
+  background: none;
+  border: none;
+  column-gap: 0.3em;
+  cursor: pointer;
+  display: flex;
+  padding: 5px 25px;
+  text-align: left;
+
+  &.place-accordion-entry-selected {
+    color: rgb(21 212 178);
+  }
+
+  &.place-accordion-entry-all {
+    font-style: italic;
+  }
+}

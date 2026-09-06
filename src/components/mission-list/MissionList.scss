@@ -1,0 +1,23 @@
+.ant-btn {
+  font-size: 16px;
+}
+
+.mission-list {
+  font-size: 16px;
+
+  & > button {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mission-list-header {
+    align-items: baseline;
+    display: flex;
+    justify-content: space-between;
+
+    h2 {
+      margin-bottom: 0;
+    }
+  }
+}

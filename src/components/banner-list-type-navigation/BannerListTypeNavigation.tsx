@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { BannerListType, getBannerListTypeText } from '../../features/banner'
 
-import './banner-list-type-navigation.less'
+import './BannerListTypeNavigation.scss'
 
 const BannerListTypeNavigation: FC<BannerListTypeNavigationProps> = ({
   bannerListType,

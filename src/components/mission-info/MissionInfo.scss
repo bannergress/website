@@ -1,0 +1,53 @@
+.mission-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  svg {
+    display: flex;
+    height: 1.2em;
+    min-width: 2em;
+  }
+
+  .mission-info-markedoffline {
+    color: var(--color-missing);
+  }
+
+  .mission-info-intel {
+    align-content: center;
+    color: var(--color-border-light);
+    display: flex;
+    flex-direction: row;
+
+    a {
+      align-items: center;
+      color: var(--color-border-light);
+      display: flex;
+      flex: 1;
+      text-decoration: underline;
+    }
+
+    svg {
+      fill-opacity: initial;
+    }
+
+  }
+
+  .mission-info-stats {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .mission-info-logo-and-text {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+
+    &  div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+}
+

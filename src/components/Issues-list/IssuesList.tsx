@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { Issue } from './Issue'
 import IssueCard from './IssueCard'
 
-import './issues.less'
+import './IssuesList.scss'
 
 const IssuesList: FC<IssuesListProps> = ({ issues, onCloseIssue }) => (
   <div className="issues-list">

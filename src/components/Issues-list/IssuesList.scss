@@ -1,0 +1,31 @@
+.issues-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.issue-card {
+  background: color-mix(in srgb, var(--color-dark-gray) 90%, transparent);
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 2.5;
+  padding: 10px 20px;
+
+  &.issue-error {
+    color: var(--color-missing);
+  }
+
+  &.issue-warning {
+    color: var(--color-warning);
+  }
+
+  button {
+    border: none;
+    float: right;
+    padding: 10px 0;
+
+    path {
+      fill: var(--color-light-gray);
+    }
+  }
+}

@@ -1,0 +1,29 @@
+.footer-main {
+  background-color: var(--color-black);
+  padding: 1.5rem 0;
+  text-align: center;
+  width: 100%;
+
+  .footer-links {
+    column-gap: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-bottom: 1em;
+    width: 100%;
+
+    svg {
+      height: 20px;
+      width: 20px;
+
+      path {
+        fill: var(--color-white);
+        fill-opacity: 1 !important; /* stylelint-disable-line */
+      }
+    }
+  }
+
+  .footer-disclaimers {
+    font-size: 12px;
+  }
+}

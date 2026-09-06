@@ -1,0 +1,61 @@
+.account {
+  align-items: center;
+
+  .account-page {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    max-width: 1120px;
+    padding: 2em;
+    width: 100%;
+
+    h1 {
+      width: 100%;
+    }
+
+    h3 {
+      font-size: 20px;
+    }
+
+    button {
+      height: 36px;
+      width: auto;
+    }
+
+    .issues-list {
+      text-align: center;
+      width: 100%;
+    }
+
+    .agent-info {
+      align-items: center;
+      display: flex;
+      flex-flow: row wrap;
+      width: 100%;
+
+      .user-picture {
+        background-color: white;
+        background-size: cover;
+        border-radius: 50%;
+        height: 125px;
+        margin-right: 10px;
+        width: 125px;
+      }
+
+      .agent-name-info {
+        display: flex;
+        flex-direction: column;
+
+        .user-name {
+          font-size: 28px;
+          overflow-wrap: anywhere;
+        }
+
+        .agent-name {
+          font-size: 20px;
+          overflow-wrap: anywhere;
+        }
+      }
+    }
+  }
+}

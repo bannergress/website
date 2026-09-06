@@ -15,7 +15,7 @@ import MissionList from '../mission-list'
 import BannerInfoCard from '../banner-info-card'
 import IfUserLoggedIn from '../login/if-user-logged-in'
 
-import './banner-info-overview.less'
+import './BannerInfoOverview.scss'
 
 export type BannerInfoView = 'info' | 'missions'
 

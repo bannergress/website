@@ -1,0 +1,24 @@
+.menu-user {
+  border: none !important; /* stylelint-disable-line */
+  display: flex !important; /* stylelint-disable-line */
+  height: 50px !important; /* stylelint-disable-line */
+
+  .user-picture {
+    background-color: white;
+    background-size: cover;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+  }
+
+  .arrow-icon {
+    height: 33px;
+    margin-left: 5px;
+    transform: rotate(180deg);
+    width: 10px;
+
+      path {
+        fill: white;
+      }
+  }
+}

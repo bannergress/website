@@ -1,0 +1,76 @@
+.mission-card {
+  background: var(--color-dark-gray);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  margin-top: 1rem;
+  max-width: 400px;
+  padding: 20px;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  .mission-header {
+    align-items: center;
+    background: none;
+    border: none;
+    column-gap: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .mission-circle {
+    align-items: center;
+    background-color: grey;
+    border-radius: 50%;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    width: 40px;
+  }
+
+  .mission-title {
+    flex: 1;
+    font-size: 18px;
+    text-align: left;
+    width: calc(100% - 95px);
+
+    &.offline {
+      text-decoration: line-through;
+    }
+  }
+
+  .shevron {
+    align-items: center;
+    display: flex;
+  }
+
+  .icon {
+    cursor: pointer;
+    height: 1.5rem;
+    transition: transform ease 0.3s;
+    width: 1.5rem;
+
+    &.open {
+      transform:rotate(180deg);
+    }
+  }
+
+  .ant-card-body {
+    padding: 1rem;
+    transition: height ease 0.3s;
+  }
+
+  .mission-list {
+    margin-top: 5px;
+  }
+
+  .mission-info {
+    margin-top: 5px;
+  }
+}

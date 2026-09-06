@@ -6,7 +6,7 @@ import { NumDictionary } from '../../features/banner'
 import { mapMissions, Mission } from '../../features/mission'
 import MissionCard from '../mission-card'
 
-import './mission-list.less'
+import './MissionList.scss'
 
 const MissionList: React.FC<MissionListProps> = ({
   missions,

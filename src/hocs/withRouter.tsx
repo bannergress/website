@@ -1,10 +1,6 @@
-import React, { useEffect, useMemo, useRef } from 'react'
-import {
-  useLocation,
-  useNavigate,
-  useNavigationType,
-  useParams,
-} from 'react-router-dom'
+import React, { useMemo } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { getRouter } from '../router-instance'
 
 /**
  * React Router v6+ dropped the v5 history object and the withRouter/
@@ -14,12 +10,34 @@ import {
  * components below don't need to be rewritten as function components.
  */
 export interface RouterHistory {
-  push: (path: string) => void
+  push: (path: string | { pathname: string; search?: string }) => void
   replace: (path: string | { pathname: string; search?: string }) => void
   goBack: () => void
   listen: (
     callback: (location: { pathname: string }, action: string) => void
   ) => () => void
+}
+
+/**
+ * Subscribes directly to the app's single router instance instead of
+ * reacting to this component's own location prop: a listener registered
+ * that way only ever fires while its own component stays mounted, which
+ * never happens for a navigation that unmounts it (e.g. leaving /browse
+ * for an unrelated page) - exactly the case scroll-restoration needs to
+ * observe to decide whether to discard the saved position.
+ */
+const listenToRouter = (
+  callback: (location: { pathname: string }, action: string) => void
+) => {
+  const router = getRouter()
+  if (!router) return () => {}
+
+  let prevPathname = router.state.location.pathname
+  return router.subscribe((state) => {
+    if (state.location.pathname === prevPathname) return
+    prevPathname = state.location.pathname
+    callback({ pathname: state.location.pathname }, state.historyAction)
+  })
 }
 
 export interface RouteComponentProps<
@@ -42,23 +60,13 @@ export function withRouter<P extends RouteComponentProps<any>>(
     const location = useLocation()
     const navigate = useNavigate()
     const params = useParams()
-    const navigationType = useNavigationType()
-    const listenersRef = useRef<
-      Array<(location: { pathname: string }, action: string) => void>
-    >([])
-    const prevKeyRef = useRef(location.key)
-
-    useEffect(() => {
-      if (prevKeyRef.current === location.key) return
-      prevKeyRef.current = location.key
-      listenersRef.current.forEach((listener) =>
-        listener(location, navigationType)
-      )
-    }, [location, navigationType])
 
     const history = useMemo<RouterHistory>(
       () => ({
-        push: (path) => navigate(path),
+        push: (path) =>
+          typeof path === 'string'
+            ? navigate(path)
+            : navigate({ pathname: path.pathname, search: path.search }),
         replace: (path) =>
           typeof path === 'string'
             ? navigate(path, { replace: true })
@@ -67,14 +75,7 @@ export function withRouter<P extends RouteComponentProps<any>>(
                 { replace: true }
               ),
         goBack: () => navigate(-1),
-        listen: (callback) => {
-          listenersRef.current.push(callback)
-          return () => {
-            listenersRef.current = listenersRef.current.filter(
-              (listener) => listener !== callback
-            )
-          }
-        },
+        listen: listenToRouter,
       }),
       [navigate]
     )

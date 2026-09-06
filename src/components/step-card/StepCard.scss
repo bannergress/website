@@ -1,0 +1,32 @@
+.step-card {
+  column-gap: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.step-card-title {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  a:any-link {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
+
+.step-card-objective {
+  flex: 0 100000 auto;
+  text-align: right;
+}
+
+.step-card-unavailable {
+  color: var(--color-disabled-text);
+  text-decoration: line-through;
+}
+
+.step-card-hidden {
+  font-style: italic;
+}

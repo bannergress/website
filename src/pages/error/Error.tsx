@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet'
 import FooterMain from '../../components/footer-main'
 import RecentBanners from '../../components/recent-banners'
 
-import './error.less'
+import './Error.scss'
 
 const Error: React.FC = () => {
   const { t } = useTranslation()

@@ -1,0 +1,18 @@
+@use "/src/assets/stylesheets/main" as *;
+
+#root { /* stylelint-disable-line */
+  height: 100%;
+
+  & > .ant-layout { /* stylelint-disable-line */
+    height: 100%;
+  }
+}
+
+.main {
+  height: 100%;
+
+  & > .container {
+    height: 100%;
+    overflow: auto;
+  }
+}

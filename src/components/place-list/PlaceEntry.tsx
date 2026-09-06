@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 
 import { Place } from '../../features/place'
 
-import './place-entry.less'
+import './PlaceEntry.scss'
 
 import SVGLocality from '../../assets/img/icons/locality.svg?react'
 import SVGArea from '../../assets/img/icons/area.svg?react'

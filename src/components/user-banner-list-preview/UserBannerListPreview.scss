@@ -1,0 +1,19 @@
+.see-full-list {
+    background-image: linear-gradient(180deg, var(--color-border-dark), var(--color-border-light));
+    border-radius: 5px;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding: 2px;
+    width: fit-content;
+
+    a:any-link {
+        background-color: var(--color-light-black);
+        border-radius: 4px;
+        color: white;
+        display: flex;
+        padding: 5px 10px;
+    }
+}
+

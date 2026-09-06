@@ -1,0 +1,86 @@
+.filter-and-sort {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.order-button {
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  padding: 1px;
+
+  .order-button-inner {
+    background-color: var(--color-light-black);
+    border-radius: 4px;
+    flex: 1;
+    font-size: 16px;
+    padding: 5px 10px;
+  }
+
+  &.selected {
+    background-image: linear-gradient(180deg, var(--color-border-dark), var(--color-border-light));
+    padding: 2px;
+
+    .order-button-inner {
+      padding: 4px 9px;
+    }
+  }
+}
+
+.order-chooser {
+  display: flex;
+  overflow-x: auto;
+
+  &>div {
+    align-items: baseline;
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    gap: 15px;
+    margin-bottom: 0.5em;
+  }
+}
+
+.filter-and-sort-modal {
+  .ant-modal-body {
+    align-items: flex-start;
+    display: flex;
+  }
+
+  .filter-and-sort-content {
+    flex: 1;
+  }
+
+  h2 {
+    font-weight: bold;
+  }
+
+  h3 {
+    flex: 1;
+    margin-bottom: 4px;
+    margin-top: 4px;
+  }
+
+  .back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 13px;
+  }
+
+  .filter-and-sort-switch-row {
+    align-items: center;
+    display: flex;
+  }
+
+  .filter-and-sort-button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}

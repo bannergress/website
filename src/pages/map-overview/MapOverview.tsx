@@ -21,7 +21,7 @@ import BannerList from '../../components/banner-list'
 import BannersMap from '../../components/banners-map'
 import BannersAccordion from '../../components/banners-accordion'
 
-import './map.less'
+import './MapOverview.scss'
 import { BannerFilter } from '../../features/banner/filter'
 import BannerOrderChooser from '../../components/banner-order-chooser'
 import { SettingsState } from '../../features/settings/types'
@@ -118,6 +118,14 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     ) {
       this.scrollRestoration.restore()
     }
+
+    if (prevProps.location.search !== this.props.location.search) {
+      const urlParams = new URLSearchParams(this.props.location.search)
+      const bannerId = urlParams.get('banner') ?? undefined
+      if (bannerId !== this.state.selectedBannerId) {
+        this.applySelectedBanner(bannerId)
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -159,28 +167,39 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 
   onSelectBanner = async (banner: Banner) => {
-    const { fetchPreviewBanner, location, history } = this.props
-    const { selectedBannerId, bounds } = this.state
+    const { location, history } = this.props
+    const { selectedBannerId } = this.state
     const urlParams = new URLSearchParams(location.search)
     if (selectedBannerId !== banner.id) {
       urlParams.set('banner', banner.id)
-      history.replace({
+      history.push({
         pathname: location.pathname,
         search: urlParams.toString(),
       })
-      this.setState({ status: 'loading' })
-      await fetchPreviewBanner(banner.id)
-      this.setState({
-        selectedBannerId: banner.id,
-        status: 'ready',
-        selectedBounds: bounds,
-      })
+      await this.applySelectedBanner(banner.id)
     } else {
       urlParams.delete('banner')
       history.replace({
         pathname: location.pathname,
         search: urlParams.toString(),
       })
+      await this.applySelectedBanner(undefined)
+    }
+  }
+
+  /** Brings component state in line with the (possibly browser-navigated) `banner` url param */
+  applySelectedBanner = async (bannerId: string | undefined) => {
+    const { fetchPreviewBanner } = this.props
+    const { bounds } = this.state
+    if (bannerId) {
+      this.setState({ status: 'loading' })
+      await fetchPreviewBanner(bannerId)
+      this.setState({
+        selectedBannerId: bannerId,
+        status: 'ready',
+        selectedBounds: bounds,
+      })
+    } else {
       this.setState({ selectedBannerId: undefined, selectedBounds: undefined })
     }
   }

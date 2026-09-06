@@ -14,7 +14,7 @@ import { MapDetail } from '../map-detail'
 import { IssuesList, Issue } from '../Issues-list'
 import SVGBackArrow from '../../assets/img/icons/back-arrow.svg?react'
 
-import './banner-info-with-map.less'
+import './BannerInfoWithMap.scss'
 
 class BannerInfoWithMap extends React.Component<
   BannerInfoWithMapProps,

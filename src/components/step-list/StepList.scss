@@ -1,0 +1,7 @@
+@use "../../index";
+
+.step-list {
+  .ant-layout {
+    background-color: var(--color-panel-bg) !important; /* stylelint-disable-line */
+  }
+}

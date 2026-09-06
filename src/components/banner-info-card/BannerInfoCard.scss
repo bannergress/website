@@ -1,0 +1,116 @@
+.banner-info-card {
+  background: var(--color-dark-gray);
+  border-radius: 4px;
+  font-size: 16px;
+  margin-top: 20px;
+  padding: 15px;
+
+  .button-as-link {
+    background: none;
+    border: none;
+    box-sizing: content-box;
+    cursor: pointer;
+    display: inline;
+    font: inherit;
+    height: auto;
+    outline: none;
+    padding: 0;
+    text-decoration: underline;
+    width: auto;
+  }
+
+  p {
+    white-space: pre-wrap;
+  }
+
+  &__description {
+    margin-bottom: 20px;
+    position: relative;
+
+    // Keep in sync with DESCRIPTION_COLLAPSED_HEIGHT_PX in BannerInfoCard.tsx
+    &--collapsed &-content {
+      mask-image: linear-gradient(to bottom, black calc(100% - 40px), transparent 100%);
+      max-height: 300px;
+      overflow: hidden;
+    }
+  }
+
+  &__description-toggle {
+    background: none;
+    border: none;
+    color: var(--link-color);
+    cursor: pointer;
+    display: block;
+    font: inherit;
+    font-size: 14px;
+    margin: 8px 0 0 auto;
+    outline: none;
+    padding: 0;
+    text-decoration: none;
+  }
+
+  .info-row,
+  .info-subrow {
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+
+    .info-icon {
+      width: 25px;
+
+      svg {
+        height: 1em;
+        width: 1em;
+
+        path {
+          fill: white;
+        }
+      }
+    }
+
+    .info-title {
+      font-weight: bold;
+    }
+
+    .info-content {
+      font-weight: bold;
+    }
+
+    .info-subtitle {
+      margin-left: 25px;
+    }
+
+    .info-content,
+    .info-subcontent {
+      margin-left: auto;
+    }
+  }
+
+  .info-row {
+    margin-top: 10px;
+  }
+
+  .banner-info-button {
+    background-clip: content-box, border-box !important; /* stylelint-disable-line */
+    background-color: var(--color-dark-gray);
+    background-image: linear-gradient(rgb(255 255 255 / 0), rgb(255 255 255 / 0)), linear-gradient(180deg, var(--color-border-dark), var(--color-border-light)) !important; /* stylelint-disable-line */
+    background-origin: border-box !important; /* stylelint-disable-line */
+    border: solid 2px transparent !important; /* stylelint-disable-line */
+    border-radius: 4px;
+    box-shadow: 2px 1000px 1px var(--color-dark-gray) inset !important; /* stylelint-disable-line */
+    color: white;
+    display: block;
+    margin: 0 !important; /* stylelint-disable-line */
+    margin-top: 15px !important; /* stylelint-disable-line */
+    padding: 10px;
+    text-align: center;
+    transition: linear-gradient ease 0.6s;
+    width: 100%;
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-image: linear-gradient(rgb(255 255 255 / 0), rgb(255 255 255 / 0)), linear-gradient(0deg, var(--color-border-dark), var(--color-border-light)) !important; /* stylelint-disable-line */
+      }
+    }
+  }
+}

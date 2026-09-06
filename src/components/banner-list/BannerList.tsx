@@ -7,7 +7,7 @@ import { Banner } from '../../features/banner'
 import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
 import BannerCard from '../banner-card'
 
-import './banner-list.less'
+import './BannerList.scss'
 
 const BannerList: FC<BannerListProps> = ({
   banners,

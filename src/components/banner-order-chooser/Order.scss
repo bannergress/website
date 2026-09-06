@@ -1,0 +1,8 @@
+.banner-order-arrow {
+  fill: white;
+  height: 0.625em;
+
+  &.banner-order-inverse {
+    transform: rotate(180deg);
+  }
+}

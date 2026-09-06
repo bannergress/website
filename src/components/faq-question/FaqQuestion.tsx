@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import './faq-question.less'
+import './FaqQuestion.scss'
 
 const FaqQuestion: React.FC<FaqQuestionProps> = ({ title, children }) => {
   const [selected, setSelected] = useState(false)

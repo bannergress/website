@@ -17,7 +17,7 @@ export default [
     languageOptions: {
       parserOptions: {
         ecmaVersion: 12,
-        project: ['./tsconfig.json'],
+        project: ['./tsconfig.json', './tsconfig.node.json'],
       },
     },
   },

@@ -8,7 +8,7 @@ import IfUserInitializing from '../if-user-initializing'
 import LoginButton from '../login-button'
 import MenuUser from '../../menu-user'
 
-import './Login-in-navbar.less'
+import './LoginInNavbar.scss'
 
 const LoginInNavbar: React.FC = () => {
   const { keycloak } = useKeycloak()

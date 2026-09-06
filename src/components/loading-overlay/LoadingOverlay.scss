@@ -1,0 +1,69 @@
+.loading-overlay {
+  .overlay {
+    background: color-mix(in srgb, var(--color-black) 70%, transparent);
+    color: var(--color-white);
+    display: flex;
+    font-size: 1.2em;
+    height: 100%;
+    left: 0;
+    max-width: initial;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    transition: 1 500ms ease-in;
+    width: 100%;
+    z-index: 2000;
+  }
+
+  .content {
+    margin: auto;
+  }
+
+  .spinner {
+    margin: 0 auto 10px;
+    max-height: 100%;
+    position: relative;
+    width: 50px;
+
+    &::before {
+      content: '';
+      display: block;
+      padding-top: 100%;
+    }
+
+    & svg {
+      animation: rotate(0deg) 2s linear infinite;
+      height: 100%;
+      inset: 0;
+      margin: auto;
+      position: absolute;
+      transform-origin: center center;
+      width: 100%;
+
+      & circle {
+        animation: spinner-dash 1.5s ease-in-out infinite;
+        stroke: var(--color-white);
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+        stroke-linecap: round;
+      }
+    }
+  }
+}
+
+@keyframes spinner-dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}

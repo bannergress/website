@@ -1,0 +1,34 @@
+@use "/src/assets/stylesheets/base/mixins" as *;
+
+.browser-icon {
+  color: var(--color-white-light);
+  fill: var(--color-white-light);
+  height: 0.9em;
+  margin-left: 0.5em;
+  vertical-align: middle;
+}
+
+.browser {
+  display: flex;
+
+  .places-list {
+    flex: 1;
+    max-width: 400px;
+
+    @include media-max-md {
+      display: none;
+    }
+  }
+
+  .place-accordion {
+    display: none;
+
+    @include media-max-md {
+      display: block;
+    }
+  }
+
+  .places-banners {
+    padding: 10px;
+  }
+}

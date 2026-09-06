@@ -8,7 +8,7 @@ import BannerCard from '../banner-card'
 import BannerList from '../banner-list'
 import SVGTriangle from '../../assets/img/icons/triangle.svg?react'
 
-import './banners-accordion.less'
+import './BannersAccordion.scss'
 import BannerOrderChooser from '../banner-order-chooser'
 import { BannerFilter } from '../../features/banner/filter'
 

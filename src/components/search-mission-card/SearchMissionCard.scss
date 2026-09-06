@@ -1,0 +1,60 @@
+.search-mission-card {
+  align-items: center;
+  background-color: var(--color-panel-bg);
+  border-radius: 5px;
+  column-gap: 15px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding: 10px;
+
+  .mission-image {
+    flex-shrink: 0;
+  }
+
+  .mission-title-and-author {
+    flex: 1;
+  }
+
+  .mission-title {
+    line-height: 130%;
+    word-break: break-word;
+
+    &.placeholder {
+      color: var(--color-medium-gray);
+    }
+  }
+
+  .mission-agent {
+    border: none;
+    font-size: 14px;
+    padding: 0;
+    text-align: left;
+  }
+
+  .icon {
+    cursor: pointer;
+    height: 1.5rem;
+    transition: transform ease 0.3s;
+    width: 1.5rem;
+
+    &.open {
+      transform: rotate(180deg);
+    }
+  }
+
+  .ant-card-body {
+    padding: 1rem;
+    transition: height ease 0.3s;
+  }
+
+  .mission-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    fill: white;
+    flex-shrink: 0;
+    height: 50px;
+    width: 40px;
+  }
+}
