@@ -1,6 +1,7 @@
+import { handlePromise } from '../../features/utils/async'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Dropdown, Menu } from 'antd'
+import { Button, Dropdown, MenuProps } from 'antd'
 import { useTranslation } from 'react-i18next'
 
 import UserPicture from '../login/user-picture'
@@ -18,16 +19,16 @@ const MenuUser: React.FC<MenuUserProps> = ({ logout }) => {
         logout()
         break
       case 'banners':
-        navigate('/user/banners/')
+        handlePromise(navigate('/user/banners/'))
         break
       case 'account':
-        navigate('/account')
+        handlePromise(navigate('/account'))
         break
       default:
         break
     }
   }
-  const menuProps = {
+  const menuProps: MenuProps = {
     onClick: handleMenuClick,
     items: [
       {

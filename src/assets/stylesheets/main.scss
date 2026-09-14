@@ -1,8 +1,7 @@
 @charset "UTF-8";
 
 // 1. Framework overrides
-// antd itself is imported as Less in App.tsx; its components are compiled
-// against Less theme variables set via modifyVars in vite.config.ts.
+// Ant Design uses the dark/compact theme configured in App.tsx.
 @use "override/ant-override";
 @use "override/leaflet_override";
 

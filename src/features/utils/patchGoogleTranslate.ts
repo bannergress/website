@@ -7,8 +7,8 @@
 // https://github.com/facebook/react/issues/12460
 
 export default function patchDOMForGoogleTranslate() {
+  // oxlint-disable-next-line typescript/unbound-method -- Borrowed method is called with the original receiver below.
   const originalRemoveChild = Node.prototype.removeChild
-  // $FlowFixMe Intentionally monkepatching.
   Node.prototype.removeChild = function newRemoveChild<T extends Node>(
     child: T
   ) {
@@ -22,12 +22,11 @@ export default function patchDOMForGoogleTranslate() {
       }
       return child as T
     }
-    // eslint-disable-next-line prefer-rest-params
-    return originalRemoveChild.apply(this, <any>arguments) as T
+    return originalRemoveChild.call(this, child) as T
   }
 
+  // oxlint-disable-next-line typescript/unbound-method -- Borrowed method is called with the original receiver below.
   const originalInsertBefore = Node.prototype.insertBefore
-  // $FlowFixMe Intentionally monkepatching.
   Node.prototype.insertBefore = function newInsertBefore<T extends Node>(
     newNode: T,
     referenceNode: Node | null
@@ -42,7 +41,6 @@ export default function patchDOMForGoogleTranslate() {
       }
       return newNode as T
     }
-    // eslint-disable-next-line prefer-rest-params
-    return originalInsertBefore.apply(this, <any>arguments) as T
+    return originalInsertBefore.call(this, newNode, referenceNode) as T
   }
 }

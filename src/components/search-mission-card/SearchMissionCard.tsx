@@ -3,7 +3,7 @@ import { Button } from 'antd'
 
 import { Mission, createMissionIntelLink } from '../../features/mission'
 import { getExternalLinkAttributes } from '../../features/utils'
-import { Agent } from '../agent/Agent'
+import { Agent } from '../agent'
 import MissionImage from '../mission-image/MissionImage'
 import PlaceHolderMission from './PlaceHolderMission'
 import SVGIntel from '../../assets/img/icons/intel.svg?react'
@@ -49,6 +49,7 @@ const SearchMissionCard: FC<SearchMissionCardProps> = ({
         <div className="mission-title">{mission?.title}</div>
         {mission.author && (
           <Button
+            type="link"
             className="mission-agent"
             onClick={() =>
               onMissionAuthorClick && onMissionAuthorClick(mission.author!.name)
@@ -62,6 +63,7 @@ const SearchMissionCard: FC<SearchMissionCardProps> = ({
       {missionEditor && missionEditor()}
       {getMissionIntelLink(mission)}
       <Button
+        type="text"
         onClick={() => onSelectMission(mission)}
         className="mission-button"
         tabIndex={-1}
@@ -74,11 +76,11 @@ const SearchMissionCard: FC<SearchMissionCardProps> = ({
 
 export interface SearchMissionCardProps {
   mission: Mission & { index?: number }
-  icon: JSX.Element
+  icon: React.JSX.Element
   className: string
   onSelectMission: (mission: Mission & { index?: number }) => void
   onMissionAuthorClick?: (author: string) => void
-  missionEditor?: () => JSX.Element | undefined
+  missionEditor?: () => React.JSX.Element | undefined
 }
 
 export default SearchMissionCard

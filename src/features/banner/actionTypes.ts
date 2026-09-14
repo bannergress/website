@@ -22,12 +22,12 @@ export const CHANGE_BANNER_SETTINS = 'CHANGE_BANNER_SETTINS'
 
 interface LoadBannerAction {
   type: typeof LOAD_BANNER
-  payload: Partial<Banner>
+  payload: Banner
 }
 
 interface LoadRecentBannersAction {
   type: typeof LOAD_RECENT_BANNERS
-  payload: Array<Partial<Banner>>
+  payload: Array<Banner>
 }
 
 interface LoadRecentBannersErrorAction {
@@ -37,8 +37,8 @@ interface LoadRecentBannersErrorAction {
 interface BrowseBannersAction {
   type: typeof BROWSE_BANNERS
   payload: {
-    banners: Array<Partial<Banner>>
-    hasMore: Boolean
+    banners: Array<Banner>
+    hasMore: boolean
   }
 }
 
@@ -49,8 +49,8 @@ interface ResetBrowsedBannersAction {
 interface SearchBannersAction {
   type: typeof SEARCH_BANNERS
   payload: {
-    banners: Array<Partial<Banner>>
-    hasMore: Boolean
+    banners: Array<Banner>
+    hasMore: boolean
   }
 }
 
@@ -61,8 +61,8 @@ interface ResetSearchBannersAction {
 interface AgentBannersAction {
   type: typeof AGENT_BANNERS
   payload: {
-    banners: Array<Partial<Banner>>
-    hasMore: Boolean
+    banners: Array<Banner>
+    hasMore: boolean
   }
 }
 
@@ -73,8 +73,8 @@ interface ResetAgentBannersAction {
 interface UserBannerListBannersAction {
   type: typeof USER_BANNER_LIST_BANNERS
   payload: {
-    banners: Array<Partial<Banner>>
-    hasMore: Boolean
+    banners: Array<Banner>
+    hasMore: boolean
   }
 }
 
@@ -97,7 +97,7 @@ interface ResetMapBannersAction {
 
 interface SearchMapBannersAction {
   type: typeof SEARCH_MAP_BANNERS
-  payload: Array<Partial<Banner>>
+  payload: Array<Banner>
 }
 
 interface EditBannerAction {

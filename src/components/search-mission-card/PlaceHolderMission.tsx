@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import { Mission } from '../../features/mission'
 import MissionImage from '../mission-image/MissionImage'
@@ -26,7 +26,7 @@ const PlaceHolderMission: FC<PlaceHolderMissionProps> = ({
 export interface PlaceHolderMissionProps {
   mission: Mission & { index?: number }
   className?: string
-  missionEditor?: () => JSX.Element | undefined
+  missionEditor?: () => React.JSX.Element | undefined
 }
 
 export default PlaceHolderMission

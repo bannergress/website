@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet'
+import { PageTitle } from '../../components/page-title/PageTitle'
 import FooterMain from '../../components/footer-main'
 import RecentBanners from '../../components/recent-banners'
 
@@ -12,9 +12,7 @@ const Error: React.FC = () => {
 
   return (
     <div className="error-page">
-      <Helmet defer={false}>
-        <title>{t('error.title')}</title>
-      </Helmet>
+      <PageTitle title={t('error.title')} />
       <div className="error-page__title">
         <h1>{t('error.title')}</h1>
       </div>

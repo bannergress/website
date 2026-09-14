@@ -1,8 +1,6 @@
-import { RehydrateErrorType } from 'redux-persist'
-
-import { BannerState } from './features/banner/types'
-import { PlaceState } from './features/place/types'
-import { MissionState } from './features/mission/types'
+import { BannerState } from './features/banner'
+import { PlaceState } from './features/place'
+import { MissionState } from './features/mission'
 import { SettingsState } from './features/settings/types'
 
 export interface RootState {
@@ -16,5 +14,5 @@ export interface RehydrateAction {
   type: 'persist/REHYDRATE'
   key: string
   payload?: RootState | null
-  err?: RehydrateErrorType | null
+  err?: unknown
 }

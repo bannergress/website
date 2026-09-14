@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Beforeunload } from 'react-beforeunload'
-import { Helmet } from 'react-helmet'
+import { PageTitle } from '../../components/page-title/PageTitle'
 import { withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
@@ -80,9 +80,7 @@ class PreviewBanner extends React.Component<
 
     return (
       <>
-        <Helmet defer={false}>
-          <title>{i18n?.t('banners.review.title')}</title>
-        </Helmet>
+        <PageTitle title={i18n?.t('banners.review.title')} />
         <NavigationPrompt getMessage={this.getPromptMessage} />
         <Beforeunload onBeforeunload={() => this.getPromptMessage()} />
 

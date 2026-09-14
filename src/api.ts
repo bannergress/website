@@ -1,6 +1,9 @@
 import keycloak from './keycloak'
 import i18n from './i18n'
 
+type QueryValue = string | number | boolean | null | undefined
+type QueryParams = Record<string, QueryValue | readonly QueryValue[]>
+
 class Api {
   resolve: (val: unknown) => void = () => {}
 
@@ -8,31 +11,31 @@ class Api {
     this.resolve = resolve
   })
 
-  get<T>(url: string, params: {} = {}): Promise<ApiResponse<T>> {
+  get<T>(url: string, params: QueryParams = {}): Promise<ApiResponse<T>> {
     return this.request('GET', url, params)
   }
 
-  delete<T>(url: string, params: {} = {}): Promise<ApiResponse<T>> {
+  delete<T>(url: string, params: QueryParams = {}): Promise<ApiResponse<T>> {
     return this.request('DELETE', url, params)
   }
 
   post<T>(
     url: string,
-    data?: any,
+    data?: unknown,
     ignoreResponseBody = false
   ): Promise<ApiResponse<T>> {
     return this.request('POST', url, {}, data, ignoreResponseBody)
   }
 
-  put<T>(url: string, data?: any): Promise<ApiResponse<T>> {
+  put<T>(url: string, data?: unknown): Promise<ApiResponse<T>> {
     return this.request('PUT', url, {}, data)
   }
 
   async request<T>(
     method: string,
     url: string,
-    params: {},
-    data?: any,
+    params: QueryParams,
+    data?: unknown,
     ignoreResponseBody = false
   ): Promise<ApiResponse<T>> {
     try {
@@ -48,19 +51,20 @@ class Api {
       })
       const headers = await this.getHeaders()
       const response = await fetch(fullUrl.href, {
-        body: data && JSON.stringify(data),
+        body: data === undefined ? undefined : JSON.stringify(data),
         headers: {
           ...headers,
-          ...(data && { 'Content-Type': 'application/json' }),
+          ...(data !== undefined && { 'Content-Type': 'application/json' }),
         },
         method,
         mode: 'cors',
       })
       if (response.ok) {
-        const json = ignoreResponseBody ? null : await response.json()
+        const json: unknown = ignoreResponseBody ? null : await response.json()
         return {
           ok: true,
-          data: json,
+          // API callers declare the endpoint's response contract here.
+          data: json as T,
           status: response.status,
         }
       }
@@ -68,7 +72,7 @@ class Api {
         ok: false,
         status: response.status,
       }
-    } catch (e) {
+    } catch {
       return {
         ok: false,
         status: 500,

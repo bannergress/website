@@ -6,8 +6,7 @@ import {
   RouterProvider,
   useMatch,
 } from 'react-router-dom'
-import { Layout } from 'antd'
-import { Helmet } from 'react-helmet'
+import { App as AntdApp, ConfigProvider, Layout, theme } from 'antd'
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 
 import { useHotkeys } from 'react-hotkeys-hook'
@@ -33,8 +32,9 @@ import MenuMain from './components/menu-main'
 import Navbar from './components/navbar'
 
 import './i18n'
-import 'antd/dist/antd.compact.less'
-import 'antd/dist/antd.dark.less'
+import 'antd/dist/reset.css'
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.css'
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css'
 import './App.scss'
 import Events from './pages/events/Events'
 
@@ -119,14 +119,31 @@ const App: React.FC = () => {
         }}
         onEvent={(e) => e === 'onReady' && updateApiState()}
       >
-        <Helmet
-          defer={false}
-          defaultTitle="Bannergress"
-          titleTemplate="%s - Bannergress"
-        />
-        <Layout>
-          <RouterProvider router={router} />
-        </Layout>
+        <ConfigProvider
+          theme={{
+            algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
+            token: {
+              fontFamily: 'Roboto, sans-serif',
+              colorPrimary: '#1da57a',
+              colorLink: '#1da57a',
+              colorLinkHover: '#1a7256',
+              colorLinkActive: '#39a37d',
+              colorBgBase: '#0b0c0d',
+              colorBorder: '#004f4a',
+            },
+            components: {
+              Layout: { fontSize: 16, lineHeight: 5 / 3 },
+              Grid: { fontSize: 16, lineHeight: 5 / 3 },
+              Card: { bodyPadding: 9.6, headerPadding: 9.6 },
+            },
+          }}
+        >
+          <AntdApp>
+            <Layout>
+              <RouterProvider router={router} />
+            </Layout>
+          </AntdApp>
+        </ConfigProvider>
       </ReactKeycloakProvider>
     </Suspense>
   )

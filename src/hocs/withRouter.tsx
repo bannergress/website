@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getRouter } from '../router-instance'
+import { handlePromise } from '../features/utils/async'
 
 /**
  * React Router v6+ dropped the v5 history object and the withRouter/
@@ -51,7 +52,7 @@ export interface RouteComponentProps<
   match: { params: Params }
 }
 
-export function withRouter<P extends RouteComponentProps<any>>(
+export function withRouter<P extends RouteComponentProps>(
   Component: React.ComponentType<P>
 ) {
   type OwnProps = Omit<P, 'location' | 'history' | 'match'>
@@ -64,17 +65,21 @@ export function withRouter<P extends RouteComponentProps<any>>(
     const history = useMemo<RouterHistory>(
       () => ({
         push: (path) =>
-          typeof path === 'string'
-            ? navigate(path)
-            : navigate({ pathname: path.pathname, search: path.search }),
+          handlePromise(
+            typeof path === 'string'
+              ? navigate(path)
+              : navigate({ pathname: path.pathname, search: path.search })
+          ),
         replace: (path) =>
-          typeof path === 'string'
-            ? navigate(path, { replace: true })
-            : navigate(
-                { pathname: path.pathname, search: path.search },
-                { replace: true }
-              ),
-        goBack: () => navigate(-1),
+          handlePromise(
+            typeof path === 'string'
+              ? navigate(path, { replace: true })
+              : navigate(
+                  { pathname: path.pathname, search: path.search },
+                  { replace: true }
+                )
+          ),
+        goBack: () => handlePromise(navigate(-1)),
         listen: listenToRouter,
       }),
       [navigate]

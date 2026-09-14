@@ -1,3 +1,4 @@
+import { Action } from 'redux'
 import {
   BannerActionTypes,
   BROWSE_BANNERS,
@@ -37,7 +38,9 @@ const initialState: BannerState = {
   createdBanner: undefined,
 }
 
-export default (state = initialState, action: BannerActionTypes) => {
+export default (state = initialState, incomingAction: Action): BannerState => {
+  // Unknown Redux actions fall through to the unchanged state.
+  const action = incomingAction as BannerActionTypes
   switch (action.type) {
     case LOAD_BANNER:
       return {

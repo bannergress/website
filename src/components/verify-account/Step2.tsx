@@ -1,3 +1,4 @@
+import { handleAsync } from '../../features/utils/async'
 import { FC, useCallback } from 'react'
 import { Button, Input } from 'antd'
 import { Trans, useTranslation } from 'react-i18next'
@@ -37,7 +38,10 @@ export const Step2: FC<Step2Props> = ({
         <Button className="button-default" onClick={onAbort}>
           {t('buttons.abort')}
         </Button>
-        <Button className="positive-action-button" onClick={copyToken}>
+        <Button
+          className="positive-action-button"
+          onClick={handleAsync(copyToken)}
+        >
           {t('account.linking.step2.action')}
         </Button>
       </div>

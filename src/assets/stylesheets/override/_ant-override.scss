@@ -3,6 +3,10 @@ body,
   background: var(--color-light-black);
 }
 
+body {
+  line-height: calc(5 / 3);
+}
+
 body,
 .ant-menu,
 .ant-input,

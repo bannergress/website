@@ -88,7 +88,7 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
 
 export interface BannerAccordionProps {
   banners: Array<Banner> | undefined
-  hasMoreBanners: Boolean
+  hasMoreBanners: boolean
   selectedBannerId?: string
   loadMoreBanners?: () => Promise<void>
   onSelectBanner: (banner: Banner) => void

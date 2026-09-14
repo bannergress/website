@@ -1,6 +1,6 @@
 import React, { Fragment, FC } from 'react'
 import { Col } from 'antd'
-import { Scrollbars } from 'react-custom-scrollbars-2'
+import { Scrollbars } from '../scrollbars/Scrollbars'
 import { useTranslation } from 'react-i18next'
 
 import { Mission } from '../../features/mission'
@@ -66,15 +66,15 @@ const SearchMissionList: FC<SearchMissionListProps> = ({
 
 export interface SearchMissionListProps {
   missions: Array<Mission & { index?: number }> | undefined
-  hasMoreMissions: Boolean
-  icon: JSX.Element
+  hasMoreMissions: boolean
+  icon: React.JSX.Element
   initial?: boolean
   loadMoreMissions?: () => Promise<void>
   onSelectMission: (mission: Mission & { index?: number }) => void
   missionEditor?: (
     mission: Mission & { index?: number },
     pos: number
-  ) => JSX.Element | undefined
+  ) => React.JSX.Element | undefined
   missionClass?: (mission: Mission & { index?: number }) => string
   onMissionAuthorClick?: (author: string) => void
 }

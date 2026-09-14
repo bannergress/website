@@ -20,7 +20,7 @@ class BannerInfoWithMap extends React.Component<
   BannerInfoWithMapProps,
   BannerInfoWithMapState
 > {
-  mapRef: React.RefObject<MapDetail>
+  mapRef: React.RefObject<MapDetail | null>
 
   viewWasMapBefore: boolean = false
 

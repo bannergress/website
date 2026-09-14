@@ -1,3 +1,4 @@
+import { handlePromise, handleAsync } from '../../features/utils/async'
 import { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { Button, Carousel } from 'antd'
 import { CarouselRef } from 'antd/lib/carousel'
@@ -22,7 +23,7 @@ import { Step3 } from './Step3'
 type Status = 'pending' | 'resolved' | 'rejected'
 
 const VerifyAccount: FC = () => {
-  const slider = useRef<CarouselRef | null>()
+  const slider = useRef<CarouselRef | null>(null)
   const [user, setUser] = useState<User>()
   const [status, setStatus] = useState<Status>('pending')
   const [isClaiming, setIsClaiming] = useState(false)
@@ -72,7 +73,7 @@ const VerifyAccount: FC = () => {
   const onStep3Back = useCallback(() => setIsCopied(false), [setIsCopied])
 
   useEffect(() => {
-    handleApiRequest(getUser())
+    handlePromise(handleApiRequest(getUser()))
   }, [handleApiRequest])
 
   useEffect(() => {
@@ -80,7 +81,7 @@ const VerifyAccount: FC = () => {
       const id = setInterval(async () => {
         try {
           await handleApiRequest(getUser())
-        } catch (e) {}
+        } catch {}
       }, 120_000)
       return () => clearTimeout(id)
     }
@@ -125,12 +126,12 @@ const VerifyAccount: FC = () => {
         swipe={false}
         draggable={false}
       >
-        <Step1 onClaim={onStep1Claim} onAbort={onStep1Abort} />
+        <Step1 onClaim={handleAsync(onStep1Claim)} onAbort={onStep1Abort} />
         <Step2
           verificationMessage={verificationMessage}
           verificationAgent={verificationAgent}
           onNext={onStep2Next}
-          onAbort={onStep2Abort}
+          onAbort={handleAsync(onStep2Abort)}
         />
         <Step3 onBack={onStep3Back} />
       </Carousel>
@@ -141,7 +142,7 @@ const VerifyAccount: FC = () => {
         <Button className="button-default" onClick={() => setIsClaiming(true)}>
           {t('account.linking.change')}
         </Button>
-        <Button className="button-default" onClick={onUnlink}>
+        <Button className="button-default" onClick={handleAsync(onUnlink)}>
           {t('account.linking.unlink')}
         </Button>
       </div>

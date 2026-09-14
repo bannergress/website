@@ -1,6 +1,6 @@
 import { FC, Fragment } from 'react'
 import { useParams } from 'react-router-dom'
-import { Helmet } from 'react-helmet'
+import { PageTitle } from '../../components/page-title/PageTitle'
 import { useTranslation } from 'react-i18next'
 
 import FooterMain from '../../components/footer-main'
@@ -24,9 +24,7 @@ const Agent: FC = () => {
 
   return (
     <Fragment>
-      <Helmet defer={false}>
-        <title>{title}</title>
-      </Helmet>
+      <PageTitle title={title} />
       <div className="agent-page page-container">
         <div className="agent-content">
           <h1>{title}</h1>

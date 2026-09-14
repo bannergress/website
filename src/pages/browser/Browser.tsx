@@ -1,9 +1,10 @@
+import { handlePromise, handleAsync } from '../../features/utils/async'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { withRouter, RouteComponentProps } from '../../hocs/withRouter'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
-import { Helmet } from 'react-helmet'
+import { PageTitle } from '../../components/page-title/PageTitle'
 
 import { RootState } from '../../storeTypes'
 import {
@@ -72,7 +73,11 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     }
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    handlePromise(this.loadInitialData())
+  }
+
+  async loadInitialData() {
     this.scrollRestoration.mount(this.props.history)
 
     const { fetchBanners, fetchPlace, match } = this.props
@@ -105,7 +110,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     return { ...state, selectedPlaceId: placeId }
   }
 
-  componentDidUpdate(prevProps: BrowserProps) {
+  componentDidUpdate() {
     if (this.props.banners.length > 0) this.scrollRestoration.restore()
   }
 
@@ -145,7 +150,7 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
       defaultProximityLatitude: filter.proximityLatitude,
       defaultProximityLongitude: filter.proximityLongitude,
     })
-    fetchBanners(placeId, filter, 0)
+    handlePromise(fetchBanners(placeId, filter, 0))
   }
 
   onPlaceSelected = async (place: Place | undefined) => {
@@ -169,8 +174,8 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     history.push(newPlaceId ? `/browse/${newPlaceId}` : '/browse')
   }
 
-  onPlaceExpanded = async (place: Place | undefined) => {
-    this.fetchChildren(place?.id)
+  onPlaceExpanded = (place: Place | undefined) => {
+    handlePromise(this.fetchChildren(place?.id))
   }
 
   onLoadMoreBanners = async () => {
@@ -229,24 +234,22 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
     return (
       <div className="page-container">
         <div className="browser">
-          <Helmet defer={false}>
-            <title>{pageTitle}</title>
-          </Helmet>
+          <PageTitle title={pageTitle} />
 
           <PlaceList
             title={selectedPlace ? undefined : i18n!.t('places.countries')}
             order="numberOfBanners"
             places={administrativeAreas || countries}
             selectedPlaces={selectedPlaces}
-            onSelectPlace={this.onPlaceSelected}
+            onSelectPlace={handleAsync(this.onPlaceSelected)}
           />
 
           <div className="places-content">
             <PlaceAccordion
               selectedPlaces={selectedPlaces}
               order="numberOfBanners"
-              onSelectPlace={this.onPlaceSelected}
-              onExpandPlace={this.onPlaceExpanded}
+              onSelectPlace={handleAsync(this.onPlaceSelected)}
+              onExpandPlace={handleAsync(this.onPlaceExpanded)}
             />
             <div className="places-banners">
               {status === 'error' ? (
@@ -343,7 +346,7 @@ const mapStateToProps = (state: RootState) => ({
   getAdministrativeAreas: (parentPlaceId: string) =>
     getAdministrativeAreasSelector(state, parentPlaceId),
   getPlace: (placeId: string) => getPlaceSelector(state, placeId),
-  hasMore: !!getHasMoreBrowsedBanners(state),
+  hasMore: getHasMoreBrowsedBanners(state),
   defaultOnline: getDefaultOnline(state),
   ...getDefaultOrder(state),
 })

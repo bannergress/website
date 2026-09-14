@@ -1,3 +1,4 @@
+import { Action } from 'redux'
 import { REHYDRATE } from 'redux-persist/es/constants'
 import _ from 'underscore'
 import {
@@ -13,17 +14,15 @@ const initialState: MissionState = {
 }
 
 const extend = (
-  source: Array<Partial<Mission>>,
-  target: Array<Partial<Mission>>
-): Array<Partial<Mission>> => {
-  return _.uniq(
-    _.flatten([source, target]),
-    false,
-    (a: Partial<Mission>) => a.id
-  )
+  source: Array<Mission>,
+  target: Array<Mission>
+): Array<Mission> => {
+  return _.uniq(_.flatten([source, target]), false, (a: Mission) => a.id)
 }
 
-export default (state = initialState, action: MissionActionTypes) => {
+export default (state = initialState, incomingAction: Action): MissionState => {
+  // Unknown Redux actions fall through to the unchanged state.
+  const action = incomingAction as MissionActionTypes
   switch (action.type) {
     case REHYDRATE:
       return {

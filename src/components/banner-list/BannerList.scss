@@ -3,10 +3,10 @@
   display: flex;
   flex-flow: row wrap;
   gap: 20px;
-  place-content: flex-start center;
+  place-content: flex-start;
 
   .banner-list-entry {
-    max-width: 90vw;
+    max-width: min(100%, 90vw);
     width: 360px;
 
     @media (max-width: 321px) {

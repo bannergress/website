@@ -1,11 +1,12 @@
+import { handlePromise, handleAsync } from '../../features/utils/async'
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from '../../hocs/withRouter'
 import { Beforeunload } from 'react-beforeunload'
 import { Input, InputNumber, Button, Tooltip } from 'antd'
-import { Helmet } from 'react-helmet'
+import { PageTitle } from '../../components/page-title/PageTitle'
 import _ from 'underscore'
-import { Scrollbars } from 'react-custom-scrollbars-2'
+import { Scrollbars } from '../../components/scrollbars/Scrollbars'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
@@ -58,7 +59,7 @@ class CreateBanner extends React.Component<
   CreateBannerProps,
   CreateBannerState
 > {
-  private timer: NodeJS.Timeout | null = null
+  private timer: ReturnType<typeof setTimeout> | null = null
 
   private titleExtractor: TitleExtractor = new TitleExtractor()
 
@@ -207,7 +208,7 @@ class CreateBanner extends React.Component<
       clearTimeout(this.timer)
     }
     this.timer = setTimeout(() => {
-      this.searchMissions()
+      handlePromise(this.searchMissions())
     }, 1000)
   }
 
@@ -215,7 +216,7 @@ class CreateBanner extends React.Component<
     if (this.timer) {
       clearTimeout(this.timer)
     }
-    this.searchMissions()
+    handlePromise(this.searchMissions())
   }
 
   searchMissions = async () => {
@@ -254,34 +255,44 @@ class CreateBanner extends React.Component<
       | 'bannerWidth'
       | 'extraction'
   ) => {
-    const newState: Pick<CreateBannerState, any> = { [inputName]: val }
-    if (inputName === 'bannerTitle') {
-      if (val) {
-        newState.bannerTitleChanged = true
+    const newState: Partial<CreateBannerState> = {}
+    if (inputName === 'bannerWidth') {
+      if (typeof val !== 'number') return
+      newState.bannerWidth = val
+    } else if (inputName === 'bannerType') {
+      if (val !== 'sequential' && val !== 'anyOrder') return
+      newState.bannerType = val
+    } else if (inputName === 'extraction') {
+      if (
+        val !== 'none' &&
+        val !== 'title' &&
+        val !== 'simple' &&
+        val !== 'advanced'
+      )
+        return
+      newState.extraction = val
+      if (this.state.extraction !== val) this.onMissionsChanged([], val)
+    } else {
+      if (typeof val === 'number') return
+      if (inputName === 'searchText' || inputName === 'location') {
+        newState[inputName] = val ?? null
       } else {
-        newState.bannerTitleChanged = false
+        newState[inputName] = val
       }
-    }
-    if (inputName === 'bannerDescription') {
-      if (val) {
-        newState.bannerDescriptionChanged = true
-      } else {
-        newState.bannerDescriptionChanged = false
-      }
-    }
-    if (inputName === 'extraction') {
-      const { extraction } = this.state
-      if (extraction !== val) {
-        this.onMissionsChanged([], val!.toString())
-      }
-    }
-    if (inputName === 'bannerEventStartDate') {
-      const { bannerEventEndDate } = this.state
-      if (!bannerEventEndDate) {
+      if (
+        inputName === 'bannerEventStartDate' &&
+        !this.state.bannerEventEndDate
+      ) {
         newState.bannerEventEndDate = val
       }
     }
-    this.setState(newState)
+    if (inputName === 'bannerTitle') {
+      newState.bannerTitleChanged = !!val
+    }
+    if (inputName === 'bannerDescription') {
+      newState.bannerDescriptionChanged = !!val
+    }
+    this.setState((state) => ({ ...state, ...newState }))
   }
 
   onLoadMoreMissions = (): Promise<void> => {
@@ -324,7 +335,7 @@ class CreateBanner extends React.Component<
         }))
         .value()
       const detectedLength = result.total
-      const newState: Pick<CreateBannerState, any> = {
+      const newState: Partial<CreateBannerState> = {
         addedMissions: this.manageIncomplete(
           incomplete,
           prevAdded,
@@ -339,7 +350,7 @@ class CreateBanner extends React.Component<
       if (!bannerDescriptionChanged) {
         newState.bannerDescription = addedMissions[0].description
       }
-      this.setState(newState)
+      this.setState((state) => ({ ...state, ...newState }))
     }
   }
 
@@ -362,7 +373,7 @@ class CreateBanner extends React.Component<
       const result = extract(missions.map((m) => m.title))
       const detectedLength =
         result.results.find((r) => !!r.totalMarker)?.totalMarker?.parsed ?? 0
-      const newState: Pick<CreateBannerState, any> = {
+      const newState: Partial<CreateBannerState> = {
         addedMissions: this.manageIncomplete(
           incomplete,
           addedMissions,
@@ -376,7 +387,7 @@ class CreateBanner extends React.Component<
       if (!bannerDescriptionChanged) {
         newState.bannerDescription = missions[0].description
       }
-      this.setState(newState)
+      this.setState((state) => ({ ...state, ...newState }))
     }
   }
 
@@ -668,7 +679,12 @@ class CreateBanner extends React.Component<
           newMissions = [...newMissions, ...currentPlaceholder]
           toAdd -= currentPlaceholder.length
         } else if (toAdd > 0) {
-          newMissions.push({ id: getPlaceholderId(), index: i } as any)
+          newMissions.push({
+            id: getPlaceholderId(),
+            title: '',
+            picture: '',
+            index: i,
+          })
           toAdd -= 1
         }
       }
@@ -685,8 +701,10 @@ class CreateBanner extends React.Component<
       while (toAdd > 0) {
         newMissions.push({
           id: getPlaceholderId(),
+          title: '',
+          picture: '',
           index: nextIndex,
-        } as any)
+        })
         nextIndex += 1
         toAdd -= 1
       }
@@ -793,9 +811,7 @@ class CreateBanner extends React.Component<
 
     return (
       <div className="create-banner">
-        <Helmet defer={false}>
-          <title>{title}</title>
-        </Helmet>
+        <PageTitle title={title} />
 
         <NavigationPrompt getMessage={this.getPromptMessage} />
         <Beforeunload onBeforeunload={this.getPromptMessage} />
@@ -853,7 +869,9 @@ class CreateBanner extends React.Component<
                 {unusedMissions && unusedMissions.length > 0 && (
                   <Button
                     role="button"
-                    onClick={() => this.onAddAllMissions(unusedMissions)}
+                    onClick={handleAsync(() =>
+                      this.onAddAllMissions(unusedMissions)
+                    )}
                   >
                     <Trans i18nKey="buttons.addAll">Add All</Trans>
                   </Button>
@@ -1049,7 +1067,7 @@ class CreateBanner extends React.Component<
               </div>
               <button
                 type="button"
-                onClick={this.onCreateBanner}
+                onClick={handleAsync(this.onCreateBanner)}
                 className="positive-action-button button-review"
                 disabled={issues.some((i) => i.type === 'error')}
               >
@@ -1067,7 +1085,7 @@ export type CreateBannerProps = {
   admin?: boolean
   previousBanner: Banner | undefined
   missions: Array<Mission>
-  hasMore: Boolean
+  hasMore: boolean
   fetchMissions: (
     location: string | null,
     query: string,

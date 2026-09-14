@@ -21,7 +21,7 @@ export const showMissionStartPointsOnMap = (
   onOpenMission: (index: number) => void
 ) => {
   return mapMissions(missions, (mission, index, sequence) => {
-    if (mission && mission?.steps!) {
+    if (mission?.steps) {
       let startLat = 0
       let startLng = 0
       let title = <>{mission.title}</>

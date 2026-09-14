@@ -1,6 +1,8 @@
+import { handlePromise, handleAsync } from '../../features/utils/async'
 import { FC } from 'react'
 import { generatePath, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import type { AppDispatch } from '../../store'
 import { Button } from 'antd'
 import { useTranslation } from 'react-i18next'
 
@@ -14,12 +16,12 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
   const navigate = useNavigate()
   const { authenticated } = useUserLoggedIn('manage-banners')
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const creatorPluginAvailable = useCreatorPluginAvailable()
   const owner = banner?.owner === true
 
   const onEditBanner = () => {
-    navigate(generatePath('/edit-banner/:id', { id: banner.id }))
+    handlePromise(navigate(generatePath('/edit-banner/:id', { id: banner.id })))
   }
   const onRefreshBanner = () => {
     window.open(
@@ -30,8 +32,8 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
 
   const onDeleteBanner = async () => {
     if (window.confirm(t('banners.confirmDelete'))) {
-      dispatch(deleteBanner(banner))
-      navigate('/')
+      await dispatch(deleteBanner(banner))
+      handlePromise(navigate('/'))
     }
   }
 
@@ -63,7 +65,7 @@ export const BannerEditTools: FC<BannerEditToolsProps> = ({ banner }) => {
       <Button
         key="delete"
         className="negative-action-button"
-        onClick={onDeleteBanner}
+        onClick={handleAsync(onDeleteBanner)}
       >
         {t('buttons.delete')}
       </Button>

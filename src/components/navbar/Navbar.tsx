@@ -1,3 +1,4 @@
+import { handlePromise } from '../../features/utils/async'
 import { FC, useEffect, useState } from 'react'
 import {
   generatePath,
@@ -33,7 +34,7 @@ const Navbar: FC<NavBarProps> = ({ className }) => {
 
     if (trimmedValue !== '') {
       const path = generatePath('/search/:term', { term: trimmedValue })
-      navigate(path)
+      handlePromise(navigate(path))
     }
   }
 

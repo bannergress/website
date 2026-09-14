@@ -1,3 +1,4 @@
+import { handlePromise } from '../../features/utils/async'
 import React, { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
@@ -25,7 +26,7 @@ const BannerListTypeControl: FC<BannerListTypeControlProps> = ({
     if (!skip) {
       const newListType =
         bannerListType === clickedListType ? 'none' : clickedListType
-      onChangeListType(newListType)
+      handlePromise(onChangeListType(newListType))
     }
   }
 

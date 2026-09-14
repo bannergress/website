@@ -7,6 +7,7 @@ const UserPicture: React.FC<UserPictureProps> = ({
   size = 50,
 }) => {
   const { keycloak, initialized: keycloakInitialized } = useKeycloak()
+  const picture: unknown = keycloak.idTokenParsed?.picture
 
   return (
     <>
@@ -15,7 +16,7 @@ const UserPicture: React.FC<UserPictureProps> = ({
           className={className}
           style={{
             backgroundImage: `url('${getSizedImageUrl(
-              (keycloak.idTokenParsed as any).picture,
+              typeof picture === 'string' ? picture : undefined,
               size,
               true
             )}')`,

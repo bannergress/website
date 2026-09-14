@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { generatePath, Navigate } from 'react-router-dom'
 import { withRouter, RouteComponentProps } from '../../hocs/withRouter'
-import { Helmet } from 'react-helmet'
+import { PageTitle } from '../../components/page-title/PageTitle'
 import { Trans, withTranslation, WithTranslationProps } from 'react-i18next'
 
 import { RootState } from '../../storeTypes'
@@ -52,9 +52,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
     if (banner && banner.missions) {
       return (
         <>
-          <Helmet defer={false}>
-            <title>{banner.title}</title>
-          </Helmet>
+          <PageTitle title={banner.title} />
           <div className="banner-info-page">
             <BannerInfoWithMap banner={banner} />
           </div>

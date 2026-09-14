@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import type { AppDispatch } from '../../store'
 import { Tabs } from 'antd'
 import { useTranslation } from 'react-i18next'
 
@@ -30,7 +31,7 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   onExpand,
   onExpandAll,
 }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const [activeViewFromState, setActiveView] = useState(view)
   const { t } = useTranslation()
 
@@ -53,9 +54,8 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
     return tabsBar && tabsBar.offsetParent !== null
   }
 
-  const onListTypeChanged = async (listType: BannerListType) => {
+  const onListTypeChanged = (listType: BannerListType) =>
     dispatch(changeBannerSettings(banner, { listType }))
-  }
 
   useEffect(() => {
     if (scrollMissionIndex !== undefined && areTabsVisible()) {

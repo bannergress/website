@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { useKeycloak } from '@react-keycloak/web'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import LoginInNavbar from '../login-in-navbar'
 
