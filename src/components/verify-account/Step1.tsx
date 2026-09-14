@@ -8,7 +8,7 @@ interface Step1Props {
 }
 
 const isValidAgentName = (agent: string) => {
-  return agent.length > 3
+  return agent.length >= 2
 }
 
 export const Step1: FC<Step1Props> = ({ onClaim, onAbort }) => {
