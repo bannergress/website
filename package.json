@@ -27,7 +27,7 @@
     "@react-leaflet/core": "^3.0.0",
     "@reduxjs/toolkit": "^2.12.0",
     "@types/react-beforeunload": "^2.1.0",
-    "antd": "^6.6.2",
+    "antd": "^6.6.3",
     "history": "^5.3.0",
     "i18next": "^26.4.2",
     "i18next-resources-to-backend": "^1.2.1",
@@ -54,7 +54,7 @@
     "underscore": "^1.13.8"
   },
   "devDependencies": {
-    "@babel/core": "^8.0.1",
+    "@babel/core": "^8.0.5",
     "@babel/eslint-parser": "^8.0.1",
     "@types/leaflet": "^1.9.12",
     "@types/leaflet-loading": "^0.1.4",
@@ -80,7 +80,7 @@
     "sass-embedded": "^1.80.6",
     "stylelint": "^16.10.0",
     "stylelint-config-standard-scss": "^13.1.0",
-    "stylelint-order": "^6.0.4",
+    "stylelint-order": "^8.1.1",
     "typescript": "^7.0.2",
     "vite": "^8.2.2",
     "vite-plugin-svgr": "^5.2.0",
