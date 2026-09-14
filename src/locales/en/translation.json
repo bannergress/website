@@ -343,8 +343,8 @@
     "filter": "Filter",
     "filterAndSort": "Filter and Sort",
     "showOfflineBanners": "Show offline banners",
-    "onlyOfficial": "Show only official Niantic mission collections",
-    "showUnofficialBanners": "Show non-Niantic missions"
+    "onlyOfficial": "Show only official NIA mission collections",
+    "showUnofficialBanners": "Show non-NIA missions"
 },
   "duration": {
     "days": "{{count}} d ",
@@ -352,7 +352,7 @@
     "minutes": "{{count}} min ",
     "seconds": "{{count}} s"
   },
-  "disclaimer": "This is a fan site and not officially affiliated with Niantic Inc.<newline />Ingress is a registered trademark of Niantic Inc.<newline />Bannergress 2021 - {{year}}",
+  "disclaimer": "Bannergress is an unofficial fan site and is not affiliated with, endorsed by, or sponsored by Niantic Spatial, Inc.<newline />Ingress is a trademark of Niantic Spatial, Inc.<newline />Bannergress 2021 - {{year}}",
   "login": {
     "title": "Login",
     "button": "Sign In",
