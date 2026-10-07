@@ -18,7 +18,7 @@
 
   .mission-title {
     line-height: 130%;
-    word-break: break-word;
+    overflow-wrap: anywhere;
 
     &.placeholder {
       color: var(--color-medium-gray);
