@@ -74,7 +74,7 @@
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "oxlint": "^1.81.0",
-    "oxlint-tsgolint": "^7.0.2001",
+    "oxlint-tsgolint": "^7.0.2004",
     "prettier": "^3.0.3",
     "sass": "^1.80.6",
     "sass-embedded": "^1.105.1",
