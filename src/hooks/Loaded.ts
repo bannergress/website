@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from 'react'
 
-export const useLoaded = (ref: React.RefObject<HTMLImageElement | null>) => {
-  const [complete, setComplete] = useState<boolean>(false)
+export const useLoaded = (
+  ref: React.RefObject<HTMLImageElement | null>,
+  src: string
+) => {
+  const [loadedSource, setLoadedSource] = useState<string>()
   useEffect(() => {
     const image = ref.current
     if (!image) return
 
-    const onLoad = () => setComplete(true)
+    const onLoad = () =>
+      setLoadedSource(
+        image.complete && image.naturalWidth > 0 ? src : undefined
+      )
     image.addEventListener('load', onLoad)
-    setComplete(image.complete)
-    return () => image.removeEventListener('load', onLoad)
-  }, [ref])
-  return complete
+    image.addEventListener('error', onLoad)
+    onLoad()
+    return () => {
+      image.removeEventListener('load', onLoad)
+      image.removeEventListener('error', onLoad)
+    }
+  }, [ref, src])
+  return loadedSource === src
 }
