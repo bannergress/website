@@ -22,6 +22,7 @@ export type BannerInfoView = 'info' | 'missions'
 
 const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   banner,
+  visible = true,
   expanded,
   expandedMissionIndexes,
   scrollMissionIndex,
@@ -96,7 +97,9 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
           expandedMissionIndexes={expandedMissionIndexes}
           expanded={expanded}
           scrollMissionIndex={
-            activeView === 'missions' ? scrollMissionIndex : undefined
+            visible && activeView === 'missions'
+              ? scrollMissionIndex
+              : undefined
           }
           onExpand={onExpand}
           onExpandAll={onExpandAll}
@@ -144,6 +147,7 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
 
 export interface BannerInfoOverviewProps {
   banner: Banner
+  visible?: boolean
   expanded: boolean
   expandedMissionIndexes?: Array<number>
   scrollMissionIndex?: number
