@@ -7,10 +7,15 @@
 
   .banner-list-entry {
     max-width: min(100%, 90vw);
+    position: relative;
     width: 360px;
 
     @media (max-width: 321px) {
       width: 296px;
+    }
+
+    &.has-list-control .banner-card-title {
+      padding-right: 36px;
     }
   }
 

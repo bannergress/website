@@ -2,10 +2,14 @@ import React, { FC, useEffect, useRef } from 'react'
 import { Row } from 'antd'
 import { Link, generatePath } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 
-import { Banner } from '../../features/banner'
+import { Banner, changeBannerSettings } from '../../features/banner'
+import type { AppDispatch } from '../../store'
 import { useInfiniteScroll } from '../../hooks/InfiniteScroll'
+import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
 import BannerCard from '../banner-card'
+import BannerListTypeControl from '../banner-list-type-control'
 
 import './BannerList.scss'
 
@@ -19,6 +23,8 @@ const BannerList: FC<BannerListProps> = ({
   hideBlacklisted,
   showDetailsButton,
 }) => {
+  const dispatch = useDispatch<AppDispatch>()
+  const { authenticated } = useUserLoggedIn()
   const itemsRef = useRef<Array<HTMLDivElement | null>>([])
   const [ref] = useInfiniteScroll({
     callback: loadMoreBanners,
@@ -92,13 +98,22 @@ const BannerList: FC<BannerListProps> = ({
             )
             return (
               <div
-                className="banner-list-entry"
+                className={`banner-list-entry${authenticated ? ' has-list-control' : ''}`}
                 key={banner.id}
                 ref={(b) => {
                   itemsRef.current[index] = b
                 }}
               >
                 {bannerCard}
+                {authenticated && (
+                  <BannerListTypeControl
+                    compact
+                    bannerListType={banner.listType}
+                    onChangeListType={(listType) =>
+                      dispatch(changeBannerSettings(banner, { listType }))
+                    }
+                  />
+                )}
               </div>
             )
           })}

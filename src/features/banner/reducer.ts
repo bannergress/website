@@ -3,6 +3,7 @@ import {
   BannerActionTypes,
   BROWSE_BANNERS,
   LOAD_BANNER,
+  CACHE_BANNERS,
   LOAD_RECENT_BANNERS,
   LOAD_RECENT_BANNERS_ERROR,
   RESET_BROWSED_BANNERS,
@@ -20,7 +21,7 @@ import {
   RESET_USER_BANNER_LIST_BANNERS,
 } from './actionTypes'
 import { extend, extendSorted } from './helpers'
-import { BannerState } from './types'
+import { Banner, BannerState } from './types'
 
 const initialState: BannerState = {
   banners: [],
@@ -42,6 +43,21 @@ export default (state = initialState, incomingAction: Action): BannerState => {
   // Unknown Redux actions fall through to the unchanged state.
   const action = incomingAction as BannerActionTypes
   switch (action.type) {
+    case CACHE_BANNERS: {
+      const cachedById = new Map(
+        state.banners.map((banner) => [banner.id, banner])
+      )
+      return {
+        ...state,
+        banners: extend(
+          action.payload.map((banner) => ({
+            ...cachedById.get(banner.id),
+            ...banner,
+          })),
+          state.banners
+        ),
+      }
+    }
     case LOAD_BANNER:
       return {
         ...state,
@@ -114,11 +130,27 @@ export default (state = initialState, incomingAction: Action): BannerState => {
       }
     case CHANGE_BANNER_SETTINS: {
       const { banner, bannerSettings } = action.payload
-      const changedBanner = { ...banner, ...bannerSettings }
+      // List cards contain summaries. Preserve cached mission details and
+      // never mark a summary as a fully loaded banner.
+      const update = (banners: Banner[]) =>
+        banners.map((cached) =>
+          cached.id === banner.id ? { ...cached, ...bannerSettings } : cached
+        )
+      const cachedBanner =
+        state.banners.find((cached) => cached.id === banner.id) ?? banner
       return {
         ...state,
-        banners: extend([changedBanner], state.banners),
-        fullBanners: extend([changedBanner], state.fullBanners),
+        banners: extend(
+          [{ ...cachedBanner, ...bannerSettings }],
+          state.banners
+        ),
+        fullBanners: update(state.fullBanners),
+        recentBanners: update(state.recentBanners),
+        browsedBanners: update(state.browsedBanners),
+        searchBanners: update(state.searchBanners),
+        agentBanners: update(state.agentBanners),
+        mapBanners: update(state.mapBanners),
+        userBannerListBanners: update(state.userBannerListBanners),
       }
     }
     default:

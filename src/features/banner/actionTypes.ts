@@ -2,6 +2,7 @@ import { RehydrateAction } from '../../storeTypes'
 import { Banner, BannerSettings } from './types'
 
 export const LOAD_BANNER = 'LOAD_BANNER'
+export const CACHE_BANNERS = 'CACHE_BANNERS'
 export const LOAD_RECENT_BANNERS = 'LOAD_RECENT_BANNERS'
 export const LOAD_RECENT_BANNERS_ERROR = 'LOAD_RECENT_BANNERS_ERROR'
 export const RESET_BROWSED_BANNERS = 'RESET_BROWSED_BANNERS'
@@ -23,6 +24,11 @@ export const CHANGE_BANNER_SETTINS = 'CHANGE_BANNER_SETTINS'
 interface LoadBannerAction {
   type: typeof LOAD_BANNER
   payload: Banner
+}
+
+interface CacheBannersAction {
+  type: typeof CACHE_BANNERS
+  payload: Banner[]
 }
 
 interface LoadRecentBannersAction {
@@ -120,6 +126,7 @@ interface ChangeBannerSettingsAction {
 
 export type BannerActionTypes =
   | LoadBannerAction
+  | CacheBannersAction
   | LoadRecentBannersAction
   | LoadRecentBannersErrorAction
   | BrowseBannersAction

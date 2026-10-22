@@ -1,10 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { deleteBannerAction } from './actions'
-import { deleteBanner } from './api'
+import { changeBannerSettingsAction, deleteBannerAction } from './actions'
+import { changeBannerSettings, deleteBanner } from './api'
 import { Banner } from './types'
-import { BannerActionTypes, DELETE_BANNER } from './actionTypes'
+import {
+  BannerActionTypes,
+  CHANGE_BANNER_SETTINS,
+  DELETE_BANNER,
+} from './actionTypes'
 
-vi.mock('./api', () => ({ deleteBanner: vi.fn() }))
+vi.mock('./api', () => ({
+  deleteBanner: vi.fn(),
+  changeBannerSettings: vi.fn(),
+}))
 vi.mock('../../api', () => ({ api: {} }))
 vi.mock('../../i18n', () => ({ default: { t: (key: string) => key } }))
 
@@ -24,6 +31,46 @@ const dispatch = <T extends BannerActionTypes>(action: T): T => {
 }
 
 beforeEach(() => vi.clearAllMocks())
+
+describe('changeBannerSettingsAction', () => {
+  it('only updates list membership after a successful save', async () => {
+    let resolve!: (
+      response: Awaited<ReturnType<typeof changeBannerSettings>>
+    ) => void
+    const response = new Promise<
+      Awaited<ReturnType<typeof changeBannerSettings>>
+    >((done) => {
+      resolve = done
+    })
+    vi.mocked(changeBannerSettings).mockReturnValue(response)
+
+    const pending = changeBannerSettingsAction(banner, { listType: 'todo' })(
+      dispatch
+    )
+    expect(changeBannerSettings).toHaveBeenCalledWith(banner, {
+      listType: 'todo',
+    })
+    expect(dispatched).not.toHaveBeenCalled()
+
+    resolve({ ok: true, status: 204, data: undefined })
+    await pending
+    expect(dispatched).toHaveBeenCalledExactlyOnceWith({
+      type: CHANGE_BANNER_SETTINS,
+      payload: { banner, bannerSettings: { listType: 'todo' } },
+    })
+  })
+
+  it('preserves membership when saving fails', async () => {
+    vi.mocked(changeBannerSettings).mockResolvedValue({
+      ok: false,
+      status: 403,
+    })
+    await expect(
+      changeBannerSettingsAction(banner, { listType: 'done' })(dispatch)
+    ).rejects.toThrow('Error while changing banner settings')
+    expect(dispatched).not.toHaveBeenCalled()
+  })
+})
 
 describe('deleteBannerAction', () => {
   it('waits for the API before removing the banner from the store', async () => {
