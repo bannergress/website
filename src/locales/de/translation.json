@@ -266,6 +266,9 @@
       "answer": "<div>Bannergress muss den Namen Ihres Ingress-Agenten kennen, bevor es Ihnen Bearbeitungsrechte erteilen kann:</div><ol><li>Melden Sie sich bei Bannergress an.</li><li>Öffnen Sie <accountpage>Ihre Bannergress Kontoseite</accountpage>.</li><li>Klicken Sie auf \"Link Ingress Account\" und folgen Sie den Anweisungen.</li></ol><div>Danach haben Sie auf allen Bannern, die Sie besitzen, eine Schaltfläche zum Bearbeiten.</div>"
     }
   },
+  "privacy": {
+    "title": "Datenschutzerklärung"
+  },
   "help": {
     "title": "Hilfe und Support",
     "community": "Community-Support",
