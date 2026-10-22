@@ -286,7 +286,13 @@
   },
   "error": {
     "title": "Fehler die Seite wurde nicht gefunden",
-    "newestBanners": "Versuche mit den neuesten Bannern zu beginnen"
+    "newestBanners": "Versuche mit den neuesten Bannern zu beginnen",
+    "unexpected": {
+      "title": "Etwas ist schiefgelaufen",
+      "description": "Diese Seite konnte nicht angezeigt werden. Bitte lade die Seite neu oder gehe zur Startseite.",
+      "reload": "Seite neu laden",
+      "home": "Zur Startseite"
+    }
   },
   "search": {
     "title": "Suche nach: {{searchTerm}}",
