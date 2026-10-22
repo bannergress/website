@@ -29,6 +29,7 @@ interface LoadBannerAction {
 interface CacheBannersAction {
   type: typeof CACHE_BANNERS
   payload: Banner[]
+  settingsVersionsAtRequest: Record<string, number>
 }
 
 interface LoadRecentBannersAction {

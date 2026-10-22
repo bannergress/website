@@ -1,6 +1,6 @@
 import { handlePromise } from '../utils/async'
 import { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, useStore } from 'react-redux'
 import type { AppDispatch } from '../../store'
 import { RootState } from '../../storeTypes'
 import { CACHE_BANNERS } from './actionTypes'
@@ -33,7 +33,11 @@ const loadMissingPage = async (
   state: State,
   setState: (s: State) => void,
   isRunning: () => boolean,
-  cacheBanners: (banners: Banner[]) => void
+  cacheBanners: (
+    banners: Banner[],
+    settingsVersions: Record<string, number>
+  ) => void,
+  getSettingsVersions: () => Record<string, number>
 ) => {
   let currentState = { ...state }
   if (
@@ -43,10 +47,11 @@ const loadMissingPage = async (
   ) {
     try {
       const page = currentState.loadedPages
+      const settingsVersions = getSettingsVersions()
       const result = await getBannerList(filter, offset, pageSize)
       if (isRunning()) {
         if (result.ok) {
-          cacheBanners(result.data)
+          cacheBanners(result.data, settingsVersions)
           const hasMore = result.data.length === pageSize
           currentState = {
             status:
@@ -88,6 +93,7 @@ export const useBannerList = function (
   pageSize: number = DEFAULT_PAGE_SIZE
 ) {
   const dispatch = useDispatch<AppDispatch>()
+  const store = useStore<RootState>()
   const cachedBanners = useSelector((state: RootState) => state.banner.banners)
   const [state, setState] = useState<State>(createInitialState(maxPages))
   const previousFilter = usePrevious(filter)
@@ -127,7 +133,13 @@ export const useBannerList = function (
           newState,
           setState,
           () => running,
-          (banners) => dispatch({ type: CACHE_BANNERS, payload: banners })
+          (banners, settingsVersionsAtRequest) =>
+            dispatch({
+              type: CACHE_BANNERS,
+              payload: banners,
+              settingsVersionsAtRequest,
+            }),
+          () => store.getState().banner.settingsVersions
         )
       )
     }
@@ -143,6 +155,7 @@ export const useBannerList = function (
     pageSize,
     dispatch,
     offset,
+    store,
   ])
   return {
     ...state,

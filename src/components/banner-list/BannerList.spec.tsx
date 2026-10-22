@@ -30,13 +30,13 @@ const banner: Banner = {
   listType: 'todo',
 }
 
-const renderList = () =>
+const renderList = (banners: Banner[] = [banner], hasMoreBanners = false) =>
   renderToStaticMarkup(
     <Provider store={configureStore({ reducer: { banner: reducer } })}>
       <MemoryRouter>
         <BannerList
-          banners={[banner]}
-          hasMoreBanners={false}
+          banners={banners}
+          hasMoreBanners={hasMoreBanners}
           applyBannerListStyles
           hideBlacklisted={false}
           showDetailsButton={false}
@@ -46,6 +46,17 @@ const renderList = () =>
   )
 
 describe('list controls on banner cards', () => {
+  it('keeps the pagination sentinel when all loaded cards leave the list', () => {
+    vi.mocked(useUserLoggedIn).mockReturnValue({
+      initialized: true,
+      authenticated: true,
+    })
+    const html = renderList([], true)
+    expect(html).toContain('class="banner-list"')
+    expect(html).toContain('loadingMore')
+    expect(html).not.toContain('banner-list-menu')
+  })
+
   it('keeps list actions in a single closed button outside the navigation link', () => {
     vi.mocked(useUserLoggedIn).mockReturnValue({
       initialized: true,

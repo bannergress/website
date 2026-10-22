@@ -83,9 +83,37 @@ describe('banner list membership', () => {
     const result = applyAction(state, {
       type: CACHE_BANNERS,
       payload: [{ ...summary, listType: 'done' }],
+      settingsVersionsAtRequest: state.settingsVersions,
     })
     expect(result.banners).toEqual([{ ...fullBanner, listType: 'done' }])
     expect(result.fullBanners).toEqual([fullBanner])
     expect(result.browsedBanners).toEqual([])
+  })
+
+  it('keeps a saved membership when an older summary request finishes', () => {
+    const state = reducer(undefined, { type: 'initial' })
+    const saved = applyAction(state, {
+      type: CHANGE_BANNER_SETTINS,
+      payload: { banner: summary, bannerSettings: { listType: 'done' } },
+    })
+    const result = applyAction(saved, {
+      type: CACHE_BANNERS,
+      payload: [summary],
+      settingsVersionsAtRequest: state.settingsVersions,
+    })
+    expect(result.banners[0].listType).toBe('done')
+  })
+
+  it('accepts server membership from a request started after the last save', () => {
+    const saved = applyAction(undefined, {
+      type: CHANGE_BANNER_SETTINS,
+      payload: { banner: summary, bannerSettings: { listType: 'done' } },
+    })
+    const result = applyAction(saved, {
+      type: CACHE_BANNERS,
+      payload: [summary],
+      settingsVersionsAtRequest: saved.settingsVersions,
+    })
+    expect(result.banners[0].listType).toBe('todo')
   })
 })

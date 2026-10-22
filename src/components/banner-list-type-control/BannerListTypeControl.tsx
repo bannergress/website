@@ -22,6 +22,7 @@ const BannerListTypeControl: FC<BannerListTypeControlProps> = ({
   const [failed, setFailed] = useState(false)
   const savingRef = useRef(false)
   const triggerRef = useRef<HTMLButtonElement>(null)
+  const controlsRef = useRef<HTMLDivElement>(null)
   const options = [
     { type: 'todo', key: 'todo', icon: <SVGTodo aria-hidden="true" /> },
     { type: 'done', key: 'done', icon: <SVGDone aria-hidden="true" /> },
@@ -71,6 +72,7 @@ const BannerListTypeControl: FC<BannerListTypeControlProps> = ({
 
   const controls = (
     <div
+      ref={controlsRef}
       className={`banner-list-type-control${compact ? ' banner-list-type-control-compact' : ''}`}
       role="group"
       aria-label={t('banners.listControls')}
@@ -120,6 +122,9 @@ const BannerListTypeControl: FC<BannerListTypeControlProps> = ({
       placement="bottomRight"
       open={open}
       onOpenChange={setOpen}
+      afterOpenChange={(visible) => {
+        if (visible) controlsRef.current?.querySelector('button')?.focus()
+      }}
     >
       <button
         ref={triggerRef}

@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useRef } from 'react'
-import { Row } from 'antd'
 import { Link, generatePath } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -72,7 +71,7 @@ const BannerList: FC<BannerListProps> = ({
       </Link>
     )
 
-  if (banners && banners.length > 0) {
+  if ((banners && banners.length > 0) || hasMoreBanners) {
     return (
       <>
         <div className="banner-list">
@@ -126,7 +125,7 @@ const BannerList: FC<BannerListProps> = ({
       </>
     )
   }
-  return <>{hasMoreBanners && <Row>{t('loading')}</Row>}</>
+  return null
 }
 
 export interface BannerListProps {

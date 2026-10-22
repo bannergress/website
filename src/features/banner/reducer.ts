@@ -31,6 +31,7 @@ const initialState: BannerState = {
   searchBanners: [],
   agentBanners: [],
   mapBanners: [],
+  settingsVersions: {},
   userBannerListBanners: [],
   canBrowseMore: true,
   canSearchMore: true,
@@ -50,10 +51,18 @@ export default (state = initialState, incomingAction: Action): BannerState => {
       return {
         ...state,
         banners: extend(
-          action.payload.map((banner) => ({
-            ...cachedById.get(banner.id),
-            ...banner,
-          })),
+          action.payload.map((banner) => {
+            const cached = cachedById.get(banner.id)
+            const settingsChanged =
+              (state.settingsVersions[banner.id] ?? 0) !==
+              (action.settingsVersionsAtRequest[banner.id] ?? 0)
+            // A summary requested before a successful save must not undo it.
+            return {
+              ...cached,
+              ...banner,
+              ...(settingsChanged && cached && { listType: cached.listType }),
+            }
+          }),
           state.banners
         ),
       }
@@ -151,6 +160,10 @@ export default (state = initialState, incomingAction: Action): BannerState => {
         agentBanners: update(state.agentBanners),
         mapBanners: update(state.mapBanners),
         userBannerListBanners: update(state.userBannerListBanners),
+        settingsVersions: {
+          ...state.settingsVersions,
+          [banner.id]: (state.settingsVersions[banner.id] ?? 0) + 1,
+        },
       }
     }
     default:
