@@ -246,6 +246,9 @@
       "answer": "<div>Bannergress needs to know your Ingress agent name before it can provide you with edit permissions:</div><ol><li>Sign into Bannergress.</li><li>Open <accountpage>your Bannergress account page</accountpage>.</li><li>Click on \"Link Ingress Account\" and follow the instructions.</li></ol><div>After that, you have an edit button on all banners that you own.</div>"
     }
   },
+  "privacy": {
+    "title": "Política de privacidad"
+  },
   "help": {
     "title": "FAQ y Soporte",
     "community": "Soporte de la comunidad",

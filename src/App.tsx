@@ -26,6 +26,7 @@ import { CreateBanner } from './pages/create-banner'
 import { PreviewBanner } from './pages/preview-banner'
 import { PrivateRoute } from './components/login/private-route'
 import { Help } from './pages/help'
+import { Privacy } from './pages/privacy'
 import { Error } from './pages/error'
 import { Account } from './pages/account'
 import MenuMain from './components/menu-main'
@@ -81,6 +82,7 @@ const router = createBrowserRouter([
         element: <Navigate to="/user/banners/todo" replace />,
       },
       { path: 'help', element: <Help /> },
+      { path: 'privacy', element: <Privacy /> },
       { path: 'error', element: <Error /> },
       { path: 'new-banner', element: <CreateBanner /> },
       {
