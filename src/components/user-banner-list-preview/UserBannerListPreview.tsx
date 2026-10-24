@@ -75,8 +75,11 @@ class UserBannerListPreview extends React.Component<
   }
 
   render() {
-    const { banners, i18n } = this.props
+    const { i18n } = this.props
     const { bannersStatus, listType } = this.state
+    const banners = this.props.banners
+      .filter((banner) => banner.listType === listType)
+      .slice(0, 3)
 
     const noBannersMessage = i18n?.t('banners.markinfo', {
       type: getBannerListTypeText(listType),
@@ -143,7 +146,7 @@ interface UserBannerListState {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  banners: getUserBannerListBanners(state).slice(0, 3),
+  banners: getUserBannerListBanners(state),
 })
 
 const mapDispatchToProps = {
