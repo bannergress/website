@@ -38,7 +38,7 @@
     "leaflet.markercluster": "^1.5.3",
     "react": "^19.3.1",
     "react-beforeunload": "^2.7.0",
-    "react-dom": "^19.3.0",
+    "react-dom": "^19.3.1",
     "react-hotkeys-hook": "^5.2.4",
     "react-i18next": "^17.0.14",
     "react-intersection-observer": "^11.0.1",
