@@ -269,7 +269,13 @@
   },
   "error": {
     "title": "Error la página no fue encontrada",
-    "newestBanners": "Intenta empezar con los banners más nuevos"
+    "newestBanners": "Intenta empezar con los banners más nuevos",
+    "unexpected": {
+      "title": "Algo salió mal",
+      "description": "No se pudo mostrar esta página. Recarga la página o vuelve a la página de inicio.",
+      "reload": "Recargar página",
+      "home": "Ir a la página de inicio"
+    }
   },
   "search": {
     "title": "Buscando {{searchTerm}}",
