@@ -159,7 +159,9 @@
     "goToStart": "Gehe zum Startpunkt",
     "authorLogin": "Bitte <login>anmelden</login>, um Autor(en) zu sehen.",
     "info": "Banner-Info",
+    "listControls": "Bannerlisten",
     "errors": {
+      "settings": "Die Bannerliste konnte nicht aktualisiert werden. Bitte erneut versuchen.",
       "noPois": "Banner hat keine verfügbaren Wegpunkte",
       "unknownType": "Unknown banner list type",
       "loading": "Fehler beim Laden der neuesten Banner, bitte später nochmal probieren"
