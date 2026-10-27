@@ -64,12 +64,14 @@ const MissionList: React.FC<MissionListProps> = ({
       scrollMissionIndex !== undefined &&
       itemsRef.current[scrollMissionIndex]
     ) {
-      setTimeout(() => {
-        itemsRef.current[scrollMissionIndex]!.scrollIntoView({
+      const timeout = setTimeout(() => {
+        itemsRef.current[scrollMissionIndex]?.scrollIntoView({
           behavior: 'smooth',
           block: 'center',
         })
       }, 1)
+
+      return () => clearTimeout(timeout)
     }
   }, [scrollMissionIndex])
 

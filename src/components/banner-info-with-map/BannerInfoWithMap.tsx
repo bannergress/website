@@ -180,6 +180,7 @@ class BannerInfoWithMap extends React.Component<
             >
               <BannerInfoOverview
                 banner={banner}
+                visible={mobileView !== 'map'}
                 expanded={expanded}
                 expandedMissionIndexes={expandedMissionIndexes}
                 scrollMissionIndex={scrollMissionIndex}

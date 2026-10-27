@@ -266,6 +266,9 @@
       "answer": "<div>Bannergress muss den Namen Ihres Ingress-Agenten kennen, bevor es Ihnen Bearbeitungsrechte erteilen kann:</div><ol><li>Melden Sie sich bei Bannergress an.</li><li>Öffnen Sie <accountpage>Ihre Bannergress Kontoseite</accountpage>.</li><li>Klicken Sie auf \"Link Ingress Account\" und folgen Sie den Anweisungen.</li></ol><div>Danach haben Sie auf allen Bannern, die Sie besitzen, eine Schaltfläche zum Bearbeiten.</div>"
     }
   },
+  "privacy": {
+    "title": "Datenschutzerklärung"
+  },
   "help": {
     "title": "Hilfe und Support",
     "community": "Community-Support",
@@ -286,7 +289,13 @@
   },
   "error": {
     "title": "Fehler die Seite wurde nicht gefunden",
-    "newestBanners": "Versuche mit den neuesten Bannern zu beginnen"
+    "newestBanners": "Versuche mit den neuesten Bannern zu beginnen",
+    "unexpected": {
+      "title": "Etwas ist schiefgelaufen",
+      "description": "Diese Seite konnte nicht angezeigt werden. Bitte lade die Seite neu oder gehe zur Startseite.",
+      "reload": "Seite neu laden",
+      "home": "Zur Startseite"
+    }
   },
   "search": {
     "title": "Suche nach: {{searchTerm}}",
@@ -341,8 +350,8 @@
     "filter": "Filtern",
     "filterAndSort": "Filtern und Sortieren",
     "showOfflineBanners": "Zeige Banner, die offline sind",
-    "onlyOfficial": "Nur Missionen von Niantic",
-    "showUnofficialBanners": "Zeige Missionen, die nicht von Niantic sind"
+    "onlyOfficial": "Nur Missionen von NIA",
+    "showUnofficialBanners": "Zeige Missionen, die nicht von NIA sind"
  },
   "duration": {
     "days": "{{count}} d ",
@@ -350,7 +359,7 @@
     "minutes": "{{count}} min ",
     "seconds": "{{count}} s"
   },
-  "disclaimer": "Dies ist eine Fansite, die in keiner Beziehung zu Niantic Inc steht.<newline />Ingress ist eine eingetragene Marke von Niantic Inc.<newline />Bannergress 2021 - {{year}}",
+  "disclaimer": "Bannergress ist eine inoffizielle Fansite und ist weder mit Niantic Spatial, Inc. verbunden noch von dem Unternehmen anerkannt oder gesponsert.<newline />Ingress ist eine Marke von Niantic Spatial, Inc.<newline />Bannergress 2021 - {{year}}",
   "login": {
     "title": "Anmelden",
     "button": "Anmelden",
