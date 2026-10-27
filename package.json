@@ -36,9 +36,9 @@
     "leaflet-loading": "^0.1.24",
     "leaflet.locatecontrol": "^0.90.1",
     "leaflet.markercluster": "^1.5.3",
-    "react": "^19.3.0",
+    "react": "^19.3.1",
     "react-beforeunload": "^2.7.0",
-    "react-dom": "^19.3.0",
+    "react-dom": "^19.3.1",
     "react-hotkeys-hook": "^5.2.4",
     "react-i18next": "^17.0.14",
     "react-intersection-observer": "^11.0.1",
@@ -54,7 +54,7 @@
     "underscore": "^1.13.8"
   },
   "devDependencies": {
-    "@babel/core": "^8.0.5",
+    "@babel/core": "^8.0.9",
     "@babel/eslint-parser": "^8.0.7",
     "@types/leaflet": "^1.9.12",
     "@types/leaflet-loading": "^0.1.4",
@@ -72,20 +72,20 @@
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react-hooks": "^7.1.1",
     "husky": "^9.1.6",
-    "jsdom": "^27.4.0",
+    "jsdom": "^29.1.1",
     "lint-staged": "^15.2.10",
     "oxlint": "^1.87.0",
     "oxlint-tsgolint": "^7.0.2001",
     "prettier": "^3.9.10",
     "sass": "^1.80.6",
-    "sass-embedded": "^1.105.1",
+    "sass-embedded": "^1.106.1",
     "stylelint": "^17.0.0",
     "stylelint-config-standard-scss": "^17.0.0",
     "stylelint-order": "^8.1.2",
     "typescript": "^7.0.2",
-    "vite": "^8.3.4",
+    "vite": "^8.3.5",
     "vite-plugin-svgr": "^5.2.0",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.12"
   },
   "engines": {
     "node": "^24.13.0"
