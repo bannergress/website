@@ -1,10 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { deleteBannerAction } from './actions'
-import { deleteBanner } from './api'
+import { deleteBannerAction, loadMapBannersAction } from './actions'
+import { deleteBanner, MAP_BANNERS_LIMIT, searchMapBanners } from './api'
 import { Banner } from './types'
-import { BannerActionTypes, DELETE_BANNER } from './actionTypes'
+import { BannerFilter } from './filter'
+import {
+  BannerActionTypes,
+  DELETE_BANNER,
+  SEARCH_MAP_BANNERS,
+} from './actionTypes'
 
-vi.mock('./api', () => ({ deleteBanner: vi.fn() }))
+vi.mock('./api', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('./api')>()),
+  deleteBanner: vi.fn(),
+  searchMapBanners: vi.fn(),
+}))
 vi.mock('../../api', () => ({ api: {} }))
 vi.mock('../../i18n', () => ({ default: { t: (key: string) => key } }))
 
@@ -18,12 +27,51 @@ const banner: Banner = {
   startLongitude: 0,
 }
 const dispatched = vi.fn<(action: BannerActionTypes) => void>()
+const filter: BannerFilter = {
+  orderBy: 'created',
+  orderDirection: 'DESC',
+  online: true,
+}
 const dispatch = <T extends BannerActionTypes>(action: T): T => {
   dispatched(action)
   return action
 }
 
 beforeEach(() => vi.clearAllMocks())
+
+describe('loadMapBannersAction', () => {
+  it.each([0, MAP_BANNERS_LIMIT - 1, MAP_BANNERS_LIMIT])(
+    'reports whether a response of %i banners reaches the request limit',
+    async (count) => {
+      const banners = Array.from({ length: count }, (_, id) => ({
+        ...banner,
+        id: String(id),
+      }))
+      vi.mocked(searchMapBanners).mockResolvedValue({
+        ok: true,
+        status: 200,
+        data: banners,
+      })
+
+      await expect(
+        loadMapBannersAction(10, 20, 0, 0, filter)(dispatch)
+      ).resolves.toBe(count >= MAP_BANNERS_LIMIT)
+      expect(dispatched).toHaveBeenCalledExactlyOnceWith({
+        type: SEARCH_MAP_BANNERS,
+        payload: banners,
+      })
+    }
+  )
+
+  it('rejects a failed request instead of reporting a complete result', async () => {
+    vi.mocked(searchMapBanners).mockResolvedValue({ ok: false, status: 500 })
+
+    await expect(
+      loadMapBannersAction(10, 20, 0, 0, filter)(dispatch)
+    ).rejects.toThrow('Error loading map banners')
+    expect(dispatched).not.toHaveBeenCalled()
+  })
+})
 
 describe('deleteBannerAction', () => {
   it('waits for the API before removing the banner from the store', async () => {

@@ -193,7 +193,10 @@
     },
     "locate": "Muestra mi ubicación",
     "zoomIn": "Ampliar zoom",
-    "zoomOut": "Reducir zoom"
+    "zoomOut": "Reducir zoom",
+    "bannersLimit": "No se muestran todos los banners. Acerca el mapa para ver más banners.",
+    "bannersLimitTitle": "No se muestran todos los banners",
+    "bannersLimitAction": "Acerca el mapa para ver más"
   },
   "buttons": {
     "addAll": "Añadir todo",

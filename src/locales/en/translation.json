@@ -214,7 +214,10 @@
     },
     "locate": "Show me where I am",
     "zoomIn": "Zoom In",
-    "zoomOut": "Zoom Out"
+    "zoomOut": "Zoom Out",
+    "bannersLimit": "Not all banners shown. Zoom in to see more banners.",
+    "bannersLimitTitle": "Not all banners shown",
+    "bannersLimitAction": "Zoom in to see more"
   },
   "buttons": {
     "addAll": "Add All",
