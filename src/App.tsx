@@ -26,7 +26,9 @@ import { CreateBanner } from './pages/create-banner'
 import { PreviewBanner } from './pages/preview-banner'
 import { PrivateRoute } from './components/login/private-route'
 import { Help } from './pages/help'
+import { Privacy } from './pages/privacy'
 import { Error } from './pages/error'
+import PageError from './pages/error/PageError'
 import { Account } from './pages/account'
 import MenuMain from './components/menu-main'
 import Navbar from './components/navbar'
@@ -66,35 +68,46 @@ const Root: React.FC = () => {
 const router = createBrowserRouter([
   {
     element: <Root />,
+    ErrorBoundary: PageError,
     children: [
-      { index: true, element: <Home /> },
-      { path: 'map', element: <MapOverview /> },
-      { path: 'events', element: <Events /> },
-      { path: 'browse', element: <Browser /> },
-      { path: 'browse/:placeId', element: <Browser /> },
-      { path: 'banner/:id', element: <BannerInfo /> },
-      { path: 'search/:term', element: <Search /> },
-      { path: 'agent/:agentName', element: <Agent /> },
-      { path: 'user/banners/:listType', element: <UserBannerList /> },
       {
-        path: 'user/banners',
-        element: <Navigate to="/user/banners/todo" replace />,
+        // Catch page failures inside Root to preserve the navigation menus.
+        ErrorBoundary: PageError,
+        children: [
+          { index: true, element: <Home /> },
+          { path: 'map', element: <MapOverview /> },
+          { path: 'events', element: <Events /> },
+          { path: 'browse', element: <Browser /> },
+          { path: 'browse/:placeId', element: <Browser /> },
+          { path: 'banner/:id', element: <BannerInfo /> },
+          { path: 'search/:term', element: <Search /> },
+          { path: 'agent/:agentName', element: <Agent /> },
+          { path: 'user/banners/:listType', element: <UserBannerList /> },
+          {
+            path: 'user/banners',
+            element: <Navigate to="/user/banners/todo" replace />,
+          },
+          { path: 'help', element: <Help /> },
+          { path: 'privacy', element: <Privacy /> },
+          { path: 'error', element: <Error /> },
+          { path: 'new-banner', element: <CreateBanner /> },
+          {
+            path: 'edit-banner/:id',
+            element: (
+              <PrivateRoute
+                component={CreateBanner}
+                adminRoles="manage-banners"
+              />
+            ),
+          },
+          {
+            path: 'preview-banner',
+            element: <PrivateRoute component={PreviewBanner} />,
+          },
+          { path: 'account', element: <PrivateRoute component={Account} /> },
+          { path: '*', element: <Home /> },
+        ],
       },
-      { path: 'help', element: <Help /> },
-      { path: 'error', element: <Error /> },
-      { path: 'new-banner', element: <CreateBanner /> },
-      {
-        path: 'edit-banner/:id',
-        element: (
-          <PrivateRoute component={CreateBanner} adminRoles="manage-banners" />
-        ),
-      },
-      {
-        path: 'preview-banner',
-        element: <PrivateRoute component={PreviewBanner} />,
-      },
-      { path: 'account', element: <PrivateRoute component={Account} /> },
-      { path: '*', element: <Home /> },
     ],
   },
 ])

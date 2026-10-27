@@ -1,6 +1,6 @@
 import React from 'react'
 import { LatLng, LatLngBounds, PathOptions } from 'leaflet'
-import { Marker, Tooltip } from 'react-leaflet'
+import { Tooltip } from 'react-leaflet'
 import _ from 'underscore'
 
 import { NumDictionary } from '../../features/banner'
@@ -13,6 +13,7 @@ import {
 } from '../../features/mission'
 import { MissionMarkerData, setMarkerData } from './MarkerData'
 import { getMarkerDataIcon } from './MarkerIcons'
+import MapMarker from './MapMarker'
 
 export const showMissionStartPointsOnMap = (
   missions: NumDictionary<Mission>,
@@ -53,7 +54,7 @@ export const showMissionStartPointsOnMap = (
       const icon = getMarkerDataIcon(markerData)
 
       return (
-        <Marker
+        <MapMarker
           key={mission.id}
           icon={icon}
           position={[startLat, startLng]}
@@ -63,7 +64,7 @@ export const showMissionStartPointsOnMap = (
           ref={(el) => setMarkerData(el, markerData)}
         >
           <Tooltip offset={[20, 0]}>{title}</Tooltip>
-        </Marker>
+        </MapMarker>
       )
     }
     return undefined
