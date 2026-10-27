@@ -159,7 +159,9 @@
     "goToStart": "Go to Banner Starting Point",
     "authorLogin": "Please <login>sign in</login> to see author(s)",
     "info": "Banner Info",
+    "listControls": "Banner lists",
     "errors": {
+      "settings": "Could not update the banner list. Please try again.",
       "noPois": "Banner has no POIs currently available",
       "unknownType": "Unknown banner list type",
       "loading": "Error loading recent banners, please try again later"

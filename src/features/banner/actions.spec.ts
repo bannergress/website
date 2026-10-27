@@ -1,10 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { deleteBannerAction, loadMapBannersAction } from './actions'
-import { deleteBanner, MAP_BANNERS_LIMIT, searchMapBanners } from './api'
+import {
+  changeBannerSettingsAction,
+  deleteBannerAction,
+  loadMapBannersAction,
+} from './actions'
+import {
+  changeBannerSettings,
+  deleteBanner,
+  MAP_BANNERS_LIMIT,
+  searchMapBanners,
+} from './api'
 import { Banner } from './types'
 import { BannerFilter } from './filter'
 import {
   BannerActionTypes,
+  CHANGE_BANNER_SETTINS,
   DELETE_BANNER,
   SEARCH_MAP_BANNERS,
 } from './actionTypes'
@@ -13,6 +23,7 @@ vi.mock('./api', async (importOriginal) => ({
   ...(await importOriginal<typeof import('./api')>()),
   deleteBanner: vi.fn(),
   searchMapBanners: vi.fn(),
+  changeBannerSettings: vi.fn(),
 }))
 vi.mock('../../api', () => ({ api: {} }))
 vi.mock('../../i18n', () => ({ default: { t: (key: string) => key } }))
@@ -69,6 +80,46 @@ describe('loadMapBannersAction', () => {
     await expect(
       loadMapBannersAction(10, 20, 0, 0, filter)(dispatch)
     ).rejects.toThrow('Error loading map banners')
+    expect(dispatched).not.toHaveBeenCalled()
+  })
+})
+
+describe('changeBannerSettingsAction', () => {
+  it('only updates list membership after a successful save', async () => {
+    let resolve!: (
+      response: Awaited<ReturnType<typeof changeBannerSettings>>
+    ) => void
+    const response = new Promise<
+      Awaited<ReturnType<typeof changeBannerSettings>>
+    >((done) => {
+      resolve = done
+    })
+    vi.mocked(changeBannerSettings).mockReturnValue(response)
+
+    const pending = changeBannerSettingsAction(banner, { listType: 'todo' })(
+      dispatch
+    )
+    expect(changeBannerSettings).toHaveBeenCalledWith(banner, {
+      listType: 'todo',
+    })
+    expect(dispatched).not.toHaveBeenCalled()
+
+    resolve({ ok: true, status: 204, data: undefined })
+    await pending
+    expect(dispatched).toHaveBeenCalledExactlyOnceWith({
+      type: CHANGE_BANNER_SETTINS,
+      payload: { banner, bannerSettings: { listType: 'todo' } },
+    })
+  })
+
+  it('preserves membership when saving fails', async () => {
+    vi.mocked(changeBannerSettings).mockResolvedValue({
+      ok: false,
+      status: 403,
+    })
+    await expect(
+      changeBannerSettingsAction(banner, { listType: 'done' })(dispatch)
+    ).rejects.toThrow('Error while changing banner settings')
     expect(dispatched).not.toHaveBeenCalled()
   })
 })

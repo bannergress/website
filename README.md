@@ -14,7 +14,8 @@ Start the app
 
 ## Development checks
 
-Use Node.js 24.13 or newer within Node 24, matching CI and `@types/node`.
+Use Node.js 24.13 or newer within Node 24, or Node.js 26.x.
+CI runs on Node 24, and `@types/node` targets Node 24.
 
 ```sh
 npm ci

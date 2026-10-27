@@ -138,7 +138,9 @@
     "goToStart": "Ir al inicio del banner",
     "authorLogin": "Por favor, <login>inicie sesión</login> para ver los autores",
     "info": "Información",
+    "listControls": "Listas de banners",
     "errors": {
+      "settings": "No se pudo actualizar la lista de banners. Inténtalo de nuevo.",
       "noPois": "El banner no POIs disponibles actualmente",
       "unknownType": "Tipo de banner desconocido",
       "loading": "Error al cargar los últimos banners, prueba más tarde"
