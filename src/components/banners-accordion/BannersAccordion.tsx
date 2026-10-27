@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react'
 import { generatePath } from 'react-router-dom'
-import { Button } from 'antd'
 import { useTranslation } from 'react-i18next'
 
 import { Banner } from '../../features/banner'
@@ -35,15 +34,17 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
         selectedBanner && 'banner-selected'
       } hide-on-desktop`}
     >
-      <Button
+      <button
+        type="button"
         className="banner-accordion-expander"
+        aria-expanded={expanded}
         onClick={() => setExpanded(!expanded)}
       >
-        {t('map.area') + ' '}
-        <span className={`carot-${expanded}`}>
+        <span>{t('map.area')}</span>
+        <span className="banner-accordion-chevron" aria-hidden="true">
           <SVGTriangle />
         </span>
-      </Button>
+      </button>
       {!expanded && selectedBanner && (
         <div
           role="button"
@@ -63,24 +64,26 @@ const BannerAccordion: FC<BannerAccordionProps> = ({
         </div>
       )}
       {expanded && (
-        <>
+        <div className="banner-accordion-content">
           <BannerOrderChooser
             filter={filter}
             onFilterChanged={onFilterChanged}
             includeOfficial
             includeSorting={false}
           />
-          <BannerList
-            banners={banners}
-            selectedBannerId={selectedBannerId}
-            hasMoreBanners={hasMoreBanners}
-            onSelectBanner={onSelectBannerCallback}
-            loadMoreBanners={loadMoreBanners}
-            applyBannerListStyles
-            hideBlacklisted
-            showDetailsButton
-          />
-        </>
+          <div className="banner-accordion-list">
+            <BannerList
+              banners={banners}
+              selectedBannerId={selectedBannerId}
+              hasMoreBanners={hasMoreBanners}
+              onSelectBanner={onSelectBannerCallback}
+              loadMoreBanners={loadMoreBanners}
+              applyBannerListStyles
+              hideBlacklisted
+              showDetailsButton
+            />
+          </div>
+        </div>
       )}
     </div>
   )

@@ -1,26 +1,71 @@
 .banner-accordion {
-  background-color: var(--color-light-black);
-  bottom: 0;
+  background: var(--color-light-black);
   display: flex;
+  flex: 0 0 auto;
   flex-direction: column;
-  height: 40px;
+  height: 48px;
   width: 100%;
 
-  .filter-and-sort {
-    margin: 0 10px 10px;
+  .banner-accordion-expander {
+    align-items: center;
+    background: none;
+    border: 0;
+    border-top: 1px solid var(--border-color-base);
+    color: var(--color-white-light);
+    cursor: pointer;
+    display: flex;
+    flex: 0 0 auto;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    gap: 12px;
+    justify-content: space-between;
+    line-height: 1.4;
+    min-height: 48px;
+    padding: 12px 16px;
+    text-align: left;
+    width: 100%;
+
+    &:hover {
+      background: var(--color-dark-gray);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-border-light);
+      outline-offset: -2px;
+    }
   }
 
-  .banner-accordion-expander {
-    border: none;
-    color: white !important; /* stylelint-disable-line */
+  .banner-accordion-chevron {
+    align-items: center;
+    color: var(--color-light-gray);
     display: flex;
-    font-size: 20px;
-    font-weight: bold;
-    height: 40px;
-    justify-content: space-between;
-    line-height: 40px;
-    padding: 0 20px;
-    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .banner-accordion-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+    padding: 12px 16px 16px;
+  }
+
+  .filter-and-sort {
+    flex-shrink: 0;
+    margin: 0;
+
+    > div {
+      color: var(--color-secondary-text);
+      font-size: 14px;
+    }
+  }
+
+  .banner-accordion-list {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden auto;
   }
 
   &.banner-selected {
@@ -28,9 +73,9 @@
     max-height: 50%;
   }
 
-  .banner-card-link {
-    margin: 0 10px;
-    overflow-y: scroll;
+  > .banner-card-link {
+    margin: 0 16px 16px;
+    overflow-y: auto;
   }
 
   &.expanded {
@@ -38,23 +83,18 @@
     max-height: 100%;
 
     .banner-list {
-      height: calc(100% - 40px);
+      gap: 12px;
       margin: 0;
-      overflow: hidden scroll;
-      row-gap: 10px;
-      width: calc(100% - 5px);
+      width: 100%;
 
       .banner-list-entry {
-        max-width: initial !important; /* stylelint-disable-line */
-        width: calc(100% - 10px) !important; /* stylelint-disable-line */
+        max-width: 100%;
+        width: 100%;
       }
     }
 
-    .carot-true {
-      svg {
-        transform: rotate(180deg);
-      }
+    .banner-accordion-chevron svg {
+      transform: rotate(180deg);
     }
   }
-
 }
