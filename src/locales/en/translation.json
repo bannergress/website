@@ -159,7 +159,9 @@
     "goToStart": "Go to Banner Starting Point",
     "authorLogin": "Please <login>sign in</login> to see author(s)",
     "info": "Banner Info",
+    "listControls": "Banner lists",
     "errors": {
+      "settings": "Could not update the banner list. Please try again.",
       "noPois": "Banner has no POIs currently available",
       "unknownType": "Unknown banner list type",
       "loading": "Error loading recent banners, please try again later"
@@ -267,6 +269,9 @@
       "answer": "<div>Bannergress needs to know your Ingress agent name before it can provide you with edit permissions:</div><ol><li>Sign into Bannergress.</li><li>Open <accountpage>your Bannergress account page</accountpage>.</li><li>Click on \"Link Ingress Account\" and follow the instructions.</li></ol><div>After that, you have an edit button on all banners that you own.</div>"
     }
   },
+  "privacy": {
+    "title": "Privacy Policy"
+  },
   "help": {
     "title": "FAQ and Support",
     "community": "Community Support",
@@ -287,7 +292,13 @@
   },
   "error": {
     "title": "Error the page was not found",
-    "newestBanners": "Try to start with the newest banners"
+    "newestBanners": "Try to start with the newest banners",
+    "unexpected": {
+      "title": "Something went wrong",
+      "description": "This page could not be displayed. Please reload the page or return to the home page.",
+      "reload": "Reload page",
+      "home": "Go to home page"
+    }
   },
   "search": {
     "title": "Search for {{searchTerm}}",
@@ -343,8 +354,8 @@
     "filter": "Filter",
     "filterAndSort": "Filter and Sort",
     "showOfflineBanners": "Show offline banners",
-    "onlyOfficial": "Show only official Niantic mission collections",
-    "showUnofficialBanners": "Show non-Niantic missions"
+    "onlyOfficial": "Show only official NIA mission collections",
+    "showUnofficialBanners": "Show non-NIA missions"
 },
   "duration": {
     "days": "{{count}} d ",
@@ -352,7 +363,7 @@
     "minutes": "{{count}} min ",
     "seconds": "{{count}} s"
   },
-  "disclaimer": "This is a fan site and not officially affiliated with Niantic Inc.<newline />Ingress is a registered trademark of Niantic Inc.<newline />Bannergress 2021 - {{year}}",
+  "disclaimer": "Bannergress is an unofficial fan site and is not affiliated with, endorsed by, or sponsored by Niantic Spatial, Inc.<newline />Ingress is a trademark of Niantic Spatial, Inc.<newline />Bannergress 2021 - {{year}}",
   "login": {
     "title": "Login",
     "button": "Sign In",

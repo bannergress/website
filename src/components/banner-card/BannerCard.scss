@@ -242,12 +242,13 @@
 }
 
 .banner-card-picture-inner {
-  display: table;
   max-height: 100%;
   max-width: 100%;
+  width: 100%;
 
   & > img { /* stylelint-disable-line */
-    max-width: 100%;
+    display: block;
+    width: 100%;
   }
 
   &.picture-size-1 {
@@ -268,10 +269,6 @@
 
   &.picture-size-5 {
     max-width: 85%;
-  }
-
-  &.picture-size-6 {
-    display: contents;
   }
 }
 

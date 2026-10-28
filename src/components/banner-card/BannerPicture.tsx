@@ -13,8 +13,7 @@ const getImageAnimation = (
 ) => {
   if (innerDiv && img) {
     if (innerDiv.clientHeight < innerDiv.scrollHeight - 1) {
-      const ratioPercent =
-        (1 - innerDiv.scrollHeight / innerDiv.clientHeight) * 50
+      const offset = innerDiv.clientHeight - innerDiv.scrollHeight
       const timeToBottom = 5_000
       const timePause = 1_000
       const timeToTop = 1_000
@@ -22,22 +21,22 @@ const getImageAnimation = (
       return img.animate(
         [
           {
-            marginTop: '0%',
+            transform: 'translateY(0)',
           },
           {
-            marginTop: `${ratioPercent}%`,
+            transform: `translateY(${offset}px)`,
             offset: timeToBottom / timeTotal,
           },
           {
-            marginTop: `${ratioPercent}%`,
+            transform: `translateY(${offset}px)`,
             offset: (timeToBottom + timePause) / timeTotal,
           },
           {
-            marginTop: '0%',
+            transform: 'translateY(0)',
             offset: (timeToBottom + timePause + timeToTop) / timeTotal,
           },
           {
-            marginTop: '0%',
+            transform: 'translateY(0)',
           },
         ],
         {
@@ -63,7 +62,7 @@ const BannerPicture: FC<BannerPictureProps> = ({
   const [fullImage, setFullImage] = useState(false)
   const innerRef = useRef<HTMLDivElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
-  const loaded = useLoaded(imgRef)
+  const loaded = useLoaded(imgRef, url)
   const animate =
     loaded &&
     inView &&
@@ -79,7 +78,7 @@ const BannerPicture: FC<BannerPictureProps> = ({
         animation.cancel()
       }
     }
-  }, [innerRef, imgRef, animate])
+  }, [innerRef, imgRef, animate, url, size, lines])
 
   const onCloseModal = () => {
     setModalOpened(false)
@@ -116,7 +115,6 @@ const BannerPicture: FC<BannerPictureProps> = ({
         </Button>
       </Modal>
       <div
-        key={`imageLoaded-${loaded}`}
         ref={ref}
         className={`banner-card-picture banner-lines-${lines}`}
         onClick={() => setModalOpened(showFullImage)}
