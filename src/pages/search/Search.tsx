@@ -27,9 +27,10 @@ import FooterMain from '../../components/footer-main'
 
 import './Search.scss'
 import { BannerFilter } from '../../features/banner/filter'
-import { SettingsState } from '../../features/settings/types'
-import { getDefaultOnline } from '../../features/settings/selectors'
-import { updateSettingsAction } from '../../features/settings/actions'
+import {
+  loadBannerFilter,
+  saveBannerFilter,
+} from '../../features/banner/filterStorage'
 import { ScrollRestoration } from '../../features/scroll-restoration'
 
 class Search extends React.Component<SearchProps, SearchState> {
@@ -45,11 +46,11 @@ class Search extends React.Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {
     super(props)
     this.state = {
-      filter: {
+      filter: loadBannerFilter('search', {
         orderBy: 'relevance',
         orderDirection: 'DESC',
-        online: props.defaultOnline,
-      },
+        online: true,
+      }),
       searchTerm: '',
       pageBanners: 0,
       pagePlaces: 0,
@@ -122,15 +123,12 @@ class Search extends React.Component<SearchProps, SearchState> {
 
   onFilterChanged = (filter: BannerFilter) => {
     const { searchTerm } = this.state
-    const { updateSettings } = this.props
     this.setState({
       filter,
       pageBanners: 0,
     })
     this.scrollRestoration.invalidate()
-    updateSettings({
-      defaultOnline: filter.online,
-    })
+    saveBannerFilter('search', filter)
     handlePromise(this.doFetchBanners(searchTerm, filter, 0))
   }
 
@@ -288,8 +286,6 @@ export type SearchProps = {
     pageBanners: number
   ) => Promise<void>
   fetchPlaces: (searchTerm: string, pagePlaces: number) => Promise<void>
-  defaultOnline: boolean | undefined
-  updateSettings: (settings: Partial<SettingsState>) => void
 } & RouteComponentProps<{ term: string }> &
   WithTranslationProps
 
@@ -307,13 +303,11 @@ const mapStateToProps = (state: RootState) => ({
   places: getSearchPlaces(state),
   hasMoreBanners: getHasMoreSearchBanners(state),
   hasMorePlaces: getHasMoreSearchPlaces(state),
-  defaultOnline: getDefaultOnline(state),
 })
 
 const mapDispatchToProps = {
   fetchBanners: loadSearchBannersAction,
   fetchPlaces: loadSearchPlacesAction,
-  updateSettings: updateSettingsAction,
 }
 
 export default connect(
