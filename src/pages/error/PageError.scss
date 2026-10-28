@@ -2,18 +2,28 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  margin: 30px auto;
+  margin-top: 24px;
   max-width: 760px;
   padding: 0 24px 48px;
+  padding-left: 20px;
+  padding-right: 20px;
   text-align: center;
+
+  @include media-min-xs {
+    margin: 30px auto;
+  }
 
   &__illustration {
     display: block;
     height: auto;
-    margin-bottom: 8px;
+    margin-bottom: 24px;
     mask-image: radial-gradient(ellipse, #000 48%, transparent 75%);
     max-width: 100%;
     width: 680px;
+
+    @include media-min-xs {
+      margin-bottom: 8px;
+    }
   }
 
   h1 {
@@ -38,6 +48,11 @@
     gap: 12px;
     justify-content: center;
     margin-top: 28px;
+    width: 100%;
+
+    @include media-min-xs {
+      width: initial;
+    }
   }
 
   &__reload,
@@ -52,6 +67,11 @@
     min-height: 46px;
     padding: 10px 24px;
     text-decoration: none;
+    width: 100%;
+
+    @include media-min-xs {
+      width: initial;
+    }
 
     &:focus-visible {
       outline: 2px solid var(--color-border-light);
@@ -76,27 +96,6 @@
     &:hover {
       background: color-mix(in srgb, var(--color-border-light) 8%, transparent);
       color: var(--color-white-light);
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .page-error {
-    margin-top: 24px;
-    padding-left: 20px;
-    padding-right: 20px;
-
-    &__illustration {
-      margin-bottom: 24px;
-    }
-
-    &__actions {
-      width: 100%;
-    }
-
-    &__reload,
-    &__home {
-      width: 100%;
     }
   }
 }
