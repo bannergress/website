@@ -257,7 +257,7 @@
     },
     "question5": {
       "title": "Wo finde ich… (hilfreiche Links)",
-      "answer": "<p>...das <missioncreator>Tool zum Erstellen von Missionen</missioncreator>?</p><p>...ein <slicer>Werkzeug zum Schneiden von Bildern</slicer>?</p><p><br /></p><p>..die <iitc>IITC-CE</iitc>?</p><p>...das <plugin>Bannergress-Plugin</plugin>?</p><p>...ein <plugin2>IITC-Plugin, das mehr als 25 Missionen anzeigt</plugin2>?</p>"
+      "answer": "<p>...das <missioncreator>Tool zum Erstellen von Missionen</missioncreator>?</p><p>...das <creatorplugin>Bannergress-Creator-Plugin</creatorplugin>?</p><p>...ein <slicer>Werkzeug zum Schneiden von Bildern</slicer>?</p><p><br /></p><p>..die <iitc>IITC-CE</iitc>?</p><p>...das <plugin>Bannergress-Plugin</plugin>?</p><p>...ein <plugin2>IITC-Plugin, das mehr als 25 Missionen anzeigt</plugin2>?</p>"
     },
     "question6": {
       "title": "Wie bekomme ich meine eigenen Ingress-Missionen auf bannergress.com, indem ich den Ingress Mission Creator benutze?",

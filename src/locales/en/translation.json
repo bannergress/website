@@ -258,7 +258,7 @@
     },
     "question5": {
       "title": "Where can I find … (Useful links)",
-      "answer": "<p>...the <missioncreator>mission creator</missioncreator>?</p><p>...a <slicer>tool to slice</slicer> a banner picture?</p><p><br /></p><p>...the <iitc>IITC-CE</iitc>?</p><p>...the <plugin>bannergress plugin</plugin>?</p><p>...an <plugin2>IITC plugin</plugin2> which shows <b>more</b> than the Top 25 missions?</p>"
+      "answer": "<p>...the <missioncreator>mission creator</missioncreator>?</p><p>...the <creatorplugin>bannergress creator plugin</creatorplugin>?</p><p>...a <slicer>tool to slice</slicer> a banner picture?</p><p><br /></p><p>...the <iitc>IITC-CE</iitc>?</p><p>...the <plugin>bannergress plugin</plugin>?</p><p>...an <plugin2>IITC plugin</plugin2> which shows <b>more</b> than the Top 25 missions?</p>"
     },
     "question6": {
       "title": "How do I get my own Ingress missions to bannergress.com, using the Ingress Mission Creator?",
