@@ -33,9 +33,9 @@
 
   .place-number-of-banners {
     grid-column: 3 / 3;
-  }
 
-  .place-name + .place-number-of-banners {
+  .place-name + & {
     grid-column: 3 / 3;
+  }
   }
 }
