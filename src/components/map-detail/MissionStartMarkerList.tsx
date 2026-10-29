@@ -10,15 +10,21 @@ const MissionStartMarkerList: FC<MissionStartMarkerListProps> = ({
   banner,
   openedMissionIndexes,
   onOpenMission,
+  showMissionOrder,
 }) => (
   <MapCluster>
     {showMissionStartPointsOnMap(
       banner.missions!,
       openedMissionIndexes,
-      banner.type === 'sequential',
+      banner.type === 'sequential' || Boolean(showMissionOrder),
       onOpenMission
     )}
-    {showBannerRouteOnMap(banner, openedMissionIndexes, 'green')}
+    {showBannerRouteOnMap(
+      banner,
+      openedMissionIndexes,
+      'green',
+      showMissionOrder
+    )}
   </MapCluster>
 )
 
@@ -26,6 +32,7 @@ export interface MissionStartMarkerListProps {
   banner: Banner
   openedMissionIndexes: Array<number>
   onOpenMission: (index: number) => void
+  showMissionOrder?: boolean
 }
 
 const areEqual = (
@@ -34,6 +41,7 @@ const areEqual = (
 ) => {
   return (
     _.isEqual(prevProps.banner, nextProps.banner) &&
+    prevProps.showMissionOrder === nextProps.showMissionOrder &&
     _.isEqual(prevProps.openedMissionIndexes, nextProps.openedMissionIndexes)
   )
 }

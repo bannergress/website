@@ -79,6 +79,15 @@
         },
         "type": "Tipo de banner <icon />"
       },
+      "order": {
+        "fast": "Optimizar ruta (rápido)",
+        "full": "Optimizar ruta (completo)",
+        "fullWarning": "La optimizaci?n completa puede consumir mucha memoria y tardar bastante. Puedes cancelar el c?lculo.",
+        "fullLimit": "La búsqueda completa admite como máximo {{max}} misiones porque la memoria y el tiempo de cálculo crecen exponencialmente.",
+        "cancel": "Cancelar",
+        "missingCoordinates": "Todas las misiones necesitan coordenadas conocidas. Elimina las misiones de relleno y las misiones sin puntos para optimizar.",
+        "error": "No se pudo optimizar el orden. Inténtalo de nuevo."
+      },
       "errors": {
         "noMissions": "Un banner ha de contener al menos una misión aceptada",
         "numberOfMissions": "Un banner ha de contener entre {{min}} y {{max}} misiones",

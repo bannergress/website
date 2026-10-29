@@ -17,8 +17,23 @@ const RefSetup: React.FC<{ onMapReady: (map: Map) => void }> = ({
   onMapReady,
 }) => {
   const map = useMap()
-  onMapReady(map)
-  map.zoomControl.options.zoomInText = i18n!.t('map.zoomIn')
+  React.useEffect(() => {
+    onMapReady(map)
+    map.zoomControl.options.zoomInText = i18n!.t('map.zoomIn')
+    const container = map.getContainer()
+    // Expanding missions and switching panes can resize the map without a
+    // window resize. Leaflet otherwise leaves the newly exposed area untiled.
+    const observer =
+      typeof ResizeObserver === 'undefined'
+        ? undefined
+        : new ResizeObserver(() => {
+            if (container.clientWidth && container.clientHeight) {
+              map.invalidateSize({ pan: false, debounceMoveend: true })
+            }
+          })
+    observer?.observe(container)
+    return () => observer?.disconnect()
+  }, [map, onMapReady])
   return null
 }
 
@@ -26,6 +41,10 @@ export class MapDetail extends React.Component<MapDetailProps> {
   mapRef: Map | undefined
 
   boundsAppliedWhileVisible: boolean = false
+
+  onMapReady = (map: Map) => {
+    this.mapRef = map
+  }
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResizedScreen)
@@ -87,16 +106,18 @@ export class MapDetail extends React.Component<MapDetailProps> {
   }
 
   render() {
-    const { bounds, banner, openedMissionIndexes, onOpenMission } = this.props
+    const {
+      bounds,
+      banner,
+      openedMissionIndexes,
+      onOpenMission,
+      showMissionOrder,
+    } = this.props
 
     return (
       <Fragment>
         <MapContainer bounds={bounds}>
-          <RefSetup
-            onMapReady={(map) => {
-              this.mapRef = map
-            }}
-          />
+          <RefSetup onMapReady={this.onMapReady} />
           <MapZoomControl />
           <LocateControl />
           <MapLoadingControl />
@@ -117,6 +138,7 @@ export class MapDetail extends React.Component<MapDetailProps> {
               banner={banner}
               openedMissionIndexes={openedMissionIndexes}
               onOpenMission={onOpenMission}
+              showMissionOrder={showMissionOrder}
             />
           )}
         </MapContainer>
@@ -130,4 +152,5 @@ export interface MapDetailProps {
   bounds: LatLngBounds
   openedMissionIndexes: Array<number>
   onOpenMission: (index: number) => void
+  showMissionOrder?: boolean
 }
