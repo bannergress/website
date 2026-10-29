@@ -1,4 +1,15 @@
 .banner-advanced-options {
+  .banner-type-help {
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: help;
+    display: inline-flex;
+    flex-shrink: 0;
+    line-height: 1;
+    padding: 0;
+  }
+
   h4 {
     column-gap: 5px;
     display: flex;
@@ -20,7 +31,9 @@
     &-slider {
       &-track,
       &-handle {
-        background-color: var(--link-color) !important; /* stylelint-disable-line */
+        background-color: var(
+          --link-color
+        ) !important; /* stylelint-disable-line */
       }
     }
   }

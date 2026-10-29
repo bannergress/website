@@ -45,16 +45,28 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
   return (
     <Row className="banner-advanced-options">
       <Col span={12}>
-        <Tooltip placement="right" title={typeHelp}>
-          <h4>
-            <Trans
-              i18nKey="banners.creation.step3.type"
-              components={{
-                icon: <SVGHelp />,
-              }}
-            />
-          </h4>
-        </Tooltip>
+        <h4>
+          <Trans
+            i18nKey="banners.creation.step3.type"
+            components={{
+              icon: (
+                <Tooltip
+                  placement="top"
+                  trigger={['hover', 'focus']}
+                  title={typeHelp}
+                >
+                  <button
+                    type="button"
+                    className="banner-type-help"
+                    aria-label={t('buttons.info')}
+                  >
+                    <SVGHelp />
+                  </button>
+                </Tooltip>
+              ),
+            }}
+          />
+        </h4>
       </Col>
       <Col span={12}>
         <Radio.Group

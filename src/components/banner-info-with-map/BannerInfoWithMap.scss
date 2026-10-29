@@ -17,8 +17,21 @@
     flex-direction: column;
     height: 100%;
     max-height: 94rem;
+    position: relative;
     row-gap: 30px;
     width: 100%;
+  }
+
+  .banner-info-map-controls {
+    max-width: calc(100% - 70px);
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 800;
+
+    .collection-order-optimizer {
+      margin: 0;
+    }
   }
 
   .leaflet-container {

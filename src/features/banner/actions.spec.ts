@@ -1,16 +1,22 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { changeBannerSettingsAction, deleteBannerAction } from './actions'
-import { changeBannerSettings, deleteBanner } from './api'
+import {
+  changeBannerSettingsAction,
+  deleteBannerAction,
+  createBannerAction,
+} from './actions'
+import { changeBannerSettings, deleteBanner, postBannerPreview } from './api'
 import { Banner } from './types'
 import {
   BannerActionTypes,
   CHANGE_BANNER_SETTINS,
   DELETE_BANNER,
+  CREATE_BANNER,
 } from './actionTypes'
 
 vi.mock('./api', () => ({
   deleteBanner: vi.fn(),
   changeBannerSettings: vi.fn(),
+  postBannerPreview: vi.fn(),
 }))
 vi.mock('../../api', () => ({ api: {} }))
 vi.mock('../../i18n', () => ({ default: { t: (key: string) => key } }))
@@ -31,6 +37,42 @@ const dispatch = <T extends BannerActionTypes>(action: T): T => {
 }
 
 beforeEach(() => vi.clearAllMocks())
+
+describe('regenerating a collection preview', () => {
+  it('replaces the draft with recalculated preview data and preserves its metadata', async () => {
+    const controller = new AbortController()
+    const draft = {
+      ...banner,
+      type: 'anyOrder' as const,
+      owner: true,
+      description: 'Description',
+      missions: {},
+    }
+    vi.mocked(postBannerPreview).mockResolvedValue({
+      ok: true,
+      status: 200,
+      data: { ...banner, picture: 'new-preview.png' },
+    })
+    await createBannerAction(draft, controller.signal)(dispatch)
+    expect(postBannerPreview).toHaveBeenCalledWith(draft, controller.signal)
+    expect(dispatched).toHaveBeenCalledWith({
+      type: CREATE_BANNER,
+      payload: { ...draft, picture: 'new-preview.png' },
+    })
+  })
+
+  it('does not apply a late preview response after cancellation', async () => {
+    const controller = new AbortController()
+    vi.mocked(postBannerPreview).mockImplementation(() => {
+      controller.abort()
+      return Promise.resolve({ ok: true, status: 200, data: banner })
+    })
+    await expect(
+      createBannerAction(banner, controller.signal)(dispatch)
+    ).rejects.toMatchObject({ name: 'AbortError' })
+    expect(dispatched).not.toHaveBeenCalled()
+  })
+})
 
 describe('changeBannerSettingsAction', () => {
   it('only updates list membership after a successful save', async () => {

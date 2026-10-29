@@ -16,12 +16,13 @@ export const hasLatLng = (step: Step) =>
 export const showBannerRouteOnMap = (
   banner: Banner,
   openedMissionIndexes: Array<number>,
-  color: 'green' | 'blue'
+  color: 'green' | 'blue',
+  showMissionOrder = false
 ) => {
   const missionMultiPolylines: LatLng[][] = []
   let lastMissionTitle: string | undefined
   let prevMission = 0
-  const connectMissions = banner.type !== 'anyOrder'
+  const connectMissions = banner.type !== 'anyOrder' || showMissionOrder
 
   mapMissions(banner.missions, (mission, index) => {
     if (mission) {

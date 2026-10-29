@@ -91,6 +91,15 @@
         },
         "type": "Banner type <icon />"
       },
+      "order": {
+        "fast": "Optimize path (fast)",
+        "full": "Optimize path (full)",
+        "fullWarning": "Full optimization can use a lot of memory and take a long time. You can cancel the calculation.",
+        "fullLimit": "Full search supports at most {{max}} missions because memory and calculation time grow exponentially.",
+        "cancel": "Cancel",
+        "missingCoordinates": "All missions need known waypoint coordinates. Remove filler missions and missions without waypoints to optimize.",
+        "error": "Could not optimize the order. Please try again."
+      },
       "errors": {
         "noMissions": "A banner must contain an accepted mission",
         "numberOfMissions": "A banner must contain between {{min}} and {{max}} missions",
@@ -356,7 +365,7 @@
     "showOfflineBanners": "Show offline banners",
     "onlyOfficial": "Show only official NIA mission collections",
     "showUnofficialBanners": "Show non-NIA missions"
-},
+  },
   "duration": {
     "days": "{{count}} d ",
     "hours": "{{count}} h ",

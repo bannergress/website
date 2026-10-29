@@ -1,6 +1,12 @@
 // @vitest-environment jsdom
 import { createLeafletContext, LeafletContext } from '@react-leaflet/core'
-import { Browser, Map as LeafletMap, Marker, MarkerClusterGroup } from 'leaflet'
+import {
+  Browser,
+  Map as LeafletMap,
+  Marker,
+  MarkerClusterGroup,
+  Polyline,
+} from 'leaflet'
 import { act } from 'react'
 import { createRoot, Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -80,7 +86,11 @@ describe('mission start clusters', () => {
     vi.unstubAllGlobals()
   })
 
-  const render = async (currentBanner: Banner, opened: number[] = []) => {
+  const render = async (
+    currentBanner: Banner,
+    opened: number[] = [],
+    showMissionOrder = false
+  ) => {
     await act(async () => {
       root.render(
         <LeafletContext value={createLeafletContext(map)}>
@@ -88,6 +98,7 @@ describe('mission start clusters', () => {
             banner={currentBanner}
             openedMissionIndexes={opened}
             onOpenMission={onOpenMission}
+            showMissionOrder={showMissionOrder}
           />
         </LeafletContext>
       )
@@ -171,5 +182,34 @@ describe('mission start clusters', () => {
     expect(
       markers.filter((marker) => marker.getLatLng().lat === 53)
     ).toHaveLength(2)
+  })
+
+  it('connects collection missions only when preview requests their proposed order', async () => {
+    const collection = { ...banner, type: 'anyOrder' as const }
+    await render(collection)
+    expect(
+      getCluster()
+        .getLayers()
+        .filter((layer) => layer instanceof Marker)
+    ).toHaveLength(3)
+    const routes = () => {
+      const lines: ReturnType<Polyline['getLatLngs']>[] = []
+      map.eachLayer((layer) => {
+        if (layer instanceof Polyline) lines.push(layer.getLatLngs())
+      })
+      return lines
+    }
+    expect(routes()[0]).toHaveLength(3)
+    await render(collection, [], true)
+    expect(
+      getCluster()
+        .getLayers()
+        .filter((layer) => layer instanceof Marker)
+    ).toHaveLength(4)
+    const positions = routes()[0] as import('leaflet').LatLng[][]
+    expect(positions[0]).toHaveLength(2)
+    expect(positions[1]).toHaveLength(2)
+    expect(positions[2]).toHaveLength(1)
+    expect(collection.type).toBe('anyOrder')
   })
 })

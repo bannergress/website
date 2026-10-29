@@ -148,6 +148,7 @@ const App: React.FC = () => {
               Layout: { fontSize: 16, lineHeight: 5 / 3 },
               Grid: { fontSize: 16, lineHeight: 5 / 3 },
               Card: { bodyPadding: 9.6, headerPadding: 9.6 },
+              Tooltip: { colorBgSpotlight: '#434343' },
             },
           }}
         >

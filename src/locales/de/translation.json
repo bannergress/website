@@ -91,6 +91,15 @@
         },
         "type": "Banner-Typ <icon />"
       },
+      "order": {
+        "fast": "Route optimieren (schnell)",
+        "full": "Route optimieren (vollständig)",
+        "fullWarning": "Die vollst?ndige Optimierung kann viel Speicher und Zeit ben?tigen. Du kannst die Berechnung abbrechen.",
+        "fullLimit": "Die vollständige Suche unterstützt höchstens {{max}} Missionen, da Speicherbedarf und Rechenzeit exponentiell wachsen.",
+        "cancel": "Abbrechen",
+        "missingCoordinates": "Alle Missionen benötigen bekannte Wegpunktkoordinaten. Entferne Füllmissionen und Missionen ohne Wegpunkte, um zu optimieren.",
+        "error": "Die Reihenfolge konnte nicht optimiert werden. Bitte versuche es erneut."
+      },
       "errors": {
         "noMissions": "Ein Banner muss eine vorhandene Mission enthalten.",
         "numberOfMissions": "Ein Banner muss zwischen {{min}} und {{max}} Missionen enthalten.",
@@ -354,7 +363,7 @@
     "showOfflineBanners": "Zeige Banner, die offline sind",
     "onlyOfficial": "Nur Missionen von NIA",
     "showUnofficialBanners": "Zeige Missionen, die nicht von NIA sind"
- },
+  },
   "duration": {
     "days": "{{count}} d ",
     "hours": "{{count}} h ",

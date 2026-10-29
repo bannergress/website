@@ -10,7 +10,10 @@ import {
   getCreatedBanner,
   submitBanner as submitBannerAction,
   removePendingBanner as removePendingBannerAction,
+  createBanner as createBannerAction,
 } from '../../features/banner'
+import { mapMissions, type Mission } from '../../features/mission'
+import { CollectionOrderOptimizer } from '../../components/collection-order-optimizer/CollectionOrderOptimizer'
 import LoadingOverlay from '../../components/loading-overlay'
 import { BannerInfoWithMap } from '../../components/banner-info-with-map'
 import { NavigationPrompt } from '../../components/navigation-prompt'
@@ -18,7 +21,23 @@ import { withRouter, RouteComponentProps } from '../../hocs/withRouter'
 
 import './PreviewBanner.scss'
 
-class PreviewBanner extends React.Component<
+const PreviewCollectionOptimizer = ({
+  banner,
+  ...props
+}: {
+  banner: Banner
+} & Omit<
+  React.ComponentProps<typeof CollectionOrderOptimizer>,
+  'missions'
+>) => {
+  const missions = React.useMemo(
+    () => mapMissions(banner.missions, (mission) => mission),
+    [banner.missions]
+  )
+  return <CollectionOrderOptimizer {...props} missions={missions} />
+}
+
+export class PreviewBanner extends React.Component<
   PreviewBannerProps,
   PreviewBannerState
 > {
@@ -26,6 +45,7 @@ class PreviewBanner extends React.Component<
     super(props)
     this.state = {
       status: 'initial',
+      optimizing: false,
     }
   }
 
@@ -45,6 +65,7 @@ class PreviewBanner extends React.Component<
   }
 
   onSubmitBanner = () => {
+    if (this.state.optimizing || this.state.status === 'loading') return
     const { submitBanner, history } = this.props
     this.setState({ status: 'loading' })
     submitBanner()
@@ -52,6 +73,22 @@ class PreviewBanner extends React.Component<
         history.push(`/banner/${bannerId}`)
       })
       .catch(() => this.setState({ status: 'error' }))
+  }
+
+  onOptimizingChanged = (optimizing: boolean) => this.setState({ optimizing })
+
+  onOrderMissions = async (missions: Mission[], signal: AbortSignal) => {
+    const { banner, createBanner } = this.props
+    if (!banner || signal.aborted) return
+    await createBanner(
+      {
+        ...banner,
+        missions: Object.fromEntries(
+          missions.map((mission, index) => [index, mission])
+        ),
+      },
+      signal
+    )
   }
 
   getPromptMessage = (pathname?: string) => {
@@ -73,7 +110,7 @@ class PreviewBanner extends React.Component<
 
   render() {
     const { banner, i18n } = this.props
-    const { status } = this.state
+    const { status, optimizing } = this.state
     if (!banner) {
       return <Fragment />
     }
@@ -96,6 +133,18 @@ class PreviewBanner extends React.Component<
             onSubmitButtonClicked={this.onSubmitBanner}
             goBackLabel={i18n?.t('banners.creation.preview.title')}
             onGoBack={this.onBack}
+            submitDisabled={status === 'loading' || optimizing}
+            showMissionOrder={banner.type === 'anyOrder'}
+            mapControls={
+              banner.type === 'anyOrder' ? (
+                <PreviewCollectionOptimizer
+                  banner={banner}
+                  disabled={status === 'loading'}
+                  onOrdered={this.onOrderMissions}
+                  onRunningChange={this.onOptimizingChanged}
+                />
+              ) : undefined
+            }
           />
         </div>
       </>
@@ -107,11 +156,13 @@ export type PreviewBannerProps = {
   banner: Banner | undefined
   submitBanner: () => Promise<string>
   removePendingBanner: () => void
+  createBanner: (banner: Partial<Banner>, signal?: AbortSignal) => Promise<void>
 } & RouteComponentProps &
   WithTranslationProps
 
 interface PreviewBannerState {
   status: 'initial' | 'loading' | 'regress' | 'error'
+  optimizing: boolean
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -121,6 +172,7 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = {
   submitBanner: submitBannerAction,
   removePendingBanner: removePendingBannerAction,
+  createBanner: createBannerAction,
 }
 
 export default connect(

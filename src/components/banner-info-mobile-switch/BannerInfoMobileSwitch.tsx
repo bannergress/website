@@ -16,6 +16,7 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
   onChanged,
   onSubmitButtonClicked,
   onGoBack,
+  submitDisabled,
 }) => {
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -47,6 +48,7 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
           {...attributes}
           type="button"
           onClick={() => onSubmitButtonClicked()}
+          disabled={submitDisabled}
         >
           {submitButton}
         </button>
@@ -112,6 +114,7 @@ export interface BannerInfoMobileSwitchProps {
   onChanged: (view: BannerInfoMobileView) => void
   onSubmitButtonClicked?: () => void
   onGoBack?: () => void
+  submitDisabled?: boolean
 }
 
 export default BannerInfoMobileSwitch
