@@ -40,7 +40,11 @@ const isCoordinate = (value: unknown): value is LatLngLiteral =>
   typeof value.lng === 'number' &&
   Number.isFinite(value.lng)
 
-class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
+export class MapOverview extends React.Component<
+  MapOverviewProps,
+  MapOverviewState
+> {
+  private mapRequestId = 0
   scrollbarsRef = React.createRef<HTMLDivElement>()
   scrollRestoration = new ScrollRestoration({
     key: 'mapScrollPosition',
@@ -101,6 +105,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
       selectedBannerId: urlParams.get('banner') ?? undefined,
       selectedBounds: urlParams.has('banner') ? restoredBounds : undefined,
       status: 'initial',
+      hasMoreBanners: false,
       filter: {
         orderBy: 'created',
         orderDirection: 'DESC',
@@ -149,6 +154,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 
   componentWillUnmount() {
+    this.mapRequestId += 1
     this.scrollRestoration.unmount()
   }
 
@@ -240,31 +246,37 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     const { fetchBanners } = this.props
 
     if (bounds) {
-      this.setState({ status: 'loading' })
+      const requestId = ++this.mapRequestId
+      this.setState({ status: 'loading', hasMoreBanners: false })
       try {
         const northEast = bounds.getNorthEast()
         const southWest = bounds.getSouthWest()
-        if (Math.abs(northEast.lng - southWest.lng) >= 360) {
-          await fetchBanners(northEast.lat, 180, southWest.lat, -180, filter)
-        }
-        await fetchBanners(
+        const wholeWorld = Math.abs(northEast.lng - southWest.lng) >= 360
+        const hasMoreBanners = await fetchBanners(
           northEast.lat,
-          northEast.wrap().lng,
+          wholeWorld ? 180 : northEast.wrap().lng,
           southWest.lat,
-          southWest.wrap().lng,
+          wholeWorld ? -180 : southWest.wrap().lng,
           filter
         )
-        this.setState({ status: 'ready' })
+        if (requestId === this.mapRequestId)
+          this.setState({ status: 'ready', hasMoreBanners })
       } catch {
-        this.setState({ status: 'error' })
+        if (requestId === this.mapRequestId) this.setState({ status: 'error' })
       }
     }
   }
 
   render() {
     const { getBanners, getBanner, i18n } = this.props
-    const { bounds, selectedBannerId, status, selectedBounds, filter } =
-      this.state
+    const {
+      bounds,
+      selectedBannerId,
+      status,
+      selectedBounds,
+      filter,
+      hasMoreBanners,
+    } = this.state
     let banners: Array<Banner> = []
     const boundsToUse = selectedBounds ?? bounds
     if (boundsToUse) {
@@ -345,6 +357,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
               selectedBannerId={selectedBannerId}
               onSelectBanner={this.onSelectBanner}
               loading={status === 'loading'}
+              hasMoreBanners={status === 'ready' && hasMoreBanners}
             />
             <BannersAccordion
               banners={banners}
@@ -375,7 +388,7 @@ export type MapOverviewProps = {
     bottomLeftLat: number,
     bottomLeftLng: number,
     filter: BannerFilter
-  ) => Promise<void>
+  ) => Promise<boolean>
   fetchPreviewBanner: (id: string) => Promise<void>
   getBanner: (bannerId: string) => Banner | undefined
   defaultOnline: boolean | undefined
@@ -389,6 +402,7 @@ interface MapOverviewState {
   selectedBounds: LatLngBounds | undefined
   filter: BannerFilter
   status: 'initial' | 'loading' | 'ready' | 'error'
+  hasMoreBanners: boolean
 }
 
 const mapStateToProps = (state: RootState) => ({

@@ -213,10 +213,9 @@ export const loadMapBannersAction =
         type: SEARCH_MAP_BANNERS,
         payload: response.data,
       })
+      return response.data.length >= api.MAP_BANNERS_LIMIT
     } else {
-      // dispatch({
-      //   type: BROWSE_SEARCH_ERROR,
-      // })
+      throw new Error('Error loading map banners')
     }
   }
 
