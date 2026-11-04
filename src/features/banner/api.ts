@@ -3,6 +3,7 @@ import { BannerFilter } from './filter'
 import { Banner, BannerListType, BannerSettings } from './types'
 
 export const PAGE_SIZE = 9
+export const MAP_BANNERS_LIMIT = 50
 
 export const getBanner = (id: string) => api.get<Banner>(`bnrs/${id}`)
 
@@ -103,5 +104,5 @@ export const searchMapBanners = (
     maxLatitude: topRightLat,
     minLongitude: bottomLeftLng,
     maxLongitude: topRightLng,
-    limit: 50,
+    limit: MAP_BANNERS_LIMIT,
   })

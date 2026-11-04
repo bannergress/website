@@ -1,0 +1,51 @@
+.map-banners-limit button {
+  align-items: center;
+  background: linear-gradient(var(--color-light-black), var(--color-light-black)) padding-box,
+    linear-gradient(180deg, var(--color-border-dark), var(--color-border-light)) border-box;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.3);
+  color: var(--color-white-light);
+  cursor: pointer;
+  display: flex;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  gap: 10px;
+  line-height: 1.4;
+  max-width: 240px;
+  min-height: 44px;
+  padding: 10px 12px;
+  text-align: left;
+
+  &:hover {
+    background: var(--color-dark-gray);
+    border-color: var(--color-border-light);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-border-light);
+    outline-offset: 2px;
+  }
+
+  .map-banners-limit-icon {
+    background: var(--color-light-gray);
+    flex-shrink: 0;
+    height: 20px;
+    mask: url('../../assets/img/icons/warningtriangle.svg') center / contain no-repeat;
+    width: 20px;
+  }
+
+  .map-banners-limit-label {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .map-banners-limit-title {
+    font-weight: 500;
+  }
+
+  .map-banners-limit-action {
+    color: var(--color-map-legend-green);
+  }
+}

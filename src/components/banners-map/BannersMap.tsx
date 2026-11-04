@@ -18,6 +18,7 @@ import { getAttributionLayer } from '../map-detail/getAttributionLayer'
 import { LocateControl } from '../locate'
 import { MapLoadingControl } from '../map-loading-control'
 import { MapZoomControl } from '../map-zoom-control'
+import { MapBannersLimitControl } from '../map-banners-limit-control/MapBannersLimitControl'
 
 import './BannersMap.scss'
 import 'leaflet/dist/leaflet.css'
@@ -72,8 +73,10 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
   }
 
   shouldComponentUpdate(nextProps: Readonly<BannersMapProps>) {
-    const { banners, loading, selectedBannerId, location } = this.props
+    const { banners, loading, selectedBannerId, location, hasMoreBanners } =
+      this.props
     return (
+      hasMoreBanners !== nextProps.hasMoreBanners ||
       loading !== nextProps.loading ||
       location.search !== nextProps.location.search ||
       selectedBannerId !== nextProps.selectedBannerId ||
@@ -299,6 +302,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
           <MapZoomControl />
           <LocateControl />
           <MapLoadingControl />
+          {this.props.hasMoreBanners && <MapBannersLimitControl />}
           {getAttributionLayer()}
           <Pane name="finalPane" style={{ zIndex: 580 }} />
           <MarkerClusterGroup
@@ -321,6 +325,7 @@ class BannersMap extends React.Component<BannersMapProps, BannersMapState> {
 export interface BannersMapProps extends RouteComponentProps {
   banners: Array<Banner>
   loading: boolean
+  hasMoreBanners: boolean
   selectedBannerId?: string
   onMapChanged: (bounds: LatLngBounds) => void
   onSelectBanner: (banner: Banner) => void

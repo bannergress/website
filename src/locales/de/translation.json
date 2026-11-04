@@ -215,7 +215,10 @@
     },
     "locate": "Zeige mir meinen Standort",
     "zoomIn": "Reinzoomen",
-    "zoomOut": "Rauszoomen"
+    "zoomOut": "Rauszoomen",
+    "bannersLimit": "Nicht alle Banner werden angezeigt. Zoome hinein, um mehr Banner zu sehen.",
+    "bannersLimitTitle": "Nicht alle Banner sichtbar",
+    "bannersLimitAction": "Für mehr Banner hineinzoomen"
   },
   "buttons": {
     "addAll": "Alle hinzufügen",
