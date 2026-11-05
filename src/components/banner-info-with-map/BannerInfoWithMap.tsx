@@ -110,6 +110,9 @@ class BannerInfoWithMap extends React.Component<
       onSubmitButtonClicked,
       goBackLabel,
       onGoBack,
+      mapControls,
+      submitDisabled,
+      showMissionOrder,
       i18n,
     } = this.props
     const {
@@ -149,6 +152,7 @@ class BannerInfoWithMap extends React.Component<
               onChanged={this.onMobileViewChanged}
               submitButton={submitButton}
               onSubmitButtonClicked={onSubmitButtonClicked}
+              submitDisabled={submitDisabled}
             />
           </div>
           <div className="banner-info-with-map-goback hide-on-mobile">
@@ -167,6 +171,7 @@ class BannerInfoWithMap extends React.Component<
                     type="button"
                     className="banner-info-with-map-submit positive-action-button hide-on-mobile"
                     onClick={onSubmitButtonClicked}
+                    disabled={submitDisabled}
                   >
                     {submitButton}
                   </button>
@@ -192,6 +197,9 @@ class BannerInfoWithMap extends React.Component<
               />
             </div>
             <div className={`banner-info-additional ${mapPaneClassName} `}>
+              {mapControls && (
+                <div className="banner-info-map-controls">{mapControls}</div>
+              )}
               {bounds && (
                 <MapDetail
                   banner={banner}
@@ -199,6 +207,7 @@ class BannerInfoWithMap extends React.Component<
                   openedMissionIndexes={expandedMissionIndexes}
                   onOpenMission={this.onExpandFromMap}
                   ref={this.mapRef}
+                  showMissionOrder={showMissionOrder}
                 />
               )}
               {issues.length > 0 && <IssuesList issues={issues} />}
@@ -219,6 +228,9 @@ export interface BannerInfoWithMapProps extends WithTranslationProps {
   onSubmitButtonClicked?: () => void
   goBackLabel?: string
   onGoBack?: () => void
+  mapControls?: React.ReactNode
+  submitDisabled?: boolean
+  showMissionOrder?: boolean
 }
 
 interface BannerInfoWithMapState {

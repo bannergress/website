@@ -22,9 +22,10 @@ class Api {
   post<T>(
     url: string,
     data?: unknown,
-    ignoreResponseBody = false
+    ignoreResponseBody = false,
+    signal?: AbortSignal
   ): Promise<ApiResponse<T>> {
-    return this.request('POST', url, {}, data, ignoreResponseBody)
+    return this.request('POST', url, {}, data, ignoreResponseBody, signal)
   }
 
   put<T>(url: string, data?: unknown): Promise<ApiResponse<T>> {
@@ -36,7 +37,8 @@ class Api {
     url: string,
     params: QueryParams,
     data?: unknown,
-    ignoreResponseBody = false
+    ignoreResponseBody = false,
+    signal?: AbortSignal
   ): Promise<ApiResponse<T>> {
     try {
       await this.readyPromise
@@ -51,6 +53,7 @@ class Api {
       })
       const headers = await this.getHeaders()
       const response = await fetch(fullUrl.href, {
+        signal,
         body: data === undefined ? undefined : JSON.stringify(data),
         headers: {
           ...headers,

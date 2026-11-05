@@ -82,8 +82,10 @@ export const updateBanner = (banner: Partial<Banner>) =>
 export const deleteBanner = (banner: Partial<Banner>) =>
   api.delete<void>(`bnrs/${banner.id}`)
 
-export const postBannerPreview = (banner: Partial<Banner>) =>
-  api.post<Banner>('bnrs/preview', banner)
+export const postBannerPreview = (
+  banner: Partial<Banner>,
+  signal?: AbortSignal
+) => api.post<Banner>('bnrs/preview', banner, false, signal)
 
 export const changeBannerSettings = (
   banner: Banner,

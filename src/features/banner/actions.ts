@@ -149,9 +149,10 @@ export const loadUserBannerListBannersAction =
   }
 
 export const createBannerAction =
-  (banner: Partial<Banner>) =>
+  (banner: Partial<Banner>, signal?: AbortSignal) =>
   async (dispatch: Dispatch<BannerActionTypes>) => {
-    const response = await api.postBannerPreview(banner)
+    const response = await api.postBannerPreview(banner, signal)
+    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
     if (response.ok && response.data) {
       dispatch({
         type: CREATE_BANNER,
