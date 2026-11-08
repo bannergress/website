@@ -1,17 +1,35 @@
 name: Deployment
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       environment:
         description: Target environment
         type: environment
         required: true
+        default: test
+
+permissions:
+  contents: read
+
+# Serialize releases to each destination; do not interrupt an active upload.
+concurrency:
+  group: website-deploy-${{ github.event_name == 'push' && 'test' || inputs.environment }}
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    # Pushes to main always use test; production remains manual-only.
+    environment: ${{ github.event_name == 'push' && 'test' || inputs.environment }}
+    env:
+      VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+      VITE_KEYCLOAK_URL: ${{ vars.VITE_KEYCLOAK_URL }}
+      VITE_KEYCLOAK_REALM: ${{ vars.VITE_KEYCLOAK_REALM }}
+      VITE_KEYCLOAK_CLIENT_ID: ${{ vars.VITE_KEYCLOAK_CLIENT_ID }}
 
     steps:
       - uses: actions/checkout@v6
@@ -29,11 +47,6 @@ jobs:
         run: npm run stylelint
       - name: Build project
         run: npm run build
-        env:
-          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
-          VITE_KEYCLOAK_URL: ${{ vars.VITE_KEYCLOAK_URL }}
-          VITE_KEYCLOAK_REALM: ${{ vars.VITE_KEYCLOAK_REALM }}
-          VITE_KEYCLOAK_CLIENT_ID: ${{ vars.VITE_KEYCLOAK_CLIENT_ID }}
       - name: Install ssh files
         run: |
           echo "$SCP_PRIVATE_KEY" > keyfile
