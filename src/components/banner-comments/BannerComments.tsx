@@ -80,7 +80,10 @@ export function BannerComments({
               )
             }
           >
-            <Button danger disabled={state.busy}>
+            <Button
+              danger
+              disabled={state.busy || state.loading || state.loadingMore}
+            >
               {t('comments.withdraw')}
             </Button>
           </Popconfirm>
@@ -115,7 +118,10 @@ export function BannerComments({
           type="error"
           title={t('comments.loadError')}
           action={
-            <Button onClick={() => handlePromise(state.refresh())}>
+            <Button
+              disabled={state.busy || state.loading || state.loadingMore}
+              onClick={() => handlePromise(state.refresh())}
+            >
               {t('comments.retry')}
             </Button>
           }
@@ -126,7 +132,10 @@ export function BannerComments({
           type="error"
           title={t('comments.privateError')}
           action={
-            <Button onClick={() => handlePromise(state.refresh())}>
+            <Button
+              disabled={state.busy || state.loading || state.loadingMore}
+              onClick={() => handlePromise(state.refresh())}
+            >
               {t('comments.retry')}
             </Button>
           }
@@ -211,6 +220,20 @@ export function BannerComments({
       ) : null}
       {state.targetMissing && !state.loading && (
         <p role="status">{t('comments.unavailable')}</p>
+      )}
+      {state.targetError && !state.loading && (
+        <Alert
+          type="error"
+          title={t('comments.targetError')}
+          action={
+            <Button
+              disabled={state.busy || state.loadingMore}
+              onClick={() => handlePromise(state.refresh())}
+            >
+              {t('comments.retry')}
+            </Button>
+          }
+        />
       )}
       {targetOutsidePage && renderComment(target)}
       {privateItems.length > 0 && (

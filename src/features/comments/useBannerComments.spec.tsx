@@ -277,11 +277,102 @@ describe('banner comments lifecycle', () => {
     expect(state.capabilities).toBeUndefined()
   })
 
-  it('loads permalink targets separately and treats denied IDs as unavailable', async () => {
-    vi.mocked(getComment).mockResolvedValue({ ok: false, status: 404 })
-    await render(false, 'guest', 'private-id')
-    expect(getComment).toHaveBeenCalledWith('banner-slug', 'private-id')
-    expect(state.target).toBeUndefined()
-    expect(state.targetMissing).toBe(true)
+  it.each([401, 403, 404])(
+    'treats inaccessible permalink targets as unavailable (%s)',
+    async (status) => {
+      vi.mocked(getComment).mockResolvedValue({ ok: false, status })
+      await render(false, 'guest', 'private-id')
+      expect(getComment).toHaveBeenCalledWith('banner-slug', 'private-id')
+      expect(state.target).toBeUndefined()
+      expect(state.targetMissing).toBe(true)
+      expect(state.targetError).toBe(false)
+    }
+  )
+
+  it.each([429, 500, 503])(
+    'allows retrying transient permalink errors (%s)',
+    async (status) => {
+      vi.mocked(getComment).mockResolvedValue({ ok: false, status })
+      await render(false, 'guest', published.id)
+      expect(state.targetMissing).toBe(false)
+      expect(state.targetError).toBe(true)
+      expect(state.error).toBe(false)
+      vi.mocked(getComment).mockResolvedValue(ok(published))
+      await act(() => state.refresh())
+      expect(state.target).toEqual(published)
+      expect(state.targetError).toBe(false)
+      expect(state.targetMissing).toBe(false)
+    }
+  )
+
+  it('does not report a known public comment as unavailable when its target request fails', async () => {
+    vi.mocked(getComments).mockResolvedValue(
+      ok({ items: [published], publishedCount: 1 })
+    )
+    vi.mocked(getComment).mockResolvedValue({ ok: false, status: 500 })
+    await render(false, 'guest', published.id)
+    expect(state.target).toEqual(published)
+    expect(state.targetMissing).toBe(false)
+    expect(state.targetError).toBe(false)
+  })
+
+  it('defers retry reads until a pending submission has committed', async () => {
+    let resolve!: (response: Awaited<ReturnType<typeof submitComment>>) => void
+    vi.mocked(getOwnComments).mockResolvedValueOnce({ ok: false, status: 500 })
+    vi.mocked(submitComment).mockImplementationOnce(
+      () =>
+        new Promise((done) => {
+          resolve = done
+        })
+    )
+    await render()
+    expect(state.privateError).toBe(true)
+    draft('Publishing while owner history is unavailable')
+    let submission!: Promise<boolean>
+    act(() => {
+      submission = state.submit()
+    })
+    await act(() => state.refresh())
+    expect(getComments).toHaveBeenCalledTimes(1)
+    expect(getOwnComments).toHaveBeenCalledTimes(1)
+    expect(state.busy).toBe(true)
+    const committed = { items: [published], publishedCount: 1 }
+    vi.mocked(getComments).mockResolvedValue(ok(committed))
+    vi.mocked(getOwnComments).mockResolvedValue(ok(committed))
+    await act(async () => {
+      resolve(ok({ comment: published, publishedCount: 1, capabilities: caps }))
+      await submission
+    })
+    expect(getComments).toHaveBeenCalledTimes(2)
+    expect(state.page).toEqual(committed)
+    expect(state.ownPage).toEqual(committed)
+    expect(state.notice).toBe('published')
+    expect(state.privateError).toBe(false)
+  })
+
+  it('prevents writes from starting during a refresh with older captured permissions', async () => {
+    await render()
+    draft('Do not race this write with a refresh')
+    let resolve!: (response: ApiResponse<CommentPage>) => void
+    vi.mocked(getComments).mockImplementationOnce(
+      () =>
+        new Promise((done) => {
+          resolve = done
+        })
+    )
+    let refresh!: Promise<void>
+    act(() => {
+      refresh = state.refresh()
+    })
+    await act(() => state.submit())
+    await act(() => state.withdraw(published.id))
+    expect(submitComment).not.toHaveBeenCalled()
+    expect(withdrawComment).not.toHaveBeenCalled()
+    await act(async () => {
+      resolve(ok(empty))
+      await refresh
+    })
+    expect(state.loading).toBe(false)
+    expect(state.draft).toBe('Do not race this write with a refresh')
   })
 })

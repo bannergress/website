@@ -1,5 +1,6 @@
 {
 "comments": {
+    "targetError": "This comment could not be loaded. Please try again.",
   "title": "Comments",
   "tab": "Comments ({{count}})",
   "anonymousAuthor": "Bannergress user",

@@ -1,5 +1,6 @@
 {
 "comments": {
+    "targetError": "No se pudo cargar este comentario. Inténtalo de nuevo.",
   "title": "Comentarios",
   "tab": "Comentarios ({{count}})",
   "anonymousAuthor": "Usuario de Bannergress",

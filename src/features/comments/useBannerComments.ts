@@ -40,19 +40,24 @@ export function useBannerComments(
   const [actionError, setActionError] = useState<number>()
   const [target, setTarget] = useState<BannerComment>()
   const [targetMissing, setTargetMissing] = useState(false)
+  const [targetError, setTargetError] = useState(false)
+  const [refreshVersion, setRefreshVersion] = useState(0)
   const [draft, setDraft] = useState('')
   const [busy, setBusy] = useState(false)
   const [notice, setNotice] = useState<'published' | 'pending' | 'withdrawn'>()
   const live = useRef(false)
   const locked = useRef(false)
+  const refreshQueued = useRef(false)
   const submission = useRef<{ text: string; id: string } | undefined>(undefined)
   const generation = useRef(0)
 
-  const refresh = useCallback(async () => {
+  const reload = useCallback(async () => {
     const request = ++generation.current
     setLoading(true)
     setError(false)
     setPrivateError(false)
+    setTargetError(false)
+    setTargetMissing(false)
     // Fail closed while refreshing capabilities, including after a denied write.
     setCapabilities(undefined)
     const [publicResult, privateResult, capabilityResult, targetResult] =
@@ -70,10 +75,37 @@ export function useBannerComments(
     setPrivateError(
       authenticated && (!privateResult?.ok || !capabilityResult?.ok)
     )
-    setTarget(targetResult?.ok ? targetResult.data : undefined)
-    setTargetMissing(!!targetId && !targetResult?.ok)
+    // A transient target failure must not masquerade as a missing comment.
+    const knownTarget = [
+      ...(publicResult.ok ? publicResult.data.items : []),
+      ...(privateResult?.ok ? privateResult.data.items : []),
+    ].find((item) => item.id === targetId)
+    setTarget(targetResult?.ok ? targetResult.data : knownTarget)
+    if (targetResult && !targetResult.ok && !knownTarget) {
+      const missing = [401, 403, 404].includes(targetResult.status)
+      setTargetMissing(missing)
+      setTargetError(!missing)
+    }
     setLoading(false)
   }, [authenticated, bannerId, targetId])
+
+  const refresh = useCallback(async () => {
+    // Queue retries and permalink changes until the current mutation finishes;
+    // pre-write GET snapshots must never replace its authoritative result.
+    if (locked.current) {
+      refreshQueued.current = true
+      return
+    }
+    await reload()
+  }, [reload])
+
+  const releaseLock = () => {
+    locked.current = false
+    if (live.current && refreshQueued.current) {
+      refreshQueued.current = false
+      setRefreshVersion((version) => version + 1)
+    }
+  }
 
   useEffect(() => {
     live.current = true
@@ -83,7 +115,7 @@ export function useBannerComments(
       live.current = false
       invalidateRequests()
     }
-  }, [initialized, refresh])
+  }, [initialized, refresh, refreshVersion])
 
   const loadMore = async (own = false) => {
     const cursor = (own ? ownPage : page).nextCursor
@@ -105,18 +137,20 @@ export function useBannerComments(
       } else setActionError(result.status)
     }
     if (live.current) setLoadingMore(false)
-    locked.current = false
+    releaseLock()
   }
 
   const submit = async () => {
     if (
       locked.current ||
+      loading ||
       !capabilities?.canComment ||
       !draft.trim() ||
       Array.from(draft).length > capabilities.maxLength
     )
       return false
     locked.current = true
+    generation.current++
     setBusy(true)
     setActionError(undefined)
     setNotice(undefined)
@@ -146,16 +180,17 @@ export function useBannerComments(
       setNotice(comment.status === 'PUBLISHED' ? 'published' : 'pending')
     } else {
       setActionError(result.status)
-      if (result.status === 401 || result.status === 403) await refresh()
+      if (result.status === 401 || result.status === 403) await reload()
     }
-    locked.current = false
+    releaseLock()
     setBusy(false)
     return result.ok
   }
 
   const withdraw = async (id: string) => {
-    if (locked.current) return
+    if (locked.current || loading) return
     locked.current = true
+    generation.current++
     setBusy(true)
     setActionError(undefined)
     setNotice(undefined)
@@ -177,9 +212,9 @@ export function useBannerComments(
       }))
       if (target?.id === id) setTarget(undefined)
       setNotice('withdrawn')
-      await refresh()
+      await reload()
     } else setActionError(result.status)
-    locked.current = false
+    releaseLock()
     setBusy(false)
   }
 
@@ -194,6 +229,7 @@ export function useBannerComments(
     actionError,
     target,
     targetMissing,
+    targetError,
     draft,
     setDraft,
     busy,
