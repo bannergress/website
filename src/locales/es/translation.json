@@ -1,4 +1,48 @@
 {
+"comments": {
+    "targetError": "No se pudo cargar este comentario. Inténtalo de nuevo.",
+  "title": "Comentarios",
+  "tab": "Comentarios ({{count}})",
+  "anonymousAuthor": "Usuario de Bannergress",
+  "verified": "Ingress verificado",
+  "loading": "Cargando comentarios…",
+  "loadError": "No se pudieron cargar los comentarios.",
+  "privateError": "No se pudieron cargar tus comentarios o permisos para publicar. Inténtalo de nuevo.",
+  "retry": "Reintentar",
+  "signInRequired": "Inicia sesión para escribir un comentario.",
+  "signIn": "Iniciar sesión",
+  "verificationRequired": "Vincula y verifica tu cuenta de Ingress para escribir comentarios.",
+  "verificationPending": "Tu verificación de Ingress está pendiente. Complétala para escribir comentarios.",
+  "verifyAccount": "Verificar tu cuenta",
+  "disabled": "Los nuevos comentarios están desactivados por ahora.",
+  "testExemption": "Entorno de pruebas: los usuarios con sesión iniciada no necesitan vincular Ingress. Esto no verifica tu cuenta.",
+  "premoderation": "Tu comentario será visible después de la aprobación de un moderador.",
+  "postmoderation": "Tu comentario aparece inmediatamente y está sujeto a moderación.",
+  "write": "Tu comentario",
+  "length": "{{length}} / {{maxLength}} caracteres",
+  "submit": "Publicar comentario",
+  "empty": "Aún no hay comentarios publicados.",
+  "loadMore": "Cargar más",
+  "loadMoreOwn": "Cargar más comentarios propios",
+  "ownTitle": "Tus comentarios sin publicar",
+  "withdraw": "Eliminar comentario",
+  "withdrawConfirm": "¿Eliminar tu comentario? Esto no cuenta como una infracción de moderación.",
+  "cancel": "Cancelar",
+  "unavailable": "Este comentario no está disponible o no tienes permiso para verlo.",
+  "rateLimit": "Demasiadas solicitudes. Espera antes de volver a intentarlo. Tu borrador se ha conservado.",
+  "actionError": "La solicitud ha fallado. Tu borrador se ha conservado; inténtalo de nuevo.",
+  "status": {
+    "PUBLISHED": "Publicado",
+    "PENDING": "Pendiente de aprobación",
+    "REJECTED": "Rechazado",
+    "REMOVED": "Retirado por moderación"
+  },
+  "notice": {
+    "published": "Tu comentario se ha publicado.",
+    "pending": "Tu comentario está pendiente de aprobación de un moderador.",
+    "withdrawn": "Tu comentario se ha eliminado."
+  }
+},
   "account": {
     "title": "Cuenta",
     "loading": "Cargando...",

@@ -7,7 +7,7 @@ import SVGBackArrow from '../../assets/img/icons/back-arrow.svg?react'
 
 import './BannerInfoMobileSwitch.scss'
 
-export type BannerInfoMobileView = 'info' | 'map' | 'missions'
+export type BannerInfoMobileView = 'info' | 'map' | 'missions' | 'comments'
 
 const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
   title,
@@ -17,6 +17,8 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
   onSubmitButtonClicked,
   onGoBack,
   submitDisabled,
+  showComments,
+  commentsCount,
 }) => {
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -74,6 +76,7 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
       <button
         {...attributes}
         type="button"
+        aria-pressed={selectedView === view}
         onClick={() => toggleBannerInfo(view)}
       >
         {label}
@@ -98,9 +101,16 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
         </span>
         {createSubmitButton()}
       </div>
-      <div className="mobile-switch-tabs-row" role="tablist">
+      <div className="mobile-switch-tabs-row" role="group">
         {createModeSwitchButton('info', t('buttons.info'))}
         {createModeSwitchButton('missions', t('buttons.missions'))}
+        {showComments &&
+          createModeSwitchButton(
+            'comments',
+            commentsCount === undefined
+              ? t('comments.title')
+              : t('comments.tab', { count: commentsCount })
+          )}
         {createModeSwitchButton('map', t('buttons.map'))}
       </div>
     </div>
@@ -115,6 +125,8 @@ export interface BannerInfoMobileSwitchProps {
   onSubmitButtonClicked?: () => void
   onGoBack?: () => void
   submitDisabled?: boolean
+  showComments?: boolean
+  commentsCount?: number
 }
 
 export default BannerInfoMobileSwitch

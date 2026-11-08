@@ -1,4 +1,48 @@
 {
+"comments": {
+    "targetError": "Dieser Kommentar konnte nicht geladen werden. Bitte versuche es erneut.",
+  "title": "Kommentare",
+  "tab": "Kommentare ({{count}})",
+  "anonymousAuthor": "Bannergress-Nutzer",
+  "verified": "Ingress verifiziert",
+  "loading": "Kommentare werden geladen…",
+  "loadError": "Kommentare konnten nicht geladen werden.",
+  "privateError": "Deine Kommentare oder Schreibberechtigungen konnten nicht geladen werden. Bitte versuche es erneut.",
+  "retry": "Erneut versuchen",
+  "signInRequired": "Melde dich an, um einen Kommentar zu schreiben.",
+  "signIn": "Anmelden",
+  "verificationRequired": "Verknüpfe und verifiziere dein Ingress-Konto, um Kommentare zu schreiben.",
+  "verificationPending": "Deine Ingress-Verifizierung ist noch offen. Schließe sie ab, um Kommentare zu schreiben.",
+  "verifyAccount": "Konto verifizieren",
+  "disabled": "Neue Kommentare sind derzeit deaktiviert.",
+  "testExemption": "Testumgebung: Angemeldete Nutzer benötigen keine Ingress-Verknüpfung. Dein Konto wird dadurch nicht verifiziert.",
+  "premoderation": "Dein Kommentar wird nach Freigabe durch die Moderation sichtbar.",
+  "postmoderation": "Dein Kommentar erscheint sofort und kann nachträglich moderiert werden.",
+  "write": "Dein Kommentar",
+  "length": "{{length}} / {{maxLength}} Zeichen",
+  "submit": "Kommentar veröffentlichen",
+  "empty": "Noch keine veröffentlichten Kommentare.",
+  "loadMore": "Mehr laden",
+  "loadMoreOwn": "Weitere eigene Kommentare laden",
+  "ownTitle": "Deine unveröffentlichten Kommentare",
+  "withdraw": "Kommentar löschen",
+  "withdrawConfirm": "Deinen Kommentar löschen? Dies zählt nicht als Moderationsverstoß.",
+  "cancel": "Abbrechen",
+  "unavailable": "Dieser Kommentar ist nicht verfügbar oder du hast keine Berechtigung, ihn zu sehen.",
+  "rateLimit": "Zu viele Anfragen. Bitte warte vor dem nächsten Versuch. Dein Entwurf bleibt erhalten.",
+  "actionError": "Die Anfrage ist fehlgeschlagen. Dein Entwurf bleibt erhalten. Bitte versuche es erneut.",
+  "status": {
+    "PUBLISHED": "Veröffentlicht",
+    "PENDING": "Wartet auf Freigabe",
+    "REJECTED": "Abgelehnt",
+    "REMOVED": "Durch Moderation entfernt"
+  },
+  "notice": {
+    "published": "Dein Kommentar wurde veröffentlicht.",
+    "pending": "Dein Kommentar wartet auf Freigabe durch die Moderation.",
+    "withdrawn": "Dein Kommentar wurde gelöscht."
+  }
+},
   "account": {
     "title": "Account",
     "loading": "Bearbeite...",
