@@ -1,24 +1,15 @@
 .banner-list-type-control {
   display: flex;
   flex-wrap: wrap;
-  gap: 1em;
+  gap: 6px;
   padding: 5px;
   width: 100%;
 
   .banner-list-type {
-    background: none;
-    border: none;
-    cursor: pointer;
     flex: 1;
     min-height: 44px;
     text-align: center;
     vertical-align: middle;
-
-    &:focus-visible {
-      border-radius: 3px;
-      outline: 2px solid currentcolor;
-      outline-offset: -2px;
-    }
 
     &:disabled {
       cursor: wait;
@@ -136,7 +127,7 @@
 
 .banner-list-type-control-compact {
   flex-direction: column;
-  gap: 2px;
+  gap: 6px;
   padding: 0;
   width: 200px;
 
@@ -145,13 +136,7 @@
     border-radius: 4px;
     display: flex;
     gap: 10px;
-    padding: 0 10px;
     text-align: left;
-
-    &:hover,
-    &.active {
-      background: color-mix(in srgb, var(--color-white) 6%, transparent);
-    }
 
     svg {
       flex-shrink: 0;

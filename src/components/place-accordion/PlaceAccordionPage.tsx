@@ -2,10 +2,11 @@ import React, { FC } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-import { Place } from '../../features/place'
+import { Place, PlaceSortOrder, sortPlaces } from '../../features/place'
 import { RootState } from '../../storeTypes'
 import PlaceEntry from '../place-list/PlaceEntry'
 import { PlaceAccordionEntry } from './PlaceAccordionEntry'
+import PlaceOrderChooser from '../place-order-chooser/PlaceOrderChooser'
 import TriangleUpSVG from '../../assets/img/icons/triangle.svg?react'
 import TriangleDownSVG from '../../assets/img/icons/triangle-down.svg?react'
 
@@ -18,8 +19,10 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
   expanded,
   onSelectPlace,
   onToggleExpand,
+  order,
+  onOrderChanged,
 }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'places' })
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'places' })
 
   let title
   if (currentPlace) {
@@ -62,6 +65,9 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
       </button>
       {expanded && (
         <div className="place-accordion-entries">
+          {children.length > 0 && (
+            <PlaceOrderChooser order={order} onChange={onOrderChanged} />
+          )}
           <PlaceAccordionEntry
             key="all"
             place={parentPlace}
@@ -70,7 +76,11 @@ export const PlaceAccordionPage: FC<PlaceAccordionPageProps> = ({
             selected={currentPlace?.id === undefined}
             aligned={aligned}
           />
-          {children.map((childPlace) => (
+          {sortPlaces(
+            children,
+            order,
+            i18n.resolvedLanguage || i18n.language
+          ).map((childPlace) => (
             <PlaceAccordionEntry
               key={childPlace.id}
               place={childPlace}
@@ -91,6 +101,8 @@ export interface PlaceAccordionPageProps {
   currentPlace: Place | undefined
   hideEmpty: boolean
   expanded: boolean
+  order: PlaceSortOrder
+  onOrderChanged: (order: PlaceSortOrder) => void
   onSelectPlace: (place: Place | undefined) => void
   onToggleExpand: () => void
 }

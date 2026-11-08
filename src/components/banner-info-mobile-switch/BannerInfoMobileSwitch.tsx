@@ -1,9 +1,10 @@
 import { handlePromise } from '../../features/utils/async'
-import React, { FC } from 'react'
+import React, { FC, useId } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import SVGBackArrow from '../../assets/img/icons/back-arrow.svg?react'
+import { ChoiceButtons } from '../choice-buttons/ChoiceButtons'
 
 import './BannerInfoMobileSwitch.scss'
 
@@ -20,6 +21,7 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
 }) => {
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const titleId = useId()
 
   const showGoBack = onGoBack || window.history.length > 1
 
@@ -58,29 +60,6 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
     return null
   }
 
-  const createModeSwitchButton = (
-    view: BannerInfoMobileView,
-    label: string
-  ) => {
-    const attributes = {
-      className: 'mobile-switch-switch-button',
-    }
-
-    if (selectedView === view) {
-      attributes.className = `${attributes.className} active`
-    }
-
-    return (
-      <button
-        {...attributes}
-        type="button"
-        onClick={() => toggleBannerInfo(view)}
-      >
-        {label}
-      </button>
-    )
-  }
-
   return (
     <div className="banner-info-mobile-switch">
       <div className="mobile-switch-title-row">
@@ -93,16 +72,22 @@ const BannerInfoMobileSwitch: FC<BannerInfoMobileSwitchProps> = ({
             <SVGBackArrow title={t('buttons.back')} />
           </button>
         )}
-        <span className="mobile-switch-title" title={title}>
+        <span id={titleId} className="mobile-switch-title" title={title}>
           {title}
         </span>
         {createSubmitButton()}
       </div>
-      <div className="mobile-switch-tabs-row" role="tablist">
-        {createModeSwitchButton('info', t('buttons.info'))}
-        {createModeSwitchButton('missions', t('buttons.missions'))}
-        {createModeSwitchButton('map', t('buttons.map'))}
-      </div>
+      <ChoiceButtons
+        className="mobile-switch-tabs-row"
+        value={selectedView}
+        onChange={toggleBannerInfo}
+        labelledBy={titleId}
+        options={[
+          { value: 'info', label: t('buttons.info') },
+          { value: 'missions', label: t('buttons.missions') },
+          { value: 'map', label: t('buttons.map') },
+        ]}
+      />
     </div>
   )
 }

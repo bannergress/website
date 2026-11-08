@@ -8,7 +8,16 @@
   padding-right: 10px;
 
   .banner-info-mobile-switch-back {
+    background: none;
+    border: none;
+    cursor: pointer;
     flex: 0;
+    font-size: 16px;
+    min-height: 44px;
+
+    &:focus-visible {
+      outline: 2px solid var(--color-white);
+    }
 
     svg {
       height: 1em;
@@ -25,9 +34,9 @@
   }
 
   .mobile-switch-tabs-row {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
+    .choice-button {
+      flex: 1;
+    }
   }
 
   .mobile-switch-title {
@@ -36,20 +45,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
-  }
-
-  button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    outline: none;
-    width: 33%;
-
-    &.active {
-      border: 2px solid var(--color-active-green) !important; /* stylelint-disable-line */
-      border-radius: 4px;
-    }
   }
 
   .positive-action-button {

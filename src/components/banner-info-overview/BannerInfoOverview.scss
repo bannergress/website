@@ -1,3 +1,5 @@
+@use '../choice-buttons/choice-button' as choice;
+
 .banner-info-overview {
   display: flex;
   justify-content: center;
@@ -9,7 +11,7 @@
     padding-right: 4px;
     width: 370px;
 
-    &:not(:last-child){
+    &:not(:last-child) {
       padding-right: 10px;
     }
 
@@ -21,28 +23,21 @@
       margin-top: 15px;
     }
 
-    /* Hide line below the buttons */
     .ant-tabs-nav::before {
       border: none;
     }
 
-    /* Hide overflow button. We don't need it. */
+    .ant-tabs-nav-wrap {
+      padding: 2px;
+    }
 
-    /* The screen is never too small to show both buttons */
-
-    /* If we leave it, the screen flackers when resizing the window */
-
-    /* because it is constantly shown and hidden. An alternative would be to */
-
-    /* make the width of the ant-tabs-nav-list smaller or givt it a right margin */
-
-    /* or padding */
+    // Both tabs fit; keep the overflow trigger from flickering on resize.
     .ant-tabs-nav-more {
       display: none;
     }
 
     .ant-tabs-nav-list {
-      background-color: var(--color-dark-gray);
+      gap: 6px;
       width: 100%;
 
       .ant-tabs-ink-bar {
@@ -50,34 +45,18 @@
       }
 
       .ant-tabs-tab {
-        background-clip: content-box, border-box !important; /* stylelint-disable-line */
-        background-color: var(--color-dark-gray);
-        background-origin: border-box !important; /* stylelint-disable-line */
-        border: solid 2px transparent !important; /* stylelint-disable-line */
-        border-radius: 4px;
-        box-shadow: 2px 1000px 1px var(--color-dark-gray) inset !important; /* stylelint-disable-line */
-        font-size: 16px;
-        margin: 0 !important; /* stylelint-disable-line */
-        transition: linear-gradient ease 0.6s;
-        width: 100%;
+        @include choice.control;
+        flex: 1;
+        justify-content: center;
+        margin: 0;
 
         .ant-tabs-tab-btn {
-          color: var(--color-white);
+          color: inherit;
           text-align: center;
+          text-shadow: none;
           width: 100%;
-        }
-      }
-
-      .ant-tabs-tab-active {
-        background-image: linear-gradient(rgb(255 255 255 / 0), rgb(255 255 255 / 0)), linear-gradient(180deg, var(--color-border-dark), var(--color-border-light)) !important; /* stylelint-disable-line */
-
-        @media (hover: hover) and (pointer: fine) {
-          &:hover {
-            background-image: linear-gradient(rgb(255 255 255 / 0), rgb(255 255 255 / 0)), linear-gradient(0deg, var(--color-border-dark), var(--color-border-light)) !important; /* stylelint-disable-line */
-          }
         }
       }
     }
   }
 }
-

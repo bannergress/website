@@ -1,8 +1,9 @@
-import React, { FC } from 'react'
-import { Radio, Tooltip } from 'antd'
+import React, { FC, useId } from 'react'
+import { Tooltip } from 'antd'
 import { Trans, useTranslation } from 'react-i18next'
 
 import SVGHelp from '../../assets/img/icons/help-round.svg?react'
+import { ChoiceButtons } from '../choice-buttons/ChoiceButtons'
 
 import './AlgorithmDetectionChooser.scss'
 
@@ -26,14 +27,12 @@ const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
   const { t } = useTranslation(undefined, {
     keyPrefix: 'banners.creation.algorithm',
   })
-  const getOption = (algorithm: Algorithm, title: string) => (
-    <Radio.Button value={algorithm}>{title}</Radio.Button>
-  )
+  const labelId = useId()
 
   return (
     <div className="algo-detection-chooser">
       <Tooltip placement="right" title={extractionHelp}>
-        <h3>
+        <h3 id={labelId}>
           <Trans
             i18nKey="banners.creation.algorithm.detection"
             components={{
@@ -48,22 +47,15 @@ const AlgorithmDetectionChooser: FC<AlgorithmDetectionChooserProps> = ({
         <div />
         <div />
       </div>
-      <Radio.Group
+      <ChoiceButtons<Algorithm>
         value={selected}
-        onChange={(e) => {
-          const value: unknown = e.target.value
-          if (
-            value === 'none' ||
-            value === 'title' ||
-            value === 'simple' ||
-            value === 'advanced'
-          )
-            onChange(value)
-        }}
-      >
-        {getOption('none', t('manual'))}
-        {getOption('advanced', t('automatic'))}
-      </Radio.Group>
+        labelledBy={labelId}
+        onChange={onChange}
+        options={[
+          { value: 'none', label: t('manual') },
+          { value: 'advanced', label: t('automatic') },
+        ]}
+      />
     </div>
   )
 }

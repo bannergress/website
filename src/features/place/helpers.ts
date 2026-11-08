@@ -16,21 +16,19 @@ export const createBrowseUri = (place: Place | string) => {
   return generatePath('/browse/:id', { id: placeId })
 }
 
-export const sortPlaces = (places: Place[], order: PlaceSortOrder) => {
-  let sorted = _([...places]).chain()
-
-  // Sort places by name
-  sorted = sorted.sortBy((p) => p.longName)
-
-  if (order === 'numberOfBanners') {
-    // Apply order by number of banners
-    sorted = sorted
-      .reverse()
-      .sortBy((p) => p.numberOfBanners)
-      .reverse()
-  }
-
-  return sorted.value()
+export const sortPlaces = (
+  places: readonly Place[],
+  order: PlaceSortOrder,
+  locale?: string
+) => {
+  const collator = new Intl.Collator(locale, { sensitivity: 'base' })
+  return [...places].sort((a, b) => {
+    if (order === 'numberOfBanners') {
+      const countDifference = b.numberOfBanners - a.numberOfBanners
+      if (countDifference !== 0) return countDifference
+    }
+    return collator.compare(a.longName, b.longName)
+  })
 }
 
 export const extend = <T extends { id?: string }>(

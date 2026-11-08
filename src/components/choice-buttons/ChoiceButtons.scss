@@ -1,0 +1,11 @@
+@use './choice-button' as choice;
+
+.choice-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.choice-button {
+  @include choice.control;
+}
