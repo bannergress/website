@@ -34,6 +34,7 @@ jobs:
           VITE_KEYCLOAK_URL: ${{ vars.VITE_KEYCLOAK_URL }}
           VITE_KEYCLOAK_REALM: ${{ vars.VITE_KEYCLOAK_REALM }}
           VITE_KEYCLOAK_CLIENT_ID: ${{ vars.VITE_KEYCLOAK_CLIENT_ID }}
+          VITE_COMMENTS_ENABLED: ${{ vars.VITE_COMMENTS_ENABLED }}
       - name: Install ssh files
         run: |
           echo "$SCP_PRIVATE_KEY" > keyfile

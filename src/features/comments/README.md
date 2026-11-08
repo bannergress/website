@@ -6,6 +6,11 @@ backend. It does not describe an already deployed API. Enable the UI with
 It defaults off. This flag only exposes the UI; it grants no write permissions
 and cannot enable the test verification exemption.
 
+For the Deployment workflow, set the GitHub environment variable
+`VITE_COMMENTS_ENABLED` to `true` in the selected target environment when it is
+ready. The build forwards this variable to Vite. Leaving it unset or setting it
+to `false` keeps the comments UI disabled.
+
 Requests use the existing API base URL, bearer authentication and language header.
 Only persisted banner detail pages opt in. Create/collection previews do not
 request comments or expose the composer.
