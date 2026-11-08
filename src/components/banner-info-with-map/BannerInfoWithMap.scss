@@ -70,14 +70,15 @@
         height: auto;
         max-width: 864px;
         min-height: 0;
-        min-width: 320px;
+        min-width: 0;
         overflow-y: unset;
         padding: 0.6em;
         width: 100%;
       }
     }
 
-    .banner-info-left-pane-missions {
+    .banner-info-left-pane-missions,
+    .banner-info-left-pane-comments {
       .banner-card {
         @include media-max-md {
           display: none;

@@ -1,0 +1,68 @@
+.banner-comments {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
+
+  .banner-comments-composer,
+  .banner-comment {
+    background: var(--color-dark-gray);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 12px;
+
+    p {
+      margin: 0;
+    }
+
+    button {
+      align-self: flex-start;
+      height: auto;
+      max-width: 100%;
+      white-space: normal;
+    }
+  }
+
+  .banner-comment-heading {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    time {
+      font-size: 12px;
+    }
+  }
+
+  .banner-comment-text {
+    white-space: pre-wrap;
+  }
+
+  .ant-tag {
+    height: auto;
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .ant-alert {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .banner-comments-loading {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-active-green);
+    outline-offset: 2px;
+  }
+}

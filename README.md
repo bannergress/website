@@ -31,6 +31,14 @@ and formatting. `npm run lint:types` runs the type-aware checks alone.
 Both code and style lint fail on warnings. `build` checks the application and Vite
 configuration types before producing the bundle.
 
+## Banner comments (#555)
+
+The frontend is gated by `VITE_COMMENTS_ENABLED` (off by default). Enable it at
+build time after the backend comments API is ready. Posting eligibility, Ingress
+verification and the test-only exemption are always decided by the server.
+See [the API contract](src/features/comments/README.md) for endpoints, DTOs,
+privacy requirements and rollout checks.
+
 ## Dependency migration (#494)
 
 The app uses React 19, Ant Design 6, Redux 5 / React Redux 9, i18next 26 /

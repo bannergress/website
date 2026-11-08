@@ -25,9 +25,24 @@
   }
 
   .mobile-switch-tabs-row {
-    align-items: center;
+    align-items: stretch;
     display: flex;
     flex-direction: row;
+
+    button {
+      border: 2px solid transparent;
+      flex: 1 1 0;
+      font-size: clamp(12px, 3.5vw, 16px);
+      min-width: 0;
+      overflow-wrap: anywhere;
+      padding: 8px 2px;
+      width: auto;
+
+      &:focus-visible {
+        outline: 2px solid var(--color-active-green);
+        outline-offset: -4px;
+      }
+    }
   }
 
   .mobile-switch-title {

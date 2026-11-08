@@ -1,4 +1,47 @@
 {
+"comments": {
+  "title": "Comments",
+  "tab": "Comments ({{count}})",
+  "anonymousAuthor": "Bannergress user",
+  "verified": "Ingress verified",
+  "loading": "Loading comments…",
+  "loadError": "Comments could not be loaded.",
+  "privateError": "Your comments or posting permissions could not be loaded. Please retry.",
+  "retry": "Retry",
+  "signInRequired": "Sign in to write a comment.",
+  "signIn": "Sign in",
+  "verificationRequired": "Link and verify your Ingress account to write comments.",
+  "verificationPending": "Your Ingress verification is pending. Complete it to write comments.",
+  "verifyAccount": "Verify your account",
+  "disabled": "New comments are currently disabled.",
+  "testExemption": "Test environment: Ingress linking is not required for signed-in users. This does not verify your account.",
+  "premoderation": "Your comment will be visible after moderator approval.",
+  "postmoderation": "Your comment appears immediately and is subject to moderation.",
+  "write": "Your comment",
+  "length": "{{length}} / {{maxLength}} characters",
+  "submit": "Post comment",
+  "empty": "No published comments yet.",
+  "loadMore": "Load more",
+  "loadMoreOwn": "Load more of your comments",
+  "ownTitle": "Your unpublished comments",
+  "withdraw": "Delete comment",
+  "withdrawConfirm": "Delete your comment? This does not count as a moderation violation.",
+  "cancel": "Cancel",
+  "unavailable": "This comment is unavailable or you do not have permission to view it.",
+  "rateLimit": "Too many requests. Please wait before trying again. Your draft has been kept.",
+  "actionError": "The request failed. Your draft has been kept; please try again.",
+  "status": {
+    "PUBLISHED": "Published",
+    "PENDING": "Awaiting approval",
+    "REJECTED": "Rejected",
+    "REMOVED": "Removed by moderation"
+  },
+  "notice": {
+    "published": "Your comment has been published.",
+    "pending": "Your comment is awaiting moderator approval.",
+    "withdrawn": "Your comment has been deleted."
+  }
+},
   "account": {
     "title": "Account",
     "loading": "Working on it...",

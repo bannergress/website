@@ -45,7 +45,10 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
         sensitivity: 'accent',
       }) !== 0
     ) {
-      const url = generatePath('/banner/:id', { id: banner.id })
+      const url =
+        generatePath('/banner/:id', { id: banner.id }) +
+        window.location.search +
+        window.location.hash
       return <Navigate to={url} replace />
     }
 
@@ -54,7 +57,10 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
         <>
           <PageTitle title={banner.title} />
           <div className="banner-info-page">
-            <BannerInfoWithMap banner={banner} />
+            <BannerInfoWithMap
+              banner={banner}
+              showComments={import.meta.env.VITE_COMMENTS_ENABLED === 'true'}
+            />
           </div>
         </>
       )
