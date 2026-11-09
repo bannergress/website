@@ -30,7 +30,7 @@ export const loadBannerFilter = (
       filter.online = saved.online ?? undefined
     }
     if (
-      (key === 'browse' || key === 'map') &&
+      (key === 'browse' || key === 'search' || key === 'map') &&
       (typeof saved.onlyOfficialMissions === 'boolean' ||
         saved.onlyOfficialMissions === null)
     ) {

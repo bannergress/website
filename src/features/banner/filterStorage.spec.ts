@@ -68,7 +68,7 @@ describe('saved banner filters', () => {
     }
   )
 
-  it.each(['browse', 'map'] as const)(
+  it.each(['browse', 'search', 'map'] as const)(
     'restores and clears the official missions option in %s',
     (key) => {
       saveBannerFilter(key, { ...defaults, onlyOfficialMissions: true })
