@@ -1,7 +1,7 @@
 {
   "title": "Política de privacidad",
   "updated": "Última actualización:",
-  "date": "22 de octubre de 2026",
+  "date": "9 de noviembre de 2026",
   "intro": "Bannergress es un proyecto de la comunidad para descubrir y compartir mosaicos de misiones de Ingress. Esta política explica cómo el equipo de Bannergress trata los datos personales cuando usas bannergress.com, su API y su servicio de inicio de sesión.",
   "account": {
     "title": "Inicio de sesión y datos de la cuenta",
@@ -21,7 +21,7 @@
   },
   "storage": {
     "title": "Cookies, almacenamiento del navegador y seguridad",
-    "body": "<p>Nuestro servicio de inicio de sesión usa cookies para gestionar la autenticación y recordar tu sesión, también cuando eliges mantenerla abierta. La web utiliza almacenamiento de sesión para preferencias, búsquedas, posición del mapa y desplazamiento; las preferencias de proximidad pueden incluir coordenadas. Puedes borrar estos datos en el navegador. Borrar las cookies puede cerrar tu sesión.</p><p>Las conexiones a la web, la API y el servicio de inicio de sesión de producción usan HTTPS. Los tokens de sesión de Bannergress autorizan las solicitudes a la API. Los datos de cuenta y listas se guardan en las bases de datos de autenticación y del backend, con acceso controlado mediante autenticación y permisos. Los responsables autorizados pueden acceder a datos cuando sea necesario para soporte, mantenimiento, seguridad u obligaciones legales.</p>"
+    "body": "<p>Nuestro servicio de inicio de sesión usa cookies para gestionar la autenticación y recordar tu sesión, también cuando eliges mantenerla abierta. La web guarda las preferencias de ordenación y filtros por separado para cada vista en el almacenamiento local, incluidas la latitud y la longitud exactas seleccionadas para ordenar por proximidad. Estas preferencias y coordenadas se conservan al reiniciar el navegador hasta que las sustituyas o borres los datos guardados de la web en el navegador. Otras preferencias, búsquedas, posición del mapa y desplazamiento usan almacenamiento de sesión. Puedes borrar estos datos en el navegador. Borrar las cookies puede cerrar tu sesión.</p><p>Las conexiones a la web, la API y el servicio de inicio de sesión de producción usan HTTPS. Los tokens de sesión de Bannergress autorizan las solicitudes a la API. Los datos de cuenta y listas se guardan en las bases de datos de autenticación y del backend, con acceso controlado mediante autenticación y permisos. Los responsables autorizados pueden acceder a datos cuando sea necesario para soporte, mantenimiento, seguridad u obligaciones legales.</p>"
   },
   "sharing": {
     "title": "Acceso de terceros con tu consentimiento",
