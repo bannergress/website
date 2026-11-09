@@ -48,7 +48,7 @@ import {
 } from '../../features/banner/filterStorage'
 import { ScrollRestoration } from '../../features/scroll-restoration'
 
-class Browser extends React.Component<BrowserProps, BrowserState> {
+export class Browser extends React.Component<BrowserProps, BrowserState> {
   scrollRestoration = new ScrollRestoration({
     key: 'browseScrollPosition',
     // navigating to a banner's details, or to another place within /browse
@@ -113,7 +113,11 @@ class Browser extends React.Component<BrowserProps, BrowserState> {
   }
 
   componentDidUpdate() {
-    if (this.props.banners.length > 0) this.scrollRestoration.restore()
+    // Cached banners also exist while place data is loading. Restoring against
+    // that short loading view clamps the saved position before the list mounts.
+    if (this.state.status === 'success' && this.props.banners.length > 0) {
+      this.scrollRestoration.restore()
+    }
   }
 
   fetchChildren = async (

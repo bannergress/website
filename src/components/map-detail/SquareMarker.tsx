@@ -1,6 +1,6 @@
 import { LatLng } from 'leaflet'
 import React, { FC } from 'react'
-import { Marker } from 'react-leaflet'
+import MapMarker from './MapMarker'
 import { EndMarkerData, setMarkerData } from './MarkerData'
 import { getMarkerDataIcon } from './MarkerIcons'
 
@@ -16,14 +16,14 @@ const SquareMarker: FC<SquareMarkerProps> = ({
 
   if (coords) {
     return (
-      <Marker
+      <MapMarker
         icon={icon}
         position={[coords.lat, coords.lng]}
         ref={(el) => setMarkerData(el, markerData)}
         pane={pane || 'markerPane'}
       >
         {children}
-      </Marker>
+      </MapMarker>
     )
   } else {
     return <></>

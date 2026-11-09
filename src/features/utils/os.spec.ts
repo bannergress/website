@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-const navigator = { userAgent: '' }
+const navigator = { userAgent: '', platform: '', maxTouchPoints: 0 }
 
 afterEach(() => vi.unstubAllGlobals())
 
@@ -31,6 +31,16 @@ describe('device detection with UAParser 2', () => {
       ios: true,
     },
     {
+      name: 'iPad in desktop browsing mode',
+      userAgent:
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15',
+      platform: 'MacIntel',
+      maxTouchPoints: 5,
+      mobile: true,
+      android: false,
+      ios: false,
+    },
+    {
       name: 'desktop',
       userAgent:
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -38,12 +48,17 @@ describe('device detection with UAParser 2', () => {
       android: false,
       ios: false,
     },
-  ])('recognizes $name', async ({ userAgent, mobile, android, ios }) => {
-    navigator.userAgent = userAgent
-    vi.stubGlobal('window', { navigator })
-    const { isMobile, isAndroid, isIOS } = await import('./os')
-    expect(isMobile()).toBe(mobile)
-    expect(isAndroid()).toBe(android)
-    expect(isIOS()).toBe(ios)
-  })
+  ])(
+    'recognizes $name',
+    async ({ userAgent, mobile, android, ios, platform, maxTouchPoints }) => {
+      navigator.userAgent = userAgent
+      navigator.platform = platform ?? ''
+      navigator.maxTouchPoints = maxTouchPoints ?? 0
+      vi.stubGlobal('window', { navigator })
+      const { isMobile, isAndroid, isIOS } = await import('./os')
+      expect(isMobile()).toBe(mobile)
+      expect(isAndroid()).toBe(android)
+      expect(isIOS()).toBe(ios)
+    }
+  )
 })

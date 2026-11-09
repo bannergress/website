@@ -41,7 +41,7 @@ const InfiniteBannerList: FC<InfiniteBannerListProps> = ({
         includeAddedList={includeAddedList}
         includeRelevance={includeRelevance}
       />
-      {status === 'resolved' && !data.length ? (
+      {status === 'resolved' && !data.length && !hasMore ? (
         noResultsMessage
       ) : (
         <BannerList

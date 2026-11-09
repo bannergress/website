@@ -1,8 +1,9 @@
 {
   "extends": ["stylelint-config-standard-scss"],
-  "plugins": ["stylelint-order"],
+  "plugins": ["stylelint-order", "stylelint-use-nesting"],
   "rules": {
     "alpha-value-notation": "number",
+    "csstools/use-nesting": "always",
     "at-rule-no-unknown": null,
     "declaration-empty-line-before": "never",
     "declaration-no-important": true,
