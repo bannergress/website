@@ -25,6 +25,19 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllGlobals())
 
 describe('saved banner filters', () => {
+  it.each(['search', 'map'] as const)(
+    'uses the legacy online preference until %s has a saved choice',
+    (key) => {
+      for (const online of [true, false, undefined]) {
+        const legacyDefaults = { ...defaults, online }
+        expect(loadBannerFilter(key, legacyDefaults).online).toBe(online)
+      }
+
+      saveBannerFilter(key, { ...defaults, online: undefined })
+      expect(loadBannerFilter(key, defaults).online).toBeUndefined()
+    }
+  )
+
   it('keeps every view and personal list independent', () => {
     const keys: BannerFilterKey[] = [
       'browse',

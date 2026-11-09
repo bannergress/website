@@ -30,6 +30,7 @@ import {
   saveBannerFilter,
 } from '../../features/banner/filterStorage'
 import { ScrollRestoration } from '../../features/scroll-restoration'
+import { getDefaultOnline } from '../../features/settings/selectors'
 
 const isCoordinate = (value: unknown): value is LatLngLiteral =>
   typeof value === 'object' &&
@@ -99,7 +100,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     const filter = loadBannerFilter('map', {
       orderBy: 'created',
       orderDirection: 'DESC',
-      online: true,
+      online: props.defaultOnline,
     })
     if (onlyOfficial) filter.onlyOfficialMissions = true
 
@@ -361,6 +362,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 }
 export type MapOverviewProps = {
+  defaultOnline: boolean | undefined
   getBanners: (
     topRightLat: number,
     topRightLng: number,
@@ -390,6 +392,7 @@ interface MapOverviewState {
 }
 
 const mapStateToProps = (state: RootState) => ({
+  defaultOnline: getDefaultOnline(state),
   getBanners: (
     topRightLat: number,
     topRightLng: number,

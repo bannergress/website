@@ -32,6 +32,7 @@ import {
   saveBannerFilter,
 } from '../../features/banner/filterStorage'
 import { ScrollRestoration } from '../../features/scroll-restoration'
+import { getDefaultOnline } from '../../features/settings/selectors'
 
 class Search extends React.Component<SearchProps, SearchState> {
   scrollRestoration = new ScrollRestoration({
@@ -49,7 +50,7 @@ class Search extends React.Component<SearchProps, SearchState> {
       filter: loadBannerFilter('search', {
         orderBy: 'relevance',
         orderDirection: 'DESC',
-        online: true,
+        online: props.defaultOnline,
       }),
       searchTerm: '',
       pageBanners: 0,
@@ -276,6 +277,7 @@ class Search extends React.Component<SearchProps, SearchState> {
 }
 
 export type SearchProps = {
+  defaultOnline: boolean | undefined
   banners: Array<Banner>
   places: Array<Place>
   hasMoreBanners: boolean
@@ -299,6 +301,7 @@ interface SearchState {
 }
 
 const mapStateToProps = (state: RootState) => ({
+  defaultOnline: getDefaultOnline(state),
   banners: getSearchBanners(state),
   places: getSearchPlaces(state),
   hasMoreBanners: getHasMoreSearchBanners(state),
