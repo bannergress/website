@@ -42,8 +42,10 @@ import {
   getDefaultOnline,
   getDefaultOrder,
 } from '../../features/settings/selectors'
-import { updateSettingsAction } from '../../features/settings/actions'
-import { SettingsState } from '../../features/settings/types'
+import {
+  loadBannerFilter,
+  saveBannerFilter,
+} from '../../features/banner/filterStorage'
 import { ScrollRestoration } from '../../features/scroll-restoration'
 
 export class Browser extends React.Component<BrowserProps, BrowserState> {
@@ -61,13 +63,13 @@ export class Browser extends React.Component<BrowserProps, BrowserState> {
   constructor(props: BrowserProps) {
     super(props)
     this.state = {
-      filter: {
+      filter: loadBannerFilter('browse', {
         orderBy: props.defaultOrderBy,
         orderDirection: props.defaultOrderDirection,
         online: props.defaultOnline,
         proximityLatitude: props.defaultProximityLatitude,
         proximityLongitude: props.defaultProximityLongitude,
-      },
+      }),
       page: 0,
       status: 'initial',
     }
@@ -139,7 +141,7 @@ export class Browser extends React.Component<BrowserProps, BrowserState> {
   }
 
   onFilterChanged = (filter: BannerFilter) => {
-    const { fetchBanners, match, updateSettings } = this.props
+    const { fetchBanners, match } = this.props
     const { placeId } = match.params
 
     this.setState({
@@ -147,13 +149,7 @@ export class Browser extends React.Component<BrowserProps, BrowserState> {
       page: 0,
     })
     this.scrollRestoration.invalidate()
-    updateSettings({
-      defaultOnline: filter.online,
-      defaultOrderBy: filter.orderBy,
-      defaultOrderDirection: filter.orderDirection,
-      defaultProximityLatitude: filter.proximityLatitude,
-      defaultProximityLongitude: filter.proximityLongitude,
-    })
+    saveBannerFilter('browse', filter)
     handlePromise(fetchBanners(placeId, filter, 0))
   }
 
@@ -332,7 +328,6 @@ export type BrowserProps = {
     filter: BannerFilter,
     page: number
   ) => Promise<void>
-  updateSettings: (settings: Partial<SettingsState>) => void
   resetBrowsedBanners: () => void
 } & RouteComponentProps<{ placeId: string }> &
   WithTranslationProps
@@ -360,7 +355,6 @@ const mapDispatchToProps = {
   fetchBanners: loadBrowsedBannersAction,
   fetchAdministrativeAreas: loadAdministrativeAreasAction,
   fetchPlace: loadPlaceAction,
-  updateSettings: updateSettingsAction,
   resetBrowsedBanners: resetBrowsedBannersAction,
 }
 

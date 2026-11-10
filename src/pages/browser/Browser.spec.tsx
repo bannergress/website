@@ -61,7 +61,6 @@ describe('Browse scroll restoration', () => {
         fetchAdministrativeAreas: refetchPlaces,
         fetchPlace: refetchPlaces,
         fetchBanners: vi.fn(),
-        updateSettings: vi.fn(),
         resetBrowsedBanners: vi.fn(),
         location: { pathname: '/browse', search: '' },
         history: {

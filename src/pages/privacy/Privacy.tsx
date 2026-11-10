@@ -70,7 +70,7 @@ const Privacy: FC = () => {
       <article className="privacy-page" aria-labelledby="privacy-title">
         <h1 id="privacy-title">{t('title')}</h1>
         <p className="privacy-updated">
-          {t('updated')} <time dateTime="2026-10-22">{t('date')}</time>
+          {t('updated')} <time dateTime="2026-11-09">{t('date')}</time>
         </p>
         <p>{t('intro')}</p>
         {sections.map((section) => (

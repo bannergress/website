@@ -1,7 +1,7 @@
 {
   "title": "Privacy Policy",
   "updated": "Last updated:",
-  "date": "22 October 2026",
+  "date": "9 November 2026",
   "intro": "Bannergress is a community project for discovering and sharing Ingress mission banners. This policy explains how the Bannergress team handles personal data when you use bannergress.com, its API, and its sign-in service.",
   "account": {
     "title": "Sign-in and account data",
@@ -21,7 +21,7 @@
   },
   "storage": {
     "title": "Cookies, browser storage, and security",
-    "body": "<p>Our sign-in service uses cookies to manage authentication and remember your session, including when you choose to stay signed in. The website uses session storage for preferences, searches, map position, and scroll position; proximity preferences can include coordinates. You can clear this data in your browser. Clearing cookies may sign you out.</p><p>Connections to the production website, API, and sign-in service use HTTPS. Bannergress session tokens authorize API requests. Account and list data are stored in the authentication and backend databases, with access controlled by authentication and permissions. Authorized maintainers may access data as needed for support, maintenance, security, or legal obligations.</p>"
+    "body": "<p>Our sign-in service uses cookies to manage authentication and remember your session, including when you choose to stay signed in. The website stores sorting and filter preferences separately for each view in local storage, including the exact latitude and longitude selected for proximity sorting. These preferences and coordinates remain across browser restarts until you replace them or clear the website's stored data in your browser. Other preferences, searches, map position, and scroll position use session storage. You can clear this data in your browser. Clearing cookies may sign you out.</p><p>Connections to the production website, API, and sign-in service use HTTPS. Bannergress session tokens authorize API requests. Account and list data are stored in the authentication and backend databases, with access controlled by authentication and permissions. Authorized maintainers may access data as needed for support, maintenance, security, or legal obligations.</p>"
   },
   "sharing": {
     "title": "Third-party access with your consent",

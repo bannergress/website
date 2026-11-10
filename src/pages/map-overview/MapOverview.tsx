@@ -25,10 +25,12 @@ import BannersAccordion from '../../components/banners-accordion'
 import './MapOverview.scss'
 import { BannerFilter } from '../../features/banner/filter'
 import BannerOrderChooser from '../../components/banner-order-chooser'
-import { SettingsState } from '../../features/settings/types'
-import { updateSettingsAction } from '../../features/settings/actions'
-import { getDefaultOnline } from '../../features/settings/selectors'
+import {
+  loadBannerFilter,
+  saveBannerFilter,
+} from '../../features/banner/filterStorage'
 import { ScrollRestoration } from '../../features/scroll-restoration'
+import { getDefaultOnline } from '../../features/settings/selectors'
 
 const isCoordinate = (value: unknown): value is LatLngLiteral =>
   typeof value === 'object' &&
@@ -91,22 +93,23 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   constructor(props: MapOverviewProps) {
     super(props)
 
-    const { location, defaultOnline } = this.props
+    const { location } = this.props
     const urlParams = new URLSearchParams(location.search)
     const onlyOfficial = urlParams.get('onlyOfficial') !== null
     const restoredBounds = this.loadBounds()
+    const filter = loadBannerFilter('map', {
+      orderBy: 'created',
+      orderDirection: 'DESC',
+      online: props.defaultOnline,
+    })
+    if (onlyOfficial) filter.onlyOfficialMissions = true
 
     this.state = {
       bounds: restoredBounds,
       selectedBannerId: urlParams.get('banner') ?? undefined,
       selectedBounds: urlParams.has('banner') ? restoredBounds : undefined,
       status: 'initial',
-      filter: {
-        orderBy: 'created',
-        orderDirection: 'DESC',
-        online: defaultOnline,
-        onlyOfficialMissions: onlyOfficial || undefined,
-      },
+      filter,
     }
   }
 
@@ -162,7 +165,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
 
   onFilterChanged = (filter: BannerFilter) => {
     const { bounds } = this.state
-    const { location, history, resetBanners, updateSettings } = this.props
+    const { location, history, resetBanners } = this.props
     const urlParams = new URLSearchParams(location.search)
 
     if (filter.onlyOfficialMissions) {
@@ -179,9 +182,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
     this.setState({ filter })
     this.scrollRestoration.invalidate()
 
-    updateSettings({
-      defaultOnline: filter.online,
-    })
+    saveBannerFilter('map', filter)
     resetBanners()
     handlePromise(this.onLoadBanners(bounds!, filter))
   }
@@ -361,6 +362,7 @@ class MapOverview extends React.Component<MapOverviewProps, MapOverviewState> {
   }
 }
 export type MapOverviewProps = {
+  defaultOnline: boolean | undefined
   getBanners: (
     topRightLat: number,
     topRightLng: number,
@@ -378,8 +380,6 @@ export type MapOverviewProps = {
   ) => Promise<void>
   fetchPreviewBanner: (id: string) => Promise<void>
   getBanner: (bannerId: string) => Banner | undefined
-  defaultOnline: boolean | undefined
-  updateSettings: (settings: Partial<SettingsState>) => void
 } & RouteComponentProps &
   WithTranslationProps
 
@@ -392,6 +392,7 @@ interface MapOverviewState {
 }
 
 const mapStateToProps = (state: RootState) => ({
+  defaultOnline: getDefaultOnline(state),
   getBanners: (
     topRightLat: number,
     topRightLng: number,
@@ -406,7 +407,6 @@ const mapStateToProps = (state: RootState) => ({
       bottomLeftLng
     ),
   getBanner: (bannerId: string) => getBannerSelector(state, bannerId),
-  defaultOnline: getDefaultOnline(state),
   mapBannersCount: state.banner.mapBanners.length,
 })
 
@@ -414,7 +414,6 @@ const mapDispatchToProps = {
   resetBanners: resetMapBanners,
   fetchBanners: loadMapBanners,
   fetchPreviewBanner: loadBanner,
-  updateSettings: updateSettingsAction,
 }
 
 export default connect(

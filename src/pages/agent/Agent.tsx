@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react'
+import { FC, Fragment, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { PageTitle } from '../../components/page-title/PageTitle'
 import { useTranslation } from 'react-i18next'
@@ -15,12 +15,15 @@ const Agent: FC = () => {
   const { t } = useTranslation()
   const title = `Agent ${agentName}`
 
-  const initialFilter: BannerFilter = {
-    author: agentName,
-    orderBy: 'created',
-    orderDirection: 'DESC',
-    online: true,
-  }
+  const initialFilter = useMemo<BannerFilter>(
+    () => ({
+      author: agentName,
+      orderBy: 'created',
+      orderDirection: 'DESC',
+      online: true,
+    }),
+    [agentName]
+  )
 
   return (
     <Fragment>
@@ -31,6 +34,8 @@ const Agent: FC = () => {
           <LoginRequired>
             <h2>{t('banners.title')}</h2>
             <InfiniteBannerList
+              key={agentName}
+              filterKey="agent"
               initialFilter={initialFilter}
               noResultsMessage={t('banners.notFound')}
             />
