@@ -14,7 +14,7 @@ Start the app
 
 ## Development checks
 
-Use Node.js 24.13 or newer within Node 24, or Node.js 26.x.
+Use Node.js 24.15 or newer within Node 24, or Node.js 26.x.
 CI runs on Node 24, and `@types/node` targets Node 24.
 
 ```sh
@@ -30,6 +30,13 @@ files. It runs Oxlint with type information, then ESLint for Hooks, translations
 and formatting. `npm run lint:types` runs the type-aware checks alone.
 Both code and style lint fail on warnings. `build` checks the application and Vite
 configuration types before producing the bundle.
+
+Stylelint 18 requires Node.js 24.15 or newer within Node 24. The SCSS config
+packages and `stylelint-scss` have not yet declared Stylelint 18 support, so
+`package.json` temporarily overrides their Stylelint peer ranges and selects
+the compatible standard 41 / recommended 19 configs. This removes the deleted
+`declaration-block-single-line-max-declarations` rule while retaining the SCSS
+rules. Remove these overrides when the SCSS packages support Stylelint 18.
 
 ## Dependency migration (#494)
 
