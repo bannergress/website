@@ -3,6 +3,8 @@ import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
 import { BannerListType, getBannerListTypeText } from '../../features/banner'
+import { ChoiceButton } from '../choice-buttons/ChoiceButton'
+import '../choice-buttons/ChoiceButtons.scss'
 
 import './BannerListTypeNavigation.scss'
 
@@ -19,7 +21,10 @@ const BannerListTypeNavigation: FC<BannerListTypeNavigationProps> = ({
       const link = `${baseUrl}${listType}`
 
       return (
-        <Link className={`banner-list-type  ${activeClass}`} to={link}>
+        <Link
+          className={`choice-button banner-list-type ${activeClass}`}
+          to={link}
+        >
           {getBannerListTypeText(listType)}
         </Link>
       )
@@ -27,18 +32,21 @@ const BannerListTypeNavigation: FC<BannerListTypeNavigationProps> = ({
 
     if (!active && onClickListType) {
       return (
-        <button
+        <ChoiceButton
           type="button"
           className={`banner-list-type  ${activeClass}`}
           onClick={handleAsync(() => onClickListType(listType))}
         >
           {getBannerListTypeText(listType)}
-        </button>
+        </ChoiceButton>
       )
     }
 
     return (
-      <span className={`banner-list-type  ${activeClass}`}>
+      <span
+        className={`choice-button banner-list-type ${activeClass}`}
+        aria-current={active ? 'page' : undefined}
+      >
         {getBannerListTypeText(listType)}
       </span>
     )

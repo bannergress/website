@@ -1,6 +1,8 @@
 .algo-detection-chooser {
+  align-items: center;
   display: flex;
-  flex-wrap: wrap-reverse;
+  flex-wrap: wrap;
+  gap: 8px;
   justify-content: space-between;
   width: 100%;
 

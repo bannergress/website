@@ -193,6 +193,11 @@
   "loading": "Lade...",
   "loadingMore": "Lade weitere Einträge...",
   "places": {
+    "sort": {
+      "label": "Orte sortieren",
+      "name": "Name A–Z",
+      "numberOfBanners": "Meiste Banner"
+    },
     "title": "Orte",
     "notFound": "Ort nicht gefunden",
     "notFound_other": "Keine Orte gefunden",
@@ -227,6 +232,8 @@
     "zoomOut": "Rauszoomen"
   },
   "buttons": {
+    "on": "An",
+    "off": "Aus",
     "addAll": "Alle hinzufügen",
     "removeAll": "Alle entfernen",
     "review": "Überprüfen",
@@ -362,7 +369,7 @@
     "filterAndSort": "Filtern und Sortieren",
     "showOfflineBanners": "Zeige Banner, die offline sind",
     "onlyOfficial": "Nur Missionen von NIA",
-    "showUnofficialBanners": "Zeige Missionen, die nicht von NIA sind"
+    "showUnofficialBanners": "Nicht-NIA-Banner anzeigen"
   },
   "duration": {
     "days": "{{count}} d ",

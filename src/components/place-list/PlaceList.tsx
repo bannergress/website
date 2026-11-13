@@ -4,6 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 
 import { Place, PlaceSortOrder, sortPlaces } from '../../features/place'
 import PlaceEntry from './PlaceEntry'
+import PlaceOrderChooser from '../place-order-chooser/PlaceOrderChooser'
 
 import './PlaceList.scss'
 
@@ -13,8 +14,9 @@ const PlaceList: FC<PlaceListProps> = ({
   selectedPlaces,
   places,
   onSelectPlace,
+  onOrderChanged,
 }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const onKeyDown = (event: React.KeyboardEvent<Element>, place: Place) => {
     if (event.key === 'Enter') {
@@ -26,7 +28,9 @@ const PlaceList: FC<PlaceListProps> = ({
     (places && places.length > 0) ||
     (selectedPlaces && selectedPlaces.length > 0)
   ) {
-    const sortedPlaces = places ? sortPlaces(places, order) : places
+    const sortedPlaces = places
+      ? sortPlaces(places, order, i18n.resolvedLanguage || i18n.language)
+      : places
 
     const aligned = Boolean(
       places && places.find((place) => place.type === 'locality')
@@ -60,6 +64,9 @@ const PlaceList: FC<PlaceListProps> = ({
             </span>
           </h2>
         ))}
+        {Boolean(sortedPlaces?.length) && (
+          <PlaceOrderChooser order={order} onChange={onOrderChanged} />
+        )}
         {sortedPlaces?.map((place) => (
           <div
             key={place.id}
@@ -93,6 +100,7 @@ export interface PlaceListProps {
   selectedPlaces?: Array<Place>
   places: Array<Place> | undefined
   order: PlaceSortOrder
+  onOrderChanged: (order: PlaceSortOrder) => void
   onSelectPlace: (place: Place) => void
 }
 

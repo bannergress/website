@@ -1,4 +1,8 @@
 .banner-advanced-options {
+  .choice-buttons {
+    justify-content: flex-end;
+  }
+
   .banner-type-help {
     align-items: center;
     background: none;
@@ -36,10 +40,6 @@
         ) !important; /* stylelint-disable-line */
       }
     }
-  }
-
-  label {
-    width: 100%;
   }
 
   .date-picker-hidden {

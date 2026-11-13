@@ -193,6 +193,11 @@
   "loading": "Loading...",
   "loadingMore": "Loading more items...",
   "places": {
+    "sort": {
+      "label": "Sort places",
+      "name": "Name A–Z",
+      "numberOfBanners": "Most banners"
+    },
     "title": "Places",
     "notFound": "Place not found",
     "notFound_other": "No places found",
@@ -228,6 +233,8 @@
     "zoomOut": "Zoom Out"
   },
   "buttons": {
+    "on": "On",
+    "off": "Off",
     "addAll": "Add All",
     "removeAll": "Remove All",
     "review": "Review",
@@ -364,7 +371,7 @@
     "filterAndSort": "Filter and Sort",
     "showOfflineBanners": "Show offline banners",
     "onlyOfficial": "Show only official NIA mission collections",
-    "showUnofficialBanners": "Show non-NIA missions"
+    "showUnofficialBanners": "Show non-NIA banners"
   },
   "duration": {
     "days": "{{count}} d ",

@@ -8,6 +8,7 @@ import SVGTodo from '../../assets/img/icons/todo.svg?react'
 import SVGDone from '../../assets/img/icons/done.svg?react'
 import SVGBlacklist from '../../assets/img/icons/blacklist.svg?react'
 import SVGList from '../../assets/img/icons/list.svg?react'
+import { ChoiceButton } from '../choice-buttons/ChoiceButton'
 
 import './BannerListTypeControl.scss'
 
@@ -80,7 +81,7 @@ const BannerListTypeControl: FC<BannerListTypeControlProps> = ({
       onKeyDown={closeOnEscape}
     >
       {options.map(({ type, key, icon }) => (
-        <button
+        <ChoiceButton
           key={type}
           type="button"
           className={`banner-list-type banner-list-type-${type} ${bannerListType === type ? 'active' : ''}`}
@@ -102,7 +103,7 @@ const BannerListTypeControl: FC<BannerListTypeControlProps> = ({
           ) : (
             <Trans i18nKey={`banners.${key}.control`} components={{ icon }} />
           )}
-        </button>
+        </ChoiceButton>
       ))}
       {failed && (
         <div className="banner-list-type-error error-text" role="alert">

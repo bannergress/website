@@ -1,0 +1,32 @@
+@mixin control {
+  background: var(--color-light-black);
+  border: 1px solid var(--color-gray);
+  border-radius: 4px;
+  color: var(--color-white-light);
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  min-height: 44px;
+  padding: 6px 10px;
+
+  &[aria-pressed='true'],
+  &[aria-checked='true'],
+  &[aria-current='page'],
+  &.ant-tabs-tab-active {
+    background: var(--color-dark-gray);
+    border-color: var(--color-white);
+    box-shadow: inset 0 -3px var(--color-border-light);
+    font-weight: bold;
+  }
+
+  &:focus-visible,
+  &:has(:focus-visible) {
+    outline: 2px solid var(--color-white);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}

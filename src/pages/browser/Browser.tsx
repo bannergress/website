@@ -22,6 +22,7 @@ import {
   getPlace as getPlaceSelector,
   loadCountries as loadCountriesAction,
   Place,
+  PlaceSortOrder,
   createMapUri,
 } from '../../features/place'
 import PlaceList from '../../components/place-list'
@@ -45,6 +46,12 @@ import {
 import { updateSettingsAction } from '../../features/settings/actions'
 import { SettingsState } from '../../features/settings/types'
 import { ScrollRestoration } from '../../features/scroll-restoration'
+import {
+  getPlaceSortOrder,
+  loadPlaceSortOrders,
+  savePlaceSortOrders,
+  PlaceSortOrders,
+} from '../../features/place/sortOrderPreference'
 
 export class Browser extends React.Component<BrowserProps, BrowserState> {
   scrollRestoration = new ScrollRestoration({
@@ -70,6 +77,7 @@ export class Browser extends React.Component<BrowserProps, BrowserState> {
       },
       page: 0,
       status: 'initial',
+      placeSortOrders: loadPlaceSortOrders(),
     }
   }
 
@@ -157,6 +165,12 @@ export class Browser extends React.Component<BrowserProps, BrowserState> {
     handlePromise(fetchBanners(placeId, filter, 0))
   }
 
+  onPlaceOrderChanged = (level: number, order: PlaceSortOrder) => {
+    const placeSortOrders = { ...this.state.placeSortOrders, [level]: order }
+    this.setState({ placeSortOrders })
+    savePlaceSortOrders(placeSortOrders)
+  }
+
   onPlaceSelected = async (place: Place | undefined) => {
     const { fetchBanners, history } = this.props
     const { filter } = this.state
@@ -203,7 +217,7 @@ export class Browser extends React.Component<BrowserProps, BrowserState> {
       hasMore,
       i18n,
     } = this.props
-    const { filter, selectedPlaceId, status } = this.state
+    const { filter, selectedPlaceId, status, placeSortOrders } = this.state
 
     if (status === 'initial') {
       return <LoadingOverlay text={i18n!.t('loading')} active />
@@ -242,7 +256,10 @@ export class Browser extends React.Component<BrowserProps, BrowserState> {
 
           <PlaceList
             title={selectedPlace ? undefined : i18n!.t('places.countries')}
-            order="numberOfBanners"
+            order={getPlaceSortOrder(placeSortOrders, selectedPlaces.length)}
+            onOrderChanged={(order) =>
+              this.onPlaceOrderChanged(selectedPlaces.length, order)
+            }
             places={administrativeAreas || countries}
             selectedPlaces={selectedPlaces}
             onSelectPlace={handleAsync(this.onPlaceSelected)}
@@ -251,7 +268,8 @@ export class Browser extends React.Component<BrowserProps, BrowserState> {
           <div className="places-content">
             <PlaceAccordion
               selectedPlaces={selectedPlaces}
-              order="numberOfBanners"
+              orders={placeSortOrders}
+              onOrderChanged={this.onPlaceOrderChanged}
               onSelectPlace={handleAsync(this.onPlaceSelected)}
               onExpandPlace={handleAsync(this.onPlaceExpanded)}
             />
@@ -338,6 +356,7 @@ export type BrowserProps = {
   WithTranslationProps
 
 interface BrowserState {
+  placeSortOrders: PlaceSortOrders
   filter: BannerFilter
   selectedPlaceId?: string
   page: number

@@ -146,7 +146,9 @@
       h3 {
         margin: 0;
       }
+    }
 
+    .results-title {
       button {
         border-color: var(--color-white);
         border-radius: 4px;
@@ -162,10 +164,6 @@
         path {
           fill: var(--color-white);
         }
-      }
-
-      .ant-select {
-        width: 100px;
       }
     }
 
@@ -215,48 +213,6 @@
   .button-review {
     color: var(--color-white);
     width: 100%;
-  }
-
-  .ant-radio-group {
-    color: var(--color-white);
-    column-gap: 5px;
-    display: flex;
-
-    label {
-      background-color: var(--color-white);
-      border: none;
-      border-radius: 5px;
-      color: var(--color-white) !important; /* stylelint-disable-line */
-      cursor: pointer;
-      display: flex;
-      padding: 1px;
-      text-align: center;
-
-      > .ant-radio-button-label {
-        background-color: var(--color-light-black);
-        border-radius: 4px;
-        flex: 1;
-        padding: 0 10px;
-      }
-
-      &.ant-radio-button-wrapper-checked {
-        background-image: linear-gradient(180deg, var(--color-border-dark), var(--color-border-light));
-        padding: 2px;
-
-        > .ant-radio-button-label {
-          align-items: center;
-          display: flex;
-          justify-content: center;
-          line-height: 24px;
-        }
-      }
-    }
-  }
-
-  .ant-radio-button-wrapper-checked:not(
-      .ant-radio-button-wrapper-disabled
-    )::before {
-    background: none !important; /* stylelint-disable-line */
   }
 }
 

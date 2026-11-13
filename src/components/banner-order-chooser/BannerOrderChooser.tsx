@@ -1,5 +1,5 @@
 import { Modal } from 'antd'
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useId, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
 import SVGBackArrowSmall from '../../assets/img/icons/back-arrow-small.svg?react'
@@ -8,6 +8,8 @@ import './BannerOrderChooser.scss'
 import { BannerFilter, BannerOrder } from '../../features/banner/filter'
 import Order, { hasBothDirections } from './Order'
 import Switch from '../switch/Switch'
+import { ChoiceButtons } from '../choice-buttons/ChoiceButtons'
+import { ChoiceButton } from '../choice-buttons/ChoiceButton'
 
 const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
   filter,
@@ -20,6 +22,9 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
   const [open, setOpen] = useState<boolean>(false)
   const [loadingLocation, setLoadingLocation] = useState<boolean>(false)
   const { t } = useTranslation()
+  const offlineLabelId = useId()
+  const unofficialLabelId = useId()
+  const sortLabelId = useId()
   useEffect(() => {
     if (loadingLocation) {
       navigator.geolocation.getCurrentPosition(
@@ -100,31 +105,21 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
     })
   }
 
-  const getButtonClass = (type: BannerOrder) => {
-    let classNames = 'order-button'
-    if (type === filter.orderBy) {
-      classNames += ' selected'
-    }
-    return classNames
-  }
-
   const getButtonDirection = (type: BannerOrder) => {
     return type === filter.orderBy
       ? filter.orderDirection
       : getDefaultDirection(type)
   }
 
-  const getButton = (orderBy: BannerOrder) => (
-    <button
-      type="button"
-      className={getButtonClass(orderBy)}
-      onClick={() => onOrderClicked(orderBy)}
-    >
-      <div className="order-button-inner">
-        <Order orderBy={orderBy} orderDirection={getButtonDirection(orderBy)} />
-      </div>
-    </button>
-  )
+  const orders: BannerOrder[] = [
+    'created',
+    'title',
+    'lengthMeters',
+    'numberOfMissions',
+    'proximityStartPoint',
+  ]
+  if (includeAddedList) orders.unshift('listAdded')
+  if (includeRelevance) orders.unshift('relevance')
 
   return (
     <div className="filter-and-sort">
@@ -136,7 +131,12 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
         centered
         className="filter-and-sort-modal"
       >
-        <button type="button" className="back-button" onClick={hide}>
+        <button
+          type="button"
+          className="back-button"
+          onClick={hide}
+          aria-label={t('buttons.back')}
+        >
           <SVGBackArrowSmall />
         </button>
         <div className="filter-and-sort-content">
@@ -144,39 +144,47 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
             {includeSorting ? t('order.filterAndSort') : t('order.filter')}
           </h2>
           <div className="filter-and-sort-switch-row">
-            <h3>{t('order.showOfflineBanners')}</h3>
-            <Switch checked={!filter.online} onChange={onOnlineChanged} />
+            <h3 id={offlineLabelId}>{t('order.showOfflineBanners')}</h3>
+            <Switch
+              checked={!filter.online}
+              onChange={onOnlineChanged}
+              labelledBy={offlineLabelId}
+            />
           </div>
           {includeOfficial && (
             <div className="filter-and-sort-switch-row">
-              <h3>{t('order.showUnofficialBanners')}</h3>
+              <h3 id={unofficialLabelId}>{t('order.showUnofficialBanners')}</h3>
               <Switch
                 checked={!filter.onlyOfficialMissions}
                 onChange={onOfficialChanged}
+                labelledBy={unofficialLabelId}
               />
             </div>
           )}
           {includeSorting && (
             <>
-              <h3>{t('order.sortBy')}</h3>
-              <div className="filter-and-sort-button-row">
-                {includeRelevance && getButton('relevance')}
-                {includeAddedList && getButton('listAdded')}
-                {getButton('created')}
-                {getButton('title')}
-                {getButton('lengthMeters')}
-                {getButton('numberOfMissions')}
-                {getButton('proximityStartPoint')}
-              </div>
+              <h3 id={sortLabelId}>{t('order.sortBy')}</h3>
+              <ChoiceButtons
+                value={filter.orderBy}
+                onChange={onOrderClicked}
+                labelledBy={sortLabelId}
+                options={orders.map((orderBy) => ({
+                  value: orderBy,
+                  label: (
+                    <Order
+                      orderBy={orderBy}
+                      orderDirection={getButtonDirection(orderBy)}
+                    />
+                  ),
+                }))}
+              />
             </>
           )}
         </div>
       </Modal>
-      <button type="button" onClick={show} className="order-button selected">
-        <div className="order-button-inner">
-          {includeSorting ? t('order.filterAndSort') : t('order.filter')}
-        </div>
-      </button>
+      <ChoiceButton onClick={show} aria-expanded={open}>
+        {includeSorting ? t('order.filterAndSort') : t('order.filter')}
+      </ChoiceButton>
       <div>
         {includeSorting && (
           <>

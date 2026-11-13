@@ -172,6 +172,11 @@
   "loading": "Cargando...",
   "loadingMore": "Cargando más elementos...",
   "places": {
+    "sort": {
+      "label": "Ordenar lugares",
+      "name": "Nombre A–Z",
+      "numberOfBanners": "Más banners"
+    },
     "title": "Lugares",
     "notFound": "Lugar no encontrado",
     "notFound_other": "No se han encontrado lugares",
@@ -207,6 +212,8 @@
     "zoomOut": "Reducir zoom"
   },
   "buttons": {
+    "on": "Sí",
+    "off": "No",
     "addAll": "Añadir todo",
     "removeAll": "Quitar todo",
     "review": "Revisar",
@@ -343,7 +350,7 @@
     "filterAndSort": "Filter and Sort",
     "showOfflineBanners": "Show offline banners",
     "onlyOfficial": "Mostrar únicamente misiones oficiales de NIA",
-    "showUnofficialBanners": "Show non-NIA missions"
+    "showUnofficialBanners": "Mostrar banners no NIA"
 },
   "duration": {
     "days": "{{count}} d ",

@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Col, Radio, Row, Slider, Tooltip } from 'antd'
+import React, { FC, useId } from 'react'
+import { Col, Row, Slider, Tooltip } from 'antd'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { BannerType } from '../../features/banner'
@@ -8,6 +8,7 @@ import SVGHelp from '../../assets/img/icons/help-round.svg?react'
 import './AdvancedOptions.scss'
 import { DatePicker } from '../date-picker/DatePicker'
 import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
+import { ChoiceButtons } from '../choice-buttons/ChoiceButtons'
 
 const typeHelp = (
   <>
@@ -41,11 +42,12 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
 }) => {
   const { authenticated: manageBannersRole } = useUserLoggedIn('manage-banners')
   const { t } = useTranslation()
+  const typeLabelId = useId()
 
   return (
     <Row className="banner-advanced-options">
       <Col span={12}>
-        <h4>
+        <h4 id={typeLabelId}>
           <Trans
             i18nKey="banners.creation.step3.type"
             components={{
@@ -69,19 +71,15 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
         </h4>
       </Col>
       <Col span={12}>
-        <Radio.Group
+        <ChoiceButtons<BannerType>
           value={type}
-          onChange={(e) => {
-            const value: unknown = e.target.value
-            if (value === 'sequential' || value === 'anyOrder')
-              onChange(value, 'bannerType')
-          }}
-        >
-          <Radio.Button value="sequential">{t('banners.banner')}</Radio.Button>
-          <Radio.Button value="anyOrder">
-            {t('banners.collection')}
-          </Radio.Button>
-        </Radio.Group>
+          labelledBy={typeLabelId}
+          onChange={(value) => onChange(value, 'bannerType')}
+          options={[
+            { value: 'sequential', label: t('banners.banner') },
+            { value: 'anyOrder', label: t('banners.collection') },
+          ]}
+        />
       </Col>
       <Col span={12}>
         <h4>{t('banners.width')}</h4>
