@@ -355,6 +355,7 @@
     "title": "A-Z <icon />",
     "lengthMeters": "Distance <icon />",
     "numberOfMissions": "Total Missions <icon />",
+    "efficiency": "Efficiency <icon />",
     "proximityStartPoint": "Proximity",
     "text": {
       "excludeOffline": "Excluding Offline",

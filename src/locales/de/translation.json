@@ -353,6 +353,7 @@
     "title": "A-Z <icon />",
     "lengthMeters": "Länge <icon />",
     "numberOfMissions": "Missionszahl <icon />",
+    "efficiency": "Efficiency <icon />",
     "proximityStartPoint": "Nähe",
     "text": {
       "excludeOffline": "Offline ausgeblendet",

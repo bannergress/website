@@ -5,6 +5,7 @@ export type BannerOrder =
   | 'listAdded'
   | 'created'
   | 'lengthMeters'
+  | 'efficiency'
   | 'title'
   | 'numberOfMissions'
   | 'proximityStartPoint'
