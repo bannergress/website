@@ -59,6 +59,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
       case 'created':
       case 'relevance':
       case 'listAdded':
+      case 'efficiency':
         return 'DESC'
       default:
         return 'ASC'
@@ -166,6 +167,7 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
                 {getButton('title')}
                 {getButton('lengthMeters')}
                 {getButton('numberOfMissions')}
+                {getButton('efficiency')}
                 {getButton('proximityStartPoint')}
               </div>
             </>
