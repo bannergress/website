@@ -363,6 +363,10 @@
     "filter": "Filter",
     "filterAndSort": "Filter and Sort",
     "showOfflineBanners": "Show offline banners",
+    "hideDone": "Hide Done",
+    "hideTodo": "Hide To-Do",
+    "showDone": "Show Done",
+    "showTodo": "Show To-Do",
     "onlyOfficial": "Show only official NIA mission collections",
     "showUnofficialBanners": "Show non-NIA missions"
   },

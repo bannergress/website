@@ -342,6 +342,10 @@
     "filter": "Filter",
     "filterAndSort": "Filter and Sort",
     "showOfflineBanners": "Show offline banners",
+    "hideDone": "Ocultar completadas",
+    "hideTodo": "Ocultar pendientes",
+    "showDone": "Mostrar completadas",
+    "showTodo": "Mostrar pendientes",
     "onlyOfficial": "Mostrar únicamente misiones oficiales de NIA",
     "showUnofficialBanners": "Show non-NIA missions"
 },
