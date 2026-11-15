@@ -361,6 +361,10 @@
     "filter": "Filtern",
     "filterAndSort": "Filtern und Sortieren",
     "showOfflineBanners": "Zeige Banner, die offline sind",
+    "hideDone": "Erledigte ausblenden",
+    "hideTodo": "Geplante ausblenden",
+    "showDone": "Erledigte anzeigen",
+    "showTodo": "Geplante anzeigen",
     "onlyOfficial": "Nur Missionen von NIA",
     "showUnofficialBanners": "Zeige Missionen, die nicht von NIA sind"
   },

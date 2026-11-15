@@ -8,6 +8,10 @@ import './BannerOrderChooser.scss'
 import { BannerFilter, BannerOrder } from '../../features/banner/filter'
 import Order, { hasBothDirections } from './Order'
 import Switch from '../switch/Switch'
+import { useUserLoggedIn } from '../../hooks/UserLoggedIn'
+import { BannerListType } from '../../features/banner/types'
+
+const ALL_LIST_TYPES: BannerListType[] = ['none', 'todo', 'done', 'blacklist']
 
 const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
   filter,
@@ -20,6 +24,21 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
   const [open, setOpen] = useState<boolean>(false)
   const [loadingLocation, setLoadingLocation] = useState<boolean>(false)
   const { t } = useTranslation()
+  const { authenticated } = useUserLoggedIn()
+  const canFilterLists = authenticated && !includeAddedList
+  const isListShown = (type: BannerListType) =>
+    filter.listTypes === undefined || filter.listTypes.includes(type)
+
+  const onListShownChanged = (type: BannerListType, shown: boolean) => {
+    const listTypes = ALL_LIST_TYPES.filter((item) =>
+      item === type ? shown : isListShown(item)
+    )
+    updateFilter({
+      ...filter,
+      listTypes:
+        listTypes.length === ALL_LIST_TYPES.length ? undefined : listTypes,
+    })
+  }
   useEffect(() => {
     if (loadingLocation) {
       navigator.geolocation.getCurrentPosition(
@@ -156,6 +175,26 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
               />
             </div>
           )}
+          {canFilterLists && (
+            <>
+              <div className="filter-and-sort-switch-row">
+                <h3>{t('order.showDone')}</h3>
+                <Switch
+                  checked={isListShown('done')}
+                  onChange={(shown) => onListShownChanged('done', shown)}
+                  aria-label={t('order.showDone')}
+                />
+              </div>
+              <div className="filter-and-sort-switch-row">
+                <h3>{t('order.showTodo')}</h3>
+                <Switch
+                  checked={isListShown('todo')}
+                  onChange={(shown) => onListShownChanged('todo', shown)}
+                  aria-label={t('order.showTodo')}
+                />
+              </div>
+            </>
+          )}
           {includeSorting && (
             <>
               <h3>{t('order.sortBy')}</h3>
@@ -202,6 +241,12 @@ const BannerOrderChooser: FC<BannerOrderChooserProps> = ({
             {' / '}
             {t('order.onlyOfficial')}
           </>
+        )}
+        {canFilterLists && !isListShown('done') && (
+          <> / {t('order.hideDone')}</>
+        )}
+        {canFilterLists && !isListShown('todo') && (
+          <> / {t('order.hideTodo')}</>
         )}
       </div>
     </div>
