@@ -75,7 +75,7 @@
     "husky": "^9.1.6",
     "jsdom": "^29.1.1",
     "lint-staged": "^17.6.0",
-    "oxlint": "^1.90.0",
+    "oxlint": "^1.93.0",
     "oxlint-tsgolint": "^7.0.2001",
     "prettier": "^3.9.10",
     "sass": "^1.80.6",
