@@ -14,7 +14,7 @@ Start the app
 
 ## Development checks
 
-Use Node.js 24.13 or newer within Node 24, or Node.js 26.x.
+Use Node.js 24.15 or newer within Node 24, or Node.js 26.x.
 CI runs on Node 24, and `@types/node` targets Node 24.
 
 ```sh
@@ -31,13 +31,17 @@ and formatting. `npm run lint:types` runs the type-aware checks alone.
 Both code and style lint fail on warnings. `build` checks the application and Vite
 configuration types before producing the bundle.
 
+Stylelint 18 requires Node.js 24.15 or newer within Node 24. The SCSS config
+packages and `stylelint-scss` have not yet declared Stylelint 18 support, so
+`package.json` temporarily overrides their Stylelint peer ranges and selects
+the compatible standard 41 / recommended 19 configs. This removes the deleted
+`declaration-block-single-line-max-declarations` rule while retaining the SCSS
+rules. Remove these overrides when the SCSS packages support Stylelint 18.
+
 ## Banner comments (#555)
 
-The frontend is gated by `VITE_COMMENTS_ENABLED` (off by default). Enable it at
-build time after the backend comments API is ready. Posting eligibility, Ingress
-verification and the test-only exemption are always decided by the server.
-See [the API contract](src/features/comments/README.md) for endpoints, DTOs,
-privacy requirements and rollout checks.
+`VITE_COMMENTS_ENABLED` defaults to off. Enable it at build time once the
+comments API and Keycloak roles are ready. See [the comments integration notes](src/features/comments/README.md).
 
 ## Dependency migration (#494)
 
