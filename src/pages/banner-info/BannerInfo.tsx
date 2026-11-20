@@ -12,7 +12,7 @@ import {
   loadBanner,
 } from '../../features/banner'
 import LoadingOverlay from '../../components/loading-overlay'
-import { BannerInfoWithMap } from '../../components/banner-info-with-map'
+import { SavedBannerInfoWithMap } from '../../components/banner-info-with-map'
 
 import './BannerInfo.scss'
 
@@ -57,10 +57,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
         <>
           <PageTitle title={banner.title} />
           <div className="banner-info-page">
-            <BannerInfoWithMap
-              banner={banner}
-              showComments={import.meta.env.VITE_COMMENTS_ENABLED === 'true'}
-            />
+            <SavedBannerInfoWithMap banner={banner} />
           </div>
         </>
       )

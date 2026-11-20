@@ -1,1 +1,4 @@
-export { default as BannerInfoWithMap } from './BannerInfoWithMap'
+export {
+  default as BannerInfoWithMap,
+  SavedBannerInfoWithMap,
+} from './BannerInfoWithMap'

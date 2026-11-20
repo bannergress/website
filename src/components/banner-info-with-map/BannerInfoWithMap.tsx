@@ -252,7 +252,6 @@ export interface BannerInfoWithMapProps extends WithTranslationProps {
   mapControls?: React.ReactNode
   submitDisabled?: boolean
   showMissionOrder?: boolean
-  showComments?: boolean
 }
 
 interface BannerInfoWithMapLayoutProps extends BannerInfoWithMapProps {
@@ -312,13 +311,12 @@ function BannerInfoWithComments({
   )
 }
 
-export default function BannerInfoWithMap(props: BannerInfoWithMapProps) {
+export default TranslatedLayout
+
+export function SavedBannerInfoWithMap(props: BannerInfoWithMapProps) {
   const { keycloak, initialized } = useKeycloak()
-  if (!props.showComments || props.hideControls) {
-    return <TranslatedLayout {...props} />
-  }
   if (!initialized) return <TranslatedLayout {...props} />
-  const authenticated = initialized && keycloak.authenticated === true
+  const authenticated = keycloak.authenticated === true
   return (
     <BannerInfoWithComments
       key={`${props.banner.id}:${authenticated ? keycloak.subject : 'guest'}`}

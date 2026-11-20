@@ -1,7 +1,7 @@
 # Banner comments
 
-`VITE_COMMENTS_ENABLED` enables the desktop and mobile Comments views for
-saved banners. Keep it off until the backend and Keycloak roles are configured.
+Saved banner pages include the desktop and mobile Comments views. Deploy the
+comments API and configure the Keycloak roles before deploying the frontend.
 
 ## Backend contract
 

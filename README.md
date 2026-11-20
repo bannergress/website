@@ -40,8 +40,8 @@ rules. Remove these overrides when the SCSS packages support Stylelint 18.
 
 ## Banner comments (#555)
 
-`VITE_COMMENTS_ENABLED` defaults to off. Enable it at build time once the
-comments API and Keycloak roles are ready. See [the comments integration notes](src/features/comments/README.md).
+Saved banner pages include the Comments view. See the
+[comments integration notes](src/features/comments/README.md) for the API and Keycloak roles.
 
 ## Dependency migration (#494)
 
