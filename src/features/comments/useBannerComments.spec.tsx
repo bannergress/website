@@ -2,377 +2,179 @@
 import { act } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import {
-  getComment,
-  getCommentCapabilities,
-  getComments,
-  getOwnComments,
-  submitComment,
-  withdrawComment,
-} from './api'
+import { deleteComment, getComments, saveComment } from './api'
 import {
   useBannerComments,
   type BannerCommentsState,
 } from './useBannerComments'
-import type { BannerComment, CommentCapabilities, CommentPage } from './types'
 import type { ApiResponse } from '../../api'
+import type { BannerComment, CommentDraft } from './types'
 
 vi.mock('./api', () => ({
-  getComment: vi.fn(),
-  getCommentCapabilities: vi.fn(),
+  deleteComment: vi.fn(),
   getComments: vi.fn(),
-  getOwnComments: vi.fn(),
-  submitComment: vi.fn(),
-  withdrawComment: vi.fn(),
+  saveComment: vi.fn(),
 }))
 
-const caps: CommentCapabilities = {
-  canComment: true,
-  moderationMode: 'POSTMODERATION',
-  testVerificationExemption: false,
-  maxLength: 2000,
+const draft: CommentDraft = {
+  comment: 'Unicode 🐸\nSecond line',
+  ratingOverall: 5,
+  ratingAccessibility: 3,
+  ratingPassphrases: 4,
+  ratingRoundTheClock: 'restricted',
 }
-const published: BannerComment = {
-  id: 'published',
-  text: '<script>alert(1)</script>\nUnicode 🐈',
-  createdAt: '2026-11-08T12:00:00Z',
-  own: true,
-  status: 'PUBLISHED',
-  canWithdraw: true,
-}
-const pending: BannerComment = {
-  ...published,
-  id: 'pending',
-  status: 'PENDING',
+const existing: BannerComment = {
+  uuid: 'existing',
+  created: '2026-11-08T12:00:00Z',
+  author: { name: 'AgentName' },
+  ...draft,
 }
 const ok = <T,>(data: T): ApiResponse<T> => ({ ok: true, status: 200, data })
-const empty: CommentPage = { items: [], publishedCount: 0 }
 
-describe('banner comments lifecycle', () => {
+describe('banner comments', () => {
   let root: Root
-  let container: HTMLDivElement
   let state: BannerCommentsState
 
   function Harness({
-    authenticated = true,
-    targetId,
+    authenticated,
+    canPost,
+    canModerate,
   }: {
-    authenticated?: boolean
-    targetId?: string
+    authenticated: boolean
+    canPost: boolean
+    canModerate: boolean
   }) {
-    state = useBannerComments('banner-slug', authenticated, true, targetId)
-    return <p>{state.draft}</p>
+    state = useBannerComments(
+      'banner-slug',
+      authenticated,
+      canPost,
+      canModerate
+    )
+    return null
   }
 
-  beforeEach(() => {
-    vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true)
-    vi.resetAllMocks()
-    vi.mocked(getComments).mockResolvedValue(ok(empty))
-    vi.mocked(getOwnComments).mockResolvedValue(ok(empty))
-    vi.mocked(getCommentCapabilities).mockResolvedValue(ok(caps))
-    container = document.createElement('div')
-    root = createRoot(container)
-  })
-  afterEach(() => {
-    act(() => root.unmount())
-    vi.unstubAllGlobals()
-  })
-  const render = (authenticated = true, key = 'user', targetId?: string) =>
+  const render = (authenticated = true, canPost = true, canModerate = false) =>
     act(() =>
       Promise.resolve(
         root.render(
           <Harness
-            key={key}
             authenticated={authenticated}
-            targetId={targetId}
+            canPost={canPost}
+            canModerate={canModerate}
           />
         )
       )
     )
-  const draft = (value: string) => act(() => state.setDraft(value))
 
-  it('never requests private data for guests or grants writes when capabilities fail', async () => {
-    await render(false, 'guest')
-    expect(getOwnComments).not.toHaveBeenCalled()
-    expect(getCommentCapabilities).not.toHaveBeenCalled()
-    draft('Guest draft')
+  beforeEach(() => {
+    vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true)
+    vi.resetAllMocks()
+    vi.mocked(getComments).mockResolvedValue(ok([existing]))
+    vi.mocked(saveComment).mockImplementation((_banner, uuid, body) =>
+      Promise.resolve(ok({ ...existing, ...body, uuid }))
+    )
+    root = createRoot(document.createElement('div'))
+  })
+
+  afterEach(() => {
+    act(() => root.unmount())
+    vi.unstubAllGlobals()
+  })
+
+  it('skips all requests for guests', async () => {
+    await render(false, false)
+    act(() => state.setDraft(draft))
     await act(() => state.submit())
-    expect(submitComment).not.toHaveBeenCalled()
-    vi.mocked(getCommentCapabilities).mockResolvedValue({
-      ok: false,
-      status: 503,
-    })
-    await render(true, 'user')
-    expect(state.privateError).toBe(true)
-    draft('Signed in draft')
+    expect(getComments).not.toHaveBeenCalled()
+    expect(saveComment).not.toHaveBeenCalled()
+  })
+
+  it('loads the list for signed-in readers and checks roles before writes', async () => {
+    await render(true, false)
+    expect(getComments).toHaveBeenCalledWith('banner-slug')
+    expect(state.items).toEqual([existing])
+    act(() => state.setDraft(draft))
     await act(() => state.submit())
-    expect(submitComment).not.toHaveBeenCalled()
+    await act(() => state.remove(existing.uuid))
+    expect(saveComment).not.toHaveBeenCalled()
+    expect(deleteComment).not.toHaveBeenCalled()
   })
 
-  it.each([
-    'VERIFICATION_REQUIRED',
-    'VERIFICATION_PENDING',
-    'DISABLED',
-  ] as const)(
-    'blocks submitting for server denial %s',
-    async (denialReason) => {
-      vi.mocked(getCommentCapabilities).mockResolvedValue(
-        ok({ ...caps, canComment: false, denialReason })
-      )
-      await render()
-      draft('Cannot post')
-      await act(() => state.submit())
-      expect(submitComment).not.toHaveBeenCalled()
-    }
-  )
-
-  it('keeps pending test-exempt posts private and preserves the published count', async () => {
-    const testCaps = {
-      ...caps,
-      moderationMode: 'PREMODERATION' as const,
-      testVerificationExemption: true,
-    }
-    vi.mocked(getCommentCapabilities).mockResolvedValue(ok(testCaps))
-    vi.mocked(submitComment).mockResolvedValue(
-      ok({ comment: pending, publishedCount: 0, capabilities: testCaps })
-    )
+  it('keeps the draft and reuses the client UUID on retry', async () => {
+    vi.mocked(saveComment).mockResolvedValueOnce({ ok: false, status: 500 })
     await render()
-    draft('Test account 🐈\nNew line')
+    act(() => state.setDraft(draft))
     await act(() => state.submit())
-    expect(state.page).toEqual(empty)
-    expect(state.ownPage.items).toEqual([pending])
-    expect(state.notice).toBe('pending')
-    expect(state.draft).toBe('')
-    expect(state.capabilities?.testVerificationExemption).toBe(true)
-  })
-
-  it('preserves failed drafts and reuses submission identity while preventing duplicate clicks', async () => {
-    let resolve!: (response: ApiResponse<never>) => void
-    vi.mocked(submitComment).mockImplementationOnce(
-      () =>
-        new Promise((done) => {
-          resolve = done
-        })
-    )
-    await render()
-    draft('  Unicode 🐈\nSecond line  ')
-    let first!: Promise<boolean>
-    act(() => {
-      first = state.submit()
-    })
+    expect(state.draft).toEqual(draft)
+    const uuid = vi.mocked(saveComment).mock.calls[0][1]
+    expect(uuid).toMatch(/^[0-9a-f-]{36}$/)
     await act(() => state.submit())
-    expect(submitComment).toHaveBeenCalledTimes(1)
-    await act(async () => {
-      resolve({ ok: false, status: 500 })
-      await first
-    })
-    expect(state.draft).toBe('  Unicode 🐈\nSecond line  ')
-    const id = vi.mocked(submitComment).mock.calls[0][2]
-    vi.mocked(submitComment).mockResolvedValue(
-      ok({ comment: published, publishedCount: 1, capabilities: caps })
-    )
-    await act(() => state.submit())
-    expect(submitComment).toHaveBeenLastCalledWith(
-      'banner-slug',
-      '  Unicode 🐈\nSecond line  ',
-      id
-    )
-    expect(state.page.items).toEqual([published])
-    expect(state.page.publishedCount).toBe(1)
-  })
-
-  it('rejects blank and oversized drafts, counting Unicode code points', async () => {
-    vi.mocked(getCommentCapabilities).mockResolvedValue(
-      ok({ ...caps, maxLength: 2 })
-    )
-    await render()
-    for (const value of [' \n ', 'abc']) {
-      draft(value)
-      await act(() => state.submit())
-    }
-    expect(submitComment).not.toHaveBeenCalled()
-    vi.mocked(submitComment).mockResolvedValue({ ok: false, status: 429 })
-    draft('🐈🐈')
-    await act(() => state.submit())
-    expect(submitComment).toHaveBeenCalledTimes(1)
-    expect(state.actionError).toBe(429)
-    expect(state.draft).toBe('🐈🐈')
-  })
-
-  it('refreshes revoked permissions after a denied write and retains the draft', async () => {
-    await render()
-    draft('Keep this draft after unlinking')
-    vi.mocked(submitComment).mockResolvedValue({ ok: false, status: 403 })
-    vi.mocked(getCommentCapabilities).mockResolvedValue(
-      ok({ ...caps, canComment: false, denialReason: 'VERIFICATION_REQUIRED' })
-    )
-    await act(() => state.submit())
-    expect(state.draft).toBe('Keep this draft after unlinking')
-    expect(state.capabilities?.canComment).toBe(false)
-    expect(state.actionError).toBe(403)
-    await act(() => state.submit())
-    expect(submitComment).toHaveBeenCalledTimes(1)
-  })
-
-  it('uses cursors, deduplicates overlapping pages and keeps private pagination separate', async () => {
-    vi.mocked(getComments).mockResolvedValueOnce(
-      ok({ items: [published], publishedCount: 2, nextCursor: 'public-cursor' })
-    )
-    vi.mocked(getOwnComments).mockResolvedValueOnce(
-      ok({ items: [pending], publishedCount: 2, nextCursor: 'own-cursor' })
-    )
-    await render()
-    const newer = {
-      ...published,
-      id: 'newer',
-      createdAt: '2026-11-08T13:00:00Z',
-    }
-    vi.mocked(getComments).mockResolvedValue(
-      ok({ items: [newer, published], publishedCount: 2 })
-    )
-    await act(() => state.loadMore())
-    expect(getComments).toHaveBeenLastCalledWith('banner-slug', 'public-cursor')
-    expect(state.page.items.map((item) => item.id)).toEqual([
-      'newer',
-      'published',
-    ])
-    await act(() => state.loadMore(true))
-    expect(getOwnComments).toHaveBeenLastCalledWith('banner-slug', 'own-cursor')
-    expect(state.page.items).not.toContainEqual(pending)
-  })
-
-  it('withdraws a comment and reloads authoritative counts and owner history', async () => {
-    vi.mocked(getComments).mockResolvedValueOnce(
-      ok({ items: [published], publishedCount: 1 })
-    )
-    vi.mocked(getOwnComments).mockResolvedValueOnce(
-      ok({ items: [published], publishedCount: 1 })
-    )
-    vi.mocked(withdrawComment).mockResolvedValue(ok(undefined))
-    await render()
-    await act(() => state.withdraw(published.id))
-    expect(withdrawComment).toHaveBeenCalledWith(published.id)
-    expect(state.page).toEqual(empty)
-    expect(state.ownPage.items).toEqual([])
-    expect(state.notice).toBe('withdrawn')
-  })
-
-  it('clears private data and drafts on account changes and ignores late private responses', async () => {
-    let resolve!: (response: ApiResponse<CommentPage>) => void
-    vi.mocked(getOwnComments).mockImplementationOnce(
-      () =>
-        new Promise((done) => {
-          resolve = done
-        })
-    )
-    await render()
-    draft('Private draft')
-    await render(false, 'guest')
-    await act(() => {
-      resolve(ok({ items: [pending], publishedCount: 0 }))
-      return Promise.resolve()
-    })
-    expect(state.ownPage.items).toEqual([])
-    expect(state.draft).toBe('')
-    expect(state.capabilities).toBeUndefined()
-  })
-
-  it.each([401, 403, 404])(
-    'treats inaccessible permalink targets as unavailable (%s)',
-    async (status) => {
-      vi.mocked(getComment).mockResolvedValue({ ok: false, status })
-      await render(false, 'guest', 'private-id')
-      expect(getComment).toHaveBeenCalledWith('banner-slug', 'private-id')
-      expect(state.target).toBeUndefined()
-      expect(state.targetMissing).toBe(true)
-      expect(state.targetError).toBe(false)
-    }
-  )
-
-  it.each([429, 500, 503])(
-    'allows retrying transient permalink errors (%s)',
-    async (status) => {
-      vi.mocked(getComment).mockResolvedValue({ ok: false, status })
-      await render(false, 'guest', published.id)
-      expect(state.targetMissing).toBe(false)
-      expect(state.targetError).toBe(true)
-      expect(state.error).toBe(false)
-      vi.mocked(getComment).mockResolvedValue(ok(published))
-      await act(() => state.refresh())
-      expect(state.target).toEqual(published)
-      expect(state.targetError).toBe(false)
-      expect(state.targetMissing).toBe(false)
-    }
-  )
-
-  it('does not report a known public comment as unavailable when its target request fails', async () => {
-    vi.mocked(getComments).mockResolvedValue(
-      ok({ items: [published], publishedCount: 1 })
-    )
-    vi.mocked(getComment).mockResolvedValue({ ok: false, status: 500 })
-    await render(false, 'guest', published.id)
-    expect(state.target).toEqual(published)
-    expect(state.targetMissing).toBe(false)
-    expect(state.targetError).toBe(false)
-  })
-
-  it('defers retry reads until a pending submission has committed', async () => {
-    let resolve!: (response: Awaited<ReturnType<typeof submitComment>>) => void
-    vi.mocked(getOwnComments).mockResolvedValueOnce({ ok: false, status: 500 })
-    vi.mocked(submitComment).mockImplementationOnce(
-      () =>
-        new Promise((done) => {
-          resolve = done
-        })
-    )
-    await render()
-    expect(state.privateError).toBe(true)
-    draft('Publishing while owner history is unavailable')
-    let submission!: Promise<boolean>
-    act(() => {
-      submission = state.submit()
-    })
-    await act(() => state.refresh())
-    expect(getComments).toHaveBeenCalledTimes(1)
-    expect(getOwnComments).toHaveBeenCalledTimes(1)
-    expect(state.busy).toBe(true)
-    const committed = { items: [published], publishedCount: 1 }
-    vi.mocked(getComments).mockResolvedValue(ok(committed))
-    vi.mocked(getOwnComments).mockResolvedValue(ok(committed))
-    await act(async () => {
-      resolve(ok({ comment: published, publishedCount: 1, capabilities: caps }))
-      await submission
-    })
-    expect(getComments).toHaveBeenCalledTimes(2)
-    expect(state.page).toEqual(committed)
-    expect(state.ownPage).toEqual(committed)
+    expect(saveComment).toHaveBeenLastCalledWith('banner-slug', uuid, draft)
+    expect(state.items.map((item) => item.uuid)).toEqual([uuid, existing.uuid])
     expect(state.notice).toBe('published')
-    expect(state.privateError).toBe(false)
+    expect(state.draft).toEqual({ comment: '' })
   })
 
-  it('prevents writes from starting during a refresh with older captured permissions', async () => {
+  it('sends only one request when a save is already in progress', async () => {
     await render()
-    draft('Do not race this write with a refresh')
-    let resolve!: (response: ApiResponse<CommentPage>) => void
-    vi.mocked(getComments).mockImplementationOnce(
-      () =>
-        new Promise((done) => {
-          resolve = done
-        })
-    )
-    let refresh!: Promise<void>
-    act(() => {
-      refresh = state.refresh()
-    })
-    await act(() => state.submit())
-    await act(() => state.withdraw(published.id))
-    expect(submitComment).not.toHaveBeenCalled()
-    expect(withdrawComment).not.toHaveBeenCalled()
+    act(() => state.setDraft(draft))
     await act(async () => {
-      resolve(ok(empty))
-      await refresh
+      await Promise.all([state.submit(), state.submit()])
     })
-    expect(state.loading).toBe(false)
-    expect(state.draft).toBe('Do not race this write with a refresh')
+    expect(saveComment).toHaveBeenCalledTimes(1)
+  })
+
+  it('edits only a confirmed own comment and keeps the published count', async () => {
+    await render()
+    act(() => state.edit(existing))
+    expect(state.editingId).toBeUndefined()
+    act(() => state.setDraft(draft))
+    await act(() => state.submit())
+    const saved = state.items[0]
+    act(() => state.edit(saved))
+    expect(state.draft).toEqual(draft)
+    const edited = { ...draft, comment: 'Edited', ratingPassphrases: undefined }
+    act(() => state.setDraft(edited))
+    await act(() => state.submit())
+    expect(saveComment).toHaveBeenLastCalledWith(
+      'banner-slug',
+      saved.uuid,
+      edited
+    )
+    expect(state.items).toHaveLength(2)
+    expect(state.items[0]).toMatchObject({
+      uuid: saved.uuid,
+      comment: 'Edited',
+    })
+    expect(state.notice).toBe('updated')
+  })
+
+  it('preserves the draft and blocks further writes after the backend denies posting', async () => {
+    vi.mocked(saveComment).mockResolvedValueOnce({ ok: false, status: 403 })
+    await render()
+    act(() => state.setDraft(draft))
+    await act(() => state.submit())
+    expect(state.postingDenied).toBe(true)
+    expect(state.draft).toEqual(draft)
+    await act(() => state.submit())
+    expect(saveComment).toHaveBeenCalledTimes(1)
+  })
+
+  it('removes items through the banner-scoped moderator endpoint', async () => {
+    vi.mocked(deleteComment).mockResolvedValue(ok(undefined))
+    await render(true, false, true)
+    await act(() => state.remove(existing.uuid))
+    expect(deleteComment).toHaveBeenCalledWith('banner-slug', existing.uuid)
+    expect(state.items).toEqual([])
+    expect(state.notice).toBe('deleted')
+  })
+
+  it('retries a failed list request', async () => {
+    vi.mocked(getComments).mockResolvedValueOnce({ ok: false, status: 503 })
+    await render()
+    expect(state.loadError).toBe(true)
+    await act(() => Promise.resolve(state.refresh()))
+    expect(state.loadError).toBe(false)
+    expect(state.items).toEqual([existing])
   })
 })

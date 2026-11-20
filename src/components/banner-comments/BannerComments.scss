@@ -43,10 +43,17 @@
     white-space: pre-wrap;
   }
 
-  .ant-tag {
-    height: auto;
-    max-width: 100%;
-    white-space: normal;
+  .banner-comment-ratings {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
   }
 
   .ant-alert {

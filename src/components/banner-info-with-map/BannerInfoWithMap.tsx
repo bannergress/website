@@ -273,30 +273,37 @@ const TranslatedLayout = withTranslation()(BannerInfoWithMapLayout)
 
 function BannerInfoWithComments({
   authenticated,
-  initialized,
+  canPost,
+  canModerate,
   ...props
-}: BannerInfoWithMapProps & { authenticated: boolean; initialized: boolean }) {
+}: BannerInfoWithMapProps & {
+  authenticated: boolean
+  canPost: boolean
+  canModerate: boolean
+}) {
   const { hash } = useLocation()
   const targetId = /^#comment-([a-zA-Z0-9-]+)$/.exec(hash)?.[1]
   const comments = useBannerComments(
     props.banner.id,
     authenticated,
-    initialized,
-    targetId
+    canPost,
+    canModerate
   )
   return (
     <TranslatedLayout
       {...props}
       commentTargetId={targetId}
       commentsCount={
-        comments.loading || comments.error
+        !authenticated || comments.loading || comments.loadError
           ? undefined
-          : comments.page.publishedCount
+          : comments.items.length
       }
       comments={(active) => (
         <BannerComments
           state={comments}
-          authenticated={authenticated && initialized}
+          authenticated={authenticated}
+          canPost={canPost}
+          canModerate={canModerate}
           active={active}
           targetId={targetId}
         />
@@ -310,13 +317,15 @@ export default function BannerInfoWithMap(props: BannerInfoWithMapProps) {
   if (!props.showComments || props.hideControls) {
     return <TranslatedLayout {...props} />
   }
+  if (!initialized) return <TranslatedLayout {...props} />
   const authenticated = initialized && keycloak.authenticated === true
   return (
     <BannerInfoWithComments
-      key={`${props.banner.id}:${authenticated ? keycloak.subject : 'guest'}:${initialized}`}
+      key={`${props.banner.id}:${authenticated ? keycloak.subject : 'guest'}`}
       {...props}
       authenticated={authenticated}
-      initialized={initialized}
+      canPost={authenticated && keycloak.hasRealmRole('create-comment')}
+      canModerate={authenticated && keycloak.hasRealmRole('manage-comments')}
     />
   )
 }

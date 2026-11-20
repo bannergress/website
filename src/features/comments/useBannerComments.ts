@@ -1,243 +1,169 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  getComment,
-  getCommentCapabilities,
-  getComments,
-  getOwnComments,
-  submitComment,
-  withdrawComment,
-} from './api'
-import type { BannerComment, CommentCapabilities, CommentPage } from './types'
+import { useEffect, useRef, useState } from 'react'
+import { deleteComment, getComments, saveComment } from './api'
+import type { BannerComment, CommentDraft } from './types'
 
-export const mergeComments = (
-  current: BannerComment[],
-  incoming: BannerComment[]
-) => {
-  const items = new Map(current.map((item) => [item.id, item]))
-  incoming.forEach((item) => items.set(item.id, item))
-  return [...items.values()].sort(
-    (a, b) => b.createdAt.localeCompare(a.createdAt) || b.id.localeCompare(a.id)
-  )
-}
+const emptyDraft: CommentDraft = { comment: '' }
 
-const emptyPage: CommentPage = { items: [], publishedCount: 0 }
-
-// The caller keys this hook's component by banner and authenticated subject.
-// Private responses and drafts must never survive an account change.
+// The caller remounts this component when the banner or signed-in subject changes.
 export function useBannerComments(
   bannerId: string,
   authenticated: boolean,
-  initialized: boolean,
-  targetId?: string
+  canPost: boolean,
+  canModerate: boolean
 ) {
-  const [page, setPage] = useState<CommentPage>(emptyPage)
-  const [ownPage, setOwnPage] = useState<CommentPage>(emptyPage)
-  const [capabilities, setCapabilities] = useState<CommentCapabilities>()
-  const [loading, setLoading] = useState(true)
-  const [loadingMore, setLoadingMore] = useState(false)
-  const [error, setError] = useState(false)
-  const [privateError, setPrivateError] = useState(false)
+  const [items, setItems] = useState<BannerComment[]>([])
+  const [loading, setLoading] = useState(authenticated)
+  const [loadError, setLoadError] = useState(false)
+  const [reloadVersion, setReloadVersion] = useState(0)
   const [actionError, setActionError] = useState<number>()
-  const [target, setTarget] = useState<BannerComment>()
-  const [targetMissing, setTargetMissing] = useState(false)
-  const [targetError, setTargetError] = useState(false)
-  const [refreshVersion, setRefreshVersion] = useState(0)
-  const [draft, setDraft] = useState('')
+  const [postingDenied, setPostingDenied] = useState(false)
+  const [draft, setDraft] = useState<CommentDraft>(emptyDraft)
+  const [editingId, setEditingId] = useState<string>()
+  const [editableIds, setEditableIds] = useState<string[]>([])
   const [busy, setBusy] = useState(false)
-  const [notice, setNotice] = useState<'published' | 'pending' | 'withdrawn'>()
-  const live = useRef(false)
+  const [notice, setNotice] = useState<'published' | 'updated' | 'deleted'>()
   const locked = useRef(false)
-  const refreshQueued = useRef(false)
-  const submission = useRef<{ text: string; id: string } | undefined>(undefined)
-  const generation = useRef(0)
-
-  const reload = useCallback(async () => {
-    const request = ++generation.current
-    setLoading(true)
-    setError(false)
-    setPrivateError(false)
-    setTargetError(false)
-    setTargetMissing(false)
-    // Fail closed while refreshing capabilities, including after a denied write.
-    setCapabilities(undefined)
-    const [publicResult, privateResult, capabilityResult, targetResult] =
-      await Promise.all([
-        getComments(bannerId),
-        authenticated ? getOwnComments(bannerId) : undefined,
-        authenticated ? getCommentCapabilities() : undefined,
-        targetId ? getComment(bannerId, targetId) : undefined,
-      ])
-    if (!live.current || request !== generation.current) return
-    if (publicResult.ok) setPage(publicResult.data)
-    setError(!publicResult.ok)
-    if (privateResult?.ok) setOwnPage(privateResult.data)
-    if (capabilityResult?.ok) setCapabilities(capabilityResult.data)
-    setPrivateError(
-      authenticated && (!privateResult?.ok || !capabilityResult?.ok)
-    )
-    // A transient target failure must not masquerade as a missing comment.
-    const knownTarget = [
-      ...(publicResult.ok ? publicResult.data.items : []),
-      ...(privateResult?.ok ? privateResult.data.items : []),
-    ].find((item) => item.id === targetId)
-    setTarget(targetResult?.ok ? targetResult.data : knownTarget)
-    if (targetResult && !targetResult.ok && !knownTarget) {
-      const missing = [401, 403, 404].includes(targetResult.status)
-      setTargetMissing(missing)
-      setTargetError(!missing)
-    }
-    setLoading(false)
-  }, [authenticated, bannerId, targetId])
-
-  const refresh = useCallback(async () => {
-    // Queue retries and permalink changes until the current mutation finishes;
-    // pre-write GET snapshots must never replace its authoritative result.
-    if (locked.current) {
-      refreshQueued.current = true
-      return
-    }
-    await reload()
-  }, [reload])
-
-  const releaseLock = () => {
-    locked.current = false
-    if (live.current && refreshQueued.current) {
-      refreshQueued.current = false
-      setRefreshVersion((version) => version + 1)
-    }
-  }
+  const newCommentId = useRef<string>(undefined)
+  const hasDraft = Object.values(draft).some(
+    (value) => value !== '' && value !== undefined
+  )
 
   useEffect(() => {
-    live.current = true
-    if (initialized) void refresh()
-    const invalidateRequests = () => generation.current++
+    if (!authenticated) return
+    let ignore = false
+    void getComments(bannerId).then((result) => {
+      if (ignore) return
+      if (result.ok) setItems(result.data)
+      setLoadError(!result.ok)
+      setLoading(false)
+    })
     return () => {
-      live.current = false
-      invalidateRequests()
+      ignore = true
     }
-  }, [initialized, refresh, refreshVersion])
+  }, [authenticated, bannerId, reloadVersion])
 
-  const loadMore = async (own = false) => {
-    const cursor = (own ? ownPage : page).nextCursor
-    if (!cursor || locked.current) return
+  const refresh = () => {
+    if (!authenticated || locked.current || loading) return
+    setLoading(true)
+    setReloadVersion((version) => version + 1)
+  }
+
+  const startAction = () => {
     locked.current = true
-    setLoadingMore(true)
-    const request = generation.current
-    const result = await (own
-      ? getOwnComments(bannerId, cursor)
-      : getComments(bannerId, cursor))
-    if (live.current && request === generation.current) {
-      if (result.ok) {
-        const update = own ? setOwnPage : setPage
-        update((previous) => ({
-          ...result.data,
-          items: mergeComments(previous.items, result.data.items),
-        }))
-        setActionError(undefined)
-      } else setActionError(result.status)
-    }
-    if (live.current) setLoadingMore(false)
-    releaseLock()
+    setBusy(true)
+    setActionError(undefined)
+    setNotice(undefined)
+  }
+
+  const finishAction = () => {
+    locked.current = false
+    setBusy(false)
+  }
+
+  const resetDraft = () => {
+    setDraft(emptyDraft)
+    setEditingId(undefined)
+    newCommentId.current = undefined
   }
 
   const submit = async () => {
     if (
+      !authenticated ||
+      !canPost ||
+      postingDenied ||
       locked.current ||
       loading ||
-      !capabilities?.canComment ||
-      !draft.trim() ||
-      Array.from(draft).length > capabilities.maxLength
-    )
+      loadError ||
+      !draft.comment.trim()
+    ) {
       return false
-    locked.current = true
-    generation.current++
-    setBusy(true)
-    setActionError(undefined)
-    setNotice(undefined)
-    // Retrying the same draft after an ambiguous network failure reuses its key.
-    if (submission.current?.text !== draft) {
-      submission.current = { text: draft, id: crypto.randomUUID() }
     }
-    const result = await submitComment(bannerId, draft, submission.current.id)
-    if (!live.current) return false
+    startAction()
+    // The same UUID updates the same comment if the first response was lost.
+    const uuid = editingId ?? (newCommentId.current ??= crypto.randomUUID())
+    const result = await saveComment(bannerId, uuid, draft)
     if (result.ok) {
-      const { comment, publishedCount, capabilities: next } = result.data
-      setPage((previous) => ({
-        ...previous,
-        publishedCount,
-        items:
-          comment.status === 'PUBLISHED'
-            ? mergeComments(previous.items, [comment])
-            : previous.items,
-      }))
-      setOwnPage((previous) => ({
-        ...previous,
-        items: mergeComments(previous.items, [comment]),
-      }))
-      setCapabilities(next)
-      setDraft('')
-      submission.current = undefined
-      setNotice(comment.status === 'PUBLISHED' ? 'published' : 'pending')
+      const saved = result.data
+      setItems((previous) =>
+        previous.some((item) => item.uuid === saved.uuid)
+          ? previous.map((item) => (item.uuid === saved.uuid ? saved : item))
+          : [saved, ...previous]
+      )
+      if (!editingId) setEditableIds((ids) => [...ids, saved.uuid])
+      resetDraft()
+      setNotice(editingId ? 'updated' : 'published')
     } else {
       setActionError(result.status)
-      if (result.status === 401 || result.status === 403) await reload()
+      if (result.status === 403) setPostingDenied(true)
     }
-    releaseLock()
-    setBusy(false)
+    finishAction()
     return result.ok
   }
 
-  const withdraw = async (id: string) => {
-    if (locked.current || loading) return
-    locked.current = true
-    generation.current++
-    setBusy(true)
+  const edit = (item: BannerComment) => {
+    if (
+      !canPost ||
+      postingDenied ||
+      locked.current ||
+      loading ||
+      hasDraft ||
+      !editableIds.includes(item.uuid)
+    ) {
+      return
+    }
+    const {
+      comment,
+      ratingRoundTheClock,
+      ratingOverall,
+      ratingAccessibility,
+      ratingPassphrases,
+    } = item
+    setDraft({
+      comment,
+      ratingRoundTheClock,
+      ratingOverall,
+      ratingAccessibility,
+      ratingPassphrases,
+    })
+    setEditingId(item.uuid)
     setActionError(undefined)
     setNotice(undefined)
-    const result = await withdrawComment(id)
-    if (!live.current) return
+  }
+
+  const remove = async (uuid: string) => {
+    if (!canModerate || locked.current || loading) return
+    startAction()
+    const result = await deleteComment(bannerId, uuid)
     if (result.ok) {
-      setPage((previous) => ({
-        ...previous,
-        publishedCount: Math.max(
-          0,
-          previous.publishedCount -
-            (previous.items.some((item) => item.id === id) ? 1 : 0)
-        ),
-        items: previous.items.filter((item) => item.id !== id),
-      }))
-      setOwnPage((previous) => ({
-        ...previous,
-        items: previous.items.filter((item) => item.id !== id),
-      }))
-      if (target?.id === id) setTarget(undefined)
-      setNotice('withdrawn')
-      await reload()
-    } else setActionError(result.status)
-    releaseLock()
-    setBusy(false)
+      setItems((previous) => previous.filter((item) => item.uuid !== uuid))
+      setEditableIds((ids) => ids.filter((id) => id !== uuid))
+      if (editingId === uuid) resetDraft()
+      if (newCommentId.current === uuid) newCommentId.current = undefined
+      setNotice('deleted')
+    } else {
+      setActionError(result.status)
+    }
+    finishAction()
   }
 
   return {
-    page,
-    ownPage,
-    capabilities,
+    items,
     loading,
-    loadingMore,
-    error,
-    privateError,
+    loadError,
     actionError,
-    target,
-    targetMissing,
-    targetError,
+    postingDenied,
     draft,
+    hasDraft,
     setDraft,
+    editingId,
+    editableIds,
     busy,
     notice,
     refresh,
-    loadMore,
     submit,
-    withdraw,
+    edit,
+    resetDraft,
+    remove,
   }
 }
 

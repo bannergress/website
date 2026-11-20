@@ -1,34 +1,24 @@
-export type CommentStatus = 'PUBLISHED' | 'PENDING' | 'REJECTED' | 'REMOVED'
+import type { NamedAgent } from '../mission/types'
 
-export interface BannerComment {
-  id: string
-  text: string
-  createdAt: string
-  // Already filtered by the server's identity visibility policy.
-  author?: { displayName: string; ingressVerified: boolean }
-  // Only the owner receives these fields, including for published comments.
-  own?: boolean
-  status?: CommentStatus
-  moderationReason?: string
-  canWithdraw?: boolean
+export type CommentRating = 1 | 2 | 3 | 4 | 5
+export type RoundTheClockRating = 'restricted' | 'unrestricted'
+
+export interface CommentDraft {
+  comment: string
+  ratingRoundTheClock?: RoundTheClockRating
+  ratingOverall?: CommentRating
+  ratingAccessibility?: CommentRating
+  ratingPassphrases?: CommentRating
 }
 
-export interface CommentPage {
-  items: BannerComment[]
-  nextCursor?: string | null
-  publishedCount: number
+export interface BannerComment extends CommentDraft {
+  uuid: string
+  author?: Partial<Pick<NamedAgent, 'faction'>> & Pick<NamedAgent, 'name'>
+  created: string
 }
 
-export interface CommentCapabilities {
-  canComment: boolean
-  denialReason?: 'VERIFICATION_REQUIRED' | 'VERIFICATION_PENDING' | 'DISABLED'
-  moderationMode: 'POSTMODERATION' | 'PREMODERATION'
-  testVerificationExemption: boolean
-  maxLength: number
-}
-
-export interface CommentSubmission {
-  comment: BannerComment
-  publishedCount: number
-  capabilities: CommentCapabilities
-}
+export const commentRatingFields = [
+  'ratingOverall',
+  'ratingAccessibility',
+  'ratingPassphrases',
+] as const
