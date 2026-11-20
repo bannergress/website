@@ -2,6 +2,10 @@ import React, { createRef } from 'react'
 import { LatLngBounds } from 'leaflet'
 import _ from 'underscore'
 import { withTranslation, WithTranslationProps } from 'react-i18next'
+import { useKeycloak } from '@react-keycloak/web'
+import { useLocation } from 'react-router-dom'
+import { useBannerComments } from '../../features/comments/useBannerComments'
+import { BannerComments } from '../banner-comments/BannerComments'
 
 import { Banner, getBannerBounds } from '../../features/banner'
 import { mapMissions } from '../../features/mission'
@@ -16,15 +20,15 @@ import SVGBackArrow from '../../assets/img/icons/back-arrow.svg?react'
 
 import './BannerInfoWithMap.scss'
 
-class BannerInfoWithMap extends React.Component<
-  BannerInfoWithMapProps,
+class BannerInfoWithMapLayout extends React.Component<
+  BannerInfoWithMapLayoutProps,
   BannerInfoWithMapState
 > {
   mapRef: React.RefObject<MapDetail | null>
 
   viewWasMapBefore: boolean = false
 
-  constructor(props: BannerInfoWithMapProps) {
+  constructor(props: BannerInfoWithMapLayoutProps) {
     super(props)
 
     this.mapRef = createRef()
@@ -33,8 +37,17 @@ class BannerInfoWithMap extends React.Component<
       expanded: false,
       expandedMissionIndexes: [],
       scrollMissionIndex: undefined,
-      mobileView: 'info',
-      desktopView: 'info',
+      mobileView: props.commentTargetId ? 'comments' : 'info',
+      desktopView: props.commentTargetId ? 'comments' : 'info',
+    }
+  }
+
+  componentDidUpdate(previous: BannerInfoWithMapLayoutProps) {
+    if (
+      this.props.commentTargetId &&
+      this.props.commentTargetId !== previous.commentTargetId
+    ) {
+      this.onDesktopViewChanged('comments')
     }
   }
 
@@ -114,6 +127,8 @@ class BannerInfoWithMap extends React.Component<
       submitDisabled,
       showMissionOrder,
       i18n,
+      comments,
+      commentsCount,
     } = this.props
     const {
       expanded,
@@ -153,6 +168,8 @@ class BannerInfoWithMap extends React.Component<
               submitButton={submitButton}
               onSubmitButtonClicked={onSubmitButtonClicked}
               submitDisabled={submitDisabled}
+              showComments={!!comments}
+              commentsCount={commentsCount}
             />
           </div>
           <div className="banner-info-with-map-goback hide-on-mobile">
@@ -194,6 +211,10 @@ class BannerInfoWithMap extends React.Component<
                 onExpand={this.onExpand}
                 onExpandAll={this.onExpandAll}
                 hideControls={hideControls}
+                comments={comments?.(
+                  desktopView === 'comments' && mobileView !== 'map'
+                )}
+                commentsCount={commentsCount}
               />
             </div>
             <div className={`banner-info-additional ${mapPaneClassName} `}>
@@ -233,6 +254,12 @@ export interface BannerInfoWithMapProps extends WithTranslationProps {
   showMissionOrder?: boolean
 }
 
+interface BannerInfoWithMapLayoutProps extends BannerInfoWithMapProps {
+  comments?: (active: boolean) => React.ReactNode
+  commentsCount?: number
+  commentTargetId?: string
+}
+
 interface BannerInfoWithMapState {
   expanded: boolean
   expandedMissionIndexes: Array<number>
@@ -241,4 +268,62 @@ interface BannerInfoWithMapState {
   desktopView: BannerInfoView
 }
 
-export default withTranslation()(BannerInfoWithMap)
+const TranslatedLayout = withTranslation()(BannerInfoWithMapLayout)
+
+function BannerInfoWithComments({
+  authenticated,
+  canPost,
+  canModerate,
+  ...props
+}: BannerInfoWithMapProps & {
+  authenticated: boolean
+  canPost: boolean
+  canModerate: boolean
+}) {
+  const { hash } = useLocation()
+  const targetId = /^#comment-([a-zA-Z0-9-]+)$/.exec(hash)?.[1]
+  const comments = useBannerComments(
+    props.banner.id,
+    authenticated,
+    canPost,
+    canModerate
+  )
+  return (
+    <TranslatedLayout
+      {...props}
+      commentTargetId={targetId}
+      commentsCount={
+        !authenticated || comments.loading || comments.loadError
+          ? undefined
+          : comments.items.length
+      }
+      comments={(active) => (
+        <BannerComments
+          state={comments}
+          authenticated={authenticated}
+          canPost={canPost}
+          canModerate={canModerate}
+          active={active}
+          targetId={targetId}
+        />
+      )}
+    />
+  )
+}
+
+export default TranslatedLayout
+
+export function SavedBannerInfoWithMap(props: BannerInfoWithMapProps) {
+  const { keycloak, initialized } = useKeycloak()
+  if (!initialized) return <TranslatedLayout {...props} />
+  const authenticated = keycloak.authenticated === true
+  return (
+    <BannerInfoWithComments
+      key={`${props.banner.id}:${authenticated ? keycloak.subject : 'guest'}`}
+      {...props}
+      authenticated={authenticated}
+      canPost={authenticated && keycloak.hasRealmRole('create-comment')}
+      canModerate={authenticated && keycloak.hasRealmRole('manage-comments')}
+    />
+  )
+}

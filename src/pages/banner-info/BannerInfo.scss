@@ -14,8 +14,9 @@
   .banner-info-overview {
     .banner-info-container {
       @include media-max-md {
+        min-width: 0;
         padding-right: unset;
-        width: 320px;
+        width: 100%;
       }
     }
   }

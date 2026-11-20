@@ -18,7 +18,7 @@ import IfUserLoggedIn from '../login/if-user-logged-in'
 
 import './BannerInfoOverview.scss'
 
-export type BannerInfoView = 'info' | 'missions'
+export type BannerInfoView = 'info' | 'missions' | 'comments'
 
 const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   banner,
@@ -27,6 +27,8 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
   expandedMissionIndexes,
   scrollMissionIndex,
   hideControls,
+  comments,
+  commentsCount,
   view,
   onChangeView,
   onExpand,
@@ -108,6 +110,17 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
     },
   ]
 
+  if (comments) {
+    tabs.push({
+      label:
+        commentsCount === undefined
+          ? t('comments.title')
+          : t('comments.tab', { count: commentsCount }),
+      key: 'comments',
+      children: <>{comments}</>,
+    })
+  }
+
   return (
     <div className="banner-info-overview" ref={refElement}>
       <div className="banner-info-container">
@@ -139,6 +152,7 @@ const BannerInfoOverview: FC<BannerInfoOverviewProps> = ({
           activeKey={activeView}
           onTabClick={(key) => onTabClick(key as BannerInfoView)}
           items={tabs}
+          destroyOnHidden={false}
         />
       </div>
     </div>
@@ -152,6 +166,8 @@ export interface BannerInfoOverviewProps {
   expandedMissionIndexes?: Array<number>
   scrollMissionIndex?: number
   hideControls?: boolean
+  comments?: React.ReactNode
+  commentsCount?: number
   view?: BannerInfoView
   onChangeView?: (view: BannerInfoView) => void
   onExpand?: (index: number) => void

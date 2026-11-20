@@ -12,7 +12,7 @@ import {
   loadBanner,
 } from '../../features/banner'
 import LoadingOverlay from '../../components/loading-overlay'
-import { BannerInfoWithMap } from '../../components/banner-info-with-map'
+import { SavedBannerInfoWithMap } from '../../components/banner-info-with-map'
 
 import './BannerInfo.scss'
 
@@ -45,7 +45,10 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
         sensitivity: 'accent',
       }) !== 0
     ) {
-      const url = generatePath('/banner/:id', { id: banner.id })
+      const url =
+        generatePath('/banner/:id', { id: banner.id }) +
+        window.location.search +
+        window.location.hash
       return <Navigate to={url} replace />
     }
 
@@ -54,7 +57,7 @@ class BannerInfo extends React.Component<BannerInfoProps, BannerInfoState> {
         <>
           <PageTitle title={banner.title} />
           <div className="banner-info-page">
-            <BannerInfoWithMap banner={banner} />
+            <SavedBannerInfoWithMap banner={banner} />
           </div>
         </>
       )

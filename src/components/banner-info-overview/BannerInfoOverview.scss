@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    min-width: 0;
     padding-right: 4px;
     width: 370px;
 
@@ -26,24 +27,9 @@
       border: none;
     }
 
-    /* Hide overflow button. We don't need it. */
-
-    /* The screen is never too small to show both buttons */
-
-    /* If we leave it, the screen flackers when resizing the window */
-
-    /* because it is constantly shown and hidden. An alternative would be to */
-
-    /* make the width of the ant-tabs-nav-list smaller or givt it a right margin */
-
-    /* or padding */
-    .ant-tabs-nav-more {
-      display: none;
-    }
-
     .ant-tabs-nav-list {
       background-color: var(--color-dark-gray);
-      width: 100%;
+      min-width: 100%;
 
       .ant-tabs-ink-bar {
         display: none;
@@ -56,10 +42,11 @@
         border: solid 2px transparent !important; /* stylelint-disable-line */
         border-radius: 4px;
         box-shadow: 2px 1000px 1px var(--color-dark-gray) inset !important; /* stylelint-disable-line */
+        flex: 1 0 auto;
         font-size: 16px;
         margin: 0 !important; /* stylelint-disable-line */
+        padding: 12px 8px;
         transition: linear-gradient ease 0.6s;
-        width: 100%;
 
         .ant-tabs-tab-btn {
           color: var(--color-white);

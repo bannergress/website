@@ -38,6 +38,11 @@ the compatible standard 41 / recommended 19 configs. This removes the deleted
 `declaration-block-single-line-max-declarations` rule while retaining the SCSS
 rules. Remove these overrides when the SCSS packages support Stylelint 18.
 
+## Banner comments (#555)
+
+Saved banner pages include the Comments view. See the
+[comments integration notes](src/features/comments/README.md) for the API and Keycloak roles.
+
 ## Dependency migration (#494)
 
 The app uses React 19, Ant Design 6, Redux 5 / React Redux 9, i18next 26 /
